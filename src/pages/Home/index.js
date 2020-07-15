@@ -1,18 +1,52 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+  CssBaseline,
+  Button,
+  makeStyles,
+  Typography
+} from '@material-ui/core'
 
-function Home() {
+const useStyles = makeStyles({
+  root: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    flexDirection: "column"
+  },
+  link: {
+    textDecoration: "none",
+  },
+  button: {
+    color: "#FFFFFF",
+    fontFamily: "Roboto, sans-serif",
+    fontWeight: "bold",
+    width: "552px",
+    height: "73px",
+    backgroundColor: "#FE2121",
+    border: "1px solid rgba(0, 0, 0, 0.12)",
+    borderRadius: "2px"
+  }
+})
+
+export default function Home() {
+  const classes = useStyles();
+
   return (
-    <div>
-      <p>
-        Lorem ipsum lorem vivamus tristique egestas amet, sollicitudin nullam facilisis adipiscing nullam suspendisse elit, eu etiam per curabitur tristique.
-        eget feugiat justo rhoncus orci nostra gravida nullam, lorem magna nam sapien varius malesuada, curae facilisis consequat egestas cubilia nam.
-        vehicula vestibulum adipiscing sed luctus bibendum aptent malesuada dictum fringilla felis sit, viverra fringilla nullam rhoncus metus laoreet lorem scelerisque imperdiet class non, hendrerit sociosqu aliquet donec torquent condimentum habitasse dapibus tortor mi.
-        consequat habitant aptent habitant id diam interdum, conubia sed vehicula phasellus etiam euismod, laoreet porttitor aptent ut quisque.
-      </p>
-      <Link to="/login"><p>Ir para Login</p></Link>
-    </div>
+    <React.Fragment>
+      <CssBaseline /> {/* Reseta todo estilo padrão do navegador */}
+
+      <div className={classes.root}> {/* Envolve toda página */}
+
+        <Typography variant="h3">Página inicial: Home</Typography>
+
+        <Link to="/login" className={classes.link}>
+          <Button variant="contained" className={classes.button}>
+            Ir para Login
+          </Button>
+        </Link>
+      </div>
+    </React.Fragment>
   );
 }
-
-export default Home;

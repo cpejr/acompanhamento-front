@@ -9,3 +9,13 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+/**
+ * pasta /components: items que são repetidos varias vezes, como butões estilizados
+ *    inputs, topbar, etc
+ *
+ * pasta /pages: as páginas em si, o que será renderizado no Route component{}
+ *
+ * pasta /services:  arquivos de configurações para comunicação com APIs e com o
+ *    próprio backend
+ *
+ */

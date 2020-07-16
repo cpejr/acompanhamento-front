@@ -1,9 +1,19 @@
 import React from 'react';
+import "./login.css";
+import { Form, Button } from 'react-bootstrap'
 import {
   CssBaseline,
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import clsx from 'clsx';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import FormControl from '@material-ui/core/FormControl';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import ThemeLogo from '../../assets/theme-logo.png';
 
@@ -11,6 +21,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     height: "100vh",
     backgroundColor: "#E5E5E5",
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
   },
 
   loginBox: { // falta os pontos de quebra (breakpoint) para ficar responsivo
@@ -18,20 +31,25 @@ const useStyles = makeStyles(theme => ({
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "15px",
 
+    display: "flex",
+    flexDirection: "column",
+
     width: "624px",
     height: "471px",
-
+    
     position: "relative",
     top: "calc(50% - 471px/2 + 0.5px)",
     left: "calc(50% - 624px/2)",
+
   },
 
   loginTxt: {
-    position: "absolute",
+    position: "relative",
     left: "0%",
     right: "0%",
     top: "4.44%",
     bottom: "71.33%",
+    justifyContent: "center",
 
     color: "#FFFFFF",
     fontFamily: "Roboto, sans-serif",
@@ -67,6 +85,23 @@ export default function Login() {
 
   const classes = useStyles();
 
+  const [values, setValues] = React.useState({
+    password: '',
+    showPassword: false,
+  });
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <React.Fragment>
       <CssBaseline /> {/* Reseta todo estilo padrão do navegador (margens e padding) */}
@@ -75,8 +110,31 @@ export default function Login() {
         <div className={classes.loginLogo}></div>
         <div className={classes.loginBox}>
           <Typography className={classes.loginTxt}>Login</Typography>
+          <Form.Group>
+            <Form.Control placeholder="" type="email" />
+          </Form.Group>
+          <FormControl className={clsx(classes.margin, classes.textField)}>
+            <Input
+              id="standard-adornment-password"
+              type={values.showPassword ? 'text' : 'password'}
+              value={values.password}
+              onChange={handleChange('password')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <a href=''>Esqueci minha senha!</a>
+          <Button className='botao wh-120'>Entrar</Button>
         </div>
-
       </div>
 
     </React.Fragment>

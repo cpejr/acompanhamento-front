@@ -1,6 +1,7 @@
 import React from 'react';
 import "./login.css";
 import { Form, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 import {
   CssBaseline,
   makeStyles,
@@ -133,7 +134,9 @@ export default function Login() {
             />
           </FormControl>
           <a href=''>Esqueci minha senha!</a>
-          <Button className='botao wh-120'>Entrar</Button>
+          <Link to="/" className={classes.link}>
+            <Button className='botao wh-120'>Entrar</Button>
+          </Link>
         </div>
       </div>
 

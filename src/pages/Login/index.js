@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     left: "0%",
     right: "0%",
-    top: "4.44%",
+    top: "77px",
     bottom: "71.33%",
     justifyContent: "center",
 
@@ -58,7 +58,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: "normal",
     fontSize: "32px",
     lineHeight: "37px",
-
     display: "flex",
     alignItems: "center",
     textAlign: "center"
@@ -112,9 +111,10 @@ export default function Login() {
         <div className={classes.loginBox}>
           <Typography className={classes.loginTxt}>Login</Typography>
           <Form.Group>
-            <Form.Control placeholder="" type="email" />
+            <Form.Control placeholder="" type="email" className="email"/>
           </Form.Group>
-          <FormControl className={clsx(classes.margin, classes.textField)}>
+
+          <FormControl className={clsx(classes.margin, classes.textField)} className="senha">
             <Input
               id="standard-adornment-password"
               type={values.showPassword ? 'text' : 'password'}
@@ -133,9 +133,11 @@ export default function Login() {
               }
             />
           </FormControl>
-          <a href=''>Esqueci minha senha!</a>
+
+          <a href='' className="esqsenha">Esqueci minha senha!</a>
+          
           <Link to="/" className={classes.link}>
-            <Button className='botao wh-120'>Entrar</Button>
+            <Button className='botaoentrar'>Entrar</Button>
           </Link>
         </div>
       </div>

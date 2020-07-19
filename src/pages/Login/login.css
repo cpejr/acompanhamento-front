@@ -44,11 +44,11 @@
 }
 
 
-#standard-adornment-password{
+#outlined-adornment-password{
   
   background-color: #FFFFFF;
+  padding: 8px;
   height: 47px;
-  margin-top: 25px;
   margin-left: 35px;
   width: 552px;
   border-radius: 5px;

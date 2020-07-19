@@ -3,9 +3,12 @@ import "./login.css";
 import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import {
+  TextField,
   CssBaseline,
   makeStyles,
   Typography,
+  OutlinedInput,
+  FormHelperText,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
@@ -37,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
     width: "624px",
     height: "471px",
-    
+
     position: "relative",
     top: "calc(50% - 471px/2 + 0.5px)",
     left: "calc(50% - 624px/2)",
@@ -110,32 +113,43 @@ export default function Login() {
         <div className={classes.loginLogo}></div>
         <div className={classes.loginBox}>
           <Typography className={classes.loginTxt}>Login</Typography>
-          <Form.Group>
-            <Form.Control placeholder="" type="email" className="email"/>
-          </Form.Group>
 
-          <FormControl className={clsx(classes.margin, classes.textField)} className="senha">
-            <Input
-              id="standard-adornment-password"
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={handleChange('password')}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
+
+          <TextField
+          label=""
+          id="outlined-start-adornment"
+          className={clsx(classes.margin, classes.textField)}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"></InputAdornment>,
+          }}
+          variant="outlined"
+        />
+        <FormControl className={clsx(classes.margin, classes.textField)} className="senha">
+          <InputLabel htmlFor="outlined-adornment-password"></InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
+            value={values.password}
+            onChange={handleChange('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={70}
+          />
+        </FormControl>
+
 
           <a href='' className="esqsenha">Esqueci minha senha!</a>
-          
+
           <Link to="/" className={classes.link}>
             <Button className='botaoentrar'>Entrar</Button>
           </Link>

@@ -30,11 +30,9 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #FFFFFF;
-  
-
 }
 
-.email{
+#outlined-start-adornment{
 
   background-color: #FFFFFF;
   height: 58px;
@@ -43,13 +41,18 @@
   width: 552px;
 }
 
-
 #outlined-adornment-password{
   
   background-color: #FFFFFF;
   padding: 8px;
   height: 47px;
-  margin-left: 35px;
+  width: 552px;
+  border-radius: 5px;
+}
+
+#senha {
+  padding: 8px;
+  height: 47px;
   width: 552px;
   border-radius: 5px;
 }

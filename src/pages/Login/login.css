@@ -32,27 +32,34 @@
   color: #FFFFFF;
 }
 
-#outlined-start-adornment{
-
-  background-color: #FFFFFF;
-  height: 58px;
+.boxemail{
   margin-left: 35px;
-  margin-top: 115px;
   width: 552px;
+  height: 48px;
+  margin-top: 130px;
 }
 
-#outlined-adornment-password{
-  
+.emaill{
   background-color: #FFFFFF;
-  padding: 8px;
-  height: 47px;
-  width: 552px;
+  width: 550px;
+  margin-left: 35px;
   border-radius: 5px;
+
 }
 
-#senha {
-  padding: 8px;
-  height: 47px;
+.boxsenha{
+  
+  margin-left: 35px;
   width: 552px;
+  height: 48px;
+  margin-top: 20px;
+
+}
+
+.senhaa{
+  background-color: #FFFFFF;
+  width: 550px;
+  margin-left: 35px;
   border-radius: 5px;
+  
 }

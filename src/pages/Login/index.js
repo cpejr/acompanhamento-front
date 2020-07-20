@@ -114,17 +114,19 @@ export default function Login() {
         <div className={classes.loginBox}>
           <Typography className={classes.loginTxt}>Login</Typography>
 
-
-          <TextField
+        <div className="boxemail">
+          <TextField className="emaill"
             label=""
             id="outlined-start-adornment"
-            className={clsx(classes.margin, classes.textField)}
             InputProps={{
               startAdornment: <InputAdornment position="start"></InputAdornment>,
             }}
             variant="outlined"
           />
-          <FormControl className={clsx(classes.margin, classes.textField)} id="senha">
+        </div>
+          
+          <div className="boxsenha">
+          <FormControl className="senhaa">
             <InputLabel htmlFor="outlined-adornment-password"></InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
@@ -146,6 +148,7 @@ export default function Login() {
               labelWidth={70}
             />
           </FormControl>
+          </div>
 
 
           <a href='' className="esqsenha">Esqueci minha senha!</a>

@@ -63,14 +63,67 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
+  boxemail: {
+  marginLeft: "35px",
+  width: "552px",
+  height: "48px",
+  marginTop: "130px",
+  },
+
+  emaill: {
+    backgroundColor: "#FFFFFF",
+    width: "550px",
+    borderRadius: "5px",
+  },
+
+  boxsenha: {
+  marginLeft: "35px",
+  width: "552px",
+  height: "48px",
+  marginTop: "20px",
+  },
+
   senha: {
     backgroundColor: "white",
-    width: "552px",
+    width: "550px",
     borderRadius: "5px"
+  },
+
+  esqsenha: {
+    textDecoration: "none",
+    fontFamily: "DM Sans, sans-serif",
+    fontStyle: "normal",
+    fontWeight: "normal",
+    fontSize: "20px",
+    lineHeight: "26px",
+    textAlign: "left",
+    marginLeft: "35px",
+    marginTop: "25px",
+    color: "#FFFFFF",
   },
 
   label: {
     color: "black",
     paddingTop: "15px"
+  },
+
+  botaoentrar: {
+  background: "#FE2121",
+  border: "1px solid rgba(0, 0, 0, 0.12)",
+  boxSizing: "border-box",
+  borderRadius: "2px",
+  marginTop: "25px",
+  height: "73px",
+  width: "552px",
+  marginLeft: "35px",
+  fontFamily: "Roboto",
+  fontStyle: "normal",
+  fontWeight: "500",
+  fontSize: "14px",
+  lineHeight: "16px",
+  letterSpacing: "0.02em",
+  textTransform: "uppercase",
+  color: "#FFFFFF",
+  cursor: "pointer",
   }
 }))

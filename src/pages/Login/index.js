@@ -1,5 +1,4 @@
 import React from 'react';
-import "./login.css";
 import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import {
@@ -50,8 +49,8 @@ export default function Login() {
         <div className={classes.loginBox}>
           <Typography className={classes.loginTxt}>Login</Typography>
 
-          <div className="boxemail">
-            <TextField className="emaill"
+          <div className={classes.boxemail}>
+            <TextField className={classes.emaill}
               // label="email"
               id="outlined-start-adornment"
               InputProps={{
@@ -61,7 +60,7 @@ export default function Login() {
             />
           </div>
 
-          <div className="boxsenha">
+          <div className={classes.boxsenha}>
 
             {/* jfdkadsfkad */}
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
@@ -90,10 +89,10 @@ export default function Login() {
           </div>
 
 
-          <a href='' className="esqsenha">Esqueci minha senha!</a>
+          <a href='' className={classes.esqsenha}>Esqueci minha senha!</a>
 
           <Link to="/" className={classes.link}>
-            <Button className='botaoentrar'>Entrar</Button>
+            <Button className={classes.botaoentrar}>Entrar</Button>
           </Link>
         </div>
       </div>

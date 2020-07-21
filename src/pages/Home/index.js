@@ -6,6 +6,7 @@ import {
   makeStyles,
   Typography
 } from '@material-ui/core'
+import ButtonPadrao from '../../components/ButtonPadrao';
 
 const useStyles = makeStyles({
   root: {
@@ -46,6 +47,7 @@ export default function Home() {
             Ir para Login
           </Button>
         </Link>
+        <ButtonPadrao text="O texto" />
       </div>
     </React.Fragment>
   );

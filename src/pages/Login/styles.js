@@ -63,30 +63,20 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  boxemail: {
-  marginLeft: "35px",
-  width: "552px",
-  height: "48px",
-  marginTop: "130px",
-  },
-
   emaill: {
     backgroundColor: "#FFFFFF",
     width: "550px",
     borderRadius: "5px",
-  },
-
-  boxsenha: {
-  marginLeft: "35px",
-  width: "552px",
-  height: "48px",
-  marginTop: "20px",
+    marginLeft: "35px",
+    marginTop: "130px",
   },
 
   senha: {
     backgroundColor: "white",
     width: "550px",
-    borderRadius: "5px"
+    borderRadius: "5px",
+    marginTop: "20px",
+    marginLeft: "35px",
   },
 
   esqsenha: {

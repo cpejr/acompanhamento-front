@@ -77,6 +77,7 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: "5px",
     marginTop: "20px",
     marginLeft: "35px",
+    marginBottom: "20px",
   },
 
   esqsenha: {

@@ -88,12 +88,14 @@ export default function Login() {
             </FormControl>
           </div>
 
+        <div>
+           <a href='' className={classes.esqsenha}>Esqueci minha senha!</a>
+        </div>
 
-          <a href='' className={classes.esqsenha}>Esqueci minha senha!</a>
-
-          <Link to="/" className={classes.link}>
-            <Button className={classes.botaoentrar}>Entrar</Button>
-          </Link>
+          <Button className={classes.botaoentrar}>Entrar
+              <Link to="/" className={classes.link}></Link>
+          </Button>
+          
         </div>
       </div>
 

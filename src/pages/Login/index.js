@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
+import { FiMail, FiLock } from "react-icons/fi"
 import {
   TextField,
   CssBaseline,
@@ -54,7 +55,9 @@ export default function Login() {
               // label="email"
               id="outlined-start-adornment"
               InputProps={{
-                startAdornment: <InputAdornment position="start">Email</InputAdornment>,
+                startAdornment: <InputAdornment position="start">
+                  <FiMail size={24} className={classes.icon} />
+                </InputAdornment>,
               }}
               variant="outlined"
             />
@@ -82,7 +85,9 @@ export default function Login() {
                     </IconButton>
                   </InputAdornment>
                 }
-                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                startAdornment={<InputAdornment position="start">
+                  <FiLock size={24} className={classes.icon} />
+                </InputAdornment>}
                 labelWidth={0}
               />
             </FormControl>

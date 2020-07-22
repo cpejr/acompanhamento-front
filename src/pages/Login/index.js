@@ -86,9 +86,9 @@ export default function Login() {
 
           <Link to="/" className={classes.esqsenha}>Esqueci minha senha!</Link>
 
-          <Button className={classes.botaoentrar}>Entrar
-              <Link to="/" className={classes.link}></Link>
-          </Button>
+          <Link to="/" className={classes.link}>
+            <Button className={classes.botaoentrar}>Entrar</Button>
+          </Link>
 
         </div>
       </div>

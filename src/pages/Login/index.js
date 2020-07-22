@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { FiMail, FiLock } from "react-icons/fi"
 import {
@@ -7,14 +7,9 @@ import {
   CssBaseline,
   Typography,
   OutlinedInput,
-  FormHelperText,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
@@ -47,60 +42,54 @@ export default function Login() {
 
       <div className={classes.root}> {/* Envolve toda página */}
         <div className={classes.loginLogo}></div>
+
         <div className={classes.loginBox}>
+
+          {/* Título */}
           <Typography className={classes.loginTxt}>Login</Typography>
 
-          <div className={classes.boxemail}>
-            <TextField className={classes.emaill}
-              // label="email"
-              id="outlined-start-adornment"
-              InputProps={{
-                startAdornment: <InputAdornment position="start">
-                  <FiMail size={24} className={classes.icon} />
-                </InputAdornment>,
-              }}
-              variant="outlined"
-            />
-          </div>
+          {/* Email */}
+          <TextField className={classes.emaill}
+            // label="email"
+            id="outlined-start-adornment"
+            InputProps={{
+              startAdornment: <InputAdornment position="start">
+                <FiMail size={24} className={classes.icon} />
+              </InputAdornment>,
+            }}
+            variant="outlined"
+          />
 
-          <div className={classes.boxsenha}>
+          {/* Senha */}
+          <OutlinedInput className={classes.senha}
+            id="outlined-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
+            value={values.password}
+            onChange={handleChange('password')}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            startAdornment={<InputAdornment position="start">
+              <FiLock size={24} className={classes.icon} />
+            </InputAdornment>}
+            labelWidth={0}
+          />
 
-            {/* jfdkadsfkad */}
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              {/* <InputLabel className={classes.label} htmlFor="outlined-adornment-password">Senha</InputLabel> */}
-              <OutlinedInput className={classes.senha}
-                id="outlined-adornment-password"
-                type={values.showPassword ? 'text' : 'password'}
-                value={values.password}
-                onChange={handleChange('password')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                startAdornment={<InputAdornment position="start">
-                  <FiLock size={24} className={classes.icon} />
-                </InputAdornment>}
-                labelWidth={0}
-              />
-            </FormControl>
-          </div>
-
-        <div>
-           <a href='' className={classes.esqsenha}>Esqueci minha senha!</a>
-        </div>
+          <Link to="/" className={classes.esqsenha}>Esqueci minha senha!</Link>
 
           <Button className={classes.botaoentrar}>Entrar
               <Link to="/" className={classes.link}></Link>
           </Button>
-          
+
         </div>
       </div>
 

@@ -25,5 +25,18 @@ export const useStyles = makeStyles(theme => ({
         height: "94vh",
         left: "0px",
         top: "36px",
-    }
+    },
+
+    graphic: {
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "row",
+        width: "100%"
+    },
+
+    graphic1: {
+        width: "40%",
+        height: "40%",
+    },
+
 }))

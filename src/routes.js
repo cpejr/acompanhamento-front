@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route, BrowserRouter } from 'react-router-dom'
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
 
 import Home from './pages/Home'
 import Login from './pages/Login/login'
@@ -9,9 +9,11 @@ import Dashboard from './pages/Dashboard'
 function Routes() {
   return (
     <BrowserRouter>
-      <Route component={Home} exact path='/' />
-      <Route component={Login} exact path='/login' />
-      <Route component={Dashboard} exact path='/dashboard' />
+      <Switch>
+        <Route component={Home} exact path='/' />
+        <Route component={Login} exact path='/login' />
+        <Route component={Dashboard} exact path='/dashboard' />
+      </Switch>
     </BrowserRouter>
   )
 }

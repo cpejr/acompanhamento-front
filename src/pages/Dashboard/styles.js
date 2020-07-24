@@ -27,11 +27,27 @@ export const useStyles = makeStyles(theme => ({
         top: "36px",
     },
 
+    tittle: {
+        position: "relative",
+        height: "48px",
+        width: "100%",
+        top: "10%",
+        justifyContent: "center",
+        textAlign: "center",
+        fontFamily: "DM Sans",
+        fontStyle: "normal",
+        fontWeight: "500",
+        fontSize: "40px",
+        lineHeight: "52px"
+    },
+
     graphic: {
+        textAlign: "center",
         alignItems: "center",
         display: "flex",
         flexDirection: "row",
-        width: "100%"
+        width: "100%",
+        marginTop: "150px"
     },
 
     graphic1: {

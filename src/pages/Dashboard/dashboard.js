@@ -11,15 +11,18 @@ export default function Dashboard() {
         <div className={classes.root}>
             <Menu />
             <div className={classes.sidebar}></div>
+            <div className={classes.tittle}>
+                Situação das Bombas
+            </div>
             <div className={classes.graphic}>
                 <div className={classes.graphic1}>
-                    <Graphic data={[20, 80]} colors={['red', "gray"]} labels={["danger"]} />
+                    <Graphic data={[10, 90]} colors={['red', "gray"]} labels={["Revisão"]} />
                 </div>
                 <div className={classes.graphic1}>
-                    <Graphic data={[60, 40]} colors={['yellow', "gray"]} labels={["caution"]} />
+                    <Graphic data={[50, 50]} colors={['yellow', "gray"]} labels={["Atenção"]} />
                 </div>
                 <div className={classes.graphic1}>
-                    <Graphic data={[90, 10]} colors={['green', "gray"]} labels={["good"]} />
+                    <Graphic data={[40, 60]} colors={['green', "gray"]} labels={["OK"]} />
                 </div>
             </div>
         </div >

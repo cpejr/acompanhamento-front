@@ -18,9 +18,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import HomeIcon from '@material-ui/icons/Home';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddIcon from '@material-ui/icons/Add';
+import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import BuildIcon from '@material-ui/icons/Build';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import TocIcon from '@material-ui/icons/Toc';
+import PeopleIcon from '@material-ui/icons/People';
 import { useStyles } from './menuStyles'
 
 export default function MiniDrawer(props) {
@@ -97,8 +102,8 @@ export default function MiniDrawer(props) {
               component={Link}
               to=""
             >
-              <ListItemIcon><HomeIcon /></ListItemIcon>
-              <ListItemText>Home</ListItemText>
+              <ListItemIcon><PersonAddIcon /></ListItemIcon>
+              <ListItemText>Cadastro Cliente</ListItemText>
             </ListItem>
             
             <ListItem
@@ -106,8 +111,8 @@ export default function MiniDrawer(props) {
               component={Link}
               to=""
             >
-              <ListItemIcon><PersonAddIcon /></ListItemIcon>
-              <ListItemText>Cadastrar Cliente</ListItemText>
+              <ListItemIcon><PeopleIcon /></ListItemIcon>
+              <ListItemText>Lista de Cliente</ListItemText>
             </ListItem>
 
             <ListItem
@@ -116,7 +121,34 @@ export default function MiniDrawer(props) {
               to=""
             >
               <ListItemIcon><AddIcon /></ListItemIcon>
-              <ListItemText>Cadastrar Equipamento</ListItemText>
+              <ListItemText>Cadastro Funcionário</ListItemText>
+            </ListItem>
+
+            <ListItem
+              button
+              component={Link}
+              to=""
+            >
+              <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
+              <ListItemText>Cadastro Equipamentos</ListItemText>
+            </ListItem>
+
+            <ListItem
+              button
+              component={Link}
+              to=""
+            >
+              <ListItemIcon><TocIcon /></ListItemIcon>
+              <ListItemText>Lista de Equipamentos</ListItemText>
+            </ListItem>
+
+            <ListItem
+              button
+              component={Link}
+              to=""
+            >
+              <ListItemIcon></ListItemIcon>
+              <ListItemText>Cliente X Equipamento</ListItemText>
             </ListItem>
             
           </List>

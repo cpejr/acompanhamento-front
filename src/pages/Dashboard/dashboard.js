@@ -127,7 +127,7 @@ export default function Dashboard() {
       <Menu />
       <div className={classes.sidebar}></div>
       <div className={classes.tittle}>
-        Situação das Bombas {`[quantidade de bombas: ${totalEquipment}]`}
+        Situação das Bombas
       </div>
       <div className={classes.graphic}>
         <div className={classes.graphic1}>

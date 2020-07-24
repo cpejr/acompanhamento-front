@@ -49,7 +49,7 @@ export const dataTemp = {
       "updatedAt": "2020-06-23T21:28:27.465Z",
       "createdAt": "2020-06-23T21:28:27.465Z",
       "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 37,
+      "temperature": 38,
       "voltage": 127.8
     },
     {
@@ -57,7 +57,23 @@ export const dataTemp = {
       "updatedAt": "2020-06-23T21:28:27.465Z",
       "createdAt": "2020-06-23T21:28:27.465Z",
       "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 37,
+      "temperature": 18,
+      "voltage": 127.8
+    },
+    {
+      "current": 8,
+      "updatedAt": "2020-06-23T21:28:27.465Z",
+      "createdAt": "2020-06-23T21:28:27.465Z",
+      "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
+      "temperature": 35,
+      "voltage": 127.8
+    },
+    {
+      "current": 8,
+      "updatedAt": "2020-06-23T21:28:27.465Z",
+      "createdAt": "2020-06-23T21:28:27.465Z",
+      "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
+      "temperature": 35,
       "voltage": 127.8
     }
   ]

@@ -7,20 +7,32 @@ import { useEffect, useState } from 'react';
 import { clientTemp, modelTemp, equipTemp, dataTemp } from './temp';
 
 export default function Dashboard() {
+  const margemPorcentagem = 0.8; //acima desta porcentagem entra em atenção, e abaixo ok
+
   const [situation, setSituation] = useState({
     ok: Number,
     revisao: Number,
     atencao: Number
   });
-
-  const [values, setValues] = useState([])
-  const [limits, setLimits] = useState([])
-  const [totalEquipment, setTotalEquipment] = useState();
+  const [values, setValues] = useState([{
+    temperature: Number,
+    current: Number,
+    voltage: Number,
+    id: String
+  }])
+  const [limits, setLimits] = useState([{
+    temperatureLimit: Number,
+    currentLimit: Number,
+    voltageLimit: Number,
+    modelName: String
+  }])
+  const [totalEquipment, setTotalEquipment] = useState(Number);
 
   useEffect(() => { //total de equipamentos
-    const quantidade = clientTemp.client.equipment;
+    const quantidade = dataTemp.data.length;
 
     setTotalEquipment(quantidade);
+    console.log(quantidade)
   }, []);
 
   useEffect(() => { //seta valores 
@@ -30,7 +42,8 @@ export default function Dashboard() {
       return {
         temperature: equipment.temperature,
         current: equipment.current,
-        voltage: equipment.voltage
+        voltage: equipment.voltage,
+        id: equipment.id
       }
     })
 
@@ -44,7 +57,8 @@ export default function Dashboard() {
       return {
         temperatureLimit: model.temperatureLimit,
         currentLimit: model.currentLimit,
-        voltageLimit: model.voltageLimit
+        voltageLimit: model.voltageLimit,
+        modelName: model.modelName
       }
     })
 
@@ -52,28 +66,31 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => { //configura situações
-    const margemPorcentagem = 0.8;
 
     let numOk = 0;
     let numAtencao = 0;
     let numRevisao = 0;
 
-    const limitTemp = 20; //valores de exemplo
-    const valueTemp = 14; //valores de exemplo
+    function defineSituacao(limit, value) {
+      if (value >= limit) numRevisao++;
+      else if (value >= (limit * margemPorcentagem) && value < limit) numAtencao++;
+      else numOk++;
+    }
 
-    if (valueTemp >= limitTemp) numRevisao++;
-    else if (valueTemp >= (limitTemp * margemPorcentagem) && valueTemp < limitTemp) numAtencao++;
-    else numOk++;
+    values.map(equipValue => {
+      const limitTemperature = limits[0].temperatureLimit;
+      const valueTemperatura = equipValue.temperature;
+
+      defineSituacao(limitTemperature, valueTemperatura)
+    })
 
     const situationData = {
       ok: numOk,
       revisao: numRevisao,
       atencao: numAtencao
     };
-
     setSituation(situationData);
-  }, [])
-
+  }, [limits, values])
 
   const classes = useStyles();
 
@@ -82,8 +99,8 @@ export default function Dashboard() {
       <Menu />
       <div className={classes.sidebar}></div>
       <div className={classes.tittle}>
-        Situação das Bombas
-            </div>
+        Situação das Bombas {`[quantidade de bombas: ${totalEquipment}]`}
+      </div>
       <div className={classes.graphic}>
         <div className={classes.graphic1}>
           <Graphic

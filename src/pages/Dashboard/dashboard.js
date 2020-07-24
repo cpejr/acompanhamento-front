@@ -65,36 +65,43 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => { //configura situações
-
-    let numOk = 0;
-    let numAtencao = 0;
-    let numRevisao = 0;
+    let numOk = 0; let numAtencao = 0; let numRevisao = 0;
 
     function defineSituacao(valueEquipment, limitModel) { //soma aos numOk, numAtencao...
-      const margemPorcentagemTEMP = 0.8;
-      const margemPorcentagemVOLT = 0.8;
-      const margemPorcentagemCURR = 0.8;
+      const paramTEMP = 0.8;
+      const paramVOLT = 0.8;
+      const paramCURR = 0.8;
 
-      function analisaValor(value, limit, margemPorcentagem) {
-        if (value >= limit) return 2;
-        else if (value >= (limit * margemPorcentagem) && value < limit) return 1;
+      function analisaTEMP(value, limit, param) {
+        if (value > limit) return 2;
+        else if (value >= (limit * param) && value <= limit) return 1;
+        else return 0;
+      }
+      function analisaVOLT(value, limit, param) {
+        if (value > limit) return 0;
+        else if (value >= (limit * param) && value <= limit) return 1;
+        else return 0;
+      }
+      function analisaCURR(value, limit, param) {
+        if (value > limit) return 2;
+        else if (value >= (limit * param) && value <= limit) return 1;
         else return 0;
       }
 
-      const sitTEMP = analisaValor(
+      const sitTEMP = analisaTEMP(
         valueEquipment.temperature,
         limitModel.temperatureLimit,
-        margemPorcentagemTEMP);
+        paramTEMP);
 
-      const sitVOLT = analisaValor(
+      const sitVOLT = analisaVOLT(
         valueEquipment.voltage,
         limitModel.voltageLimit,
-        margemPorcentagemVOLT);
+        paramVOLT);
 
-      const sitCURR = analisaValor(
+      const sitCURR = analisaCURR(
         valueEquipment.current,
         limitModel.currentLimit,
-        margemPorcentagemCURR);
+        paramCURR);
 
       let sitGeral = 0;
 

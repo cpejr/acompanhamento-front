@@ -67,7 +67,10 @@ export default function Dashboard() {
   useEffect(() => { //configura situações
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
 
-    function defineSituacao(valueEquipment, limitModel) { //soma aos numOk, numAtencao...
+    function defineSituacao(valueEquipment, limitModel) {
+      // Parametros para analise de valores. Ex.:
+      // se o parametro vale 0.8 o equipamento estará em situação de atenção 
+      // quando chegar em 80% do limite que ele pode alcançar 
       const paramTEMP = 0.8;
       const paramVOLT = 0.8;
       const paramCURR = 0.8;
@@ -88,6 +91,10 @@ export default function Dashboard() {
         else return 0;
       }
 
+      // 0: ok
+      // 1: atenção
+      // 2: revisão  
+
       const sitTEMP = analisaTEMP(
         valueEquipment.temperature,
         limitModel.temperatureLimit,
@@ -105,10 +112,12 @@ export default function Dashboard() {
 
       let sitGeral = 0;
 
+      // a pior situação será a situação geral
       if (sitTEMP === 2 | sitVOLT === 2 | sitCURR === 2) sitGeral = 2;
       else if (sitTEMP === 1 | sitVOLT === 1 | sitCURR === 1) sitGeral = 1;
       else if (sitTEMP === 0 | sitVOLT === 0 | sitCURR === 0) sitGeral = 0;
 
+      // transforma os numeros 0,1,2 em suas respectivas situações
       if (sitGeral === 2) numRevisao++;
       else if (sitGeral === 1) numAtencao++;
       else if (sitGeral === 0) numOk++;

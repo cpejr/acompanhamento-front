@@ -45,7 +45,7 @@ export const clientTemp = {
 export const dataTemp = {
   "data": [
     {
-      "current": 8,
+      "current": 5,
       "updatedAt": "2020-06-23T21:28:27.465Z",
       "createdAt": "2020-06-23T21:28:27.465Z",
       "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
@@ -53,15 +53,15 @@ export const dataTemp = {
       "voltage": 127.8
     },
     {
-      "current": 8,
+      "current": 4,
       "updatedAt": "2020-06-23T21:28:27.465Z",
       "createdAt": "2020-06-23T21:28:27.465Z",
       "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 18,
-      "voltage": 127.8
+      "temperature": 10,
+      "voltage": 70.8
     },
     {
-      "current": 8,
+      "current": 3,
       "updatedAt": "2020-06-23T21:28:27.465Z",
       "createdAt": "2020-06-23T21:28:27.465Z",
       "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
@@ -84,7 +84,7 @@ export const modelTemp = {
     {
       "currentLimit": 8,
       "manufacturer": "millena",
-      "voltageLimit": 127.8,
+      "voltageLimit": 127.9,
       "updatedAt": "2020-06-26T14:05:11.807Z",
       "releaseYear": "2020",
       "createdAt": "2020-06-26T14:02:27.627Z",

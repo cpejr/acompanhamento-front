@@ -32,7 +32,6 @@ export default function Dashboard() {
     const quantidade = dataTemp.data.length;
 
     setTotalEquipment(quantidade);
-    console.log(quantidade)
   }, []);
 
   useEffect(() => { //seta valores 
@@ -71,17 +70,46 @@ export default function Dashboard() {
     let numAtencao = 0;
     let numRevisao = 0;
 
-    function defineSituacao(limit, value) {
-      if (value >= limit) numRevisao++;
-      else if (value >= (limit * margemPorcentagem) && value < limit) numAtencao++;
-      else numOk++;
+    function defineSituacao(valueEquipment, limitModel) { //soma aos numOk, numAtencao...
+      const margemPorcentagemTEMP = 0.8;
+      const margemPorcentagemVOLT = 0.8;
+      const margemPorcentagemCURR = 0.8;
+
+      function analisaValor(value, limit, margemPorcentagem) {
+        if (value >= limit) return 2;
+        else if (value >= (limit * margemPorcentagem) && value < limit) return 1;
+        else return 0;
+      }
+
+      const sitTEMP = analisaValor(
+        valueEquipment.temperature,
+        limitModel.temperatureLimit,
+        margemPorcentagemTEMP);
+
+      const sitVOLT = analisaValor(
+        valueEquipment.voltage,
+        limitModel.voltageLimit,
+        margemPorcentagemVOLT);
+
+      const sitCURR = analisaValor(
+        valueEquipment.current,
+        limitModel.currentLimit,
+        margemPorcentagemCURR);
+
+      let sitGeral = 0;
+
+      if (sitTEMP === 2 | sitVOLT === 2 | sitCURR === 2) sitGeral = 2;
+      else if (sitTEMP === 1 | sitVOLT === 1 | sitCURR === 1) sitGeral = 1;
+      else if (sitTEMP === 0 | sitVOLT === 0 | sitCURR === 0) sitGeral = 0;
+
+      if (sitGeral === 2) numRevisao++;
+      else if (sitGeral === 1) numAtencao++;
+      else if (sitGeral === 0) numOk++;
     }
 
     values.map(equipValue => {
-      const limitTemperature = limits[0].temperatureLimit;
-      const valueTemperatura = equipValue.temperature;
-
-      defineSituacao(limitTemperature, valueTemperatura)
+      defineSituacao(equipValue, limits[0]);
+      console.log(equipValue, limits[0])
     })
 
     const situationData = {

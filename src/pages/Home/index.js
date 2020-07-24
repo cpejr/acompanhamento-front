@@ -47,7 +47,13 @@ export default function Home() {
             Ir para Login
           </Button>
         </Link>
-        <ButtonPadrao text="O texto" />
+
+        <Link to="/dashboard" className={classes.link}>
+          <Button variant="contained" className={classes.button}>
+            Ir para Dashboard
+          </Button>
+        </Link>
+        {/* <ButtonPadrao text="O texto" /> */}
       </div>
     </React.Fragment>
   );

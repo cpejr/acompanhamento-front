@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom"
-import { createBrowserHistory } from "history";
 
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -22,87 +21,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import AddIcon from '@material-ui/icons/Add';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    backgroundColor: '#2D64F3',
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    // backgroundColor: '#FE2121',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    backgroundColor: '#FE2121',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    // padding: theme.spacing(3),
-  },
-  headerInfos: {
-      width: "100%",
-      justifyContent: "space-between",
-      display: "flex",
-      flexDirection: "row"
-  },
-  users: {
-    display: "flex",
-    flexDirection: "row"
-  },
-  user: {
-    marginTop: "4%",
-    marginRight: "2%",
-  }
-}));
+import { useStyles } from './menuStyles'
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
@@ -188,7 +107,7 @@ export default function MiniDrawer(props) {
               to=""
             >
               <ListItemIcon><PersonAddIcon /></ListItemIcon>
-              <ListItemText>Cadastrar Usuário</ListItemText>
+              <ListItemText>Cadastrar Cliente</ListItemText>
             </ListItem>
 
             <ListItem
@@ -197,7 +116,7 @@ export default function MiniDrawer(props) {
               to=""
             >
               <ListItemIcon><AddIcon /></ListItemIcon>
-              <ListItemText>Cadastrar Produto</ListItemText>
+              <ListItemText>Cadastrar Equipamento</ListItemText>
             </ListItem>
             
           </List>

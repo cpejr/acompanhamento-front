@@ -52,15 +52,18 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => { //configura situações
-    // const limitTemp = 20;
-    // const valueTemp = 18;
+    const margemPorcentagem = 0.8;
 
     let numOk = 0;
     let numAtencao = 0;
     let numRevisao = 0;
 
-    numOk++;
-    numAtencao++;
+    const limitTemp = 20; //valores de exemplo
+    const valueTemp = 14; //valores de exemplo
+
+    if (valueTemp >= limitTemp) numRevisao++;
+    else if (valueTemp >= (limitTemp * margemPorcentagem) && valueTemp < limitTemp) numAtencao++;
+    else numOk++;
 
     const situationData = {
       ok: numOk,

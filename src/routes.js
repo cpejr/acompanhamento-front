@@ -3,15 +3,15 @@ import React from 'react';
 import { Route, BrowserRouter } from 'react-router-dom'
 
 import Home from './pages/Home'
-import Login from './pages/Login'
+import Login from './pages/Login/login'
 import Dashboard from './pages/Dashboard'
 
 function Routes() {
   return (
     <BrowserRouter>
-      <Route component={Home} path='/' exact />
-      <Route component={Login} path='/login' exact />
-      <Route component={Dashboard} path='/dashboard' exact />
+      <Route component={Home} exact path='/' />
+      <Route component={Login} exact path='/login' />
+      <Route component={Dashboard} exact path='/dashboard' />
     </BrowserRouter>
   )
 }

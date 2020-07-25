@@ -47,12 +47,18 @@ export const useStyles = makeStyles(theme => ({
         display: "flex",
         flexDirection: "row",
         width: "100%",
-        marginTop: "150px"
+        marginTop: "150px",
+        justifyContent: "space-between",
+
+        [theme.breakpoints.down('sm')]: {
+            display: "flex",
+            flexDirection: "column",
+        },
     },
 
     graphic1: {
-        width: "40%",
-        height: "40%",
+        height: "40%"
+        
     },
 
 }))

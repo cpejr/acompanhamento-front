@@ -4,11 +4,9 @@ import Menu from './menu';
 import Graphic from './chart';
 import { useEffect, useState } from 'react';
 
-import { clientTemp, modelTemp, equipTemp, dataTemp } from './temp';
+import { modelTemp, dataTemp } from './temp';
 
 export default function Dashboard() {
-  const margemPorcentagem = 0.8; //acima desta porcentagem entra em atenção, e abaixo ok
-
   const [situation, setSituation] = useState({
     ok: Number,
     revisao: Number,

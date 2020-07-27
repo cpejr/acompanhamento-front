@@ -76,24 +76,20 @@ export default function Dashboard() {
       const paramCURR = 0.8;
 
       function analisaTEMP(value, limit, param) {
-        if (value > limit) return 2;
-        else if (value >= (limit * param) && value <= limit) return 1;
-        else return 0;
+        if (value > limit) return "revisao";
+        else if (value >= (limit * param) && value <= limit) return "atencao";
+        else return "ok";
       }
       function analisaVOLT(value, limit, param) {
-        if (value > limit) return 0;
-        else if (value >= (limit * param) && value <= limit) return 1;
-        else return 0;
+        if (value > limit) return "revisao";
+        else if (value >= (limit * param) && value <= limit) return "atencao";
+        else return "ok";
       }
       function analisaCURR(value, limit, param) {
-        if (value > limit) return 2;
-        else if (value >= (limit * param) && value <= limit) return 1;
-        else return 0;
+        if (value > limit) return "revisao";
+        else if (value >= (limit * param) && value <= limit) return "atencao";
+        else return "ok";
       }
-
-      // 0: ok
-      // 1: atenção
-      // 2: revisão  
 
       const sitTEMP = analisaTEMP(
         valueEquipment.temperature,
@@ -110,17 +106,17 @@ export default function Dashboard() {
         limitModel.currentLimit,
         paramCURR);
 
-      let sitGeral = 0;
+      let sitGeral = String;
 
       // a pior situação será a situação geral
-      if (sitTEMP === 2 | sitVOLT === 2 | sitCURR === 2) sitGeral = 2;
-      else if (sitTEMP === 1 | sitVOLT === 1 | sitCURR === 1) sitGeral = 1;
-      else if (sitTEMP === 0 | sitVOLT === 0 | sitCURR === 0) sitGeral = 0;
+      if (sitTEMP === "revisao" | sitVOLT === "revisao" | sitCURR === "revisao") sitGeral = "revisao";
+      else if (sitTEMP === "atencao" | sitVOLT === "atencao" | sitCURR === "atencao") sitGeral = "atencao";
+      else if (sitTEMP === "ok" | sitVOLT === "ok" | sitCURR === "ok") sitGeral = "ok";
 
-      // transforma os numeros 0,1,2 em suas respectivas situações
-      if (sitGeral === 2) numRevisao++;
-      else if (sitGeral === 1) numAtencao++;
-      else if (sitGeral === 0) numOk++;
+      // atribui sitGeral as devidas variaveis 
+      if (sitGeral === "revisao") numRevisao++;
+      else if (sitGeral === "atencao") numAtencao++;
+      else if (sitGeral === "ok") numOk++;
     }
 
     values.map(equipValue => {

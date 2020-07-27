@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { ListItemIcon } from '@material-ui/core';
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,9 +49,9 @@ export const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
+    width: theme.spacing(8) + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
+      width: theme.spacing(8) + 1,
     },
   },
   toolbar: {
@@ -74,10 +74,31 @@ export const useStyles = makeStyles((theme) => ({
   },
   users: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   user: {
-    marginTop: "4%",
+    marginTop: "15%",
     marginRight: "2%",
+    fontSize: "1.2rem"
+  },
+  username: {
+    fontSize: "0.8rem",
+    fontWeight: "200",
+    textAlign: "center",
+    marginTop: "12%",
+  },
+  paginatitle: {
+    [theme.breakpoints.up("xs")]: {
+      paddingTop: "0px",
+      fontSize: "24px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: "7px",
+      fontSize: "16px",
+    }
+  },
+  avatar: {
+    backgroundColor: "blue",
+    color: "white"
   }
 }));

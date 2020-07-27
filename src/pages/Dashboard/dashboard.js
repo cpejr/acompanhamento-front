@@ -5,6 +5,7 @@ import Graphic from './chart';
 import { useEffect, useState } from 'react';
 
 import { modelTemp, dataTemp } from './temp';
+import { Grid, Typography } from '@material-ui/core';
 
 export default function Dashboard() {
   const [situation, setSituation] = useState({
@@ -119,7 +120,6 @@ export default function Dashboard() {
 
     values.map(equipValue => {
       defineSituacao(equipValue, limits[0]);
-      console.log(equipValue, limits[0])
     })
 
     const situationData = {
@@ -127,6 +127,7 @@ export default function Dashboard() {
       revisao: numRevisao,
       atencao: numAtencao
     };
+
     setSituation(situationData);
   }, [limits, values])
 
@@ -135,30 +136,40 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <Menu />
-      <div className={classes.sidebar}></div>
-      <div className={classes.tittle}>
+      <Typography variant="h3" align="center" className={classes.title}>
         Situação das Bombas
-      </div>
-      <div className={classes.graphic}>
-        <div className={classes.graphic1}>
+      </Typography>
+
+      <Grid container className={classes.graphics}>
+        <Grid className={classes.graphic} item xs={12} sm={12} md={4} xl={4}>
           <Graphic
             data={[situation.revisao, totalEquipment - situation.revisao]}
             colors={['red', "gray"]}
             labels={["Revisão"]} />
-        </div>
-        <div className={classes.graphic1}>
+        </Grid>
+        <Grid className={classes.graphic} item xs={12} sm={12} md={4} xl={4}>
           <Graphic
             data={[situation.atencao, totalEquipment - situation.atencao]}
             colors={['yellow', "gray"]}
             labels={["Atenção"]} />
-        </div>
-        <div className={classes.graphic1}>
+        </Grid>
+        <Grid className={classes.graphic} item xs={12} sm={12} md={4} xl={4}>
           <Graphic
             data={[situation.ok, totalEquipment - situation.ok]}
             colors={['green', "gray"]}
             labels={["OK"]} />
+        </Grid>
+      </Grid>
+
+      {/* <div className={classes.graphic}>
+        <div className={classes.graphic1}>
         </div>
-      </div>
+        <div className={classes.graphic1}>
+        </div>
+        <div className={classes.graphic1}>
+        </div>
+      </div> */}
+
     </div >
   )
 }

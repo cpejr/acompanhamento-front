@@ -64,13 +64,13 @@ export const useStyles = makeStyles({
     // },
   },
   graphic: {
-    height: "200px",
+    // height: "200px",
     padding: "15px",
-    "& canvas": {
-      height: "300px"
-    }
+    // "& canvas": {
+    //   height: "100%"
+    // }
   },
   teste: {
-    width: "100%",
+    // height: "100%",
   }
 });

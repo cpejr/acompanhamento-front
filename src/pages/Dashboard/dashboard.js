@@ -120,7 +120,6 @@ export default function Dashboard() {
 
     values.map(equipValue => {
       defineSituacao(equipValue, limits[0]);
-      console.log(equipValue, limits[0])
     })
 
     const situationData = {
@@ -128,6 +127,7 @@ export default function Dashboard() {
       revisao: numRevisao,
       atencao: numAtencao
     };
+
     setSituation(situationData);
   }, [limits, values])
 

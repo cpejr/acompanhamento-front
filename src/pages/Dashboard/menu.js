@@ -27,6 +27,7 @@ import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TocIcon from '@material-ui/icons/Toc';
 import PeopleIcon from '@material-ui/icons/People';
 import { useStyles } from './menuStyles'
+import { Avatar } from '@material-ui/core';
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
@@ -64,102 +65,103 @@ export default function MiniDrawer(props) {
             <MenuIcon />
           </IconButton>
           <div className={classes.headerInfos}>
-          <div className={classes.mainTitle}>
-          <Typography variant="h6" noWrap>
-            Paraíso das Bombas
-          </Typography>
-          </div>
-          <div className={classes.users}>
-          <AccountCircleOutlinedIcon className={classes.user} />
-          <Typography variant="h6" className={classes.username}>Admin</Typography>
-          </div>
+            <div className={classes.mainTitle}>
+              <Typography variant="h6" className={classes.paginatitle} noWrap>
+                Paraíso das Bombas
+              </Typography>
+            </div>
+            <div className={classes.users}>
+              <Avatar className={classes.avatar}>T</Avatar>
+              {/* <AccountCircleOutlinedIcon className={classes.user} /> */}
+              {/* <Typography variant="h6" className={classes.username}>Admin</Typography> */}
+            </div>
           </div>
         </Toolbar>
       </AppBar>
-        <Drawer
-          variant="permanent"
-          className={clsx(classes.drawer, {
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx({
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
-          }}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <Divider />
-          <List>
-            <ListItem
-              button
-              component={Link}
-              to=""
-            >
-              <ListItemIcon><PersonAddIcon /></ListItemIcon>
-              <ListItemText>Cadastro Cliente</ListItemText>
-            </ListItem>
-            
-            <ListItem
-              button
-              component={Link}
-              to=""
-            >
-              <ListItemIcon><PeopleIcon /></ListItemIcon>
-              <ListItemText>Lista de Cliente</ListItemText>
-            </ListItem>
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <Divider />
+        <List>
+          <ListItem
+            button
+            component={Link}
+            to=""
+          >
+            <ListItemIcon><PersonAddIcon /></ListItemIcon>
+            <ListItemText>Cadastro Cliente</ListItemText>
+          </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to=""
-            >
-              <ListItemIcon><AddIcon /></ListItemIcon>
-              <ListItemText>Cadastro Funcionário</ListItemText>
-            </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to=""
+          >
+            <ListItemIcon><PeopleIcon /></ListItemIcon>
+            <ListItemText>Lista de Cliente</ListItemText>
+          </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to=""
-            >
-              <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-              <ListItemText>Cadastro Equipamentos</ListItemText>
-            </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to=""
+          >
+            <ListItemIcon><AddIcon /></ListItemIcon>
+            <ListItemText>Cadastro Funcionário</ListItemText>
+          </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to=""
-            >
-              <ListItemIcon><TocIcon /></ListItemIcon>
-              <ListItemText>Lista de Equipamentos</ListItemText>
-            </ListItem>
+          <ListItem
+            button
+            component={Link}
+            to=""
+          >
+            <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
+            <ListItemText>Cadastro Equipamentos</ListItemText>
+          </ListItem>
 
-            <ListItem
-              button
-              component={Link}
-              to=""
-            >
-              <ListItemIcon></ListItemIcon>
-              <ListItemText>Cliente X Equipamento</ListItemText>
-            </ListItem>
-            
-          </List>
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-    
-          {props.children}
-          {console.log('renderizei')}
+          <ListItem
+            button
+            component={Link}
+            to=""
+          >
+            <ListItemIcon><TocIcon /></ListItemIcon>
+            <ListItemText>Lista de Equipamentos</ListItemText>
+          </ListItem>
 
-        </main>
+          <ListItem
+            button
+            component={Link}
+            to=""
+          >
+            <ListItemIcon></ListItemIcon>
+            <ListItemText>Cliente X Equipamento</ListItemText>
+          </ListItem>
+
+        </List>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+
+        {props.children}
+        {console.log('renderizei')}
+
+      </main>
     </div>
   );
 }

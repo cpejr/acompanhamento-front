@@ -86,5 +86,19 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "200",
     textAlign: "center",
     marginTop: "12%",
+  },
+  paginatitle: {
+    [theme.breakpoints.up("xs")]: {
+      paddingTop: "0px",
+      fontSize: "24px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      paddingTop: "7px",
+      fontSize: "16px",
+    }
+  },
+  avatar: {
+    backgroundColor: "blue",
+    color: "white"
   }
 }));

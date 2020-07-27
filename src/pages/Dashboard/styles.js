@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core'
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles(theme => ({
   root: {
     // position: "absolute",
     // height: "100%",
     minHeight: "100vh",
+    paddingLeft: "64px",
 
     backgroundColor: "#E5E5E5",
     // position: "relative",
@@ -37,7 +38,12 @@ export const useStyles = makeStyles({
     // justifyContent: "center",
 
     // margin: "30px 0",
-    padding: "30px 0 0 50px",
+    [theme.breakpoints.up("sm")]: {
+      padding: "30px 0 64px 0px",
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "30px 0 0px 0px",
+    },
 
     // textAlign: "center",
     fontFamily: "DM Sans",
@@ -55,7 +61,7 @@ export const useStyles = makeStyles({
     // width: "100%",
     margin: "30px 0",
     // width: "100vw",
-    paddingLeft: "50px"
+    // paddingLeft: "50px"
     // justifyContent: "space-between",
 
     // [theme.breakpoints.down('sm')]: {
@@ -73,4 +79,4 @@ export const useStyles = makeStyles({
   teste: {
     // height: "100%",
   }
-});
+}));

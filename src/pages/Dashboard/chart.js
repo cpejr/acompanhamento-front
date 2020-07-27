@@ -3,20 +3,19 @@ import { Doughnut } from 'react-chartjs-2';
 import { useStyles } from './styles';
 
 export default function Graphic(props) {
+  const classes = useStyles();
 
-    const classes = useStyles();
-
-    return (
-        <div>
-            <Doughnut
-                data={{
-                    datasets: [{
-                        data: props.data,
-                        backgroundColor: props.colors
-                    }],
-                    labels: props.labels
-                }}
-            />
-        </div>
-    )
+  return (
+    // <div className={classes.teste}>
+    <Doughnut
+      data={{
+        datasets: [{
+          data: props.data,
+          backgroundColor: props.colors
+        }],
+        labels: props.labels
+      }}
+    />
+    // </div>
+  )
 }

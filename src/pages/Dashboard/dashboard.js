@@ -136,7 +136,6 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <Menu />
-      <div className={classes.sidebar}></div>
       <Typography variant="h3" align="center" className={classes.title}>
         Situação das Bombas
       </Typography>

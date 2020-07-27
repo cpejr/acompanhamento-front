@@ -20,14 +20,14 @@ export const useStyles = makeStyles({
     backgroundColor: "#2D64F3"
   },
 
-  sidebar: {
-    backgroundColor: "#FE2121",
-    position: "absolute",
-    width: "64px",
-    height: "94vh",
-    left: "0px",
-    top: "36px",
-  },
+  // sidebar: {
+  //   backgroundColor: "#FE2121",
+  //   position: "absolute",
+  //   width: "64px",
+  //   height: "94vh",
+  //   left: "0px",
+  //   top: "36px",
+  // },
 
   title: {
     // position: "relative",

@@ -70,22 +70,8 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     justifyContent: "space-between",
     display: "flex",
-    flexDirection: "row"
-  },
-  users: {
-    display: "flex",
     flexDirection: "row",
-  },
-  user: {
-    marginTop: "15%",
-    marginRight: "2%",
-    fontSize: "1.2rem"
-  },
-  username: {
-    fontSize: "0.8rem",
-    fontWeight: "200",
-    textAlign: "center",
-    marginTop: "12%",
+    alignItems: "center"
   },
   paginatitle: {
     [theme.breakpoints.up("xs")]: {
@@ -97,8 +83,22 @@ export const useStyles = makeStyles((theme) => ({
       fontSize: "16px",
     }
   },
-  avatar: {
-    backgroundColor: "blue",
-    color: "white"
-  }
+  user: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+
+    // padding: "3px 10px",
+
+    // border: "solid 2px gray",
+    // borderRadius: "10px"
+  },
+  // avatar: {
+  //   backgroundColor: "blue",
+  //   color: "white"
+  // },
+  userName: {
+    textAlign: "center",
+    // paddingRight: "10px"
+  },
 }));

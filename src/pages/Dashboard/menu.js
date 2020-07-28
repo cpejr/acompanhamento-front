@@ -17,17 +17,12 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import HomeIcon from '@material-ui/icons/Home';
 import AddIcon from '@material-ui/icons/Add';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
-import BuildIcon from '@material-ui/icons/Build';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TocIcon from '@material-ui/icons/Toc';
 import PeopleIcon from '@material-ui/icons/People';
 import { useStyles } from './menuStyles'
-import { Avatar } from '@material-ui/core';
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
@@ -41,7 +36,6 @@ export default function MiniDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
 
   return (
     <div className={classes.root}>
@@ -70,10 +64,11 @@ export default function MiniDrawer(props) {
                 Paraíso das Bombas
               </Typography>
             </div>
-            <div className={classes.users}>
-              <Avatar className={classes.avatar}>T</Avatar>
-              {/* <AccountCircleOutlinedIcon className={classes.user} /> */}
-              {/* <Typography variant="h6" className={classes.username}>Admin</Typography> */}
+            <div className={classes.user}>
+              <Typography variant="subtitle1" className={classes.userName}>
+                {props.user}
+              </Typography>
+              {/* <Avatar className={classes.avatar}>T</Avatar> */}
             </div>
           </div>
         </Toolbar>

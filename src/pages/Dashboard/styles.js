@@ -21,36 +21,17 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#2D64F3"
   },
 
-  // sidebar: {
-  //   backgroundColor: "#FE2121",
-  //   position: "absolute",
-  //   width: "64px",
-  //   height: "94vh",
-  //   left: "0px",
-  //   top: "36px",
-  // },
-
   title: {
-    // position: "relative",
-    // height: "48px",
-    // width: "100%",
-    // top: "10%",
-    // justifyContent: "center",
-
-    // margin: "30px 0",
     [theme.breakpoints.up("sm")]: {
-      padding: "30px 0 64px 0px",
+      padding: "70px 0 50px 0px",
     },
     [theme.breakpoints.down("sm")]: {
       padding: "30px 0 0px 0px",
     },
-
-    // textAlign: "center",
     fontFamily: "DM Sans",
-    // fontStyle: "normal",
     fontWeight: "500",
     fontSize: "40px",
-    // lineHeight: "52px"
+    textTransform: "uppercase"
   },
 
   graphics: {

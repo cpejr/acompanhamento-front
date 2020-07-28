@@ -4,7 +4,7 @@ import Menu from './menu';
 import Graphic from './chart';
 import { useEffect, useState } from 'react';
 
-import { modelTemp, dataTemp } from './temp';
+import { modelTemp, dataTemp, clientTemp } from './temp';
 import { Grid, Typography } from '@material-ui/core';
 
 export default function Dashboard() {
@@ -26,6 +26,7 @@ export default function Dashboard() {
     modelName: String
   }])
   const [totalEquipment, setTotalEquipment] = useState(Number);
+  const [user] = useState(clientTemp.client.name);
 
   useEffect(() => { //total de equipamentos
     const quantidade = dataTemp.data.length;
@@ -135,7 +136,7 @@ export default function Dashboard() {
 
   return (
     <div className={classes.root}>
-      <Menu />
+      <Menu user={user} />
       <Typography variant="h3" align="center" className={classes.title}>
         Situação das Bombas
       </Typography>
@@ -160,16 +161,6 @@ export default function Dashboard() {
             labels={["OK"]} />
         </Grid>
       </Grid>
-
-      {/* <div className={classes.graphic}>
-        <div className={classes.graphic1}>
-        </div>
-        <div className={classes.graphic1}>
-        </div>
-        <div className={classes.graphic1}>
-        </div>
-      </div> */}
-
     </div >
   )
 }

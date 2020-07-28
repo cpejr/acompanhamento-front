@@ -13,7 +13,12 @@ export default function Graphic(props) {
             data: props.data,
             backgroundColor: props.colors
           }],
-          labels: props.labels
+          labels: props.labels,
+        }}
+        options={{
+          legend: {
+            position: "bottom"
+          }
         }}
       />
     </div>

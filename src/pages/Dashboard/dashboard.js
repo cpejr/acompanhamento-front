@@ -1,12 +1,12 @@
 import React from 'react';
 import { useStyles } from './styles';
-import Menu from './menu';
+import Menu from './Menu';
 import Graphic from './chart';
 import { useEffect, useState } from 'react';
 
 import { clientTemp } from './temp';
 import DATA from './data'
-import { Grid, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 export default function Dashboard() {
 
@@ -16,15 +16,7 @@ export default function Dashboard() {
     atencao: Number
   });
 
-  const [totalEquipment, setTotalEquipment] = useState();
-
-  const [user] = useState(clientTemp.client.name);
-
-  useEffect(() => { //total de equipamentos
-    const quantidade = DATA.length;
-
-    setTotalEquipment(quantidade);
-  }, []);
+  const [user] = useState(clientTemp.client);
 
   useEffect(() => { //
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
@@ -35,42 +27,34 @@ export default function Dashboard() {
       else if (equipment.situation === "revisao") numRevisao++;
     })
 
+    const total = numOk + numAtencao + numRevisao
+
     setSitNum({
-      ok: numOk,
-      revisao: numRevisao,
-      atencao: numAtencao
+      ok: (numOk / total) * 100,
+      revisao: (numRevisao / total) * 100,
+      atencao: (numAtencao / total) * 100
     })
   }, [])
+
+  const isAdmin = user.tipo === "cliente" ? false : true
+
+  const title = isAdmin ? "Situação das Bombas" : "Minhas Bombas";
 
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Menu user={user} />
+      <Menu user={user.name} isAdmin={isAdmin} />
       <Typography variant="h3" align="center" className={classes.title}>
-        Situação das Bombas
+        {title}
       </Typography>
 
-      <Grid container className={classes.graphics}>
-        <Grid className={classes.graphic} item xs={12} sm={12} md={4} xl={4}>
-          <Graphic
-            data={[sitNum.revisao, totalEquipment - sitNum.revisao]}
-            colors={['red', "gray"]}
-            labels={["Revisão"]} />
-        </Grid>
-        <Grid className={classes.graphic} item xs={12} sm={12} md={4} xl={4}>
-          <Graphic
-            data={[sitNum.atencao, totalEquipment - sitNum.atencao]}
-            colors={['yellow', "gray"]}
-            labels={["Atenção"]} />
-        </Grid>
-        <Grid className={classes.graphic} item xs={12} sm={12} md={4} xl={4}>
-          <Graphic
-            data={[sitNum.ok, totalEquipment - sitNum.ok]}
-            colors={['green', "gray"]}
-            labels={["OK"]} />
-        </Grid>
-      </Grid>
+      <div className={classes.graphic}>
+        <Graphic
+          data={[sitNum.revisao, sitNum.atencao, sitNum.ok]}
+          colors={['red', 'blue', 'green']}
+          labels={["Revisão", "Atenção", "Ok"]} />
+      </div>
     </div >
   )
 }

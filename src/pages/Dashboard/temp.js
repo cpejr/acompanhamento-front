@@ -38,45 +38,9 @@ export const clientTemp = {
     "id": "aaec0860-b66c-11ea-8a02-3fb5d44a90c3",
     "email": "teste@teste.com",
     "phone": "31999999999",
-    "name": "anakjs"
+    "name": "Fulano",
+    "tipo": "funcionario"
   }
-}
-
-export const dataTemp = {
-  "data": [
-    {
-      "current": 5,
-      "updatedAt": "2020-06-23T21:28:27.465Z",
-      "createdAt": "2020-06-23T21:28:27.465Z",
-      "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 38,
-      "voltage": 127.8
-    },
-    {
-      "current": 4,
-      "updatedAt": "2020-06-23T21:28:27.465Z",
-      "createdAt": "2020-06-23T21:28:27.465Z",
-      "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 10,
-      "voltage": 70.8
-    },
-    {
-      "current": 3,
-      "updatedAt": "2020-06-23T21:28:27.465Z",
-      "createdAt": "2020-06-23T21:28:27.465Z",
-      "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 35,
-      "voltage": 127.8
-    },
-    {
-      "current": 8,
-      "updatedAt": "2020-06-23T21:28:27.465Z",
-      "createdAt": "2020-06-23T21:28:27.465Z",
-      "id": "79ff1c80-b598-11ea-b8ae-d72453e3e36d",
-      "temperature": 35,
-      "voltage": 127.8
-    }
-  ]
 }
 
 export const modelTemp = {

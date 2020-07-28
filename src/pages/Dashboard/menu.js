@@ -113,8 +113,8 @@ export default function MiniDrawer(props) {
             component={Link}
             to=""
           >
-            <ListItemIcon><PeopleIcon /></ListItemIcon>
-            <ListItemText>Lista de Cliente</ListItemText>
+            <ListItemIcon><AddIcon /></ListItemIcon>
+            <ListItemText>Cadastro Funcionário</ListItemText>
           </ListItem>
 
           <ListItem
@@ -122,8 +122,8 @@ export default function MiniDrawer(props) {
             component={Link}
             to=""
           >
-            <ListItemIcon><AddIcon /></ListItemIcon>
-            <ListItemText>Cadastro Funcionário</ListItemText>
+            <ListItemIcon><PeopleIcon /></ListItemIcon>
+            <ListItemText>Lista de Clientes</ListItemText>
           </ListItem>
 
           <ListItem

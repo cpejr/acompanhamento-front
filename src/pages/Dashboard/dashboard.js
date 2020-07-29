@@ -52,7 +52,7 @@ export default function Dashboard() {
       <div className={classes.graphic}>
         <Graphic
           data={[sitNum.revisao, sitNum.atencao, sitNum.ok]}
-          colors={['red', 'blue', 'green']}
+          colors={['#FE2121', '#5B59B4', '#43A047']}
           labels={["Revisão", "Atenção", "Ok"]} />
       </div>
     </div >

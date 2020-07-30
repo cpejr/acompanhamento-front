@@ -56,6 +56,7 @@ export default function MiniDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
+          
           <div className={classes.headerInfos}>
             <div className={classes.mainTitle}>
               <Typography variant="h6" className={classes.paginatitle} noWrap>

@@ -17,6 +17,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/Add';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
@@ -58,6 +59,7 @@ export default function MiniDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
+          
           <div className={classes.headerInfos}>
             <div className={classes.mainTitle}>
               <Typography variant="h6" className={classes.paginatitle} noWrap>
@@ -73,8 +75,9 @@ export default function MiniDrawer(props) {
           </div>
         </Toolbar>
       </AppBar>
+      
       <Drawer
-        variant={true ? "permanent" : "temporary"}
+        variant={"permanent"}
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
           [classes.drawerClose]: !open,
@@ -93,45 +96,20 @@ export default function MiniDrawer(props) {
         </div>
         <Divider />
         <Divider />
+        
         <List>
-          {props.isAdmin ?
+          {props.isClient ?
+            
             <React.Fragment>
               <ListItem
                 button
                 component={Link}
                 to=""
               >
-                <ListItemIcon><PersonAddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Cliente</ListItemText>
+                <ListItemIcon><PersonIcon /></ListItemIcon>
+                <ListItemText>Perfil</ListItemText>
               </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><AddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Funcionário</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><PeopleIcon /></ListItemIcon>
-                <ListItemText>Lista de Clientes</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Equipamentos</ListItemText>
-              </ListItem>
-
+              
               <ListItem
                 button
                 component={Link}
@@ -139,15 +117,6 @@ export default function MiniDrawer(props) {
               >
                 <ListItemIcon><TocIcon /></ListItemIcon>
                 <ListItemText>Lista de Equipamentos</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon></ListItemIcon>
-                <ListItemText>Cliente X Equipamento</ListItemText>
               </ListItem>
             </React.Fragment>
             :
@@ -157,8 +126,26 @@ export default function MiniDrawer(props) {
                 component={Link}
                 to=""
               >
-                <ListItemIcon><TocIcon /></ListItemIcon>
-                <ListItemText>Lista de Equipamentos</ListItemText>
+                <ListItemIcon><PersonIcon /></ListItemIcon>
+                <ListItemText>Perfil</ListItemText>
+              </ListItem>
+              
+              <ListItem
+                button
+                component={Link}
+                to=""
+              >
+                <ListItemIcon><PersonAddIcon /></ListItemIcon>
+                <ListItemText>Cadastro de cliente</ListItemText>
+              </ListItem>
+
+              <ListItem
+                button
+                component={Link}
+                to=""
+              >
+                <ListItemIcon><AddIcon /></ListItemIcon>
+                <ListItemText>Cadastro de funcionário</ListItemText>
               </ListItem>
 
               <ListItem
@@ -167,63 +154,29 @@ export default function MiniDrawer(props) {
                 to=""
               >
                 <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Equipamentos</ListItemText>
+                <ListItemText>Cadastro de equipamento</ListItemText>
               </ListItem>
+
+              <ListItem
+                button
+                component={Link}
+                to=""
+              >
+                <ListItemIcon><PeopleIcon /></ListItemIcon>
+                <ListItemText>Lista de usuários</ListItemText>
+              </ListItem>
+
+              <ListItem
+                button
+                component={Link}
+                to=""
+              >
+                <ListItemIcon><TocIcon /></ListItemIcon>
+                <ListItemText>Lista de equipamentos</ListItemText>
+              </ListItem>
+              
             </React.Fragment>
           }
-          {/* <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><PersonAddIcon /></ListItemIcon>
-                  <ListItemText>Cadastro Cliente</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><AddIcon /></ListItemIcon>
-                  <ListItemText>Cadastro Funcionário</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><PeopleIcon /></ListItemIcon>
-                  <ListItemText>Lista de Clientes</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-                  <ListItemText>Cadastro Equipamentos</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><TocIcon /></ListItemIcon>
-                  <ListItemText>Lista de Equipamentos</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon></ListItemIcon>
-                  <ListItemText>Cliente X Equipamento</ListItemText>
-                </ListItem> */}
 
         </List>
       </Drawer>

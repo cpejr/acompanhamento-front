@@ -1,7 +1,7 @@
 import React from 'react';
-import { useStyles } from './styles';
+import { useStyles } from './dashboardStyles';
 import Menu from './menu';
-import Graphic from './chart';
+import Graphic from './Chart';
 import { useEffect, useState } from 'react';
 
 import { modelTemp, dataTemp, clientTemp } from './temp';

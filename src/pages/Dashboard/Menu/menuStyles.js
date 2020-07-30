@@ -7,7 +7,14 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
+
   appBar: {
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: drawerWidth,
+    },
+  },
+  appBarLine: {
     backgroundColor: '#2D64F3',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -23,23 +30,26 @@ export const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+
   menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
+  menuButtonLine: {
     marginRight: 36,
   },
   hide: {
     display: 'none',
   },
+
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    [theme.breakpoints.down('sm')]: {
-      display: "none"
-    },
-    [theme.breakpoints.up('sm')]: {
-      display: "block"
-    },
   },
+
   drawerOpen: {
     backgroundColor: '#D7DFE6',
     width: drawerWidth,
@@ -60,7 +70,14 @@ export const useStyles = makeStyles((theme) => ({
       width: theme.spacing(8) + 1,
     },
   },
-  toolbar: {
+  drawerPaper: {
+    width: drawerWidth,
+  },
+
+
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  toolbarLine: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -68,10 +85,15 @@ export const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+
+
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(3),
+    padding: theme.spacing(3),
   },
+
+
+  //Não Alterar
   headerInfos: {
     width: "100%",
     justifyContent: "space-between",
@@ -98,4 +120,6 @@ export const useStyles = makeStyles((theme) => ({
   userName: {
     textAlign: "center",
   },
+
+
 }));

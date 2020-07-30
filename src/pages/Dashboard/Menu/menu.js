@@ -17,10 +17,12 @@ import List from "@material-ui/core/List";
 import { useStyles } from './menuStyles'
 import AdminList from './adminList';
 import ClientList from './clientList';
+import { Hidden } from '@material-ui/core';
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
+
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -31,41 +33,28 @@ export default function MiniDrawer(props) {
     setOpen(false);
   };
 
-  const DrawerContent = () => {
-    return (
-      <React.Fragment>
-        <div className={classes.toolbar} >
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </div >
-        <Divider />
-        <Divider />
-        <List>
-          {props.isAdmin ? <AdminList /> : <ClientList />}
-        </List>
-      </React.Fragment>
-    )
-  }
+  const isDesktop = window.innerWidth >= 500 ? true : false
+
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
+        className={isDesktop ? clsx(classes.appBarLine, { [classes.appBarShift]: open, }) : classes.appBar}
       >
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
+            onClick={isDesktop ? handleDrawerOpen : handleDrawerToggle}
+            className={isDesktop ? clsx(classes.menuButtonLine, { [classes.hide]: open, }) : classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
@@ -79,36 +68,64 @@ export default function MiniDrawer(props) {
               <Typography variant="subtitle1" className={classes.userName}>
                 {props.user}
               </Typography>
-              {/* <Avatar className={classes.avatar}>T</Avatar> */}
             </div>
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant={true ? "permanent" : "temporary"}
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <DrawerContent />
-      </Drawer>
+      <nav className={classes.drawer} aria-label="mailbox folders">
+        <Hidden smUp implementation="css">
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            <div className={classes.toolbar} >
+              <IconButton onClick={handleDrawerToggle}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div >
+            <Divider />
+            <List>
+              {props.isAdmin ? <AdminList /> : <ClientList />}
+            </List>
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            className={clsx(classes.drawer, {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            })}
+            classes={{
+              paper: clsx({
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
+            }}
+            variant="permanent"
+          >
+            <div className={classes.toolbarLine} >
+              <IconButton onClick={handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div >
+            <Divider />
+            <List>
+              {props.isAdmin ? <AdminList /> : <ClientList />}
+            </List>
+          </Drawer>
+        </Hidden>
+      </nav>
+
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
-        {props.children}
-        {console.log('renderizei')}
-
       </main>
     </div >
   );
 }
-
-
-

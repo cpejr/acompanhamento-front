@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom"
 
 import clsx from 'clsx';
 import { useTheme } from '@material-ui/core/styles';
@@ -14,15 +13,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import AddIcon from '@material-ui/icons/Add';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
-import TocIcon from '@material-ui/icons/Toc';
-import PeopleIcon from '@material-ui/icons/People';
+
 import { useStyles } from './menuStyles'
+import AdminList from './adminList';
+import ClientList from './clientList';
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
@@ -36,6 +30,23 @@ export default function MiniDrawer(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const DrawerContent = () => {
+    return (
+      <React.Fragment>
+        <div className={classes.toolbar} >
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div >
+        <Divider />
+        <Divider />
+        <List>
+          {props.isAdmin ? <AdminList /> : <ClientList />}
+        </List>
+      </React.Fragment>
+    )
+  }
 
   return (
     <div className={classes.root}>
@@ -86,146 +97,7 @@ export default function MiniDrawer(props) {
           }),
         }}
       >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <Divider />
-        <List>
-          {props.isAdmin ?
-            <React.Fragment>
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><PersonAddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Cliente</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><AddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Funcionário</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><PeopleIcon /></ListItemIcon>
-                <ListItemText>Lista de Clientes</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Equipamentos</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><TocIcon /></ListItemIcon>
-                <ListItemText>Lista de Equipamentos</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon></ListItemIcon>
-                <ListItemText>Cliente X Equipamento</ListItemText>
-              </ListItem>
-            </React.Fragment>
-            :
-            <React.Fragment>
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><TocIcon /></ListItemIcon>
-                <ListItemText>Lista de Equipamentos</ListItemText>
-              </ListItem>
-
-              <ListItem
-                button
-                component={Link}
-                to=""
-              >
-                <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-                <ListItemText>Cadastro Equipamentos</ListItemText>
-              </ListItem>
-            </React.Fragment>
-          }
-          {/* <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><PersonAddIcon /></ListItemIcon>
-                  <ListItemText>Cadastro Cliente</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><AddIcon /></ListItemIcon>
-                  <ListItemText>Cadastro Funcionário</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><PeopleIcon /></ListItemIcon>
-                  <ListItemText>Lista de Clientes</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-                  <ListItemText>Cadastro Equipamentos</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon><TocIcon /></ListItemIcon>
-                  <ListItemText>Lista de Equipamentos</ListItemText>
-                </ListItem>
-
-                <ListItem
-                  button
-                  component={Link}
-                  to=""
-                >
-                  <ListItemIcon></ListItemIcon>
-                  <ListItemText>Cliente X Equipamento</ListItemText>
-                </ListItem> */}
-
-        </List>
+        <DrawerContent />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />

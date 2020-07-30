@@ -34,14 +34,6 @@ export default function Dashboard() {
     })
   }, []);
 
-  //   const total = numOk + numAtencao + numRevisao;
-  //   setSitNum({
-  //     ok: (numOk / total) * 100,
-  //     revisao: (numRevisao / total) * 100,
-  //     atencao: (numAtencao / total) * 100
-  //   })
-  // }, [])
-
   const isClient = user.tipo === "cliente";
 
   const title = isClient ? "Minhas Bombas" : "Situação das Bombas";
@@ -50,7 +42,7 @@ export default function Dashboard() {
 
   return (
     <div className={classes.root}>
-      <Menu user={user.name} isClient={isClient} />
+      <Menu user={`${user.name} : ${user.tipo}`} isClient={isClient} />
       <Typography variant="h3" align="center" className={classes.title}>
         {title}
       </Typography>

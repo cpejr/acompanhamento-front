@@ -6,8 +6,8 @@ import {
   ListItemText,
   ListItemIcon,
 } from '@material-ui/core'
-import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TocIcon from '@material-ui/icons/Toc';
+import PersonIcon from '@material-ui/icons/Person';
 
 function ClientList() {
   return (
@@ -17,8 +17,8 @@ function ClientList() {
         component={Link}
         to=""
       >
-        <ListItemIcon><TocIcon /></ListItemIcon>
-        <ListItemText>Lista de Equipamentos</ListItemText>
+        <ListItemIcon><PersonIcon /></ListItemIcon>
+        <ListItemText>Perfil</ListItemText>
       </ListItem>
 
       <ListItem
@@ -26,8 +26,8 @@ function ClientList() {
         component={Link}
         to=""
       >
-        <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-        <ListItemText>Cadastro Equipamentos</ListItemText>
+        <ListItemIcon><TocIcon /></ListItemIcon>
+        <ListItemText>Lista de Equipamentos</ListItemText>
       </ListItem>
     </React.Fragment>
   );

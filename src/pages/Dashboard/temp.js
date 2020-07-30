@@ -39,7 +39,7 @@ export const clientTemp = {
     "email": "teste@teste.com",
     "phone": "31999999999",
     "name": "Fulano",
-    "tipo": "funcionario"
+    "tipo": "admin"
   }
 }
 

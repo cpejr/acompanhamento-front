@@ -11,6 +11,7 @@ import TocIcon from '@material-ui/icons/Toc';
 import AddIcon from '@material-ui/icons/Add';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PeopleIcon from '@material-ui/icons/People';
+import PersonIcon from '@material-ui/icons/Person';
 
 function AdminList() {
   return (
@@ -20,8 +21,17 @@ function AdminList() {
         component={Link}
         to=""
       >
+        <ListItemIcon><PersonIcon /></ListItemIcon>
+        <ListItemText>Perfil</ListItemText>
+      </ListItem>
+
+      <ListItem
+        button
+        component={Link}
+        to=""
+      >
         <ListItemIcon><PersonAddIcon /></ListItemIcon>
-        <ListItemText>Cadastro Cliente</ListItemText>
+        <ListItemText>Cadastro de cliente</ListItemText>
       </ListItem>
 
       <ListItem
@@ -30,16 +40,7 @@ function AdminList() {
         to=""
       >
         <ListItemIcon><AddIcon /></ListItemIcon>
-        <ListItemText>Cadastro Funcionário</ListItemText>
-      </ListItem>
-
-      <ListItem
-        button
-        component={Link}
-        to=""
-      >
-        <ListItemIcon><PeopleIcon /></ListItemIcon>
-        <ListItemText>Lista de Clientes</ListItemText>
+        <ListItemText>Cadastro de funcionário</ListItemText>
       </ListItem>
 
       <ListItem
@@ -48,7 +49,16 @@ function AdminList() {
         to=""
       >
         <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
-        <ListItemText>Cadastro Equipamentos</ListItemText>
+        <ListItemText>Cadastro de equipamento</ListItemText>
+      </ListItem>
+
+      <ListItem
+        button
+        component={Link}
+        to=""
+      >
+        <ListItemIcon><PeopleIcon /></ListItemIcon>
+        <ListItemText>Lista de usuários</ListItemText>
       </ListItem>
 
       <ListItem
@@ -57,17 +67,9 @@ function AdminList() {
         to=""
       >
         <ListItemIcon><TocIcon /></ListItemIcon>
-        <ListItemText>Lista de Equipamentos</ListItemText>
+        <ListItemText>Lista de equipamentos</ListItemText>
       </ListItem>
 
-      <ListItem
-        button
-        component={Link}
-        to=""
-      >
-        <ListItemIcon></ListItemIcon>
-        <ListItemText>Cliente X Equipamento</ListItemText>
-      </ListItem>
     </React.Fragment>
   );
 }

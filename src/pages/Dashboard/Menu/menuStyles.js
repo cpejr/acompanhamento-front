@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { ListItemIcon } from '@material-ui/core';
 
 const drawerWidth = 270;
 
@@ -9,6 +8,7 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   appBar: {
+    backgroundColor: '#2D64F3',
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
@@ -74,26 +74,20 @@ export const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
 
-
-  // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   toolbarLine: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
-
 
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
 
-
-  //Não Alterar
   headerInfos: {
     width: "100%",
     justifyContent: "space-between",
@@ -116,10 +110,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center",
   },
-
   userName: {
     textAlign: "center",
   },
-
-
 }));

@@ -1,29 +1,29 @@
 import React from 'react';
-
 import clsx from 'clsx';
-import { useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+
+import {
+  Drawer,
+  AppBar,
+  Toolbar,
+  CssBaseline,
+  Typography,
+  Divider,
+  IconButton,
+  Hidden,
+  List
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import List from "@material-ui/core/List";
 
 import { useStyles } from './menuStyles'
 import AdminList from './adminList';
 import ClientList from './clientList';
-import { Hidden } from '@material-ui/core';
 
 export default function MiniDrawer(props) {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [open, setOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -33,13 +33,11 @@ export default function MiniDrawer(props) {
     setOpen(false);
   };
 
-  const isDesktop = window.innerWidth >= 500 ? true : false
-
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const isDesktop = window.innerWidth >= 600 ? true : false
 
   return (
     <div className={classes.root}>
@@ -82,7 +80,7 @@ export default function MiniDrawer(props) {
               paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             }}
           >
             <div className={classes.toolbar} >

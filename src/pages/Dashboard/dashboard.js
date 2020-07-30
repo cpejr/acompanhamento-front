@@ -1,8 +1,8 @@
 import React from 'react';
-import { useStyles } from './dashboardStyles';
-import Menu from './Menu';
-import Graphic from './Chart';
 import { useEffect, useState } from 'react';
+
+import { useStyles } from './dashboardStyles';
+import Graphic from './Chart';
 
 import { clientTemp } from './temp';
 import DATA from './data'
@@ -42,7 +42,6 @@ export default function Dashboard() {
 
   return (
     <div className={classes.root}>
-      <Menu user={`${user.name} : ${user.tipo}`} isClient={isClient} />
       <Typography variant="h3" align="center" className={classes.title}>
         {title}
       </Typography>

@@ -1,17 +1,22 @@
 import React from 'react';
-import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import { Route, BrowserRouter, Redirect, Switch } from 'react-router-dom'
 
 import Home from './pages/Home'
-import Login from './pages/Login/login'
-import Dashboard from './pages/Dashboard'
+import Login from './pages/Login'
+import { Main } from './layout'
 
 function Routes() {
   return (
     <BrowserRouter>
       <Switch>
         <Route component={Home} exact path='/' />
-        <Route component={Login} exact path='/login' />
-        <Route component={Dashboard} exact path='/dashboard' />
+        <Route
+          exact
+          path="/app"
+          render={() => <Redirect to="/app/dashboard" />}
+        />
+        <Route path="/app" component={Main} />
+        <Route path="/login" component={Login} />
       </Switch>
     </BrowserRouter>
   )

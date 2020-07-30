@@ -5,6 +5,8 @@ const drawerWidth = 270;
 export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    maxWidth: "100vw",
+    overflowX: "hidden",
   },
 
   appBar: {
@@ -81,11 +83,6 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
-  },
-
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
   },
 
   headerInfos: {

@@ -94,11 +94,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   paginatitle: {
     [theme.breakpoints.up("xs")]: {
-      paddingTop: "0px",
       fontSize: "24px",
     },
     [theme.breakpoints.down("xs")]: {
-      paddingTop: "7px",
       fontSize: "16px",
     }
   },

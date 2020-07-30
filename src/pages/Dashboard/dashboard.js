@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useStyles } from './dashboardStyles';
 import Graphic from './Chart';
 
-import { clientTemp } from './temp';
-import DATA from './data'
+import { clientTemp } from '../../services/temp';
+import DATA from '../../services/data'
 import { Typography } from '@material-ui/core';
 
 export default function Dashboard() {

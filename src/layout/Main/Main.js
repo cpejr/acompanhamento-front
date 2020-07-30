@@ -7,7 +7,7 @@ import Testes from '../../pages/Testes';
 import Menu from './Menu'
 import { useStyles } from './mainstyles'
 
-import { clientTemp } from '../../pages/Dashboard/temp'
+import { clientTemp } from '../../services/temp'
 
 function Main() {
   const [user] = useState(clientTemp.client);

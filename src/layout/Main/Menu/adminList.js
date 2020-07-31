@@ -28,20 +28,20 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to=""
+        to="/app/cadastro-usuario"
       >
         <ListItemIcon><PersonAddIcon /></ListItemIcon>
-        <ListItemText>Cadastro de cliente</ListItemText>
+        <ListItemText>Cadastro de usuário</ListItemText>
       </ListItem>
 
-      <ListItem
+      {/* <ListItem
         button
         component={Link}
         to=""
       >
         <ListItemIcon><AddIcon /></ListItemIcon>
         <ListItemText>Cadastro de funcionário</ListItemText>
-      </ListItem>
+      </ListItem> */}
 
       <ListItem
         button

@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 
 import Dashboard from '../../pages/Dashboard/dashboard';
 import Testes from '../../pages/Testes';
+import CadastroUsuario from '../../pages/CadastroUsuario';
 
 import Menu from './Menu'
 import { useStyles } from './mainstyles'
@@ -23,6 +24,7 @@ function Main() {
         <Switch>
           <Route path="/app/dashboard" component={Dashboard} />
           <Route path="/app/testes" component={Testes} />
+          <Route path="/app/cadastro-usuario" component={CadastroUsuario} />
         </Switch>
       </div>
     </div>

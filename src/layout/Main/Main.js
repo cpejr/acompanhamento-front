@@ -22,7 +22,9 @@ function Main() {
       <Menu user={`${user.name} : ${user.tipo}`} isClient={isClient} />
       <div className={classes.spaceContent}>
         <Switch>
-          <Route path="/app/dashboard" component={Dashboard} />
+          <Route path="/app/dashboard">
+            <Dashboard isClient={isClient} user={user} />
+          </Route>
           <Route path="/app/testes" component={Testes} />
           <Route path="/app/cadastrousuario" component={CadastroUsuario} />
         </Switch>

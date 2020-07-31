@@ -24,7 +24,7 @@ function Main() {
         <Switch>
           <Route path="/app/dashboard" component={Dashboard} />
           <Route path="/app/testes" component={Testes} />
-          <Route path="/app/cadastro-usuario" component={CadastroUsuario} />
+          <Route path="/app/cadastrousuario" component={CadastroUsuario} />
         </Switch>
       </div>
     </div>

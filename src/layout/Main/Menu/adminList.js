@@ -28,7 +28,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to="/app/cadastro-usuario"
+        to="/app/cadastrousuario"
       >
         <ListItemIcon><PersonAddIcon /></ListItemIcon>
         <ListItemText>Cadastro de usuário</ListItemText>

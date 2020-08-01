@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -14,6 +15,7 @@ import {
   Typography,
   Divider,
   IconButton,
+  Button,
 } from '@material-ui/core';
 
 import { useStyles } from './menuStyles'
@@ -42,9 +44,11 @@ export default function Menu({ isClient, user }) {
     return (
       <div className={classes.headerInfos}>
         <div className={classes.mainTitle}>
-          <Typography variant="h6" className={classes.paginatitle} noWrap>
-            Paraíso das Bombas
-        </Typography>
+          <Link className={classes.buttonHome} to="/app">
+            <Typography variant="h6" className={classes.paginatitle} noWrap>
+              Paraíso das Bombas
+            </Typography>
+          </Link>
         </div>
         <div className={classes.user}>
           <Typography variant="subtitle1" className={classes.userName}>

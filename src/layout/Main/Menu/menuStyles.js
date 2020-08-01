@@ -83,6 +83,10 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center"
   },
+  buttonHome: {
+    textDecoration: "none",
+    color: "white"
+  },
   paginatitle: {
     [theme.breakpoints.up("xs")]: {
       fontSize: "24px",

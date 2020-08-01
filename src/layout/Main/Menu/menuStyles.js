@@ -6,6 +6,8 @@ export const useStyles = makeStyles((theme) => ({
   // Geral ->>
   root: {
     display: 'flex',
+    maxWidth: "100vw",
+    overflowX: "hidden",
   },
   toolbar: {
     display: 'flex',
@@ -15,6 +17,7 @@ export const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
+    backgroundColor: '#2D64F3',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -43,6 +46,7 @@ export const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
   },
   drawerOpenPerm: {
+    backgroundColor: '#D7DFE6',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -50,15 +54,13 @@ export const useStyles = makeStyles((theme) => ({
     }),
   },
   drawerClosePerm: {
+    backgroundColor: '#FE2121',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
+    width: theme.spacing(8) + 1,
   },
   contentPerm: {
     flexGrow: 1,

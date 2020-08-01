@@ -1,29 +1,34 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+
 import {
+  Hidden,
   Drawer,
   AppBar,
   Toolbar,
+  List,
   CssBaseline,
   Typography,
   Divider,
   IconButton,
-  Hidden,
-  List
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { useStyles } from './menuStyles'
 import AdminList from './adminList';
 import ClientList from './clientList';
 
-export default function MiniDrawer(props) {
+export default function Menu({ isClient, user }) {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  function handleDrawerToggle() {
+    setMobileOpen(!mobileOpen)
+  }
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -33,94 +38,115 @@ export default function MiniDrawer(props) {
     setOpen(false);
   };
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const isDesktop = window.innerWidth >= 600 ? true : false
+  const HeaderToolbar = () => {
+    return (
+      <div className={classes.headerInfos}>
+        <div className={classes.mainTitle}>
+          <Typography variant="h6" className={classes.paginatitle} noWrap>
+            Paraíso das Bombas
+        </Typography>
+        </div>
+        <div className={classes.user}>
+          <Typography variant="subtitle1" className={classes.userName}>
+            {user}
+          </Typography>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={isDesktop ? clsx(classes.appBarLine, { [classes.appBarShift]: open, }) : classes.appBar}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={isDesktop ? handleDrawerOpen : handleDrawerToggle}
-            className={isDesktop ? clsx(classes.menuButtonLine, { [classes.hide]: open, }) : classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
 
-          <div className={classes.headerInfos}>
-            <div className={classes.mainTitle}>
-              <Typography variant="h6" className={classes.paginatitle} noWrap>
-                Paraíso das Bombas
-              </Typography>
-            </div>
-            <div className={classes.user}>
-              <Typography variant="subtitle1" className={classes.userName}>
-                {props.user}
-              </Typography>
-            </div>
+      {/* Para Desktops */}
+      <Hidden only={['xs']} >
+        <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShiftPerm]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButtonPerm, {
+                [classes.hidePerm]: open,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+            <HeaderToolbar />
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawerPerm, {
+            [classes.drawerOpenPerm]: open,
+            [classes.drawerClosePerm]: !open,
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpenPerm]: open,
+              [classes.drawerClosePerm]: !open,
+            }),
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
           </div>
-        </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true,
-            }}
-          >
-            <div className={classes.toolbar} >
-              <IconButton onClick={handleDrawerToggle}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div >
-            <Divider />
-            <List>
-              {props.isClient ? <ClientList /> : <AdminList />}
-            </List>
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            className={clsx(classes.drawer, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            })}
-            classes={{
-              paper: clsx({
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-              }),
-            }}
-            variant="permanent"
-          >
-            <div className={classes.toolbarLine} >
-              <IconButton onClick={handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div >
-            <Divider />
-            <List>
-              {props.isClient ? <ClientList /> : <AdminList />}
-            </List>
-          </Drawer>
-        </Hidden>
-      </nav>
-    </div >
+          <Divider />
+          <List>
+            {isClient ? <ClientList /> : <AdminList />}
+          </List>
+        </Drawer>
+      </Hidden>
+
+      {/* Para Celulares */}
+      <Hidden smUp>
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              className={classes.menuButtonTemp}
+            >
+              <MenuIcon />
+            </IconButton>
+            <HeaderToolbar />
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerToggle}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {isClient ? <ClientList /> : <AdminList />}
+          </List>
+        </Drawer>
+      </Hidden>
+
+    </div>
   );
 }

@@ -2,21 +2,19 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 import { useStyles } from './dashboardStyles';
-import Graphic from './Chart';
 
-import { clientTemp } from '../../services/temp';
+import Graphic from './Chart';
 import DATA from '../../services/data'
+
 import { Typography } from '@material-ui/core';
 
-export default function Dashboard() {
+export default function Dashboard({ isClient, user }) {
 
   const [sitNum, setSitNum] = useState({
     ok: Number,
     revisao: Number,
     atencao: Number
   });
-
-  const [user] = useState(clientTemp.client);
 
   useEffect(() => {
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
@@ -33,8 +31,6 @@ export default function Dashboard() {
       atencao: numAtencao,
     })
   }, []);
-
-  const isClient = user.tipo === "cliente";
 
   const title = isClient ? "Minhas Bombas" : "Situação das Bombas";
 

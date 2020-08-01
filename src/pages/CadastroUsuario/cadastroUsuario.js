@@ -9,7 +9,9 @@ import {
   Box,
   Tabs,
   Tab,
-  TextField
+  TextField,
+  Checkbox,
+  FormControlLabel,
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';
@@ -55,6 +57,8 @@ export default function CadastroUsuario() {
     setValue(newValue);
   };
 
+  
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -78,7 +82,7 @@ export default function CadastroUsuario() {
                   <TextField className={classes.campodeinfo} label="CNPJ" type="text" helperText="*Obrigatório" variant="filled" />
                   <TextField className={classes.campodeinfo} label="Razão Social" type="text" helperText="*Obrigatório" variant="filled" />
                   <TextField className={classes.campodeinfo} label="Inscrição Estadual" type="text" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Número de telfone" type="number" helperText="*Obrigatório" variant="filled" />
+                  <TextField className={classes.campodeinfo} label="Número de telefone" type="number" helperText="*Obrigatório" variant="filled" />
                 </form>
                 <Grid>
                   <form className={classes.formulario}>
@@ -86,14 +90,34 @@ export default function CadastroUsuario() {
                     <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
                     <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
                     <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                    <TextField className={classes.campodeinfo} label="Número de telfone" type="number" helperText="*Obrigatório" variant="filled" />
+                    <TextField className={classes.campodeinfo} label="Número de telefone" type="number" helperText="*Obrigatório" variant="filled" />
                   </form>
                 </Grid>
               </Grid>
             </Grid>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            AQUI FICA A TABELA DO CADASTRO DA PESSOA FÍSICA
+          <Grid>
+              <Grid className={classes.allforms}>
+                <form className={classes.formulario}>
+                  <TextField className={classes.campodeinfo} label="Nome Completo" type="text" helperText="*Obrigatório" variant="filled" />
+                  <TextField className={classes.campodeinfo} label="CPF" type="text" helperText="*Obrigatório" variant="filled" />
+                  <TextField className={classes.campodeinfo} label="Data de nascimento" type="date" helperText="(Opcional)" variant="filled"/>
+                  <TextField className={classes.campodeinfo} label="Número de telefone" type="number" helperText="*Obrigatório" variant="filled" />
+                </form>
+                <Grid>
+                  <form className={classes.formulario}>
+                    <TextField className={classes.campodeinfo} label="Endereço de e-mail" type="email" helperText="*Obrigatório" variant="filled" />
+                    <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
+                    <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
+                    <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
+                    </form>
+                </Grid>
+              </Grid>
+            
+              <FormControlLabel control={ <Checkbox  name="checkedB" color="primary"/>} label="Desejo receber emails promocionais"/>
+
+          </Grid>
         </TabPanel>
           <TabPanel value={value} index={2}>
             AQUI FICA A TABELA DO CADASTRO DO FUNCIONÁRIO

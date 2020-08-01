@@ -1,5 +1,8 @@
 import React from 'react';
 import './cadastroUsuarioStyle';
+
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Grid,
@@ -137,9 +140,14 @@ export default function CadastroUsuario() {
                     </form>
                 </Grid>
               </Grid>
-              <FormControlLabel control={ <Checkbox  name="checkedB" color="primary"/>} label="Desejo receber emails promocionais"/>
-          </Grid>
+              <FormControlLabel control={ <Checkbox  name="checkedB" color="primary"/>} label="Desejo receber emails promocionais"/>       
+              </Grid>
         </TabPanel>
+ 
+        <Link to="/" className={classes.link}>
+          <Button className={classes.botaocadastrar}>Cadastrar</Button>
+        </Link>
+
         </div>
       </div>
     </React.Fragment>

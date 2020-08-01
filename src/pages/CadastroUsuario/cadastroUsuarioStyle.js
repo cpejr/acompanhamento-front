@@ -14,7 +14,7 @@ export const useStyles = makeStyles((theme) => ({
     formulariointeiro: {
         marginTop: "100px",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
 
     tittle: {
@@ -62,6 +62,29 @@ export const useStyles = makeStyles((theme) => ({
         width: "300px",
         height: "100%",
         borderRadius: "5px",
+    },
+
+    botaocadastrar: {
+
+      border: "1px solid rgba(0, 0, 0, 0.12)",
+      boxSizing: "border-box",
+      borderRadius: "2px",
+      marginTop: "10px",
+      backgroundColor: "#2196F3",
+      margin: "20px",
+      padding: "10px",
+      paddingLeft: "15px",
+      paddingRight: "20px",
+      fontFamily: "Roboto",
+      fontStyle: "normal",
+      fontWeight: "normal",
+      fontSize: "14px",
+      lineHeight: "24px",
+      letterSpacing: "0.02em",
+      color: "#FFFFFF",
+
+      cursor: "pointer",
+
     },
 
     allforms: {

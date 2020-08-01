@@ -5,8 +5,6 @@ export const useStyles = makeStyles(theme => ({
     minHeight: "100%",
     wight: "100%",
 
-    backgroundColor: "#E5E5E5",
-
     display: "flex",
     flexDirection: "column",
     alignItems: "center",

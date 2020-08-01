@@ -7,6 +7,7 @@ export const useStyles = makeStyles(theme => ({
   },
   spaceContent: {
     height: "100vh",
+    backgroundColor: "#E5E5E5",
     [theme.breakpoints.up("sm")]: {
       paddingTop: "64px",
       paddingLeft: "64px",

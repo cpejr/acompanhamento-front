@@ -7,15 +7,22 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-
-  // Drawer Permanent ->>
-  appBarPerm: {
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
+
+  // Drawer Permanent ->>
   appBarShiftPerm: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -53,20 +60,18 @@ export const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9) + 1,
     },
   },
-  toolbarPerm: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-  },
   contentPerm: {
     flexGrow: 1,
     padding: theme.spacing(3),
   },
 
   // Drawer Temporary ->>
-
+  menuButtonTemp: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
+  },
 
   // HeaderToolbar ->>
   headerInfos: {

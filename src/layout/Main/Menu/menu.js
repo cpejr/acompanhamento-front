@@ -1,35 +1,42 @@
 import React from 'react';
 import clsx from 'clsx';
-import { useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import { Hidden } from '@material-ui/core';
+
+import {
+  Hidden,
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
+  CssBaseline,
+  Typography,
+  Divider,
+  IconButton,
+} from '@material-ui/core';
 
 import { useStyles } from './menuStyles'
-
 import AdminList from './adminList';
 import ClientList from './clientList';
 
-
 export default function Menu({ isClient, user }) {
   const classes = useStyles();
-  const theme = useTheme();
 
   const [open, setOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  function handleDrawerToggle() {
+    setMobileOpen(!mobileOpen)
+  }
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const HeaderToolbar = () => {
     return (
@@ -48,23 +55,15 @@ export default function Menu({ isClient, user }) {
     );
   }
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
 
       {/* Para Desktops */}
-      <Hidden xsDown>
+      <Hidden only={['xs']} >
         <AppBar
           position="fixed"
-          className={clsx(classes.appBarPerm, {
+          className={clsx(classes.appBar, {
             [classes.appBarShiftPerm]: open,
           })}
         >
@@ -96,9 +95,9 @@ export default function Menu({ isClient, user }) {
             }),
           }}
         >
-          <div className={classes.toolbarPerm}>
+          <div className={classes.toolbar}>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              <ChevronLeftIcon />
             </IconButton>
           </div>
           <Divider />
@@ -109,9 +108,45 @@ export default function Menu({ isClient, user }) {
       </Hidden>
 
       {/* Para Celulares */}
-      <Hidden xsUp>
-
+      <Hidden smUp>
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              className={classes.menuButtonTemp}
+            >
+              <MenuIcon />
+            </IconButton>
+            <HeaderToolbar />
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="temporary"
+          anchor="left"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerToggle}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {isClient ? <ClientList /> : <AdminList />}
+          </List>
+        </Drawer>
       </Hidden>
+
     </div>
   );
 }

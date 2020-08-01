@@ -50,6 +50,11 @@ export const useStyles = makeStyles((theme) => ({
         backgroundColor: "#FFFFFF",
         width: "581px",
     },
+    campodeinfo: {
+      backgroundColor: "#FFFFFF",
+      padding: "10px",
+      
+    },
 
     formulario: {
         display: "flex",
@@ -60,7 +65,10 @@ export const useStyles = makeStyles((theme) => ({
     },
 
     allforms: {
+        width: "75%",
+        backgroundColor: "#FFFFFF",
         display: "flex",
         flexDIirection: "row",
+        padding: "10px",
     },
 }));

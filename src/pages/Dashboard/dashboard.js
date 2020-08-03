@@ -16,10 +16,10 @@ export default function Dashboard({ isClient, user }) {
     atencao: Number
   });
 
-  useEffect(() => {
+  useEffect(() => { // define o número de bombas em cada situação
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
 
-    DATA.map(equipment => {
+    DATA.forEach(equipment => {
       if (equipment.situation === "ok") numOk++;
       else if (equipment.situation === "atencao") numAtencao++;
       else if (equipment.situation === "revisao") numRevisao++;

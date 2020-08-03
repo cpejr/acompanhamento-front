@@ -41,7 +41,7 @@ export const useStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         textAlign: "center",
-        boxShadow: " 0px 0px 50px rgba(0, 0, 0, 0.25)",
+        // boxShadow: " 0px 0px 50px rgba(0, 0, 0, 0.25)",
         borderRadius: "20px 20px 0px 0px",
         backgroundColor: "#FFFFFF",
     },
@@ -51,9 +51,9 @@ export const useStyles = makeStyles((theme) => ({
         width: "581px",
     },
     campodeinfo: {
-      backgroundColor: "#FFFFFF",
-      padding: "10px",
-      
+        backgroundColor: "#FFFFFF",
+        padding: "10px",
+
     },
 
     formulario: {
@@ -64,34 +64,61 @@ export const useStyles = makeStyles((theme) => ({
         borderRadius: "5px",
     },
 
+    formulario2: {
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        width: "300px",
+        height: "100%",
+        borderRadius: "5px",
+        marginLeft: "88px",
+        [theme.breakpoints.down('xs')]: {
+            marginLeft: "0px",
+        }
+    },
+
     botaocadastrar: {
 
-      border: "1px solid rgba(0, 0, 0, 0.12)",
-      boxSizing: "border-box",
-      borderRadius: "2px",
-      marginTop: "10px",
-      backgroundColor: "#2196F3",
-      margin: "20px",
-      padding: "10px",
-      paddingLeft: "15px",
-      paddingRight: "20px",
-      fontFamily: "Roboto",
-      fontStyle: "normal",
-      fontWeight: "normal",
-      fontSize: "14px",
-      lineHeight: "24px",
-      letterSpacing: "0.02em",
-      color: "#FFFFFF",
+        border: "1px solid rgba(0, 0, 0, 0.12)",
+        boxSizing: "border-box",
+        borderRadius: "2px",
+        marginTop: "10px",
+        backgroundColor: "#2196F3",
+        margin: "20px",
+        padding: "10px",
+        paddingLeft: "15px",
+        paddingRight: "20px",
+        fontFamily: "Roboto",
+        fontStyle: "normal",
+        fontWeight: "normal",
+        fontSize: "14px",
+        lineHeight: "24px",
+        letterSpacing: "0.02em",
+        color: "#FFFFFF",
 
-      cursor: "pointer",
+        cursor: "pointer",
 
+    },
+
+    checkbox: {
+        width: "350px",
+        alignItems: "center",
+        marginTop: "17px",
+        [theme.breakpoints.down('xs')]: {
+            marginTop: "0px"
+        }
     },
 
     allforms: {
         width: "75%",
         backgroundColor: "#FFFFFF",
         display: "flex",
-        flexDIirection: "row",
+        flexDirection: "row",
         padding: "10px",
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: "column",
+            alignItems: "center",
+            width: "581px",
+        }
     },
 }));

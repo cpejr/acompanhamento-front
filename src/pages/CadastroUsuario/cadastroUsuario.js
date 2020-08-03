@@ -53,13 +53,17 @@ function a11yProps(index) {
 export default function CadastroUsuario() {
 
   const classes = useStyles();
+  const [state, setState] = React.useState({checkedA: true, checkedB: true, checkedC: true});
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+
     setValue(newValue);
   };
-
-
+  
+  const handleChangeCheck = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
 
   return (
     <React.Fragment>
@@ -93,7 +97,7 @@ export default function CadastroUsuario() {
                     <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
                     <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
                     <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                    <FormControlLabel className={classes.checkbox} control={<Checkbox name="checkedB" color="primary" size="small" />} label="Desejo receber emails promocionais" />
+                    <FormControlLabel className={classes.checkbox} control={<Checkbox checked={state.checkedA} onChange={handleChangeCheck} name="checkedA" color="primary" size="small" />} label="Desejo receber emails promocionais" />
                   </form>
               </div>
             </TabPanel>
@@ -111,7 +115,7 @@ export default function CadastroUsuario() {
                   <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
                   <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
                   <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                  <FormControlLabel className={classes.checkbox} control={<Checkbox name="checkedB" color="primary" size="small" />} label="Desejo receber emails promocionais" />
+                  <FormControlLabel className={classes.checkbox} control={<Checkbox checked={state.checkedB} onChange={handleChangeCheck} name="checkedB" color="primary" size="small" />} label="Desejo receber emails promocionais" />
                 </form>
             </div>
           </TabPanel>
@@ -130,8 +134,9 @@ export default function CadastroUsuario() {
                   <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
                   <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
                   <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                  <FormControlLabel className={classes.checkbox} control={<Checkbox name="checkedB" color="primary" size="small" />} label="Desejo receber emails promocionais" />
-                </form>
+                  <FormControlLabel className={classes.checkbox} control={<Checkbox checked={state.checkedC} onChange={handleChangeCheck} name="checkedC" color="primary" size="small" />} label="Desejo receber emails promocionais" />
+ 
+  </form>
             </div>
           </TabPanel>
 

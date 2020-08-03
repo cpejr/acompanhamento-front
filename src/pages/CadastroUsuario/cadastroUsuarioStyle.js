@@ -57,9 +57,10 @@ export const useStyles = makeStyles((theme) => ({
     },
 
     formulario: {
+        position: "relative",
         display: "flex",
         flexDirection: "column",
-        width: "300px",
+        minWidth: "350px",
         height: "100%",
         borderRadius: "5px",
     },
@@ -68,13 +69,12 @@ export const useStyles = makeStyles((theme) => ({
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        width: "300px",
         height: "100%",
         borderRadius: "5px",
+        minWidth: "350px",
         marginLeft: "88px",
         [theme.breakpoints.down('xs')]: {
-            marginLeft: "0px",
-        }
+            marginLeft: "0px",        }
     },
 
     botaocadastrar: {

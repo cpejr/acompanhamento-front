@@ -74,6 +74,13 @@ export default function CadastroUsuario() {
     setFormData({ ...formData, [name]: value })
   }
 
+  function handleSubmit(qualForm) {
+    if (qualForm === "cadastroFuncionario") alert("Você é funcionario")
+    else if (qualForm === "cadastroPF") alert("Você é Pessoa Física")
+    else if (qualForm === "cadastroPJ") alert("Você é Pessoa Jurídica")
+    else alert("Erro")
+  }
+
   useEffect(() => { console.log(formData) }, [formData])
 
   return (
@@ -96,19 +103,31 @@ export default function CadastroUsuario() {
 
           <div>
             <TabPanel value={value} index={0}>
-              <CadastroPJ handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
+              <CadastroPJ
+                handleChangeCheck={handleChangeCheck}
+                handleChangeInput={handleChangeInput}
+                formData={formData}
+                handleSubmit={handleSubmit} />
             </TabPanel>
           </div>
 
           <div>
             <TabPanel value={value} index={1}>
-              <CadastroPF handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
+              <CadastroPF
+                handleChangeCheck={handleChangeCheck}
+                handleChangeInput={handleChangeInput}
+                formData={formData}
+                handleSubmit={handleSubmit} />
             </TabPanel>
           </div>
 
           <div>
             <TabPanel value={value} index={2}>
-              <CadastroFuncionario handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
+              <CadastroFuncionario
+                handleChangeCheck={handleChangeCheck}
+                handleChangeInput={handleChangeInput}
+                formData={formData}
+                handleSubmit={handleSubmit} />
             </TabPanel>
           </div>
 

@@ -10,28 +10,28 @@ import {
 } from '@material-ui/core';
 
 function CadastroPF(props) {
+  const { formData, handleChangeCheck, handleChangeInput, handleSubmit } = props;
+
   const classes = useStyles()
 
   return (
     <div>
-      <form className={classes.allforms}>
+      <form className={classes.allforms} onSubmit={() => handleSubmit("cadastroPF")}>
         <Grid className={classes.formulario}>
-          <TextField className={classes.campodeinfo} label="Nome Completo" onChange={props.handleChangeInput} name="NomePF" type="text" helperText="*Obrigatório" variant="filled" />
-          <TextField className={classes.campodeinfo} label="CPF" type="text" helperText="*Obrigatório" variant="filled" />
-          <TextField className={classes.campodeinfo} label="Data de nascimento" type="date" helperText="(Opcional)" variant="filled" />
-          <TextField className={classes.campodeinfo} label="Número de telefone" type="number" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.nome} label="Nome Completo" name="nome" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.cpf} label="CPF" name="cpf" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.nascimento} label="Data de nascimento" name="nascimento" onChange={handleChangeInput} type="date" helperText="(Opcional)" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.telefone} label="Número de telefone" name="telefone" onChange={handleChangeInput} type="number" helperText="*Obrigatório" variant="filled" />
           <div>
-            <Link to="/" type="submit" className={classes.link}>
-              <Button className={classes.botaocadastrar}>Cadastrar</Button>
-            </Link>
+            <Button type="submit" className={classes.botaocadastrar}>Cadastrar</Button>
           </div>
         </Grid>
         <Grid className={classes.formulario2}>
-          <TextField className={classes.campodeinfo} label="Endereço de e-mail" type="email" helperText="*Obrigatório" variant="filled" />
-          <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
-          <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
-          <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-          <FormControlLabel className={classes.checkbox} control={<Checkbox checked={props.formData.emailPromocional} onChange={props.handleChangeCheck} name="emailPromocional" color="primary" size="small" />} label="Desejo receber emails promocionais" />
+          <TextField className={classes.campodeinfo} value={formData.email} label="Endereço de e-mail" name="email" onChange={handleChangeInput} type="email" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.emailConfirmar} label="Confirmar e-mail" name="emailConfirmar" onChange={handleChangeInput} type="email" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.senha} label="Criar senha" name="senha" onChange={handleChangeInput} type="password" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.senhaConfirmar} label="Confirmar senha" name="SenhaConfirmar" onChange={handleChangeInput} type="password" helperText="*Obrigatório" variant="filled" />
+          <FormControlLabel className={classes.checkbox} control={<Checkbox checked={formData.emailPromocional} onChange={handleChangeCheck} name="emailPromocional" color="primary" size="small" />} label="Desejo receber emails promocionais" />
         </Grid>
       </form>
     </div>

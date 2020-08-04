@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import './cadastroUsuarioStyle';
 
-import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
 import {
-  Grid,
   CssBaseline,
   Typography,
   AppBar,
   Box,
   Tabs,
   Tab,
-  TextField,
-  Checkbox,
-  FormControlLabel,
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';
 import CadastroPF from './cadastroPF';
+import CadastroPJ from './cadastroPJ';
+import CadastroFuncionario from './cadastroFuncionario';
 import { useEffect } from 'react';
+
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -96,54 +93,23 @@ export default function CadastroUsuario() {
               </Tabs>
             </AppBar>
           </div>
+
           <div>
             <TabPanel value={value} index={0}>
-              <div className={classes.allforms}>
-                <form className={classes.formulario}>
-                  <TextField className={classes.campodeinfo} label="Nome da empresa" onChange={handleChangeInput} name="nomeEmpresa" type="text" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="CNPJ" name="cnpj" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Razão Social" name="razaoSocial" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Inscrição Estadual" name="inscricaoEstadual" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Número de telefone" name="phone" onChange={handleChangeInput} type="number" helperText="*Obrigatório" variant="filled" />
-                </form>
-                <form className={classes.formulario2}>
-                  <TextField className={classes.campodeinfo} label="Endereço de e-mail" type="email" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                  <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                  <FormControlLabel className={classes.checkbox} control={<Checkbox checked={formData.emailPromocional} onChange={handleChangeCheck} name="emailPromocional" color="primary" size="small" />} label="Desejo receber emails promocionais" />
-                </form>
-              </div>
+              <CadastroPJ handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
             </TabPanel>
           </div>
-          <TabPanel value={value} index={1}>
-            <CadastroPF handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
-          </TabPanel>
-
-          <TabPanel value={value} index={2}>
-            <div className={classes.allforms}>
-              <form className={classes.formulario}>
-                <TextField className={classes.campodeinfo} label="Nome Completo" type="text" helperText="*Obrigatório" variant="filled" />
-                <TextField className={classes.campodeinfo} label="CPF" type="text" helperText="*Obrigatório" variant="filled" />
-                <TextField className={classes.campodeinfo} label="Data de nascimento" type="date" helperText="(Opcional)" variant="filled" />
-                <TextField className={classes.campodeinfo} label="Número de telefone" type="number" helperText="*Obrigatório" variant="filled" />
-                <TextField className={classes.campodeinfo} label="Situação" type="text" helperText="*Obrigatório" variant="filled" />
-              </form>
-              <form className={classes.formulario2}>
-                <TextField className={classes.campodeinfo} label="Endereço de e-mail" type="email" helperText="*Obrigatório" variant="filled" />
-                <TextField className={classes.campodeinfo} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
-                <TextField className={classes.campodeinfo} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                <TextField className={classes.campodeinfo} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />
-                <FormControlLabel className={classes.checkbox} control={<Checkbox checked={state.checkedC} onChange={handleChangeCheck} name="checkedC" color="primary" size="small" />} label="Desejo receber emails promocionais" />
-
-              </form>
-            </div>
-          </TabPanel>
 
           <div>
-            <Link to="/" className={classes.link}>
-              <Button className={classes.botaocadastrar}>Cadastrar</Button>
-            </Link>
+            <TabPanel value={value} index={1}>
+              <CadastroPF handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
+            </TabPanel>
+          </div>
+
+          <div>
+            <TabPanel value={value} index={2}>
+              <CadastroFuncionario handleChangeCheck={handleChangeCheck} handleChangeInput={handleChangeInput} formData={formData} />
+            </TabPanel>
           </div>
 
         </div>

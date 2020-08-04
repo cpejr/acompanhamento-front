@@ -52,25 +52,21 @@ function a11yProps(index) {
 export default function CadastroUsuario() {
 
   const classes = useStyles();
-  const [state, setState] = React.useState({ checkedA: true, checkedB: true, checkedC: true });
   const [value, setValue] = React.useState(0);
 
   const [formData, setFormData] = useState({ emailPromocional: true })
 
   const handleChange = (event, newValue) => {
-
     setValue(newValue);
   };
 
   const handleChangeCheck = (event) => {
     const { checked } = event.target;
-
     setFormData({ ...formData, emailPromocional: checked });
   };
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
-
     setFormData({ ...formData, [name]: value })
   }
 

@@ -28,7 +28,7 @@ function CadastroFuncionario(props) {
           </div>
         </Grid>
         <Grid className={classes.formulario2}>
-          <TextField className={classes.campodeinfo} value={formData.nome} name="email" onChange={handleChangeInput} label="Endereço de e-mail" type="email" helperText="*Obrigatório" variant="filled" />
+          <TextField className={classes.campodeinfo} value={formData.email} name="email" onChange={handleChangeInput} label="Endereço de e-mail" type="email" helperText="*Obrigatório" variant="filled" />
           <TextField className={classes.campodeinfo} value={formData.emailConfirmar} name="emailConfirmar" onChange={handleChangeInput} label="Confirmar e-mail" type="email" helperText="*Obrigatório" variant="filled" />
           <TextField className={classes.campodeinfo} value={formData.senha} name="senha" onChange={handleChangeInput} label="Criar senha" type="password" helperText="*Obrigatório" variant="filled" />
           <TextField className={classes.campodeinfo} value={formData.senhaConfirmar} name="senhaConfirmar" onChange={handleChangeInput} label="Confirmar senha" type="password" helperText="*Obrigatório" variant="filled" />

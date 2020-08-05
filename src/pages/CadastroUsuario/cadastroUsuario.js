@@ -54,7 +54,7 @@ export default function CadastroUsuario() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
-  const [formData, setFormData] = useState({ emailPromocional: true })
+  const [formData, setFormData] = useState({ emailPromocional: true });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,14 +71,14 @@ export default function CadastroUsuario() {
   }
 
   function handleSubmit(qualForm) {
-    if (qualForm === "cadastroFuncionario") alert("Você é funcionario")
-    else if (qualForm === "cadastroPF") alert("Você é Pessoa Física")
-    else if (qualForm === "cadastroPJ") alert("Você é Pessoa Jurídica")
-    else if (qualForm === "cadastroEquip") alert("Equipamento Cadastrado")
+    if (qualForm === "cadastroFuncionario") alert("Você é funcionario");
+    else if (qualForm === "cadastroPF") alert("Você é Pessoa Física");
+    else if (qualForm === "cadastroPJ") alert("Você é Pessoa Jurídica");
+    else if (qualForm === "cadastroEquip") alert("Equipamento Cadastrado");
     else alert("Erro")
   }
 
-  useEffect(() => { console.log(formData) }, [formData])
+  useEffect(() => { console.log(formData) }, [formData]);
 
   return (
     <React.Fragment>
@@ -87,6 +87,7 @@ export default function CadastroUsuario() {
         <Typography variant="h3" className={classes.tittle}>
           Cadastro de um novo usuário
         </Typography>
+        
         <div className={classes.formulariointeiro}>
           <div>
             <AppBar position="" className={classes.appbar}>

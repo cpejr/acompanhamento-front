@@ -46,7 +46,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to=""
+        to="/app/cadastroequipamento"
       >
         <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
         <ListItemText>Cadastro de equipamento</ListItemText>

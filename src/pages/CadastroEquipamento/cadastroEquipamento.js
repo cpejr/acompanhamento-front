@@ -1,79 +1,115 @@
-import React from 'react';
-import { useStyles } from './cadastroEquipamentoStyle';
-import './cadastroEquipamentoStyle'
-import { Button } from 'react-bootstrap';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
-    CssBaseline,
-    Tab,
-    Typography,
-    Tabs,
-    AppBar,
-    TextField,
-    Grid
+  CssBaseline,
+  Tab,
+  Typography,
+  Tabs,
+  AppBar,
+  TextField,
+  Grid,
+  Button
 } from "@material-ui/core"
 
+import { useStyles } from './cadastroEquipamentoStyle';
+
 export default function CadastroEquipamento(props) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const [value, setValue] = React.useState(0);
-    const [formData, setFormData] = useState({ emailPromocional: true });
-  
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-  
-    function handleChangeInput(event) {
-      const { name, value } = event.target;
-      setFormData({ ...formData, [name]: value })
-    }
-  
-    function handleSubmit(qualForm) {
-    if (qualForm === "cadastroEquip") alert("Equipamento Cadastrado")
-    else alert("Erro")
-    }
-  
-    useEffect(() => { console.log(formData) }, [formData])
+  const [formData, setFormData] = useState({
+    numeroSerie: String,
+    limiteTemperatura: String,
+    limiteCorrente: String,
+    limiteTensao: String,
+    cpf: String
+  });
 
+  function handleChangeInput(event) {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value })
+  }
 
+  function handleSubmit(qualForm) {
+    alert("Submit")
+  }
 
-    return (
-        <React.Fragment>
-            <CssBaseline />
-            <div className={classes.root}>
-                <Typography variant="h3" className={classes.tittle}>
-                    Cadastro de um novo equipamento
+  useEffect(() => { console.log(formData) }, [formData])
+
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <div className={classes.root}>
+        <Typography variant="h3" className={classes.tittle}>
+          Cadastro de um novo equipamento
         </Typography>
-                <div className={classes.formulariointeiro}>
-                    <div>
-                        <AppBar position="" className={classes.appbar}>
-                            <Tabs aria-label="simple tabs example">
-                                <Tab className={classes.novoequipamento} label="Novo Equipamento" />
-                            </Tabs>
-                        </AppBar>
-                    </div>
-                </div>
+        <div className={classes.formulariointeiro}>
+          <div>
+            <AppBar position="" className={classes.appbar}>
+              <Tabs aria-label="simple tabs example">
+                <Tab className={classes.novoequipamento} label="Novo Equipamento" />
+              </Tabs>
+            </AppBar>
+          </div>
+        </div>
 
+        <div>
+          <div>
+            <form className={classes.allforms} onSubmit={() => handleSubmit("cadastroEquip")}>
+              <Grid className={classes.formulario}>
+                <TextField
+                  className={classes.campodeinfo}
+                  name="numeroSerie"
+                  value={formData.numeroSerie}
+                  onChange={handleChangeInput}
+                  label="Número da série"
+                  type="text"
+                  helperText="*Obrigatório"
+                  variant="filled" />
+                <TextField
+                  className={classes.campodeinfo}
+                  name="limiteTemperatura"
+                  value={formData.limiteTemperatura}
+                  onChange={handleChangeInput}
+                  label="Limite TEMPERATURA"
+                  type="text"
+                  helperText="*Obrigatório"
+                  variant="filled" />
+                <TextField
+                  className={classes.campodeinfo}
+                  name="limiteCorrente"
+                  value={formData.limiteCorrente}
+                  onChange={handleChangeInput}
+                  label="Limite CORRENTE"
+                  type="text"
+                  helperText="*Obrigatório"
+                  variant="filled" />
+                <TextField
+                  className={classes.campodeinfo}
+                  name="limiteTensao"
+                  value={formData.limiteTensao}
+                  onChange={handleChangeInput}
+                  label="Limite TENSÃO"
+                  type="text"
+                  helperText="*Obrigatório"
+                  variant="filled" />
+                <TextField
+                  className={classes.campodeinfo}
+                  name="cpf"
+                  value={formData.cpf}
+                  onChange={handleChangeInput}
+                  label="CPF"
+                  type="text"
+                  helperText="*Obrigatório"
+                  variant="filled" />
                 <div>
-                    <div>
-                        <form className={classes.allforms} onSubmit={() => handleSubmit("cadastroEquip")}>
-                            <Grid className={classes.formulario}>
-                                <TextField className={classes.campodeinfo} value={formData.id_equipment} label="Número da série" name="numeroSerie" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                                <TextField className={classes.campodeinfo} value={formData.temperature} label="Limite TEMPERATURA" name="limiteTemperatura" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                                <TextField className={classes.campodeinfo} value={formData.current} label="Limite CORRENTE" name="limiteCorrente" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                                <TextField className={classes.campodeinfo} value={formData.voltage} label="Limite TENSÃO" name="limiteTensao" onChange={handleChangeInput} type="text" helperText="*Obrigatório" variant="filled" />
-                                <TextField className={classes.campodeinfo} value={formData.cpf} label="CPF" name="cpf" onChange={handleChangeInput} type="number" helperText="*Obrigatório" variant="filled" />
-                                <div>
-                                    <Button type="submit" className={classes.botaocadastrar}>Cadastrar</Button>
-                                </div>
-                            </Grid>
-                        </form>
-                    </div>
+                  <Button type="submit" className={classes.botaocadastrar}>Cadastrar</Button>
                 </div>
-            </div>
+              </Grid>
+            </form>
+          </div>
+        </div>
+      </div>
 
-        </React.Fragment>
-    )
+    </React.Fragment>
+  )
 }

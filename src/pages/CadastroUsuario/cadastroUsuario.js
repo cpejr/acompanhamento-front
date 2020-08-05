@@ -74,6 +74,7 @@ export default function CadastroUsuario() {
     if (qualForm === "cadastroFuncionario") alert("Você é funcionario")
     else if (qualForm === "cadastroPF") alert("Você é Pessoa Física")
     else if (qualForm === "cadastroPJ") alert("Você é Pessoa Jurídica")
+    else if (qualForm === "cadastroEquip") alert("Equipamento Cadastrado")
     else alert("Erro")
   }
 

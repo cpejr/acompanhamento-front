@@ -1,18 +1,17 @@
 import { makeStyles } from '@material-ui/core'
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
+
 export const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         position: "absolute",
         height: "85%",
-        left: "10%",
+        left: isMobile ? "0%" : "10%",
         top: "63px",
         display: "flex",
+        alignItems: isMobile ? "center" : "",
         flexDirection: "column",
-        [theme.breakpoints.down('xs')]: {
-            alignItems: "center",
-            left: "0%"
-        }
     },
 
     formulariointeiro: {
@@ -23,21 +22,18 @@ export const useStyles = makeStyles((theme) => ({
 
     tittle: {
         position: "absolute",
-        width: "956px",
+        width: isMobile ? "100%" : "956px",
         height: "63px",
         marginTop: "20px",
         fontFamily: "DM Sans",
         fontWeight: "500",
         fontSize: "30px",
-        lineHeight: "56px",
+        justifyContent: isMobile ? "center" : "",
+        lineHeight: "40px",
         display: "flex",
         alignItems: "center",
+        textAlign: isMobile ? "center" : "",
         color: "#000000",
-        [theme.breakpoints.down('xs')]: {
-            textAlign: "center",
-            justifyContent: "center",
-            width: "100%",
-        }
     },
 
     novoequipamento: {
@@ -56,42 +52,34 @@ export const useStyles = makeStyles((theme) => ({
 
     appbar: {
         backgroundColor: "#FFFFFF",
-        width: "180px",
-        [theme.breakpoints.down('xs')]: {
-            width: "330px"
-        }
+        width: isMobile ? "330px" : "180px",
+        marginTop: isMobile ? "20px" : "",
     },
     campodeinfo: {
         backgroundColor: "#FFFFFF",
         padding: "10px",
-
+        width: isMobile ?  "70%" :"100%",
     },
 
     formulario: {
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        width: "40%",
-        minWidth: "350px",
+        width: isMobile ? "100%" : "40%",
+        alignItems: isMobile ? "center" : "",
+        // minWidth: "350px",
         height: "100%",
         borderRadius: "5px",
-        [theme.breakpoints.down('xs')]: {
-            width: "100%",
-        }
     },
  
     allforms: {
-      width: "75%",
+      width: isMobile ? "400px" : "75%",
       backgroundColor: "#FFFFFF",
       marginBottom: "40px",
       display: "flex",
-      flexDirection: "row",
+      flexDirection: isMobile ? "column" : "row",
+      alignItems: isMobile ? "center" : "",
       padding: "10px",
-      [theme.breakpoints.down('xs')]: {
-          flexDirection: "column",
-          alignItems: "center",
-          width: "581px",
-      }
      },
 
     botaocadastrar: {

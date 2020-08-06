@@ -72,13 +72,27 @@ export const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "column",
         width: "40%",
-        minWidth: "330px",
+        minWidth: "350px",
         height: "100%",
         borderRadius: "5px",
         [theme.breakpoints.down('xs')]: {
             width: "100%",
         }
     },
+ 
+    allforms: {
+      width: "75%",
+      backgroundColor: "#FFFFFF",
+      marginBottom: "40px",
+      display: "flex",
+      flexDirection: "row",
+      padding: "10px",
+      [theme.breakpoints.down('xs')]: {
+          flexDirection: "column",
+          alignItems: "center",
+          width: "581px",
+      }
+     },
 
     botaocadastrar: {
 

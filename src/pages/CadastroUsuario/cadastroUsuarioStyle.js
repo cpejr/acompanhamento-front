@@ -112,6 +112,7 @@ export const useStyles = makeStyles((theme) => ({
     allforms: {
         width: "75%",
         backgroundColor: "#FFFFFF",
+        marginBottom: "40px",
         display: "flex",
         flexDirection: "row",
         padding: "10px",

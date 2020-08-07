@@ -23,7 +23,7 @@ function Main() {
 
   return (
     <div className={classes.root}>
-      <Menu user={`${user.name} : ${user.tipo}`} isClient={isClient} />
+      <Menu user={user.name} isClient={isClient} />
       <div className={classes.spaceContent}>
         <Switch>
           <Route path="/app/dashboard">

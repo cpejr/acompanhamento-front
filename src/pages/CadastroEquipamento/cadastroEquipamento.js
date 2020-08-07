@@ -4,12 +4,9 @@ import {
   CssBaseline,
   Tab,
   Typography,
-  Tabs,
   AppBar,
   TextField,
-  Grid,
   Button,
-  Container
 } from "@material-ui/core"
 
 import { useStyles } from './cadastroEquipamentoStyle';
@@ -18,11 +15,11 @@ export default function CadastroEquipamento(props) {
   const classes = useStyles();
 
   const [formData, setFormData] = useState({
-    numeroSerie: String,
-    limiteTemperatura: String,
-    limiteCorrente: String,
-    limiteTensao: String,
-    cpf: String
+    numeroSerie: "",
+    limiteTemperatura: "",
+    limiteCorrente: "",
+    limiteTensao: "",
+    cpf: ""
   });
 
   function handleChangeInput(event) {
@@ -43,13 +40,12 @@ export default function CadastroEquipamento(props) {
         <Typography variant="h3" className={classes.title}>
           Cadastro de um novo equipamento
         </Typography>
-        <div className={classes.tabDiv}>
-          <AppBar position="sticky" className={classes.appbar}>
-            <Tabs aria-label="simple tabs example"  >
-              <Tab className={classes.titleTab} label="Novo Equipamento" />
-            </Tabs>
-          </AppBar>
-        </div>
+
+        <AppBar position="sticky" className={classes.appbar}>
+          {/* <Tabs aria-label="simple tabs example"  > */}
+          <Tab className={classes.titleTab} label="Novo Equipamento" />
+          {/* </Tabs> */}
+        </AppBar>
 
         <form className={classes.form} onSubmit={() => handleSubmit("cadastroEquip")}>
           <div className={classes.containerForm}>

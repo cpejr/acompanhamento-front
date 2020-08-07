@@ -23,9 +23,9 @@ export const useStyles = makeStyles(theme => ({
   },
 
   graphic: {
-    width: "800px",
+    width: "70%",
     [theme.breakpoints.only("xs")]: {
-      width: "80%",
+      width: "100%",
     },
   },
 }));

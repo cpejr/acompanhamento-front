@@ -7,14 +7,16 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
 
-    width: "100%",
-    boxSizing: "border-box",
+    width: "90%",
+    padding: "50px 0 66px 50px",
     paddingTop: "50px",
+    paddingRight: "0px",
+    paddingBottom: "66px",
     paddingLeft: "50px",
 
     [theme.breakpoints.only("xs")]: {
-      paddingLeft: "5%",
-      paddingRight: "5%",
+      padding: "30px 5% 30px",
+      width: "100%",
     },
   },
 
@@ -31,11 +33,6 @@ export const useStyles = makeStyles(theme => ({
     alignItems: "center",
     textAlign: isMobile ? "center" : "",
     color: "#000000",
-  },
-
-  tabDiv: {
-    display: "flex",
-    flexDirection: "column",
   },
 
   titleTab: {
@@ -59,40 +56,30 @@ export const useStyles = makeStyles(theme => ({
     width: "180px",
     boxShadow: "unset",
     borderRadius: "13px 13px 0px 0px",
-    // [theme.breakpoints.only("xs")]: {
-    //   width: "90%"
-    // },
   },
 
   form: {
     backgroundColor: "#FFFFFF",
     borderRadius: "0px 13px 13px 13px",
-
-    width: "80%",
-    marginBottom: "40px",
-
-    // display: "flex",
-    paddingTop: "30px",
-
-    [theme.breakpoints.only("xs")]: {
-      width: "100%"
-    },
   },
 
   containerForm: {
-    margin: "0",
-    width: "100%",
+    padding: "40px 60px",
 
     display: "flex",
     flexDirection: "column",
+
+    width: "500px",
+    [theme.breakpoints.only("xs")]: {
+      padding: "0 5% 10%",
+      width: "100%",
+      alignItems: "center"
+    },
   },
 
   inputs: {
     width: "100%",
     marginTop: "20px",
-    // backgroundColor: "#FFFFFF",
-    // padding: "10px",
-    // width: isMobile ? "70%" : "100%",
   },
 
 
@@ -102,8 +89,8 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: "2px",
     backgroundColor: "#2196F3",
 
-    marginTop: "10px",
-    // margin: "20px",
+    marginTop: "20px",
+
     padding: "10px",
     paddingLeft: "15px",
     paddingRight: "20px",

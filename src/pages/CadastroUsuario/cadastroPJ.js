@@ -1,6 +1,5 @@
 import React from 'react';
 import { useStyles } from './cadastroUsuarioStyle';
-import { Link } from 'react-router-dom';
 import {
   TextField,
   FormControlLabel,
@@ -28,7 +27,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.cnpj}
@@ -39,7 +38,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.razaoSocial}
@@ -50,7 +49,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.inscricaoEstadual}
@@ -61,7 +60,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.telefone}
@@ -72,14 +71,14 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <div>
             <Button type="submit" className={classes.botaocadastrar} >Cadastrar</Button>
           </div>
-          
+
         </Grid>
         <Grid className={classes.formulario2}>
-          <TextField 
+          <TextField
             className={classes.campodeinfo}
             value={formData.email}
             name="email"
@@ -88,7 +87,7 @@ function CadastroPJ(props) {
             type="email"
             helperText="*Obrigatório" variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.emailConfirmar}
@@ -99,7 +98,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.senha}
@@ -110,7 +109,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <TextField
             className={classes.campodeinfo}
             value={formData.senhaConfirmar}
@@ -121,7 +120,7 @@ function CadastroPJ(props) {
             helperText="*Obrigatório"
             variant="filled"
           />
-          
+
           <FormControlLabel
             className={classes.checkbox}
             control={

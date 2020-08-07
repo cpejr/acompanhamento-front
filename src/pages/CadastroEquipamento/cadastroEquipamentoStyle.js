@@ -64,7 +64,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   containerForm: {
-    padding: "40px 60px",
+    padding: "20px 60px 40px",
 
     display: "flex",
     flexDirection: "column",

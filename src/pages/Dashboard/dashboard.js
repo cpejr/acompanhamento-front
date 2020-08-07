@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useStyles } from './dashboardStyles';
 
 import Graphic from './Chart';
-import DATA from '../../services/data'
 
 import { Typography } from '@material-ui/core';
 

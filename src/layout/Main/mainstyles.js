@@ -6,13 +6,11 @@ export const useStyles = makeStyles(theme => ({
     minHeight: "100vh"
   },
   spaceContent: {
-    height: "100%",
+    minHeight: "100vh",
     backgroundColor: "#E5E5E5",
-    [theme.breakpoints.up("sm")]: {
-      paddingTop: "64px",
-      paddingLeft: "64px",
-    },
-    [theme.breakpoints.down("sm")]: {
+    paddingTop: "64px",
+    paddingLeft: "80px",
+    [theme.breakpoints.only("xs")]: {
       paddingLeft: "0",
       paddingTop: "56px"
     },

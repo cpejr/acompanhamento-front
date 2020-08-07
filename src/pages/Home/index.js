@@ -6,7 +6,6 @@ import {
   makeStyles,
   Typography
 } from '@material-ui/core'
-import ButtonPadrao from '../../components/ButtonPadrao';
 
 const useStyles = makeStyles({
   root: {

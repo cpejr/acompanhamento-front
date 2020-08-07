@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { useStyles } from './dashboardStyles';
 
 import Graphic from './Chart';
-import DATA from '../../services/data'
 
 import { Typography } from '@material-ui/core';
 
-export default function Dashboard({ isClient, user }) {
+export default function Dashboard(props) {
+  const { isClient, data } = props
 
   const [sitNum, setSitNum] = useState({
     ok: Number,
@@ -19,7 +19,7 @@ export default function Dashboard({ isClient, user }) {
   useEffect(() => { // define o número de bombas em cada situação
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
 
-    DATA.forEach(equipment => {
+    data.forEach(equipment => {
       if (equipment.situation === "ok") numOk++;
       else if (equipment.situation === "atencao") numAtencao++;
       else if (equipment.situation === "revisao") numRevisao++;
@@ -30,7 +30,7 @@ export default function Dashboard({ isClient, user }) {
       revisao: numRevisao,
       atencao: numAtencao,
     })
-  }, []);
+  }, [data]);
 
   const title = isClient ? "Minhas Bombas" : "Situação das Bombas";
 

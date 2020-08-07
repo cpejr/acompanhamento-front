@@ -7,6 +7,9 @@ import CadastroUsuario from '../../pages/CadastroUsuario';
 import CadastroEquipamento from '../../pages/CadastroEquipamento';
 
 import Menu from './Menu'
+
+import DATA from '../../services/data'
+
 import { useStyles } from './mainstyles'
 
 import { clientTemp } from '../../services/temp'
@@ -20,11 +23,11 @@ function Main() {
 
   return (
     <div className={classes.root}>
-      <Menu user={`${user.name} : ${user.tipo}`} isClient={isClient} />
+      <Menu user={user.name} isClient={isClient} />
       <div className={classes.spaceContent}>
         <Switch>
           <Route path="/app/dashboard">
-            <Dashboard isClient={isClient} user={user} />
+            <Dashboard isClient={isClient} data={DATA} />
           </Route>
           <Route path="/app/testes" component={Testes} />
           <Route path="/app/cadastrousuario" component={CadastroUsuario} />

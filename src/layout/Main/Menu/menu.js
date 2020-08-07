@@ -15,7 +15,6 @@ import {
   Typography,
   Divider,
   IconButton,
-  Button,
 } from '@material-ui/core';
 
 import { useStyles } from './menuStyles'

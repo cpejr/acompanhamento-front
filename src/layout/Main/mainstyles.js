@@ -3,18 +3,23 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles(theme => ({
   root: {
     width: "100vw",
-    minHeight: "100vh"
+    minHeight: "100vh",
+    boxSizing: "border-box",
   },
   spaceContent: {
-    height: "100%",
+    minHeight: "100vh",
     backgroundColor: "#E5E5E5",
-    [theme.breakpoints.up("sm")]: {
-      paddingTop: "64px",
-      paddingLeft: "64px",
-    },
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: "0",
-      paddingTop: "56px"
+
+    overflowX: "hidden",
+
+    marginLeft: "64px",
+    paddingTop: "64px",
+    width: "calc(100% - 64px)",
+
+    [theme.breakpoints.only("xs")]: {
+      marginLeft: "0",
+      paddingTop: "56px",
+      width: "100%",
     },
   },
 }));

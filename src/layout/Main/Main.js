@@ -5,6 +5,7 @@ import Dashboard from '../../pages/Dashboard/dashboard';
 import Testes from '../../pages/Testes';
 import CadastroUsuario from '../../pages/CadastroUsuario';
 import CadastroEquipamento from '../../pages/CadastroEquipamento';
+import ListagemUsuario from '../../pages/ListagemUsuario';
 
 import Menu from './Menu'
 
@@ -32,6 +33,7 @@ function Main() {
           <Route path="/app/testes" component={Testes} />
           <Route path="/app/cadastrousuario" component={CadastroUsuario} />
           <Route path="/app/cadastroequipamento" component={CadastroEquipamento} />
+          <Route path="/app/listagemusuario" component={ListagemUsuario} />
         </Switch>
       </div>
     </div>

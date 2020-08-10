@@ -19,7 +19,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to="/app/dashboard"
+        to="/dashboard"
       >
         <ListItemIcon><DonutLargeIcon /></ListItemIcon>
         <ListItemText>Início</ListItemText>
@@ -37,7 +37,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to="/app/cadastrousuario"
+        to="/cadastrousuario"
       >
         <ListItemIcon><PersonAddIcon /></ListItemIcon>
         <ListItemText>Cadastro de usuário</ListItemText>
@@ -55,7 +55,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to="/app/cadastroequipamento"
+        to="/cadastroequipamento"
       >
         <ListItemIcon><PlaylistAddIcon /></ListItemIcon>
         <ListItemText>Cadastro de equipamento</ListItemText>
@@ -64,7 +64,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to="/app/listagemusuario"
+        to="/listagemusuario"
       >
         <ListItemIcon><PeopleIcon /></ListItemIcon>
         <ListItemText>Lista de usuários</ListItemText>

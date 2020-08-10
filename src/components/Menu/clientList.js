@@ -24,7 +24,7 @@ function ClientList() {
       <ListItem
         button
         component={Link}
-        to=""
+        to="/listagemusuario"
       >
         <ListItemIcon><TocIcon /></ListItemIcon>
         <ListItemText>Lista de Equipamentos</ListItemText>

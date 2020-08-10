@@ -47,7 +47,7 @@ export default function Home() {
           </Button>
         </Link>
 
-        <Link to="/app/dashboard" className={classes.link}>
+        <Link to="/dashboard" className={classes.link}>
           <Button variant="contained" className={classes.button}>
             Ir para Dashboard
           </Button>

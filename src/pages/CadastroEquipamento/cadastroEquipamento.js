@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
   CssBaseline,
@@ -31,8 +31,6 @@ export default function CadastroEquipamento(props) {
     alert("Submit")
   }
 
-  // useEffect(() => { console.log(formData) }, [formData])
-
   const numeroSerieRef = useRef(null);
   const limitTempRef = useRef(null);
   const limitCorrRef = useRef(null);
@@ -62,8 +60,7 @@ export default function CadastroEquipamento(props) {
       }
 
       relacionamentosRef.find(referencia =>
-        (referencia.name === event.target.name)
-      ).ref.current.focus();
+        (referencia.name === event.target.name)).ref.current.focus();
     }
   }
 
@@ -76,9 +73,7 @@ export default function CadastroEquipamento(props) {
         </Typography>
 
         <AppBar position="sticky" className={classes.appbar}>
-          {/* <Tabs aria-label="simple tabs example"  > */}
           <Tab className={classes.titleTab} label="Novo Equipamento" />
-          {/* </Tabs> */}
         </AppBar>
 
         <form className={classes.form} onSubmit={() => handleSubmit("cadastroEquip")}>

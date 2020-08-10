@@ -1,12 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(theme => ({
-  root: {
-    width: "100vw",
-    minHeight: "100vh",
-    boxSizing: "border-box",
-  },
   spaceContent: {
+    boxSizing: "border-box",
     minHeight: "100vh",
     backgroundColor: "#E5E5E5",
 

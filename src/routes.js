@@ -1,22 +1,51 @@
-import React from 'react';
-import { Route, BrowserRouter, Redirect, Switch } from 'react-router-dom'
+import React, { Fragment } from 'react';
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
 
 import Home from './pages/Home'
 import Login from './pages/Login'
-import { Main } from './layout'
+import Menu from './components/Menu';
+// import Dashboard from 'pages/Dashboard/dashboard';
+import Testes from './pages/Testes';
+import CadastroUsuario from './pages/CadastroUsuario';
+import CadastroEquipamento from './pages/CadastroEquipamento';
+import ListagemUsuario from './pages/ListagemUsuario';
 
-function Routes() {
+import { useStyles } from './routesStyles';
+import Dashboard from './pages/Dashboard/dashboard';
+
+function Routes(props) {
+  const { isClient, user, data, nextInput } = props;
+
+  const classes = useStyles();
+
   return (
     <BrowserRouter>
       <Switch>
         <Route component={Home} exact path='/' />
-        <Route
-          exact
-          path="/app"
-          render={() => <Redirect to="/app/dashboard" />}
-        />
-        <Route path="/app" component={Main} />
         <Route path="/login" component={Login} />
+        <Fragment>
+          <Menu user={user.name} isClient={isClient} />
+          <div className={classes.spaceContent}>
+            {/* DashBoard */}
+            <Route path="/dashboard">
+              <Dashboard isClient={isClient} data={data} />
+            </Route>
+
+            {/* Cadastro de Equipamentos */}
+            <Route path="/cadastroequipamento">
+              <CadastroEquipamento nextInput={nextInput} />
+            </Route>
+
+            {/* Cadastro de Usuários */}
+            <Route path="/cadastrousuario" component={CadastroUsuario} />
+
+            {/* Listagem de Usuários */}
+            <Route path="/listagemusuario" component={ListagemUsuario} />
+
+            {/* Páginas para Testes */}
+            <Route path="/testes" component={Testes} />
+          </div>
+        </Fragment>
       </Switch>
     </BrowserRouter>
   )

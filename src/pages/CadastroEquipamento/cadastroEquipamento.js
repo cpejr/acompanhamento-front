@@ -34,7 +34,7 @@ export default function CadastroEquipamento(props) {
     alert("Submit")
   }
 
-  // Referencias
+  // Referencias (próximo a declaração de um ponteiro nulo)
   const numeroSerieRef = useRef(null);
   const limitTempRef = useRef(null);
   const limitCorrRef = useRef(null);
@@ -42,7 +42,7 @@ export default function CadastroEquipamento(props) {
   const cpfRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
-  const relacionamentosRef = [
+  const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
     { name: "numeroSerie", ref: limitTempRef },
     { name: "limiteTemperatura", ref: limitCorrRef },
     { name: "limiteCorrente", ref: limitTensRef },
@@ -76,8 +76,9 @@ export default function CadastroEquipamento(props) {
               variant="filled"
               autoComplete="off"
               autoFocus
-              inputRef={numeroSerieRef}
-              onKeyPress={e => nextInput(e, relacionamentosRef)} />
+              inputRef={numeroSerieRef} // atribui um elemento a ref criada
+              onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
+            />
             <TextField
               name="limiteTemperatura"
               className={classes.inputs}
@@ -89,6 +90,9 @@ export default function CadastroEquipamento(props) {
               variant="filled"
               autoComplete="off"
               inputRef={limitTempRef}
+              // normalmente se usa ref, mas como o TextField não é um input 
+              // o Material-UI disponibiliza o inputRef para acessarmos o input 
+              // dentro de TextField
               onKeyPress={e => nextInput(e, relacionamentosRef)} />
             <TextField
               name="limiteCorrente"
@@ -126,7 +130,9 @@ export default function CadastroEquipamento(props) {
               inputRef={cpfRef}
               onKeyPress={e => nextInput(e, relacionamentosRef)} />
             <div>
-              <Button type="submit" ref={buttonSubmitRef}
+              <Button type="submit"
+                ref={buttonSubmitRef} // neste caso o button pode ser acessado 
+                // diretamente por isso usamos ref={}
                 className={classes.botaocadastrar}>Cadastrar</Button>
             </div>
           </div>

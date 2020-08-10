@@ -14,7 +14,7 @@ import { useStyles } from './routesStyles';
 import Dashboard from './pages/Dashboard/dashboard';
 
 function Routes(props) {
-  const { isClient, user, data, nextInput } = props;
+  const { isClient, user, data, nextInput } = props; //Props vindas do App.js
 
   const classes = useStyles();
 

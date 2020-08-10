@@ -11,10 +11,20 @@ import TocIcon from '@material-ui/icons/Toc';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
+import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 
 function AdminList() {
   return (
     <React.Fragment>
+      <ListItem
+        button
+        component={Link}
+        to="/app/dashboard"
+      >
+        <ListItemIcon><DonutLargeIcon /></ListItemIcon>
+        <ListItemText>Início</ListItemText>
+      </ListItem>
+
       <ListItem
         button
         component={Link}
@@ -54,7 +64,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to=""
+        to="/app/listagemusuario"
       >
         <ListItemIcon><PeopleIcon /></ListItemIcon>
         <ListItemText>Lista de usuários</ListItemText>

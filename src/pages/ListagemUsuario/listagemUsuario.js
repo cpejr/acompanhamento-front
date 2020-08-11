@@ -2,6 +2,7 @@ import React from 'react';
 import './listagemusUsuarioStyle';
 
 import { Link } from "react-router-dom"
+import StickyHeadTable from './tabela';
 
 import { Button } from 'react-bootstrap';
 import {
@@ -12,9 +13,6 @@ import {
 import { useStyles } from './listagemusUsuarioStyle';
 
 import SearchIcon from '@material-ui/icons/Search';
-
-
-import People from '../../services/people';
 
 export default function ListagemUsuario(props) {
   const classes = useStyles();
@@ -27,7 +25,7 @@ export default function ListagemUsuario(props) {
           <Typography variant="h3" className={classes.tittle}>
             Usuários
         </Typography>
-          <Link to="/app/cadastrousuario">
+          <Link to="/cadastrousuario">
             <Button className={classes.botaoadd}
             >Adicionar Novo</Button>
           </Link>
@@ -44,6 +42,10 @@ export default function ListagemUsuario(props) {
               input: classes.inputInput,
             }}
           />
+        </div>
+
+        <div className={classes.tabela}>
+          <StickyHeadTable></StickyHeadTable>
         </div>
 
       </div>

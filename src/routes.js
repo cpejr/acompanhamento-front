@@ -14,7 +14,7 @@ import { useStyles } from './routesStyles';
 import Dashboard from './pages/Dashboard/dashboard';
 
 function Routes(props) {
-  const { isClient, user, data, nextInput } = props; //Props vindas do App.js
+  const { isClient, user, data } = props; //Props vindas do App.js
 
   const classes = useStyles();
 
@@ -32,9 +32,7 @@ function Routes(props) {
             </Route>
 
             {/* Cadastro de Equipamentos */}
-            <Route path="/cadastroequipamento">
-              <CadastroEquipamento nextInput={nextInput} />
-            </Route>
+            <Route path="/cadastroequipamento" component={CadastroEquipamento} />
 
             {/* Cadastro de Usuários */}
             <Route path="/cadastrousuario" component={CadastroUsuario} />

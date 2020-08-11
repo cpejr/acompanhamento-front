@@ -17,6 +17,21 @@ import SearchIcon from '@material-ui/icons/Search';
 export default function ListagemUsuario(props) {
   const classes = useStyles();
 
+  function FindPeople() {
+    if (FindPeople.people.length > 0) {
+      var pessoas = [];
+      const filteredPeople = new RegExp(FindPeople.people.tolowerCase, 'g', 'i');
+
+      FindPeople.people.map((item) => {
+        const probable = item.name.toLowerCase().match(filteredPeople);
+        if (probable) {
+          pessoas.push(item);
+        }
+      })
+    }
+    return (pessoas)
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -37,6 +52,7 @@ export default function ListagemUsuario(props) {
           </div>
           <InputBase
             placeholder="Procurar usuário por nome ou email"
+            onChange={(e) => FindPeople}
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,

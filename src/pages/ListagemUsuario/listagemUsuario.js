@@ -17,21 +17,23 @@ import SearchIcon from '@material-ui/icons/Search';
 export default function ListagemUsuario(props) {
   const classes = useStyles();
 
-  const [listUsers,setListUsers] = useState(CreatePeople.people);
+  const [usersListToDisplay,setUsersListToDisplay] = useState('');
 
-  function FindPeople(pessoa) {
-    const people = CreatePeople.people;
-    if (pessoa.length > 0) {
-      var pessoas = [];
-      const filteredPeople = new RegExp(pessoa.toLowerCase(), 'g');
+  function FindPeople(searchPerson) {
+    const usersList = CreatePeople.people;
+    if (searchPerson.length > 0) {
+      const usersListToDisplay = [];
+      const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      people.map((item) => {
+      usersList.map((item) => {
         const probable = item.name.toLowerCase().match(filteredPeople);
         if (probable) {
-          pessoas.push(item);
+          usersListToDisplay.push(item);
         }
       });
-      setListUsers(pessoas);
+      setUsersListToDisplay(usersListToDisplay);
+    } else {
+      setUsersListToDisplay(CreatePeople.people);
     }
   }
 
@@ -64,7 +66,22 @@ export default function ListagemUsuario(props) {
         </div>
 
         <div className={classes.tabela}>
-          <StickyHeadTable people={listUsers}></StickyHeadTable>
+          <StickyHeadTable 
+            usersListToDisplay={
+               usersListToDisplay !== ''?
+              usersListToDisplay.map((user) => {
+                return {
+                  name: user.name,
+                  funcao: user.funcao,
+                  data: user.lastactive,
+                 }}) :
+                CreatePeople.people.map((user) => {
+                  return {
+                    name: user.name,
+                    funcao: user.funcao,
+                    data: user.lastactive,
+                  }})
+            }/>
         </div>
 
       </div>

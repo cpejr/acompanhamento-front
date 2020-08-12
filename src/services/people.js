@@ -8,7 +8,7 @@ const CreatePeople = {
             birth: "07/07/2000",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "lima@cpe.com",
             phone: "98989898",
         },
         {
@@ -19,7 +19,7 @@ const CreatePeople = {
             birth: "5555555",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "britto@cpe.com",
             phone: "98989898",
         },
         {
@@ -30,7 +30,7 @@ const CreatePeople = {
             birth: "1111111",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "marinho@cpe.com",
             phone: "98989898",
         },
         {
@@ -41,7 +41,7 @@ const CreatePeople = {
             birth: "07/07/2000",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "braga@cpe.com",
             phone: "98989898",
         },
         {
@@ -52,7 +52,7 @@ const CreatePeople = {
             birth: "07/07/2000",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "rivello@cpe.com",
             phone: "98989898",
         },
         {
@@ -63,7 +63,7 @@ const CreatePeople = {
             birth: "51515151",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "miranda@cpe.com",
             phone: "98989898",
         },
         {
@@ -74,7 +74,7 @@ const CreatePeople = {
             birth: "50/50/05",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "brant@cpe.com",
             phone: "98989898",
         },
         {
@@ -85,7 +85,7 @@ const CreatePeople = {
             birth: "07/07/8844",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "marques@cpe.com",
             phone: "98989898",
         },
         {
@@ -96,7 +96,7 @@ const CreatePeople = {
             birth: "02/02/2000",
             adress: "blablabla",
             cpf: "515151511", //CPF unico
-            email: "jsabduasud",
+            email: "barros@cpe.com",
             phone: "98989898",
         },
     ]

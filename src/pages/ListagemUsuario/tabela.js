@@ -10,7 +10,6 @@ import {
     TablePagination,
     TableRow
 } from '@material-ui/core';
-import Createpeople from '../../services/people';
 
 const columns = [
     { id: 'name', label: 'Nome', minWidth: 170 },
@@ -40,34 +39,30 @@ const useStyles = makeStyles({
     },
 });
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable(props) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const [values, setValues] = useState([{
-        name: String,
-        funcao: String,
-        data: String,
-    }])
-
-    // function createData(name, funcao, data) {
-    //     return { name, funcao, data };
-    // }
-
-    useEffect(() => {
-        const people = Createpeople.people;
-
-        const valuesPeople = people.map(people => {
-            return {
-                name: people.name,
-                funcao: people.funcao,
-                data: people.lastactive,
-            }
-        })
-
-        setValues(valuesPeople)
-    }, [])
+    // const [values, setValues] = useState([{
+    //     name: String,
+    //     funcao: String,
+    //     data: String,
+    // }])
+    //
+    // useEffect(() => {
+    //     const people = props.people;
+    //
+    //     const valuesPeople = people.map(people => {
+    //         return {
+    //             name: people.name,
+    //             funcao: people.funcao,
+    //             data: people.lastactive,
+    //         }
+    //     })
+    //     setValues(valuesPeople)
+    //     {console.log(values)}
+    // }, [])
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -88,7 +83,7 @@ export default function StickyHeadTable() {
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}
+                                    style={{ minWidth: column.minWidth, position: 'relative'}}
                                 >
                                     {column.label}
                                 </TableCell>
@@ -96,7 +91,7 @@ export default function StickyHeadTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {values.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {props.usersListToDisplay.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
@@ -116,7 +111,7 @@ export default function StickyHeadTable() {
             <TablePagination
                 rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={values.length}
+                count={props.usersListToDisplay.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onChangePage={handleChangePage}

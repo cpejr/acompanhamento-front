@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CreatePeople = {
   "people": [
@@ -105,22 +105,14 @@ const CreatePeople = {
 }
 
 function Testes() {
-  const [users, setUsers] = useState(OrdenamentoInicial);
-  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
+  const [users, setUsers] = useState(OrdenamentoInicial); // guarda usuarios
+  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true); // define ordem (true/false)
 
-  const firstUpdate = useRef(true);
-  useLayoutEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-  });
-
-  useLayoutEffect(() => { //Ordenar com butão
+  useEffect(() => { //Ordenar com butão
     const usersOrdem = users;
 
     usersOrdem.sort((a, b) => (
-      !ordemAlfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
+      ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
     ));
 
     setUsers(usersOrdem);

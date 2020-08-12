@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function StickyHeadTable() {
+export default function StickyHeadTable(props) {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -51,12 +51,8 @@ export default function StickyHeadTable() {
         data: String,
     }])
 
-    // function createData(name, funcao, data) {
-    //     return { name, funcao, data };
-    // }
-
     useEffect(() => {
-        const people = Createpeople.people;
+        const people = props.people;
 
         const valuesPeople = people.map(people => {
             return {
@@ -65,8 +61,8 @@ export default function StickyHeadTable() {
                 data: people.lastactive,
             }
         })
-
         setValues(valuesPeople)
+        {console.log(values)}
     }, [])
 
     const handleChangePage = (event, newPage) => {

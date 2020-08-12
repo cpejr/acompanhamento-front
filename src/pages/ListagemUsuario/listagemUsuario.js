@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './listagemusUsuarioStyle';
 
 import { Link } from "react-router-dom"
@@ -11,25 +11,28 @@ import {
   CssBaseline,
 } from "@material-ui/core";
 import { useStyles } from './listagemusUsuarioStyle';
-
+import CreatePeople from "../../services/people"
 import SearchIcon from '@material-ui/icons/Search';
 
 export default function ListagemUsuario(props) {
   const classes = useStyles();
 
-  function FindPeople() {
-    if (FindPeople.people.length > 0) {
-      var pessoas = [];
-      const filteredPeople = new RegExp(FindPeople.people.tolowerCase, 'g', 'i');
+  const [listUsers,setListUsers] = useState(CreatePeople.people);
 
-      FindPeople.people.map((item) => {
+  function FindPeople(pessoa) {
+    const people = CreatePeople.people;
+    if (pessoa.length > 0) {
+      var pessoas = [];
+      const filteredPeople = new RegExp(pessoa.toLowerCase(), 'g');
+
+      people.map((item) => {
         const probable = item.name.toLowerCase().match(filteredPeople);
         if (probable) {
           pessoas.push(item);
         }
-      })
+      });
+      setListUsers(pessoas);
     }
-    return (pessoas)
   }
 
   return (
@@ -52,7 +55,7 @@ export default function ListagemUsuario(props) {
           </div>
           <InputBase
             placeholder="Procurar usuário por nome ou email"
-            onChange={(e) => FindPeople}
+            onChange={(e) => FindPeople(e.target.value)}
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
@@ -61,7 +64,7 @@ export default function ListagemUsuario(props) {
         </div>
 
         <div className={classes.tabela}>
-          <StickyHeadTable></StickyHeadTable>
+          <StickyHeadTable people={listUsers}></StickyHeadTable>
         </div>
 
       </div>

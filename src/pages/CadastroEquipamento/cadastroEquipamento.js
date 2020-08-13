@@ -10,10 +10,9 @@ import {
 } from "@material-ui/core"
 
 import { useStyles } from './cadastroEquipamentoStyle';
+import nextInput from '../../services/nextInput';
 
 export default function CadastroEquipamento(props) {
-  const { nextInput } = props;
-
   const classes = useStyles();
 
   // Mecanismo do Form
@@ -48,7 +47,7 @@ export default function CadastroEquipamento(props) {
     { name: "limiteCorrente", ref: limitTensRef },
     { name: "limiteTensao", ref: cpfRef },
     { name: "cpf", ref: buttonSubmitRef }
-  ]
+  ];
 
   return (
     <React.Fragment>
@@ -65,6 +64,7 @@ export default function CadastroEquipamento(props) {
         <form className={classes.form}
           onSubmit={() => handleSubmit("cadastroEquip")}>
           <div className={classes.containerForm}>
+
             <TextField
               name="numeroSerie"
               className={classes.inputs}
@@ -79,6 +79,7 @@ export default function CadastroEquipamento(props) {
               inputRef={numeroSerieRef} // atribui um elemento a ref criada
               onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
             />
+
             <TextField
               name="limiteTemperatura"
               className={classes.inputs}
@@ -127,6 +128,7 @@ export default function CadastroEquipamento(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
+              autoComplete="off"
               inputRef={cpfRef}
               onKeyPress={e => nextInput(e, relacionamentosRef)} />
             <div>

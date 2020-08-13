@@ -16,18 +16,17 @@ import SearchIcon from '@material-ui/icons/Search';
 export default function ListagemUsuario(props) {
   const classes = useStyles();
 
+  const usersOriginal = props.usersList;
+
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
-
-  const usersOrdenado = ordenar(props.usersList)
-
-  const [usersListToDisplay, setUsersListToDisplay] = useState(usersOrdenado);
+  const [usersListToDisplay, setUsersListToDisplay] = useState(usersOriginal);
 
   function FindPeoplebyName(searchPerson) {
     if (searchPerson.length > 0) {
       const usersListToDisplay = [];
       const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      usersOrdenado.forEach((item) => {
+      usersOriginal.forEach((item) => {
         const probable = item.name.toLowerCase().match(filteredPeople);
         if (probable) {
           usersListToDisplay.push(item);
@@ -35,7 +34,7 @@ export default function ListagemUsuario(props) {
       });
       setUsersListToDisplay(usersListToDisplay);
     } else {
-      setUsersListToDisplay(usersOrdenado);
+      setUsersListToDisplay(usersOriginal);
     }
   }
 
@@ -44,7 +43,7 @@ export default function ListagemUsuario(props) {
       const usersListToDisplay = [];
       const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      usersOrdenado.forEach((item) => {
+      usersOriginal.forEach((item) => {
         const probable = item.email.toLowerCase().match(filteredPeople);
         if (probable) {
           usersListToDisplay.push(item);
@@ -52,7 +51,7 @@ export default function ListagemUsuario(props) {
       });
       setUsersListToDisplay(usersListToDisplay);
     } else {
-      setUsersListToDisplay(usersOrdenado);
+      setUsersListToDisplay(usersOriginal);
     }
   }
 

@@ -8,7 +8,8 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow
+  TableRow,
+  TableSortLabel
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -30,16 +31,47 @@ export default function StickyHeadTable(props) {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const [users, setUsers] = useState(ordenamentoInicial);
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
 
-  const handleChangePage = (event, newPage) => {
+  function handleChangePage(event, newPage) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  function handleChangeRowsPerPage(event) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  function handleOrdenar() {
+    const usersOrdem = users;
+
+    usersOrdem.sort((a, b) => (
+      ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
+    ));
+
+    setUsers(usersOrdem);
+    setOrdemAlfabetica(!ordemAlfabetica);
+  }
+
+  function ordenamentoInicial() {
+    const usersOrdem = props.usersListToDisplay;
+
+    usersOrdem.sort((a, b) => sortOrdem(a, b));
+
+    return usersOrdem;
+  }
+
+  function sortOrdem(a, b) {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  }
 
   return (
     <Paper className={classes.root}>
@@ -47,7 +79,15 @@ export default function StickyHeadTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tabelaCelula}>Nome</TableCell>
+              <TableCell className={classes.tabelaCelula}>
+                <TableSortLabel
+                  active
+                  direction={ordemAlfabetica ? "asc" : "desc"}
+                  onClick={handleOrdenar}
+                >
+                  Nome
+                </TableSortLabel>
+              </TableCell>
               <TableCell className={classes.tabelaCelula}>Função</TableCell>
               <TableCell className={classes.tabelaCelula}>Última data ativa</TableCell>
             </TableRow>

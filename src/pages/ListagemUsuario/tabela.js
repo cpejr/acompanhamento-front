@@ -32,9 +32,6 @@ export default function StickyHeadTable(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [users, setUsers] = useState(ordenamentoInicial);
-  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
-
   function handleChangePage(event, newPage) {
     setPage(newPage);
   };
@@ -43,37 +40,6 @@ export default function StickyHeadTable(props) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  function handleOrdenar() {
-    const usersOrdem = users;
-
-    usersOrdem.sort((a, b) => (
-      ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
-    ));
-
-    setUsers(usersOrdem);
-    setOrdemAlfabetica(!ordemAlfabetica);
-  }
-
-  function ordenamentoInicial() {
-    const usersOrdem = props.usersListToDisplay;
-
-    usersOrdem.sort((a, b) => sortOrdem(a, b));
-
-    return usersOrdem;
-  }
-
-  function sortOrdem(a, b) {
-    if (a.name > b.name) {
-      return 1;
-    }
-    if (a.name < b.name) {
-      return -1;
-    }
-    return 0;
-  }
-
-  console.log(props.usersListToDisplay)
 
   return (
     <Paper className={classes.root}>
@@ -84,8 +50,8 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tabelaCelula}>
                 <TableSortLabel
                   active
-                  direction={ordemAlfabetica ? "desc" : "asc"}
-                  onClick={handleOrdenar}
+                  direction={props.ordemAlfabetica ? "desc" : "asc"}
+                  onClick={props.handleOrdenar}
                 >
                   Nome
                 </TableSortLabel>
@@ -95,7 +61,7 @@ export default function StickyHeadTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users
+            {props.usersListToDisplay
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(user => (
                 <TableRow hover tabIndex={-1} key={user.name}>

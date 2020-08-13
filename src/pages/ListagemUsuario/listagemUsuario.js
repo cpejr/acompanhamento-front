@@ -17,15 +17,17 @@ import SearchIcon from '@material-ui/icons/Search';
 export default function ListagemUsuario(props) {
   const classes = useStyles();
 
-  const [usersListToDisplay, setUsersListToDisplay] = useState('');
+  const usersOrdenado = ordenamentoInicial(props.usersList)
+
+  const [usersListToDisplay, setUsersListToDisplay] = useState(usersOrdenado);
+  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
 
   function FindPeoplebyName(searchPerson) {
-    const usersList = CreatePeople.people;
     if (searchPerson.length > 0) {
       const usersListToDisplay = [];
       const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      usersList.map((item) => {
+      usersOrdenado.forEach((item) => {
         const probable = item.name.toLowerCase().match(filteredPeople);
         if (probable) {
           usersListToDisplay.push(item);
@@ -33,17 +35,16 @@ export default function ListagemUsuario(props) {
       });
       setUsersListToDisplay(usersListToDisplay);
     } else {
-      setUsersListToDisplay(CreatePeople.people);
+      setUsersListToDisplay(usersOrdenado);
     }
   }
 
   function FindPeoplebyEmail(searchPerson) {
-    const usersList = CreatePeople.people;
     if (searchPerson.length > 0) {
       const usersListToDisplay = [];
       const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      usersList.map((item) => {
+      usersOrdenado.forEach((item) => {
         const probable = item.email.toLowerCase().match(filteredPeople);
         if (probable) {
           usersListToDisplay.push(item);
@@ -51,8 +52,51 @@ export default function ListagemUsuario(props) {
       });
       setUsersListToDisplay(usersListToDisplay);
     } else {
-      setUsersListToDisplay(CreatePeople.people);
+      setUsersListToDisplay(usersOrdenado);
     }
+  }
+
+  function ordenamentoInicial(users) {
+    const usersOrdem = users;
+
+    usersOrdem.sort((a, b) => sortOrdem(a, b));
+
+    return usersOrdem;
+  }
+
+  function handleOrdenar() {
+    const usersOrdem = usersListToDisplay;
+
+    usersOrdem.sort((a, b) => (
+      ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
+    ));
+
+    setOrdemAlfabetica(!ordemAlfabetica);
+    setUsersListToDisplay(usersOrdem);
+    console.log(usersListToDisplay);
+  }
+
+  // useEffect(() => {
+  //   const usersOrdem = usersListToDisplay;
+
+  //   usersOrdem.sort((a, b) => (
+  //     ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
+  //   ));
+
+  //   setOrdemAlfabetica(!ordemAlfabetica);
+  //   setUsersListToDisplay(usersOrdem);
+  //   console.log(usersListToDisplay);
+
+  // }, [ordemAlfabetica, usersListToDisplay])
+
+  function sortOrdem(a, b) {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
   }
 
   return (
@@ -91,22 +135,16 @@ export default function ListagemUsuario(props) {
         <div className={classes.tabela}>
           <StickyHeadTable
             usersListToDisplay={
-              usersListToDisplay !== '' ?
-                usersListToDisplay.map((user) => {
-                  return {
-                    name: user.name,
-                    funcao: user.funcao,
-                    data: user.lastactive,
-                  }
-                }) :
-                CreatePeople.people.map((user) => {
-                  return {
-                    name: user.name,
-                    funcao: user.funcao,
-                    data: user.lastactive,
-                  }
-                })
-            } />
+              usersListToDisplay.map((user) => {
+                return {
+                  name: user.name,
+                  funcao: user.funcao,
+                  data: user.lastactive,
+                }
+              })
+            }
+            handleOrdenar={handleOrdenar}
+            ordemAlfabetica={ordemAlfabetica} />
         </div>
 
       </div>

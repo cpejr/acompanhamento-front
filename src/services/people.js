@@ -10,6 +10,7 @@ const CreatePeople = {
       cpf: "515151511", //CPF unico
       email: "lima@cpe.com",
       phone: "98989898",
+      tipo: "admin"
     },
     {
       id: "15",

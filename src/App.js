@@ -3,18 +3,19 @@ import React, { useState } from 'react';
 import Routes from './routes';
 
 import DATA from './services/data';
-import { clientTemp } from './services/temp';
+import CreatePeople from "./services/people";
 
 export default function App() {
-  const [user] = useState(clientTemp.client);
+  const [usersList] = useState(CreatePeople.people);
 
-  const isClient = user.tipo === "cliente";
+  const isClient = usersList[0].tipo === "cliente";
 
   return (
     <Routes
       isClient={isClient}
-      user={user}
-      data={DATA} />
+      user={usersList[0]}
+      data={DATA}
+      usersList={usersList} />
   );
 }
 

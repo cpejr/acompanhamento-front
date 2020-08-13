@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -8,7 +8,8 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow
+  TableRow,
+  TableSortLabel
 } from '@material-ui/core';
 
 const useStyles = makeStyles({
@@ -30,13 +31,12 @@ export default function StickyHeadTable(props) {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
 
-  const handleChangePage = (event, newPage) => {
+  function handleChangePage(event, newPage) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  function handleChangeRowsPerPage(event) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -47,20 +47,30 @@ export default function StickyHeadTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tabelaCelula}>Nome</TableCell>
+              <TableCell className={classes.tabelaCelula}>
+                <TableSortLabel
+                  active
+                  direction={props.ordemAlfabetica ? "desc" : "asc"}
+                  onClick={() => props.setOrdemAlfabetica(!props.ordemAlfabetica)}
+                >
+                  Nome
+                </TableSortLabel>
+              </TableCell>
               <TableCell className={classes.tabelaCelula}>Função</TableCell>
               <TableCell className={classes.tabelaCelula}>Última data ativa</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.usersListToDisplay.map(user => (
-              <TableRow hover tabIndex={-1} key={user.name}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.funcao}</TableCell>
-                <TableCell>{user.data}</TableCell>
-              </TableRow>
-            )
-            )}
+            {props.usersListToDisplay
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(user => (
+                <TableRow hover tabIndex={-1} key={user.name}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.funcao}</TableCell>
+                  <TableCell>{user.data}</TableCell>
+                </TableRow>
+              )
+              )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -14,7 +14,7 @@ import { useStyles } from './routesStyles';
 import Dashboard from './pages/Dashboard/dashboard';
 
 function Routes(props) {
-  const { isClient, user, data } = props; //Props vindas do App.js
+  const { isClient, user, usersList, data } = props; //Props vindas do App.js
 
   const classes = useStyles();
 
@@ -38,7 +38,9 @@ function Routes(props) {
             <Route path="/cadastrousuario" component={CadastroUsuario} />
 
             {/* Listagem de Usuários */}
-            <Route path="/listagemusuario" component={ListagemUsuario} />
+            <Route path="/listagemusuario">
+              <ListagemUsuario usersList={usersList} />
+            </Route>
 
             {/* Páginas para Testes */}
             <Route path="/testes" component={Testes} />

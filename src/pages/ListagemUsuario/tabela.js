@@ -83,7 +83,11 @@ export default function StickyHeadTable(props) {
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth, position: 'relative'}}
+                                    style={{
+                                        minWidth: column.minWidth,
+                                        position: 'relative',
+                                        backgroundColor: '#2196F3'
+                                    }}
                                 >
                                     {column.label}
                                 </TableCell>

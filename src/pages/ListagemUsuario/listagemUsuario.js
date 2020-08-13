@@ -11,16 +11,16 @@ import {
   CssBaseline,
 } from "@material-ui/core";
 import { useStyles } from './listagemusUsuarioStyle';
-import CreatePeople from "../../services/people"
 import SearchIcon from '@material-ui/icons/Search';
 
 export default function ListagemUsuario(props) {
   const classes = useStyles();
 
-  const usersOrdenado = ordenamentoInicial(props.usersList)
+  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
+
+  const usersOrdenado = ordenar(props.usersList)
 
   const [usersListToDisplay, setUsersListToDisplay] = useState(usersOrdenado);
-  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
 
   function FindPeoplebyName(searchPerson) {
     if (searchPerson.length > 0) {
@@ -56,38 +56,12 @@ export default function ListagemUsuario(props) {
     }
   }
 
-  function ordenamentoInicial(users) {
-    const usersOrdem = users;
-
-    usersOrdem.sort((a, b) => sortOrdem(a, b));
-
-    return usersOrdem;
-  }
-
-  function handleOrdenar() {
-    const usersOrdem = usersListToDisplay;
-
-    usersOrdem.sort((a, b) => (
-      ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
+  function ordenar(users) {
+    users.sort((a, b) => (
+      ordemAlfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
     ));
-
-    setOrdemAlfabetica(!ordemAlfabetica);
-    setUsersListToDisplay(usersOrdem);
-    console.log(usersListToDisplay);
+    return users;
   }
-
-  // useEffect(() => {
-  //   const usersOrdem = usersListToDisplay;
-
-  //   usersOrdem.sort((a, b) => (
-  //     ordemAlfabetica ? -sortOrdem(a, b) : sortOrdem(a, b)
-  //   ));
-
-  //   setOrdemAlfabetica(!ordemAlfabetica);
-  //   setUsersListToDisplay(usersOrdem);
-  //   console.log(usersListToDisplay);
-
-  // }, [ordemAlfabetica, usersListToDisplay])
 
   function sortOrdem(a, b) {
     if (a.name > b.name) {
@@ -135,7 +109,7 @@ export default function ListagemUsuario(props) {
         <div className={classes.tabela}>
           <StickyHeadTable
             usersListToDisplay={
-              usersListToDisplay.map((user) => {
+              ordenar(usersListToDisplay).map((user) => {
                 return {
                   name: user.name,
                   funcao: user.funcao,
@@ -143,7 +117,7 @@ export default function ListagemUsuario(props) {
                 }
               })
             }
-            handleOrdenar={handleOrdenar}
+            setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica} />
         </div>
 

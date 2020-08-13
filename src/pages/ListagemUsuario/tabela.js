@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -51,7 +51,7 @@ export default function StickyHeadTable(props) {
                 <TableSortLabel
                   active
                   direction={props.ordemAlfabetica ? "desc" : "asc"}
-                  onClick={props.handleOrdenar}
+                  onClick={() => props.setOrdemAlfabetica(!props.ordemAlfabetica)}
                 >
                   Nome
                 </TableSortLabel>

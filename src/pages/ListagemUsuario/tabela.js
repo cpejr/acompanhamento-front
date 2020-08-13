@@ -73,6 +73,8 @@ export default function StickyHeadTable(props) {
     return 0;
   }
 
+  console.log(props.usersListToDisplay)
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -82,7 +84,7 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tabelaCelula}>
                 <TableSortLabel
                   active
-                  direction={ordemAlfabetica ? "asc" : "desc"}
+                  direction={ordemAlfabetica ? "desc" : "asc"}
                   onClick={handleOrdenar}
                 >
                   Nome
@@ -93,14 +95,16 @@ export default function StickyHeadTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.usersListToDisplay.map(user => (
-              <TableRow hover tabIndex={-1} key={user.name}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.funcao}</TableCell>
-                <TableCell>{user.data}</TableCell>
-              </TableRow>
-            )
-            )}
+            {users
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(user => (
+                <TableRow hover tabIndex={-1} key={user.name}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.funcao}</TableCell>
+                  <TableCell>{user.data}</TableCell>
+                </TableRow>
+              )
+              )}
           </TableBody>
         </Table>
       </TableContainer>

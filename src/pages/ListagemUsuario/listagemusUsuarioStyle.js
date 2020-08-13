@@ -77,9 +77,8 @@ export const useStyles = makeStyles(theme => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     width: isMobile ? "95%" : '486px',
   },
-  
+
   tabela: {
     marginTop: "30px"
   },
-
 }))

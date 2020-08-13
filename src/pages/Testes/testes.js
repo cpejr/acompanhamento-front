@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const CreatePeople = {
   "people": [
@@ -108,7 +108,8 @@ function Testes() {
   const [users, setUsers] = useState(OrdenamentoInicial); // guarda usuarios
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true); // define ordem (true/false)
 
-  useEffect(() => { //Ordenar com butão
+
+  function Ordenar() {
     const usersOrdem = users;
 
     usersOrdem.sort((a, b) => (
@@ -116,7 +117,8 @@ function Testes() {
     ));
 
     setUsers(usersOrdem);
-  }, [users, ordemAlfabetica]);
+    setOrdemAlfabetica(!ordemAlfabetica);
+  }
 
   function OrdenamentoInicial() {
     const usersOrdem = CreatePeople.people;
@@ -146,7 +148,7 @@ function Testes() {
 
       <br />
 
-      <button onClick={() => setOrdemAlfabetica(!ordemAlfabetica)} >
+      <button onClick={Ordenar} >
         Ordenar {ordemAlfabetica ? "->" : "<-"}
       </button>
     </div >

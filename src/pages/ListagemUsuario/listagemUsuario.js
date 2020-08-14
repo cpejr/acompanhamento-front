@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './listagemusUsuarioStyle';
 
 import { Link } from "react-router-dom"
-import StickyHeadTable from './tabela';
+import StickyHeadTable from './Tabela';
 
 import { Button } from 'react-bootstrap';
 import {
@@ -94,10 +94,9 @@ export default function ListagemUsuario(props) {
             <InputBase className={classes.placeholder}
               placeholder="Procurar usuário por nome ou email"
               onChange={(e) => {
-                var arroba = "@"
-                if ((e.target.value).indexOf(arroba) > -1)
-                  FindPeoplebyEmail(e.target.value)
-                else FindPeoplebyName(e.target.value)
+                var arroba = "@";
+                if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
+                else FindPeoplebyName(e.target.value);
               }}
               classes={{
                 root: classes.inputRoot,

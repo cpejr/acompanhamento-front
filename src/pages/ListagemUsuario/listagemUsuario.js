@@ -90,19 +90,21 @@ export default function ListagemUsuario(props) {
           <div className={classes.searchIcon}>
             <SearchIcon />
           </div>
-          <InputBase
-            placeholder="Procurar usuário por nome ou email"
-            onChange={(e) => {
-              var arroba = "@"
-              if ((e.target.value).indexOf(arroba) > -1)
-                FindPeoplebyEmail(e.target.value)
-              else FindPeoplebyName(e.target.value)
-            }}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-          />
+          <div className={classes.searchInput}>
+            <InputBase
+              placeholder="Procurar usuário por nome ou email"
+              onChange={(e) => {
+                var arroba = "@"
+                if ((e.target.value).indexOf(arroba) > -1)
+                  FindPeoplebyEmail(e.target.value)
+                else FindPeoplebyName(e.target.value)
+              }}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+            />
+          </div>
         </div>
 
         <div className={classes.tabela}>

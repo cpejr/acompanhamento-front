@@ -58,7 +58,10 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#42A6F5",
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: isMobile ? "95%" : '486px',
+    width: '486px',
+    [theme.breakpoints.down('xs')]: {
+      width: "100%",
+  }
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -75,7 +78,11 @@ export const useStyles = makeStyles(theme => ({
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    width: isMobile ? "95%" : '486px',
+    // width: isMobile ? "270px" : '430px',
+    width: "430px",
+    [theme.breakpoints.down('xs')]: {
+      width: "270px",
+    }
   },
 
   tabela: {

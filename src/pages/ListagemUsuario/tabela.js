@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -11,19 +12,26 @@ import {
   TableRow,
   TableSortLabel
 } from '@material-ui/core';
+import { FiMoreHorizontal } from "react-icons/fi"
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
   },
   container: {
+    // overflow: 'hidden',
     maxHeight: 440,
   },
   tabelaCelula: {
     minWidth: "170px",
     position: "relative",
     backgroundColor: "#2196F3"
-  }
+  },
+  lastTableCell: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
 });
 
 export default function StickyHeadTable(props) {
@@ -67,7 +75,11 @@ export default function StickyHeadTable(props) {
                 <TableRow hover tabIndex={-1} key={user.name}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.funcao}</TableCell>
-                  <TableCell>{user.data}</TableCell>
+                  <TableCell className={classes.lastTableCell}>{user.data}
+                    <Link to='/'>
+                      <FiMoreHorizontal size={24} color="#C4C4C4" />
+                    </Link>
+                  </TableCell>
                 </TableRow>
               )
               )}

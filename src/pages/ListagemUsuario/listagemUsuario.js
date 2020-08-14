@@ -91,7 +91,7 @@ export default function ListagemUsuario(props) {
             <SearchIcon />
           </div>
           <div className={classes.searchInput}>
-            <InputBase
+            <InputBase className={classes.placeholder}
               placeholder="Procurar usuário por nome ou email"
               onChange={(e) => {
                 var arroba = "@"

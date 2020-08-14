@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Paper,
@@ -7,39 +8,47 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   TableSortLabel
 } from '@material-ui/core';
+import { FiMoreHorizontal } from "react-icons/fi"
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
   },
   container: {
-    maxHeight: 440,
+    // overflow: 'hidden',
+    maxHeight: 550,
   },
   tabelaCelula: {
     minWidth: "170px",
     position: "relative",
-    backgroundColor: "#2196F3"
-  }
+    backgroundColor: "#2196F3",
+    fontWeight: "500",
+    fontSize: "16px"
+  },
+  lastTableCell: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
 });
 
 export default function StickyHeadTable(props) {
   const classes = useStyles();
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  function handleChangePage(event, newPage) {
-    setPage(newPage);
-  };
+  // function handleChangePage(event, newPage) {
+  //   setPage(newPage);
+  // };
 
-  function handleChangeRowsPerPage(event) {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // function handleChangeRowsPerPage(event) {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   return (
     <Paper className={classes.root}>
@@ -62,19 +71,23 @@ export default function StickyHeadTable(props) {
           </TableHead>
           <TableBody>
             {props.usersListToDisplay
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(user => (
                 <TableRow hover tabIndex={-1} key={user.name}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.funcao}</TableCell>
-                  <TableCell>{user.data}</TableCell>
+                  <TableCell className={classes.lastTableCell}>{user.data}
+                    <Link to='/'>
+                      <FiMoreHorizontal size={24} color="#C4C4C4" />
+                    </Link>
+                  </TableCell>
                 </TableRow>
               )
               )}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
+      {/* <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={props.usersListToDisplay.length}
@@ -82,7 +95,7 @@ export default function StickyHeadTable(props) {
         page={page}
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+      /> */}
     </Paper>
   );
 }

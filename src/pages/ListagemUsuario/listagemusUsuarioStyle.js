@@ -81,6 +81,7 @@ export const useStyles = makeStyles(theme => ({
     // width: isMobile ? "270px" : '430px',
     width: "430px",
     [theme.breakpoints.down('xs')]: {
+      fontSize: "12px",
       width: "270px",
     }
   },

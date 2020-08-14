@@ -25,7 +25,9 @@ const useStyles = makeStyles({
   tabelaCelula: {
     minWidth: "170px",
     position: "relative",
-    backgroundColor: "#2196F3"
+    backgroundColor: "#2196F3",
+    fontWeight: "500",
+    fontSize: "16px"
   },
   lastTableCell: {
     display: "flex",

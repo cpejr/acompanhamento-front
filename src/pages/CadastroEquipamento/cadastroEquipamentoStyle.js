@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core'
+import { titleFontFamily, titleFontSize } from '../../StylePadrao/stylePadrao';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
 
@@ -24,9 +25,9 @@ export const useStyles = makeStyles(theme => ({
     width: "100%",
     marginBottom: "30px",
 
-    fontFamily: "DM Sans",
+    fontFamily: titleFontFamily,
     fontWeight: "500",
-    fontSize: "30px",
+    fontSize: titleFontSize,
     lineHeight: "40px",
 
     display: "flex",

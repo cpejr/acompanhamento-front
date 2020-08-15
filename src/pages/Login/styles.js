@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core'
 import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
+import { vermelhoPadrao } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -147,7 +148,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   botaoentrar: {
-    background: "#FE2121",
+    background: vermelhoPadrao,
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",
     borderRadius: "2px",

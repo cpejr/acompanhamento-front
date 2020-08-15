@@ -1,4 +1,5 @@
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core';
+import { titleFontFamily, titleFontSize } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -12,12 +13,12 @@ export const useStyles = makeStyles(theme => ({
 
   title: {
     padding: "40px 0 40px 0px",
-    fontSize: "30px",
+    fontSize: titleFontSize,
     [theme.breakpoints.only("xs")]: {
       padding: "30px 0 40px 0px",
       fontSize: "20px",
     },
-    fontFamily: "DM Sans",
+    fontFamily: titleFontFamily,
     fontWeight: "500",
     textTransform: "uppercase"
   },

@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { azulPadrao, vermelhoPadrao } from '../../StylePadrao/stylePadrao';
 
 const drawerWidth = 280;
 
@@ -17,7 +18,7 @@ export const useStyles = makeStyles((theme) => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
-    backgroundColor: '#2D64F3',
+    backgroundColor: azulPadrao,
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -54,7 +55,7 @@ export const useStyles = makeStyles((theme) => ({
     }),
   },
   drawerClosePerm: {
-    backgroundColor: '#FE2121',
+    backgroundColor: vermelhoPadrao,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,

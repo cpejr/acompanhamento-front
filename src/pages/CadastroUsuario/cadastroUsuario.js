@@ -8,6 +8,9 @@ import {
   Box,
   Tabs,
   Tab,
+  FormControl,
+  InputLabel,
+  Select,
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';
@@ -84,12 +87,29 @@ export default function CadastroUsuario() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <Typography variant="h3" className={classes.tittle}>
-          Cadastro de um novo usuário
-        </Typography>
-        
+        <div className={classes.cabecario}>
+          <Typography variant="h3" className={classes.tittle}>
+            Cadastro de um novo usuário
+          </Typography>
+        </div>
+
+        <FormControl variant="outlined" className={classes.select}>
+        <InputLabel id="label-select">Tipo de usuário que será cadastrado</InputLabel>
+        <Select
+          labelId="label-select"
+          native
+          value={value}
+          onChange={handleChange}
+        >
+          <option aria-label="None" value="" />
+          <option value={value}>Cliente Pessoa Jurídica</option>
+          <option value={value}>Cliente Pessoa Física</option>
+          <option value={value}>Funcionário</option>
+        </Select>
+        </FormControl>
+
         <div className={classes.formulariointeiro}>
-          <div>
+        <div>
             <AppBar position="" className={classes.appbar}>
               <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab className={classes.typeuser} label="Cliente Pessoa Jurídica" {...a11yProps(0)} />
@@ -130,6 +150,10 @@ export default function CadastroUsuario() {
           </div>
 
         </div>
+        
+        
+
+
       </div>
     </React.Fragment>
   )

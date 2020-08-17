@@ -1,14 +1,24 @@
 import { makeStyles } from '@material-ui/core'
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
+
+
 export const useStyles = makeStyles((theme) => ({
     root: {
-        width: '100%',
-        position: "absolute",
-        height: "85%",
-        left: "10%",
-        top: "63px",
         display: "flex",
         flexDirection: "column",
+    
+        width: "90%",
+        padding: "50px 0 66px 50px",
+        paddingTop: "50px",
+        paddingRight: "0px",
+        paddingBottom: "66px",
+        paddingLeft: "50px",
+    
+        [theme.breakpoints.only("xs")]: {
+          padding: "30px 5% 30px",
+          width: "100%",
+        },
     },
 
     formulariointeiro: {
@@ -18,16 +28,13 @@ export const useStyles = makeStyles((theme) => ({
     },
 
     tittle: {
-        position: "absolute",
-        width: "956px",
-        height: "63px",
-        marginTop: "20px",
+        position: "relative",
         fontFamily: "DM Sans",
         fontWeight: "500",
         fontSize: "30px",
-        lineHeight: "56px",
+        lineHeight: "40px",
         display: "flex",
-        alignItems: "center",
+        textAlign: isMobile ? "center" : "",
         color: "#000000",
     },
 
@@ -108,6 +115,23 @@ export const useStyles = makeStyles((theme) => ({
             marginTop: "0px"
         }
     },
+
+    select: {
+        marginTop: "40px",
+        width: "100%",
+        height: "100%",
+        fontFamily: "Roboto",
+        alignItems: "center",
+        textAlign: "center",
+        color: "#4F8DB5",
+        textDecoration: "none"
+    },
+
+    cabecario: {
+        display: "flex",
+        flexDirection: "row",
+        width: "956px",
+      },
 
     allforms: {
         width: "75%",

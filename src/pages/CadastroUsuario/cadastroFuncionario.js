@@ -174,7 +174,7 @@ function CadastroFuncionario(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" ref={buttonRef} className={classes.botaocadastrar}>Cadastrar</Button>
+            <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
           </Grid>
         </Grid>
       </form>

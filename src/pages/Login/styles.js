@@ -83,7 +83,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  emaill: {
+  email: {
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
 
@@ -99,7 +99,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  senha: {
+  password: {
     backgroundColor: "white",
     borderRadius: "5px",
 
@@ -116,7 +116,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  esqsenha: {
+  forgotPassword: {
     textDecoration: "none",
     fontFamily: "DM Sans, sans-serif",
     fontStyle: "normal",
@@ -146,7 +146,7 @@ export const useStyles = makeStyles(theme => ({
     paddingTop: "15px"
   },
 
-  botaoentrar: {
+  buttonLogin: {
     background: "#FE2121",
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",

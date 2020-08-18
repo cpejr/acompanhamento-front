@@ -135,7 +135,7 @@ export default function CadastroEquipamento(props) {
               <Button type="submit"
                 ref={buttonSubmitRef} // neste caso o button pode ser acessado 
                 // diretamente por isso usamos ref={}
-                className={classes.botaocadastrar}>Cadastrar</Button>
+                className={classes.buttonRegister}>Cadastrar</Button>
             </div>
           </div>
         </form>

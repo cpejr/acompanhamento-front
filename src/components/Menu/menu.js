@@ -44,7 +44,7 @@ export default function Menu({ isClient, user }) {
       <div className={classes.headerInfos}>
         <div className={classes.mainTitle}>
           <Link className={classes.buttonHome} to="/app">
-            <Typography variant="h6" className={classes.paginatitle} noWrap>
+            <Typography variant="h6" className={classes.pagTitle} noWrap>
               Paraíso das Bombas
             </Typography>
           </Link>
@@ -98,7 +98,7 @@ export default function Menu({ isClient, user }) {
             }),
           }}
         >
-          <div className={classes.toolbar}>
+          <div className={classes.toolBar}>
             <IconButton onClick={handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>
@@ -138,7 +138,7 @@ export default function Menu({ isClient, user }) {
             keepMounted: true, // Better open performance on mobile.
           }}
         >
-          <div className={classes.toolbar}>
+          <div className={classes.toolBar}>
             <IconButton onClick={handleDrawerToggle}>
               <ChevronLeftIcon />
             </IconButton>

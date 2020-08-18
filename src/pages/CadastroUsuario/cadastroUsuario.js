@@ -51,13 +51,13 @@ export default function CadastroUsuario() {
       <CssBaseline />
       <div className={classes.root}>
 
-        <Typography variant="h3" className={classes.titulo}>
+        <Typography variant="h3" className={classes.title}>
           Cadastro de um novo usuário
         </Typography>
 
         <Paper className={classes.formContainer} elevation={0}>
 
-          <FormControl variant="filled" className={classes.inputTipo}>
+          <FormControl variant="filled" className={classes.inputType}>
             <InputLabel id="tipo">Tipo de Usuário</InputLabel>
             <Select
               labelId="tipo"
@@ -74,13 +74,13 @@ export default function CadastroUsuario() {
 
           <Box className={classes.Subform}>
             <TabPanel value={formData.tipo} index="">
-              <Typography className={classes.tituloDoTipo}>
+              <Typography className={classes.titleType}>
                 Escolha um tipo de Usuário para continuar.
               </Typography>
             </TabPanel>
 
             <TabPanel value={formData.tipo} index="pj">
-              <Typography className={classes.tituloDoTipo}>
+              <Typography className={classes.titleType}>
                 Dados da Empresa
               </Typography>
               <CadastroPJ
@@ -91,7 +91,7 @@ export default function CadastroUsuario() {
             </TabPanel>
 
             <TabPanel value={formData.tipo} index="pf">
-              <Typography className={classes.tituloDoTipo}>
+              <Typography className={classes.titleType}>
                 Dados Pessoais
               </Typography>
               <CadastroPF
@@ -102,7 +102,7 @@ export default function CadastroUsuario() {
             </TabPanel>
 
             <TabPanel value={formData.tipo} index="funcionario">
-              <Typography className={classes.tituloDoTipo}>
+              <Typography className={classes.titleType}>
                 Dados Pessoais
               </Typography>
               <CadastroFuncionario

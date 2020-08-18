@@ -8,7 +8,7 @@ export const useStyles = makeStyles({
     // overflow: 'hidden',
     maxHeight: 550,
   },
-  tabelaCelula: {
+  tableCell: {
     minWidth: "170px",
     position: "relative",
     backgroundColor: "#2196F3",

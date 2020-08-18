@@ -159,7 +159,7 @@ function CadastroPF(props) {
               label="Desejo receber emails promocionais" />
           </Grid>
           <Grid item xs={12}>
-            <Button type="submit" ref={buttonRef} className={classes.botaocadastrar}>Cadastrar</Button>
+            <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
           </Grid>
         </Grid>
       </form>

@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
 
-  titulo: {
+  title: {
     marginBottom: "30px",
 
     fontFamily: "DM Sans",
@@ -33,7 +33,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
 
-  inputTipo: {
+  inputType: {
     width: "250px",
     marginBottom: "30px",
     [theme.breakpoints.only("xs")]: {
@@ -45,7 +45,7 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: "800px",
   },
 
-  tituloDoTipo: {
+  titleType: {
     marginBottom: "20px",
 
     fontFamily: "DM Sans",
@@ -62,7 +62,7 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: "20px",
   },
 
-  botaocadastrar: {
+  buttonRegister: {
     backgroundColor: "#2196F3",
     border: "1px solid rgba(0, 0, 0, 0.12)",
     borderRadius: "2px",

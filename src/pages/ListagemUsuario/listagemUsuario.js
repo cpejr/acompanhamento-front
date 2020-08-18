@@ -76,12 +76,12 @@ export default function ListagemUsuario(props) {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.cabecario}>
+        <div className={classes.header}>
           <Typography variant="h3" className={classes.tittle}>
             Usuários
         </Typography>
           <Link to="/cadastrousuario">
-            <Button className={classes.botaoadd}
+            <Button className={classes.buttonAdd}
             >Adicionar Novo</Button>
           </Link>
         </div>
@@ -100,13 +100,13 @@ export default function ListagemUsuario(props) {
               }}
               classes={{
                 root: classes.inputRoot,
-                input: classes.inputInput,
+                input: classes.input,
               }}
             />
           </div>
         </div>
 
-        <div className={classes.tabela}>
+        <div className={classes.table}>
           <StickyHeadTable
             usersListToDisplay={
               ordenar(usersListToDisplay).map((user) => {

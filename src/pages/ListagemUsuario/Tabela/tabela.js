@@ -34,7 +34,7 @@ export default function StickyHeadTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tabelaCelula}>
+              <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active
                   direction={props.ordemAlfabetica ? "desc" : "asc"}
@@ -43,8 +43,8 @@ export default function StickyHeadTable(props) {
                   Nome
                 </TableSortLabel>
               </TableCell>
-              <TableCell className={classes.tabelaCelula}>Função</TableCell>
-              <TableCell className={classes.tabelaCelula}>Última data ativa</TableCell>
+              <TableCell className={classes.tableCell}>Função</TableCell>
+              <TableCell className={classes.tableCell}>Última data ativa</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

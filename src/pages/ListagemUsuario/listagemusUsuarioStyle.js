@@ -31,13 +31,13 @@ export const useStyles = makeStyles(theme => ({
     color: "#000000",
   },
 
-  cabecario: {
+  header: {
     display: "flex",
     flexDirection: "row",
     width: "956px",
   },
 
-  botaoadd: {
+  buttonAdd: {
     position: "relative",
     marginLeft: "10%",
     width: "100%",
@@ -75,7 +75,7 @@ export const useStyles = makeStyles(theme => ({
   inputRoot: {
     color: 'inherit',
   },
-  inputInput: {
+  input: {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     // width: isMobile ? "270px" : '430px',
@@ -86,7 +86,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  tabela: {
+  table: {
     marginTop: "30px"
   },
 }))

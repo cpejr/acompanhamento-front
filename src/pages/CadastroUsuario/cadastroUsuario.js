@@ -8,7 +8,6 @@ import {
   Select,
   Paper,
   MenuItem,
-  Divider
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';

@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core'
 import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
-import { vermelhoPadrao } from '../../StylePadrao/stylePadrao';
+import { vermelhoPadrao, azulPadrao } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -13,7 +13,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   loginBox: { // falta os pontos de quebra (breakpoint) para ficar responsivo
-    backgroundColor: "#2D64F3",
+    backgroundColor: azulPadrao,
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "15px",
 
@@ -148,7 +148,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   buttonLogin: {
-    background: "#FE2121",
+    background: vermelhoPadrao,
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",
     borderRadius: "2px",

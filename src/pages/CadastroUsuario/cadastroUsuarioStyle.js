@@ -18,9 +18,9 @@ export const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: "30px",
 
-    fontFamily: "DM Sans",
+    fontFamily: titleFontFamily,
     fontWeight: "500",
-    fontSize: "30px",
+    fontSize: titleFontSize,
     textAlign: "left",
     [theme.breakpoints.only("xs")]: {
       textAlign: "center",

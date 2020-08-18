@@ -1,73 +1,42 @@
 import React, { useState } from 'react';
-import './cadastroUsuarioStyle';
-
 import {
   CssBaseline,
   Typography,
-  AppBar,
   Box,
-  Tabs,
-  Tab,
+  FormControl,
+  InputLabel,
+  Select,
+  Paper,
+  MenuItem,
+  Divider
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';
 import CadastroPF from './cadastroPF';
 import CadastroPJ from './cadastroPJ';
 import CadastroFuncionario from './cadastroFuncionario';
-import { useEffect } from 'react';
-
-
-function TabPanel(props) {
-  const { children, value, index } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-    >
-      {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.any.isRequired,
-//   value: PropTypes.any.isRequired,
-// };
-
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
 
 export default function CadastroUsuario() {
-
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
-  const [formData, setFormData] = useState({ emailPromocional: true });
+  const [formData, setFormData] = useState({
+    emailPromocional: true,
+    tipo: "",
+  });
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleChangeCheck = (event) => {
-    const { checked } = event.target;
-    setFormData({ ...formData, emailPromocional: checked });
-  };
+  function TabPanel(props) {
+    const { children, value, index } = props;
+    return value === index && children;
+  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value })
+  }
+
+  function handleChangeCheck(event) {
+    const { checked } = event.target;
+    setFormData({ ...formData, emailPromocional: checked });
   }
 
   function handleSubmit(qualForm) {
@@ -78,59 +47,75 @@ export default function CadastroUsuario() {
     else alert("Erro")
   }
 
-  useEffect(() => { console.log(formData) }, [formData]);
-
   return (
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <Typography variant="h3" className={classes.tittle}>
+
+        <Typography variant="h3" className={classes.titulo}>
           Cadastro de um novo usuário
         </Typography>
-        
-        <div className={classes.formulariointeiro}>
-          <div>
-            <AppBar position="" className={classes.appbar}>
-              <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                <Tab className={classes.typeuser} label="Cliente Pessoa Jurídica" {...a11yProps(0)} />
-                <Tab className={classes.typeuser} label="Cliente Pessoa Física" {...a11yProps(1)} />
-                <Tab className={classes.typeuser} label="Funcionário" {...a11yProps(2)} />
-              </Tabs>
-            </AppBar>
-          </div>
 
-          <div>
-            <TabPanel value={value} index={0}>
+        <Paper className={classes.formContainer} elevation={0}>
+
+          <FormControl variant="filled" className={classes.inputTipo}>
+            <InputLabel id="tipo">Tipo de Usuário</InputLabel>
+            <Select
+              labelId="tipo"
+              name="tipo"
+              value={formData.tipo}
+              onChange={handleChangeInput}
+            >
+              <MenuItem value="">Selecione:</MenuItem>
+              <MenuItem value="pj" >Pessoa Jurídica</MenuItem>
+              <MenuItem value="pf" >Pessoa Física</MenuItem>
+              <MenuItem value="funcionario" >Funcionário</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Box className={classes.Subform}>
+            <TabPanel value={formData.tipo} index="">
+              <Typography className={classes.tituloDoTipo}>
+                Escolha um tipo de Usuário para continuar.
+              </Typography>
+            </TabPanel>
+
+            <TabPanel value={formData.tipo} index="pj">
+              <Typography className={classes.tituloDoTipo}>
+                Dados da Empresa
+              </Typography>
               <CadastroPJ
                 handleChangeCheck={handleChangeCheck}
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
             </TabPanel>
-          </div>
 
-          <div>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={formData.tipo} index="pf">
+              <Typography className={classes.tituloDoTipo}>
+                Dados Pessoais
+              </Typography>
               <CadastroPF
                 handleChangeCheck={handleChangeCheck}
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
             </TabPanel>
-          </div>
 
-          <div>
-            <TabPanel value={value} index={2}>
+            <TabPanel value={formData.tipo} index="funcionario">
+              <Typography className={classes.tituloDoTipo}>
+                Dados Pessoais
+              </Typography>
               <CadastroFuncionario
                 handleChangeCheck={handleChangeCheck}
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
             </TabPanel>
-          </div>
+          </Box>
 
-        </div>
+        </Paper>
       </div>
-    </React.Fragment>
+    </React.Fragment >
   )
 }

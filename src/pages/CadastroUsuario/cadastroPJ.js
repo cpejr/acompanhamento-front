@@ -4,7 +4,8 @@ import {
   FormControlLabel,
   Checkbox,
   Grid,
-  Button
+  Button,
+  useMediaQuery
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';
@@ -42,9 +43,9 @@ function CadastroPJ(props) {
 
   return (
     <div>
-      <form className={classes.allforms} onSubmit={() => handleSubmit("cadastroPJ")}>
-        <Grid container spacing={0}>
-          <Grid item xs={12} sm={6} className={classes.formulario}>
+      <form onSubmit={() => handleSubmit("cadastroPJ")}>
+        <Grid container spacing={useMediaQuery('(min-width:960px)') ? 5 : 0}>
+          <Grid item xs={12} md={6} >
             <TextField
               name="nomeEmpresa"
               autoComplete="off"
@@ -109,7 +110,7 @@ function CadastroPJ(props) {
               inputRef={telefoneRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} className={classes.formulario2}>
+          <Grid item xs={12} md={6} >
             <TextField
               name="email"
               className={classes.inputForm}
@@ -173,7 +174,9 @@ function CadastroPJ(props) {
               }
               label="Desejo receber emails promocionais" />
           </Grid>
-          <Button type="submit" ref={buttonRef} className={classes.botaocadastrar} >Cadastrar</Button>
+          <Grid item xs={12}>
+            <Button type="submit" ref={buttonRef} className={classes.botaocadastrar} >Cadastrar</Button>
+          </Grid>
         </Grid>
       </form>
     </div>

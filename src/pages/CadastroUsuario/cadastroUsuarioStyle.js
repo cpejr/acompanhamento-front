@@ -1,8 +1,5 @@
 import { makeStyles } from '@material-ui/core'
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
-
-
 export const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -56,22 +53,12 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   botaocadastrar: {
-    boxSizing: "border-box",
-
+    backgroundColor: "#2196F3",
     border: "1px solid rgba(0, 0, 0, 0.12)",
     borderRadius: "2px",
-    marginTop: "10px",
-    backgroundColor: "#2196F3",
-    margin: "20px",
-    padding: "10px",
-    paddingLeft: "15px",
-    paddingRight: "20px",
+    padding: "10px 20px",
     fontFamily: "Roboto",
-    fontStyle: "normal",
-    fontWeight: "normal",
     fontSize: "14px",
-    lineHeight: "24px",
-    letterSpacing: "0.02em",
     color: "#FFFFFF",
 
     cursor: "pointer",
@@ -79,5 +66,6 @@ export const useStyles = makeStyles((theme) => ({
 
   checkbox: {
     width: "100%",
+    marginBottom: "20px",
   },
 }));

@@ -7,7 +7,8 @@ import {
   InputLabel,
   Select,
   Paper,
-  MenuItem
+  MenuItem,
+  Divider
 } from '@material-ui/core';
 
 import { useStyles } from './cadastroUsuarioStyle';
@@ -20,7 +21,7 @@ export default function CadastroUsuario() {
 
   const [formData, setFormData] = useState({
     emailPromocional: true,
-    tipo: "pj"
+    tipo: "",
   });
 
   function TabPanel(props) {
@@ -28,14 +29,14 @@ export default function CadastroUsuario() {
     return value === index && children;
   }
 
-  function handleChangeCheck(event) {
-    const { checked } = event.target;
-    setFormData({ ...formData, emailPromocional: checked });
-  };
-
   function handleChangeInput(event) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value })
+  }
+
+  function handleChangeCheck(event) {
+    const { checked } = event.target;
+    setFormData({ ...formData, emailPromocional: checked });
   }
 
   function handleSubmit(qualForm) {
@@ -65,7 +66,7 @@ export default function CadastroUsuario() {
               value={formData.tipo}
               onChange={handleChangeInput}
             >
-              <MenuItem value="">Escolha:</MenuItem>
+              <MenuItem value="">Selecione:</MenuItem>
               <MenuItem value="pj" >Pessoa Jurídica</MenuItem>
               <MenuItem value="pf" >Pessoa Física</MenuItem>
               <MenuItem value="funcionario" >Funcionário</MenuItem>

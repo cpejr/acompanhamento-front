@@ -49,7 +49,7 @@ export default function Login() {
           <Typography className={classes.loginTxt}>Login</Typography>
 
           {/* Email */}
-          <TextField className={classes.emaill}
+          <TextField className={classes.email}
             // label="email"
             id="outlined-start-adornment"
             InputProps={{
@@ -61,7 +61,7 @@ export default function Login() {
           />
 
           {/* Senha */}
-          <OutlinedInput className={classes.senha}
+          <OutlinedInput className={classes.password}
             id="outlined-adornment-password"
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
@@ -85,12 +85,12 @@ export default function Login() {
           />
 
           <div>
-            <Link to="/" className={classes.esqsenha}>Esqueci minha senha!</Link>
+            <Link to="/" className={classes.forgotPassword}>Esqueci minha senha!</Link>
           </div>
 
           <div>
             <Link to="/" className={classes.link}>
-              <Button className={classes.botaoentrar}>Entrar</Button>
+              <Button className={classes.buttonLogin}>Entrar</Button>
             </Link>
           </div>
 

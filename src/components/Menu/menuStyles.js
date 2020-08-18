@@ -10,7 +10,7 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: "100vw",
     overflowX: "hidden",
   },
-  toolbar: {
+  toolBar: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -88,7 +88,7 @@ export const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "white"
   },
-  paginatitle: {
+  pagTitle: {
     [theme.breakpoints.up("xs")]: {
       fontSize: "24px",
     },

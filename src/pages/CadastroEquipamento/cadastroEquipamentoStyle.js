@@ -84,7 +84,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
 
-  botaocadastrar: {
+  buttonRegister: {
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",
     borderRadius: "2px",

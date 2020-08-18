@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { useStyles } from './tabelaStyle';
 import {
   Paper,
   Table,
@@ -12,28 +12,6 @@ import {
   TableSortLabel
 } from '@material-ui/core';
 import { FiMoreHorizontal } from "react-icons/fi"
-
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  container: {
-    // overflow: 'hidden',
-    maxHeight: 550,
-  },
-  tabelaCelula: {
-    minWidth: "170px",
-    position: "relative",
-    backgroundColor: "#2196F3",
-    fontWeight: "500",
-    fontSize: "16px"
-  },
-  lastTableCell: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-});
 
 export default function StickyHeadTable(props) {
   const classes = useStyles();
@@ -56,7 +34,7 @@ export default function StickyHeadTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tabelaCelula}>
+              <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active
                   direction={props.ordemAlfabetica ? "desc" : "asc"}
@@ -65,8 +43,8 @@ export default function StickyHeadTable(props) {
                   Nome
                 </TableSortLabel>
               </TableCell>
-              <TableCell className={classes.tabelaCelula}>Função</TableCell>
-              <TableCell className={classes.tabelaCelula}>Última data ativa</TableCell>
+              <TableCell className={classes.tableCell}>Função</TableCell>
+              <TableCell className={classes.tableCell}>Última data ativa</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

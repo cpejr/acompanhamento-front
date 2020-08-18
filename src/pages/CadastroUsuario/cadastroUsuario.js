@@ -56,7 +56,7 @@ export default function CadastroUsuario() {
           Cadastro de um novo usuário
         </Typography>
 
-        <Paper className={classes.formContainer}>
+        <Paper className={classes.formContainer} elevation={0}>
 
           <FormControl variant="filled" className={classes.inputTipo}>
             <InputLabel id="tipo">Tipo de Usuário</InputLabel>
@@ -76,7 +76,7 @@ export default function CadastroUsuario() {
           <Box className={classes.Subform}>
             <TabPanel value={formData.tipo} index="">
               <Typography className={classes.tituloDoTipo}>
-                Escolha um tipo de cadastro
+                Escolha um tipo de Usuário para continuar.
               </Typography>
             </TabPanel>
 

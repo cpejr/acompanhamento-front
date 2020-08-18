@@ -26,12 +26,19 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   formContainer: {
-    padding: "33px",
+    padding: "50px 60px",
+    borderRadius: "13px",
+    [theme.breakpoints.only("xs")]: {
+      padding: "10%",
+    },
   },
 
   inputTipo: {
     width: "250px",
-    marginBottom: "20px",
+    marginBottom: "30px",
+    [theme.breakpoints.only("xs")]: {
+      width: "100%"
+    },
   },
 
   Subform: {
@@ -45,6 +52,9 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "500",
     fontSize: "22px",
     textAlign: "left",
+    [theme.breakpoints.only("xs")]: {
+      fontSize: "20px",
+    },
   },
 
   inputForm: {
@@ -62,6 +72,11 @@ export const useStyles = makeStyles((theme) => ({
     color: "#FFFFFF",
 
     cursor: "pointer",
+
+    width: "200px",
+    [theme.breakpoints.only("xs")]: {
+      width: "100%",
+    },
   },
 
   checkbox: {

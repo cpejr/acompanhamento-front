@@ -10,7 +10,7 @@ export const useStyles = makeStyles({
   },
   tableCell: {
     minWidth: "170px",
-    position: "relative",
+    position: "sticky",
     backgroundColor: "#2196F3",
     fontWeight: "500",
     fontSize: "16px"

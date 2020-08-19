@@ -31,6 +31,7 @@ export default function ListagemUsuario(props) {
         if (probable) {
           usersListToDisplay.push(item);
         }
+
       });
       setUsersListToDisplay(usersListToDisplay);
     } else {

@@ -9,7 +9,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel
+  TableSortLabel,
+  Typography
 } from '@material-ui/core';
 import { FiMoreHorizontal } from "react-icons/fi"
 
@@ -62,6 +63,8 @@ export default function StickyHeadTable(props) {
                 </TableRow>
               )
               )}
+              {props.usersListToDisplay.length <= 0 ? <Typography className={classes.nullUser}>Este usuário não foi encontrado </Typography> : null}
+
           </TableBody>
         </Table>
       </TableContainer>

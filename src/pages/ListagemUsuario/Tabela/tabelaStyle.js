@@ -20,4 +20,10 @@ export const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center"
   },
+  nullUser: {
+    padding: "18px",
+    fontWeight: "400",
+    fontSize: "16px",
+    textAlign: "left",
+  },
 });

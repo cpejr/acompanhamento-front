@@ -4,11 +4,11 @@ import './listagemusUsuarioStyle';
 import { Link } from "react-router-dom"
 import StickyHeadTable from './Tabela';
 
-import { Button } from 'react-bootstrap';
 import {
   Typography,
   InputBase,
   CssBaseline,
+  Button
 } from "@material-ui/core";
 import { useStyles } from './listagemusUsuarioStyle';
 import SearchIcon from '@material-ui/icons/Search';
@@ -78,13 +78,12 @@ export default function ListagemUsuario(props) {
       <CssBaseline />
       <div className={classes.root}>
         <div className={classes.header}>
-          <Typography variant="h3" className={classes.tittle}>
+          <Typography variant="h3" className={classes.title}>
             Usuários
-        </Typography>
-          <Link to="/cadastrousuario">
-            <Button className={classes.buttonAdd}
-            >Adicionar Novo</Button>
-          </Link>
+          </Typography>
+          <Button component={Link} to="/cadastrousuario" className={classes.buttonAdd}>
+            Adicionar Novo
+          </Button>
         </div>
 
         <div className={classes.search}>

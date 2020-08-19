@@ -1,8 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import { titleFontFamily, titleFontSize } from '../../StylePadrao/stylePadrao';
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
-
 export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
@@ -21,35 +19,39 @@ export const useStyles = makeStyles(theme => ({
     },
   },
 
-  tittle: {
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    [theme.breakpoints.only("xs")]: {
+      justifyContent: "space-between",
+    },
+  },
+
+  title: {
     position: "relative",
     fontFamily: titleFontFamily,
     fontWeight: "500",
     fontSize: titleFontSize,
     lineHeight: "40px",
     display: "flex",
-    textAlign: isMobile ? "center" : "",
     color: "#000000",
   },
 
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    width: "956px",
-  },
-
   buttonAdd: {
-    position: "relative",
-    marginLeft: "10%",
-    width: "100%",
-    height: "100%",
+    marginLeft: "40px",
+    padding: "0 20px",
+    border: "1px solid #2196F3",
+
     fontFamily: "Roboto",
     fontWeight: "500",
     fontSize: "13px",
-    alignItems: "center",
-    textAlign: "center",
-    color: "#4F8DB5",
-    textDecoration: "none"
+    color: "#2196F3",
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: "#2196F3",
+    }
   },
 
   search: {
@@ -62,7 +64,7 @@ export const useStyles = makeStyles(theme => ({
     width: '486px',
     [theme.breakpoints.down('xs')]: {
       width: "100%",
-  }
+    }
   },
   searchIcon: {
     padding: theme.spacing(0, 2),

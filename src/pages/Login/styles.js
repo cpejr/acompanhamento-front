@@ -166,6 +166,10 @@ export const useStyles = makeStyles(theme => ({
 
     cursor: "pointer",
 
+    "&:hover": {
+      background: vermelhoPadrao,
+    },
+
     [theme.breakpoints.up('sm')]: { //Só funciona acima dos 960px (sm) de largura 
       height: "60px",
       width: "552px",

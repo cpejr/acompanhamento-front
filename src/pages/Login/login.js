@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { FiMail, FiLock } from "react-icons/fi"
 import {
@@ -7,6 +6,7 @@ import {
   CssBaseline,
   Typography,
   OutlinedInput,
+  Button
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -89,9 +89,7 @@ export default function Login() {
           </div>
 
           <div>
-            <Link to="/" className={classes.link}>
-              <Button className={classes.buttonLogin}>Entrar</Button>
-            </Link>
+            <Button className={classes.buttonLogin} component={Link} to="/">Entrar</Button>
           </div>
 
         </div>

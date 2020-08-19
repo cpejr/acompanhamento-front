@@ -1,4 +1,4 @@
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles({
   root: {
@@ -6,7 +6,7 @@ export const useStyles = makeStyles({
   },
   container: {
     // overflow: 'hidden',
-    maxHeight: 550,
+    // maxHeight: 550,
   },
   tableCell: {
     minWidth: "170px",

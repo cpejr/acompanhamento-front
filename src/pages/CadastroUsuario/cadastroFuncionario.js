@@ -50,7 +50,6 @@ function CadastroFuncionario(props) {
               name="nome"
               className={classes.inputForm}
               value={formData.nome}
-              onChange={handleChangeInput}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
@@ -62,7 +61,6 @@ function CadastroFuncionario(props) {
               name="cpf"
               className={classes.inputForm}
               value={formData.cpf}
-              onChange={handleChangeInput}
               label="CPF" type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -75,7 +73,6 @@ function CadastroFuncionario(props) {
               label="Data de Nascimento"
               defaultValue="2017-05-24"
               value={formData.nascimento}
-              onChange={handleChangeInput}
               helperText="(Opcional)"
               variant="filled"
               type="date"
@@ -86,7 +83,6 @@ function CadastroFuncionario(props) {
               name="telefone"
               className={classes.inputForm}
               value={formData.telefone}
-              onChange={handleChangeInput}
               label="Número de telefone"
               type="number"
               helperText="*Obrigatório"
@@ -99,7 +95,6 @@ function CadastroFuncionario(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.situacao}
-              onChange={handleChangeInput}
               label="Situação"
               type="text"
               helperText="*Obrigatório"
@@ -112,7 +107,6 @@ function CadastroFuncionario(props) {
               name="email"
               className={classes.inputForm}
               value={formData.email}
-              onChange={handleChangeInput}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório"
@@ -124,7 +118,6 @@ function CadastroFuncionario(props) {
               name="emailConfirmar"
               className={classes.inputForm}
               value={formData.emailConfirmar}
-              onChange={handleChangeInput}
               label="Confirmar e-mail"
               type="email"
               helperText="*Obrigatório"
@@ -137,7 +130,6 @@ function CadastroFuncionario(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.senha}
-              onChange={handleChangeInput}
               label="Criar senha"
               type="password"
               helperText="*Obrigatório"
@@ -150,7 +142,6 @@ function CadastroFuncionario(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.senhaConfirmar}
-              onChange={handleChangeInput}
               label="Confirmar senha"
               type="password"
               helperText="*Obrigatório"

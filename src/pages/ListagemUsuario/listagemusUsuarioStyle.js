@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { titleFontFamily, titleFontSize } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, titleFontSize, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +30,7 @@ export const useStyles = makeStyles(theme => ({
 
   title: {
     position: "relative",
-    fontFamily: titleFontFamily,
+    fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
     lineHeight: "40px",
@@ -41,16 +41,17 @@ export const useStyles = makeStyles(theme => ({
   buttonAdd: {
     marginLeft: "40px",
     padding: "0 20px",
-    border: "1px solid #2196F3",
+    border: "1px solid", azulPadraoClaro,
 
-    fontFamily: "Roboto",
+    fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: "13px",
-    color: "#2196F3",
+    color: azulPadraoClaro,
 
     "&:hover": {
       color: "#fff",
-      backgroundColor: "#2196F3",
+      backgroundColor: azulPadraoClaro,
+      border: "none",
     }
   },
 
@@ -58,7 +59,7 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "40px",
     position: 'relative',
     borderRadius: "5px",
-    backgroundColor: "#42A6F5",
+    backgroundColor: azulPadraoClaro,
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '486px',

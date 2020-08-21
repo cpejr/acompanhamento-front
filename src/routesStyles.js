@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { background } from './StylePadrao/stylePadrao'
 
 export const useStyles = makeStyles(theme => ({
   spaceContent: {
     boxSizing: "border-box",
     minHeight: "100vh",
-    backgroundColor: "#E5E5E5",
+    backgroundColor: background,
 
     overflowX: "hidden",
 

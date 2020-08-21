@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { azulPadraoClaro } from '../../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles({
   root: {
@@ -6,12 +7,12 @@ export const useStyles = makeStyles({
   },
   container: {
     // overflow: 'hidden',
-    // maxHeight: 550,
+    maxHeight: 550,
   },
   tableCell: {
     minWidth: "170px",
     position: "sticky",
-    backgroundColor: "#2196F3",
+    backgroundColor: azulPadraoClaro,
     fontWeight: "500",
     fontSize: "16px"
   },

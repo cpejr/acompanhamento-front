@@ -1,11 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { Typography } from '@material-ui/core';
 
 import { useStyles } from './dashboardStyles';
-
+import { vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
 import Graphic from './Chart';
 
-import { Typography } from '@material-ui/core';
 
 export default function Dashboard(props) {
   const { isClient, data } = props
@@ -45,7 +45,7 @@ export default function Dashboard(props) {
       <div className={classes.graphic}>
         <Graphic
           data={[sitNum.revisao, sitNum.atencao, sitNum.ok]}
-          colors={['#FE2121', '#5B59B4', '#43A047']}
+          colors={[vermelhoPadrao, azulPadrao, verde]}
           labels={["Revisão", "Atenção", "Ok"]} />
       </div>
     </div >

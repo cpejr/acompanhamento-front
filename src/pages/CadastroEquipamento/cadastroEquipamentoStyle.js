@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core'
-import { titleFontFamily, titleFontSize } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
 
@@ -25,10 +25,9 @@ export const useStyles = makeStyles(theme => ({
     width: "100%",
     marginBottom: "30px",
 
-    fontFamily: titleFontFamily,
+    fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
-    lineHeight: "40px",
 
     display: "flex",
     alignItems: "center",
@@ -37,8 +36,8 @@ export const useStyles = makeStyles(theme => ({
   },
 
   titleTab: {
-    color: "#2196F3",
-    fontFamily: "Roboto",
+    color: azulPadraoClaro,
+    fontFamily: textFontFamilyPadrao,
     fontStyle: "normal",
     fontWeight: "normal",
     fontSize: "15px",
@@ -88,7 +87,7 @@ export const useStyles = makeStyles(theme => ({
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",
     borderRadius: "2px",
-    backgroundColor: "#2196F3",
+    backgroundColor: azulPadraoClaro,
 
     marginTop: "20px",
 
@@ -96,7 +95,7 @@ export const useStyles = makeStyles(theme => ({
     paddingLeft: "15px",
     paddingRight: "20px",
 
-    fontFamily: "Roboto",
+    fontFamily: textFontFamilyPadrao,
     fontStyle: "normal",
     fontWeight: "normal",
     fontSize: "14px",

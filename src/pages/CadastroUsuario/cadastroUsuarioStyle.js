@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { titleFontFamily, titleFontSize } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, subtitleFontSize, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
 
 
 export const useStyles = makeStyles((theme) => ({
@@ -18,7 +18,7 @@ export const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: "30px",
 
-    fontFamily: titleFontFamily,
+    fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
     textAlign: "left",
@@ -50,13 +50,10 @@ export const useStyles = makeStyles((theme) => ({
   titleType: {
     marginBottom: "20px",
 
-    fontFamily: "DM Sans",
+    fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
-    fontSize: "22px",
+    fontSize: subtitleFontSize,
     textAlign: "left",
-    [theme.breakpoints.only("xs")]: {
-      fontSize: "20px",
-    },
   },
 
   inputForm: {
@@ -65,11 +62,11 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   buttonRegister: {
-    backgroundColor: "#2196F3",
+    backgroundColor: azulPadraoClaro,
     border: "1px solid rgba(0, 0, 0, 0.12)",
     borderRadius: "2px",
     padding: "10px 20px",
-    fontFamily: "Roboto",
+    fontFamily: textFontFamilyPadrao,
     fontSize: "14px",
     color: "#FFFFFF",
 

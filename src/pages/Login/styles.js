@@ -1,12 +1,12 @@
 import { makeStyles } from '@material-ui/core'
 import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
-import { vermelhoPadrao, azulPadrao } from '../../StylePadrao/stylePadrao';
+import { vermelhoPadrao, azulPadrao, background, textFontFamilyPadrao } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
     height: "100vh",
-    backgroundColor: "#E5E5E5",
+    backgroundColor: background,
     position: "relative",
     display: "flex",
     flexDirection: "column",
@@ -43,7 +43,7 @@ export const useStyles = makeStyles(theme => ({
   loginTxt: {
 
     color: "#FFFFFF",
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: textFontFamilyPadrao,
     fontStyle: "normal",
     fontWeight: "normal",
     fontSize: "32px",
@@ -155,7 +155,7 @@ export const useStyles = makeStyles(theme => ({
 
     marginTop: "10px",
 
-    fontFamily: "Roboto",
+    fontFamily: textFontFamilyPadrao,
     fontStyle: "normal",
     fontWeight: "500",
     fontSize: "14px",

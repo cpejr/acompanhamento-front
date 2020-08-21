@@ -52,7 +52,6 @@ function CadastroPJ(props) {
               className={classes.inputForm}
               value={formData.nomeEmpresa}
               label="Nome da empresa"
-              onChange={handleChangeInput}
               type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -65,7 +64,6 @@ function CadastroPJ(props) {
               className={classes.inputForm}
               value={formData.cnpj}
               label="CNPJ"
-              onChange={handleChangeInput}
               type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -78,7 +76,6 @@ function CadastroPJ(props) {
               className={classes.inputForm}
               value={formData.razaoSocial}
               label="Razão Social"
-              onChange={handleChangeInput}
               type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -91,7 +88,6 @@ function CadastroPJ(props) {
               className={classes.inputForm}
               value={formData.inscricaoEstadual}
               label="Inscrição Estadual"
-              onChange={handleChangeInput}
               type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -103,7 +99,6 @@ function CadastroPJ(props) {
               className={classes.inputForm}
               value={formData.telefone}
               label="Número de telefone"
-              onChange={handleChangeInput}
               type="number"
               helperText="*Obrigatório"
               variant="filled"
@@ -115,7 +110,6 @@ function CadastroPJ(props) {
               name="email"
               className={classes.inputForm}
               value={formData.email}
-              onChange={handleChangeInput}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório" variant="filled"
@@ -126,7 +120,6 @@ function CadastroPJ(props) {
               name="emailConfirmar"
               className={classes.inputForm}
               value={formData.emailConfirmar}
-              onChange={handleChangeInput}
               label="Confirmar e-mail"
               type="email"
               helperText="*Obrigatório"
@@ -139,7 +132,6 @@ function CadastroPJ(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.senha}
-              onChange={handleChangeInput}
               label="Criar senha"
               type="password"
               helperText="*Obrigatório"
@@ -152,7 +144,6 @@ function CadastroPJ(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.senhaConfirmar}
-              onChange={handleChangeInput}
               label="Confirmar senha"
               type="password"
               helperText="*Obrigatório"

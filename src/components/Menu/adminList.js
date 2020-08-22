@@ -73,7 +73,7 @@ function AdminList() {
       <ListItem
         button
         component={Link}
-        to=""
+        to="listagemequipamento"
       >
         <ListItemIcon><TocIcon /></ListItemIcon>
         <ListItemText>Lista de equipamentos</ListItemText>

@@ -46,13 +46,17 @@ export const useStyles = makeStyles(theme => ({
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: "13px",
+    textAlign: "center",
     color: azulPadraoClaro,
 
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
       border: "none",
-    }
+    },
+    [theme.breakpoints.only("xs")]: {
+      marginLeft: "20px",
+    },
   },
 
   search: {

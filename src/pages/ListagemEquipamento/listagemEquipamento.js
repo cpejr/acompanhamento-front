@@ -19,7 +19,7 @@ export default function ListagemEquipamento(props) {
 
   const equipmentsOriginal = ListEquipments;
 
-  const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
+  const [ordem, setOrdem] = useState({ alfabetica: true, by: "ultimaVisita" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
 
   function FindEquipmentbyID(searchEquipment) {
@@ -75,17 +75,36 @@ export default function ListagemEquipamento(props) {
   }
 
   function ordenar(equipments) {
-    equipments.sort((a, b) => (
-      ordemAlfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
-    ));
+    equipments.sort((a, b) => {
+      switch (ordem.by) {
+        case "serie":
+          a = a.id_equipment
+          b = b.id_equipment
+          break;
+        case "cliente":
+          a = a.client
+          b = b.client
+          break;
+        case "ultimaVisita":
+          a = a.last_collect_date
+          b = b.last_collect_date
+          break;
+
+        default:
+          break;
+      }
+      return (
+        ordem.alfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
+      )
+    });
     return equipments;
   }
 
   function sortOrdem(a, b) {
-    if (a.id_equipent > b.id_equipent) {
+    if (a > b) {
       return 1;
     }
-    if (a.id_equipent < b.id_equipent) {
+    if (a < b) {
       return -1;
     }
     return 0;
@@ -132,8 +151,8 @@ export default function ListagemEquipamento(props) {
                 }
               })
             }
-            setOrdemAlfabetica={setOrdemAlfabetica}
-            ordemAlfabetica={ordemAlfabetica} />
+            setOrdem={setOrdem}
+            ordem={ordem} />
         </div>
       </div>
     </React.Fragment>

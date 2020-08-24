@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './listagemusUsuarioStyle';
+import './listagemUsuarioStyle';
 
 import { Link } from "react-router-dom"
 import StickyHeadTable from './Tabela';
@@ -10,7 +10,7 @@ import {
   CssBaseline,
   Button
 } from "@material-ui/core";
-import { useStyles } from './listagemusUsuarioStyle';
+import { useStyles } from './listagemUsuarioStyle';
 import SearchIcon from '@material-ui/icons/Search';
 
 export default function ListagemUsuario(props) {

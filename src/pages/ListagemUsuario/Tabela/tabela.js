@@ -15,19 +15,8 @@ import {
 import { FiMoreHorizontal } from "react-icons/fi"
 
 export default function StickyHeadTable(props) {
+
   const classes = useStyles();
-
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  // function handleChangePage(event, newPage) {
-  //   setPage(newPage);
-  // };
-
-  // function handleChangeRowsPerPage(event) {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
 
   return (
     <Paper className={classes.root}>
@@ -50,7 +39,6 @@ export default function StickyHeadTable(props) {
           </TableHead>
           <TableBody>
             {props.usersListToDisplay
-              // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(user => (
                 <TableRow hover tabIndex={-1} key={user.name}>
                   <TableCell>{user.name}</TableCell>
@@ -63,20 +51,11 @@ export default function StickyHeadTable(props) {
                 </TableRow>
               )
               )}
-              {props.usersListToDisplay.length <= 0 ? <Typography className={classes.nullUser}>Este usuário não foi encontrado </Typography> : null}
+            {props.usersListToDisplay.length <= 0 ? <Typography className={classes.nullUser}>Este usuário não foi encontrado </Typography> : null}
 
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={props.usersListToDisplay.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      /> */}
     </Paper>
   );
 }

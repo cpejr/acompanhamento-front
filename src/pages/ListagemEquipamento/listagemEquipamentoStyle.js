@@ -54,4 +54,43 @@ export const useStyles = makeStyles(theme => ({
       border: "none",
     }
   },
+
+  search: {
+    marginTop: "40px",
+    position: 'relative',
+    borderRadius: "5px",
+    backgroundColor: azulPadraoClaro,
+    marginRight: theme.spacing(2),
+    marginLeft: 0,
+    width: '486px',
+    [theme.breakpoints.down('xs')]: {
+      width: "100%",
+    }
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  input: {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    // width: isMobile ? "270px" : '430px',
+    width: "430px",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: "12px",
+      width: "270px",
+    }
+  },
+
+  table: {
+    marginTop: "30px"
+  },
 }))

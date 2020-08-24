@@ -6,7 +6,6 @@ export const useStyles = makeStyles({
     width: '100%',
   },
   container: {
-    // overflow: 'hidden',
     maxHeight: 550,
   },
   tableCell: {

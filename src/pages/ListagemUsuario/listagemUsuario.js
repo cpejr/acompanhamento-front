@@ -39,22 +39,22 @@ export default function ListagemUsuario(props) {
     }
   }
 
-  function FindPeoplebyEmail(searchPerson) {
-    if (searchPerson.length > 0) {
-      const usersListToDisplay = [];
-      const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
+  // function FindPeoplebyEmail(searchPerson) {
+  //   if (searchPerson.length > 0) {
+  //     const usersListToDisplay = [];
+  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      usersOriginal.forEach((item) => {
-        const probable = item.email.toLowerCase().match(filteredPeople);
-        if (probable) {
-          usersListToDisplay.push(item);
-        }
-      });
-      setUsersListToDisplay(usersListToDisplay);
-    } else {
-      setUsersListToDisplay(usersOriginal);
-    }
-  }
+  //     usersOriginal.forEach((item) => {
+  //       const probable = item.email.toLowerCase().match(filteredPeople);
+  //       if (probable) {
+  //         usersListToDisplay.push(item);
+  //       }
+  //     });
+  //     setUsersListToDisplay(usersListToDisplay);
+  //   } else {
+  //     setUsersListToDisplay(usersOriginal);
+  //   }
+  // }
 
   function ordenar(users) {
     users.sort((a, b) => (
@@ -94,9 +94,10 @@ export default function ListagemUsuario(props) {
             <InputBase className={classes.placeholder}
               placeholder="Procurar usuário por nome ou email"
               onChange={(e) => {
-                var arroba = "@";
-                if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
-                else FindPeoplebyName(e.target.value);
+                FindPeoplebyName(e.target.value);
+                // var arroba = "@";
+                // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
+                // else FindPeoplebyName(e.target.value);
               }}
               classes={{
                 root: classes.inputRoot,

@@ -19,7 +19,7 @@ export default function ListagemEquipamento(props) {
 
   const equipmentsOriginal = ListEquipments;
 
-  const [ordem, setOrdem] = useState({ alfabetica: true, by: "ultimaVisita" });
+  const [ordem, setOrdem] = useState({ alfabetica: false, by: "ultimaVisita" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
 
   function FindEquipmentbyID(searchEquipment) {
@@ -28,25 +28,7 @@ export default function ListagemEquipamento(props) {
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), 'g');
 
       equipmentsOriginal.forEach((item) => {
-        const probable = item.id_equipent.toLowerCase().match(filteredEquipment);
-        if (probable) {
-          equipmentsListToDisplay.push(item);
-        }
-
-      });
-      setEquipmentsListToDisplay(equipmentsListToDisplay);
-    } else {
-      setEquipmentsListToDisplay(equipmentsOriginal);
-    }
-  }
-
-  function FindEquipmentbyClient(searchEquipment) {
-    if (searchEquipment.length > 0) {
-      const equipmentsListToDisplay = [];
-      const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), 'g');
-
-      equipmentsOriginal.forEach((item) => {
-        const probable = item.client.toLowerCase().match(filteredEquipment);
+        const probable = item.id_equipment.toLowerCase().match(filteredEquipment);
         if (probable) {
           equipmentsListToDisplay.push(item);
         }
@@ -57,23 +39,23 @@ export default function ListagemEquipamento(props) {
     }
   }
 
-  function FindEquipmentbyLastVisit(searchEquipment) {
-    if (searchEquipment.length > 0) {
-      const equipmentsListToDisplay = [];
-      const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), 'g');
+  // function FindPeoplebyName(searchPerson) {
+  //   if (searchPerson.length > 0) {
+  //     const usersListToDisplay = [];
+  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      equipmentsOriginal.forEach((item) => {
-        const probable = item.last_collect_date.toLowerCase().match(filteredEquipment);
-        if (probable) {
-          equipmentsListToDisplay.push(item);
-        }
-      });
-      setEquipmentsListToDisplay(equipmentsListToDisplay);
-    } else {
-      setEquipmentsListToDisplay(equipmentsOriginal);
-    }
-  }
+  //     usersOriginal.forEach((item) => {
+  //       const probable = item.name.toLowerCase().match(filteredPeople);
+  //       if (probable) {
+  //         usersListToDisplay.push(item);
+  //       }
 
+  //     });
+  //     setUsersListToDisplay(usersListToDisplay);
+  //   } else {
+  //     setUsersListToDisplay(usersOriginal);
+  //   }
+  // }
   function sortOrdem(a, b) {
     if (a > b) {
       return 1;
@@ -128,11 +110,7 @@ export default function ListagemEquipamento(props) {
           <div className={classes.searchInput}>
             <InputBase className={classes.placeholder}
               placeholder="Procurar equipamento"
-              onChange={(e) => {
-                FindEquipmentbyID(e.target.value)
-                FindEquipmentbyLastVisit(e.target.value)
-                FindEquipmentbyClient(e.target.value)
-              }}
+              onChange={(e) => FindEquipmentbyID(e.target.value)}
               classes={{
                 root: classes.inputRoot,
                 input: classes.input,

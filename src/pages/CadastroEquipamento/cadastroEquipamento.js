@@ -124,7 +124,7 @@ export default function CadastroEquipamento(props) {
               className={classes.inputs}
               value={formData.cpf}
               onChange={handleChangeInput}
-              label="CPF"
+              label="CPF/CNPJ"
               type="text"
               helperText="*Obrigatório"
               variant="filled"

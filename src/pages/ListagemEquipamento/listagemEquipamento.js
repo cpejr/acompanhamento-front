@@ -82,24 +82,7 @@ export default function ListagemEquipamento(props) {
       return -1;
     }
     return 0;
-  }
-
-  function sortOrdemByDate(a, b) {
-    const teste = a.split("/").reverse().join("");
-    const dataB = b.split("/").join("");
-    const anoA = a.split("/")
-    const anoB = b.split("/")
-
-    console.log(teste)
-
-    if (anoA > anoB) return 1;
-    else if (anoA < anoB) return -1;
-    else { return 0; }
-    //   if (mesA > mesB) return 1;
-    //   else if (mesA < mesB) return -1;
-    //   else return 0;
-    // }
-  }
+  }//função que ordena itens de um array
 
   function ordenar(equipments) {
     equipments.sort((a, b) => {
@@ -125,7 +108,7 @@ export default function ListagemEquipamento(props) {
       )
     });
     return equipments;
-  }
+  }// logica da ordenação (alfabetica ou inversa)
 
   return (
     <React.Fragment>

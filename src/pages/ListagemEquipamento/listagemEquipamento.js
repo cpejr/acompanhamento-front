@@ -74,6 +74,33 @@ export default function ListagemEquipamento(props) {
     }
   }
 
+  function sortOrdem(a, b) {
+    if (a > b) {
+      return 1;
+    }
+    if (a < b) {
+      return -1;
+    }
+    return 0;
+  }
+
+  function sortOrdemByDate(a, b) {
+    const teste = a.split("/").reverse().join("");
+    const dataB = b.split("/").join("");
+    const anoA = a.split("/")
+    const anoB = b.split("/")
+
+    console.log(teste)
+
+    if (anoA > anoB) return 1;
+    else if (anoA < anoB) return -1;
+    else { return 0; }
+    //   if (mesA > mesB) return 1;
+    //   else if (mesA < mesB) return -1;
+    //   else return 0;
+    // }
+  }
+
   function ordenar(equipments) {
     equipments.sort((a, b) => {
       switch (ordem.by) {
@@ -86,8 +113,8 @@ export default function ListagemEquipamento(props) {
           b = b.client
           break;
         case "ultimaVisita":
-          a = a.last_collect_date
-          b = b.last_collect_date
+          a = a.last_collect_date.split("/").reverse().join("");
+          b = b.last_collect_date.split("/").reverse().join("");
           break;
 
         default:
@@ -98,16 +125,6 @@ export default function ListagemEquipamento(props) {
       )
     });
     return equipments;
-  }
-
-  function sortOrdem(a, b) {
-    if (a > b) {
-      return 1;
-    }
-    if (a < b) {
-      return -1;
-    }
-    return 0;
   }
 
   return (

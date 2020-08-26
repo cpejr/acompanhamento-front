@@ -18,15 +18,10 @@ import CadastroFuncionario from './cadastroFuncionario';
 export default function CadastroUsuario() {
   const classes = useStyles();
 
+  const [formType, setFormType] = useState("");
   const [formData, setFormData] = useState({
     emailPromocional: true,
-    tipo: "",
   });
-
-  function TabPanel(props) {
-    const { children, value, index } = props;
-    return value === index && children;
-  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -38,11 +33,11 @@ export default function CadastroUsuario() {
     setFormData({ ...formData, emailPromocional: checked });
   }
 
-  function handleSubmit(qualForm) {
-    if (qualForm === "cadastroFuncionario") alert("Você é funcionario");
-    else if (qualForm === "cadastroPF") alert("Você é Pessoa Física");
-    else if (qualForm === "cadastroPJ") alert("Você é Pessoa Jurídica");
-    else if (qualForm === "cadastroEquip") alert("Equipamento Cadastrado");
+  async function handleSubmit(qualForm) {
+    if (qualForm === "cadastroFuncionario") await alert("Você é funcionario");
+    else if (qualForm === "cadastroPF") await alert("Você é Pessoa Física");
+    else if (qualForm === "cadastroPJ") await alert("Você é Pessoa Jurídica");
+    else if (qualForm === "cadastroEquip") await alert("Equipamento Cadastrado");
     else alert("Erro")
   }
 
@@ -61,9 +56,8 @@ export default function CadastroUsuario() {
             <InputLabel id="tipo">Tipo de Usuário</InputLabel>
             <Select
               labelId="tipo"
-              name="tipo"
-              value={formData.tipo}
-              onChange={handleChangeInput}
+              value={formType}
+              onChange={(e) => setFormType(e.target.value)}
             >
               <MenuItem value="">Selecione:</MenuItem>
               <MenuItem value="pj" >Pessoa Jurídica</MenuItem>
@@ -73,13 +67,14 @@ export default function CadastroUsuario() {
           </FormControl>
 
           <Box className={classes.Subform}>
-            <TabPanel value={formData.tipo} index="">
+
+            {formType === '' && <div>
               <Typography className={classes.titleType}>
                 Escolha um tipo de Usuário para continuar.
               </Typography>
-            </TabPanel>
+            </div>}
 
-            <TabPanel value={formData.tipo} index="pj">
+            {formType === 'pj' && <>
               <Typography className={classes.titleType}>
                 Dados da Empresa
               </Typography>
@@ -88,9 +83,9 @@ export default function CadastroUsuario() {
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
-            </TabPanel>
+            </>}
 
-            <TabPanel value={formData.tipo} index="pf">
+            {formType === "pf" && <div>
               <Typography className={classes.titleType}>
                 Dados Pessoais
               </Typography>
@@ -99,9 +94,9 @@ export default function CadastroUsuario() {
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
-            </TabPanel>
+            </div>}
 
-            <TabPanel value={formData.tipo} index="funcionario">
+            {formType === "funcionario" && <div>
               <Typography className={classes.titleType}>
                 Dados Pessoais
               </Typography>
@@ -110,7 +105,8 @@ export default function CadastroUsuario() {
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
-            </TabPanel>
+            </div>}
+
           </Box>
 
         </Paper>

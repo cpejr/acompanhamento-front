@@ -43,8 +43,8 @@ function Routes(props) {
               <ListagemUsuario usersList={usersList} />
             </Route>
 
-              {/* Listagem de Equipamentos */}
-              <Route path="/listagemequipamento">
+            {/* Listagem de Equipamentos */}
+            <Route path="/listagemequipamento">
               <ListagemEquipamento usersList={usersList} />
             </Route>
 

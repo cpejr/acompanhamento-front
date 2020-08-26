@@ -48,6 +48,7 @@ function CadastroPF(props) {
               name="nome"
               className={classes.inputForm}
               value={formData.nome}
+              onChange={handleChangeInput}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
@@ -59,6 +60,7 @@ function CadastroPF(props) {
               name="cpf"
               className={classes.inputForm}
               value={formData.cpf}
+              onChange={handleChangeInput}
               label="CPF"
               type="text"
               helperText="*Obrigatório"
@@ -72,6 +74,7 @@ function CadastroPF(props) {
               label="Data de Nascimento"
               defaultValue="2017-05-24"
               value={formData.nascimento}
+              onChange={handleChangeInput}
               helperText="(Opcional)"
               variant="filled"
               type="date"
@@ -82,6 +85,7 @@ function CadastroPF(props) {
               name="telefone"
               className={classes.inputForm}
               value={formData.telefone}
+              onChange={handleChangeInput}
               label="Número de telefone"
               type="number"
               helperText="*Obrigatório"
@@ -89,13 +93,14 @@ function CadastroPF(props) {
               inputRef={telefoneRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
-            
+
           </Grid>
           <Grid item xs={12} md={6} >
-          <TextField
+            <TextField
               name="email"
               className={classes.inputForm}
               value={formData.email}
+              onChange={handleChangeInput}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório"
@@ -106,6 +111,7 @@ function CadastroPF(props) {
               name="emailConfirmar"
               className={classes.inputForm}
               value={formData.emailConfirmar}
+              onChange={handleChangeInput}
               label="Confirmar e-mail"
               type="email"
               helperText="*Obrigatório"
@@ -118,6 +124,7 @@ function CadastroPF(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.senha}
+              onChange={handleChangeInput}
               label="Criar senha"
               type="password"
               helperText="*Obrigatório"
@@ -130,6 +137,7 @@ function CadastroPF(props) {
               autoComplete="off"
               className={classes.inputForm}
               value={formData.senhaConfirmar}
+              onChange={handleChangeInput}
               label="Confirmar senha"
               type="password"
               helperText="*Obrigatório"

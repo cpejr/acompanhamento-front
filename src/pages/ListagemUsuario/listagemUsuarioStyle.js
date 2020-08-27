@@ -85,6 +85,9 @@ export const useStyles = makeStyles(theme => ({
       margin: "20px 0 0",
       flexDirection: "column",
     },
+    "&>*": {
+      marginRight: "30px",
+    }
   },
   checkbox: {
     color: azulPadrao,

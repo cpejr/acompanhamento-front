@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { titlesFontFamilyPadrao, titleFontSize, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadrao } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -76,6 +76,20 @@ export const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  searchFilter: {
+    margin: "20px 0",
+
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.only('xs')]: {
+      margin: "20px 0 0",
+      flexDirection: "column",
+    },
+  },
+  checkbox: {
+    color: azulPadrao,
+  },
+
   inputRoot: {
     color: 'inherit',
   },

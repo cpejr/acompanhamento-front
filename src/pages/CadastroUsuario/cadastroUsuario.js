@@ -74,7 +74,7 @@ export default function CadastroUsuario() {
               </Typography>
             </div>}
 
-            {formType === 'pj' && <>
+            {formType === 'pj' && <div>
               <Typography className={classes.titleType}>
                 Dados da Empresa
               </Typography>
@@ -83,7 +83,7 @@ export default function CadastroUsuario() {
                 handleChangeInput={handleChangeInput}
                 formData={formData}
                 handleSubmit={handleSubmit} />
-            </>}
+            </div>}
 
             {formType === "pf" && <div>
               <Typography className={classes.titleType}>

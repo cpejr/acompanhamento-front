@@ -22,6 +22,7 @@ export const useStyles = makeStyles({
   },
   nullUser: {
     padding: "18px",
+    width: "350px",
     fontWeight: "400",
     fontSize: "16px",
     textAlign: "left",

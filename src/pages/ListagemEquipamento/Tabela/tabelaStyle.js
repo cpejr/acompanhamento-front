@@ -5,21 +5,25 @@ export const useStyles = makeStyles({
   root: {
     width: '100%',
   },
+
   container: {
     maxHeight: 550,
   },
+
   tableCell: {
     minWidth: "170px",
-    position: "relative",
+    position: "sticky",
     backgroundColor: azulPadraoClaro,
     fontWeight: "500",
     fontSize: "16px"
   },
+
   lastTableCell: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center"
   },
+  
   nullEquipament: {
     padding: "18px",
     fontWeight: "400",

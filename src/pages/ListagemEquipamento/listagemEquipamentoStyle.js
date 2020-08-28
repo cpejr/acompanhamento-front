@@ -5,14 +5,12 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-
     width: "90%",
     padding: "50px 0 66px 50px",
     paddingTop: "50px",
     paddingRight: "0px",
     paddingBottom: "66px",
     paddingLeft: "50px",
-
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 30px",
       width: "100%",
@@ -42,13 +40,11 @@ export const useStyles = makeStyles(theme => ({
     marginLeft: "40px",
     padding: "0 20px",
     border: "1px solid", azulPadraoClaro,
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: "13px",
     textAlign: "center",
     color: azulPadraoClaro,
-
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
@@ -71,6 +67,7 @@ export const useStyles = makeStyles(theme => ({
       width: "100%",
     }
   },
+
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -80,13 +77,14 @@ export const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   inputRoot: {
     color: 'inherit',
   },
+
   input: {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    // width: isMobile ? "270px" : '430px',
     width: "430px",
     [theme.breakpoints.down('xs')]: {
       fontSize: "12px",

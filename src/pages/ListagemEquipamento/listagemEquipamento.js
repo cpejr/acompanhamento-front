@@ -39,23 +39,6 @@ export default function ListagemEquipamento(props) {
     }
   }
 
-  // function FindPeoplebyName(searchPerson) {
-  //   if (searchPerson.length > 0) {
-  //     const usersListToDisplay = [];
-  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
-
-  //     usersOriginal.forEach((item) => {
-  //       const probable = item.name.toLowerCase().match(filteredPeople);
-  //       if (probable) {
-  //         usersListToDisplay.push(item);
-  //       }
-
-  //     });
-  //     setUsersListToDisplay(usersListToDisplay);
-  //   } else {
-  //     setUsersListToDisplay(usersOriginal);
-  //   }
-  // }
   function sortOrdem(a, b) {
     if (a > b) {
       return 1;

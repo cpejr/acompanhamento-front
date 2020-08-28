@@ -42,7 +42,7 @@ function CadastroPJ(props) {
   ];
 
   return (
-    <form onSubmit={() => handleSubmit("cadastroPF")}>
+    <form onSubmit={() => handleSubmit("cadastroPJ")}>
       <Grid container spacing={useMediaQuery('(min-width:960px)') ? 5 : 0}>
         <Grid item xs={12} md={6} >
           <TextField

@@ -79,7 +79,7 @@ export default function StickyHeadTable(props) {
                 </TableRow>
               )
               )}
-            {props.equipmentsListToDisplay.length <= 0 ? <Typography className={classes.nullEquipament}>Este equipamento não foi encontrado </Typography> : null}
+            {props.equipmentsListToDisplay.length <= 0 ? <Typography className={classes.nullEquipament}> Este equipamento não foi encontrado </Typography> : null}
           </TableBody>
         </Table>
       </TableContainer>

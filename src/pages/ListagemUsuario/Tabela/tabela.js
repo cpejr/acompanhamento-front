@@ -44,7 +44,7 @@ export default function StickyHeadTable(props) {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.funcao}</TableCell>
                   <TableCell className={classes.lastTableCell}>{user.data}
-                    <Link to='/'>
+                    <Link to='/atualizarusuario'>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
                   </TableCell>

@@ -8,6 +8,10 @@ import CreatePeople from "./services/people";
 export default function App() {
   const [usersList] = useState(CreatePeople.people);
 
+  // React.useEffect(
+
+  // )
+
   const isClient = usersList[0].tipo === "cliente";
 
   return (

@@ -10,6 +10,7 @@ import CadastroUsuario from './pages/CadastroUsuario';
 import CadastroEquipamento from './pages/CadastroEquipamento';
 import ListagemUsuario from './pages/ListagemUsuario';
 import ListagemEquipamento from './pages/ListagemEquipamento';
+import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
 
 import { useStyles } from './routesStyles';
 import Dashboard from './pages/Dashboard/dashboard';
@@ -46,6 +47,11 @@ function Routes(props) {
             {/* Listagem de Equipamentos */}
             <Route path="/listagemequipamento">
               <ListagemEquipamento usersList={usersList} />
+            </Route>
+
+            {/* Atualização de Usuários */}
+            <Route path="/atualizarusuario">
+              <AtualizacaoUsuario user={user} />
             </Route>
 
             {/* Páginas para Testes */}

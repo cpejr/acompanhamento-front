@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CssBaseline,
   Paper,
@@ -11,15 +11,24 @@ import {
   DialogContentText,
   DialogActions
 } from "@material-ui/core"
+import { useParams } from 'react-router';
 
 import { useStyles } from './atualizacaoUsuarioStyle'
+import users from '../../services/people'
 
 function AtualizacaoUsuario(props) {
   const { user } = props;
+  const { id } = useParams();
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState(user);
   const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const user = users.people.find(user => user.id === id);
+
+    setUserData(user);
+  }, [id])
 
   function handleChangeInput(event) {
     const { name, value } = event.target;

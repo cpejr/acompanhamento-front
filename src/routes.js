@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom'
 
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -50,7 +50,8 @@ function Routes(props) {
             </Route>
 
             {/* Atualização de Usuários */}
-            <Route path="/atualizarusuario">
+            <Route path="/au" exact><Redirect to="/" /></Route>
+            <Route path="/au/:id">
               <AtualizacaoUsuario user={user} />
             </Route>
 

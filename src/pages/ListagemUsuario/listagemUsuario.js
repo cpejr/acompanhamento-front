@@ -186,6 +186,7 @@ export default function ListagemUsuario(props) {
             usersListToDisplay={
               ordenar(filterByUsers(usersListToDisplay)).map((user) => {
                 return {
+                  id: user.id,
                   name: user.name,
                   funcao: user.funcao,
                   data: user.lastactive,

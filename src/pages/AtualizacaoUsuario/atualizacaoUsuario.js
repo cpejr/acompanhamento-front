@@ -16,12 +16,11 @@ import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoUsuarioStyle'
 import users from '../../services/people'
 
-function AtualizacaoUsuario(props) {
-  const { user } = props;
+function AtualizacaoUsuario() {
   const { id } = useParams();
 
   const [updating, setUpdating] = useState(false);
-  const [userData, setUserData] = useState(user);
+  const [userData, setUserData] = useState({});
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
@@ -140,7 +139,7 @@ function AtualizacaoUsuario(props) {
                 name="phone"
                 className={classes.input}
                 variant="filled"
-                value={user.phone}
+                value={userData.phone}
                 disabled={!updating}
                 onChange={handleChangeInput}
               />

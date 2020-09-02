@@ -6,10 +6,11 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
+    minHeight: "100vh",
 
     padding: "30px 60px 0",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "30px 5%",
     },
   },
   title: {

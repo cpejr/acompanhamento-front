@@ -1,8 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { azulPadraoClaro } from '../../../StylePadrao/stylePadrao';
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
-
 export const useStyles = makeStyles({
   root: {
     width: '100%',

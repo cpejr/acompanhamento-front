@@ -1,7 +1,7 @@
 const CreatePeople = {
   "people": [
     {
-      id: "15",
+      id: "1",
       funcao: "Administrador",
       lastactive: "15/08/2019",
       name: "Maiara",
@@ -13,7 +13,7 @@ const CreatePeople = {
       tipo: "admin"
     },
     {
-      id: "15",
+      id: "2",
       funcao: "Administrador",
       lastactive: "15/07/2008",
       name: "Antonio",
@@ -24,7 +24,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "15",
+      id: "3",
       funcao: "Cliente",
       lastactive: "27/02/2020",
       name: "Juliana",
@@ -35,7 +35,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "15",
+      id: "4",
       funcao: "Funcionário",
       lastactive: "10/08/2020",
       name: "Arthur",
@@ -46,7 +46,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "15",
+      id: "5",
       funcao: "Cliente",
       lastactive: "10/08/2020",
       name: "Joao",
@@ -57,7 +57,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "15",
+      id: "6",
       funcao: "Administrador",
       lastactive: "10/08/2020",
       name: "Jota",
@@ -68,7 +68,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "17",
+      id: "7",
       funcao: "Funcionário",
       lastactive: "01/08/2020",
       name: "Izabela",
@@ -79,7 +79,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "15",
+      id: "8",
       funcao: "Cliente",
       lastactive: "10/08/2020",
       name: "Talles",
@@ -90,7 +90,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "16",
+      id: "9",
       funcao: "Administrador",
       lastactive: "05/08/2020",
       name: "Sicrano",
@@ -101,7 +101,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "16",
+      id: "10",
       funcao: "Administrador",
       lastactive: "05/08/2020",
       name: "Beutrano",
@@ -112,7 +112,7 @@ const CreatePeople = {
       phone: "98989898",
     },
     {
-      id: "16",
+      id: "11",
       funcao: "Administrador",
       lastactive: "05/08/2020",
       name: "Fulano",

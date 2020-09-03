@@ -51,16 +51,9 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
   },
 
-  appbar: {
-    backgroundColor: "#FFFFFF",
-    width: "180px",
-    boxShadow: "unset",
-    borderRadius: "13px 13px 0px 0px",
-  },
-
   form: {
     backgroundColor: "#FFFFFF",
-    borderRadius: "0px 13px 13px 13px",
+    borderRadius: "13px 13px 13px 13px",
   },
 
   containerForm: {

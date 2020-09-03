@@ -2,9 +2,7 @@ import React, { useState, useRef } from 'react';
 
 import {
   CssBaseline,
-  Tab,
   Typography,
-  AppBar,
   TextField,
   Button,
 } from "@material-ui/core"
@@ -57,10 +55,6 @@ export default function CadastroEquipamento(props) {
           Cadastro de um novo equipamento
         </Typography>
 
-        <AppBar position="sticky" className={classes.appbar}>
-          <Tab className={classes.titleTab} label="Novo Equipamento" />
-        </AppBar>
-
         <form className={classes.form}
           onSubmit={() => handleSubmit("cadastroEquip")}>
           <div className={classes.containerForm}>
@@ -70,7 +64,7 @@ export default function CadastroEquipamento(props) {
               className={classes.inputs}
               value={formData.numeroSerie}
               onChange={handleChangeInput}
-              label="Número da série"
+              label="Número de série"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -124,7 +118,7 @@ export default function CadastroEquipamento(props) {
               className={classes.inputs}
               value={formData.cpf}
               onChange={handleChangeInput}
-              label="CPF/CNPJ"
+              label="CPF/CNPJ do cliente"
               type="text"
               helperText="*Obrigatório"
               variant="filled"

@@ -12,7 +12,7 @@ function AuthContextProvider({ children }) {
     .then(data => setUser(data.data.client))
     .catch(err => console.error(err));
 
-  const isClient = user.funcao === "Cliente";
+  const isClient = user.role === "Cliente";
 
   return (
     <AuthContext.Provider value={{ user, isClient }}>

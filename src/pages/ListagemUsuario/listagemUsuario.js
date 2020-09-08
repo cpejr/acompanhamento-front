@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { useStyles } from './listagemUsuarioStyle';
 import SearchIcon from '@material-ui/icons/Search';
+import ordenar from '../../services/ordenar';
 
 export default function ListagemUsuario(props) {
   const classes = useStyles();
@@ -84,21 +85,21 @@ export default function ListagemUsuario(props) {
     return users;
   }
 
-  function ordenar(users) {
-    users.sort((a, b) => (
-      ordemAlfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
-    ));
-    return users;
-  }
-  function sortOrdem(a, b) {
-    if (a.name > b.name) {
-      return 1;
-    }
-    if (a.name < b.name) {
-      return -1;
-    }
-    return 0;
-  }
+  // function ordenar(users) {
+  //   users.sort((a, b) => (
+  //     ordemAlfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
+  //   ));
+  //   return users;
+  // }
+  // function sortOrdem(a, b) {
+  //   if (a.name > b.name) {
+  //     return 1;
+  //   }
+  //   if (a.name < b.name) {
+  //     return -1;
+  //   }
+  //   return 0;
+  // }
 
   return (
     <React.Fragment>
@@ -184,14 +185,15 @@ export default function ListagemUsuario(props) {
         <div className={classes.table}>
           <StickyHeadTable
             usersListToDisplay={
-              ordenar(filterByUsers(usersListToDisplay)).map((user) => {
-                return {
-                  id: user.id,
-                  name: user.name,
-                  funcao: user.funcao,
-                  data: user.lastactive,
-                }
-              })
+              ordenar(filterByUsers(usersListToDisplay), "name", ordemAlfabetica)
+                .map((user) => {
+                  return {
+                    id: user.id,
+                    name: user.name,
+                    funcao: user.funcao,
+                    data: user.lastactive,
+                  }
+                })
             }
             setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica} />

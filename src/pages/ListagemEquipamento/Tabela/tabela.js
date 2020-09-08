@@ -26,12 +26,12 @@ export default function StickyHeadTable(props) {
             <TableRow>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
-                  active={ordem.by === "serie" ? true : false}
+                  active={ordem.by === "id_equipment" ? true : false}
                   direction={ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
-                    ordem.by === "serie" ?
+                    ordem.by === "id_equipment" ?
                       setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "serie" })
+                      setOrdem({ ...ordem, by: "id_equipment" })
                   }}
                 >
                   Nº série
@@ -39,12 +39,12 @@ export default function StickyHeadTable(props) {
               </TableCell>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
-                  active={props.ordem.by === "cliente" ? true : false}
+                  active={props.ordem.by === "client" ? true : false}
                   direction={props.ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
-                    ordem.by === "cliente" ?
+                    ordem.by === "client" ?
                       setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "cliente" })
+                      setOrdem({ ...ordem, by: "client" })
                   }}
                 >
                   Cliente
@@ -52,12 +52,12 @@ export default function StickyHeadTable(props) {
               </TableCell>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
-                  active={props.ordem.by === "ultimaVisita" ? true : false}
+                  active={props.ordem.by === "last_collect_date" ? true : false}
                   direction={props.ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
-                    ordem.by === "ultimaVisita" ?
+                    ordem.by === "last_collect_date" ?
                       setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "ultimaVisita" })
+                      setOrdem({ ...ordem, by: "last_collect_date" })
                   }}
                 >
                   Última visita

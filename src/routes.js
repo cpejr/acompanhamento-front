@@ -1,66 +1,68 @@
 import React, { Fragment } from 'react';
-import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom'
+import { Route, Router, Switch, Redirect } from 'react-router-dom'
+import history from './history';
+
+import { DataContextProvider } from './context/DataContext';
 
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Menu from './components/Menu';
-// import Dashboard from 'pages/Dashboard/dashboard';
-import Testes from './pages/Testes';
+import Dashboard from './pages/Dashboard/dashboard';
 import CadastroUsuario from './pages/CadastroUsuario';
 import CadastroEquipamento from './pages/CadastroEquipamento';
 import ListagemUsuario from './pages/ListagemUsuario';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
+import Testes from './pages/Testes';
 
 import { useStyles } from './routesStyles';
-import Dashboard from './pages/Dashboard/dashboard';
 
-function Routes(props) {
-  const { isClient, user, usersList, data } = props; //Props vindas do App.js
-
+function Routes() {
   const classes = useStyles();
 
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <Route component={Home} exact path='/' />
         <Route path="/login" component={Login} />
         <Fragment>
-          <Menu user={user.name} isClient={isClient} />
+          <Menu />
           <div className={classes.spaceContent}>
-            {/* DashBoard */}
-            <Route path="/dashboard">
-              <Dashboard isClient={isClient} data={data} />
-            </Route>
+            <DataContextProvider>
+              {/* DashBoard */}
+              <Route path="/dashboard">
+                <Dashboard />
+              </Route>
 
-            {/* Cadastro de Equipamentos */}
-            <Route path="/cadastroequipamento" component={CadastroEquipamento} />
+              {/* Cadastro de Equipamentos */}
+              <Route path="/cadastroequipamento" component={CadastroEquipamento} />
 
-            {/* Cadastro de Usuários */}
-            <Route path="/cadastrousuario" component={CadastroUsuario} />
+              {/* Cadastro de Usuários */}
+              <Route path="/cadastrousuario" component={CadastroUsuario} />
 
-            {/* Listagem de Usuários */}
-            <Route path="/listagemusuario">
-              <ListagemUsuario usersList={usersList} />
-            </Route>
+              {/* Listagem de Usuários */}
+              <Route path="/listagemusuario">
+                <ListagemUsuario />
+              </Route>
 
-            {/* Listagem de Equipamentos */}
-            <Route path="/listagemequipamento">
-              <ListagemEquipamento usersList={usersList} />
-            </Route>
+              {/* Listagem de Equipamentos */}
+              <Route path="/listagemequipamento">
+                <ListagemEquipamento />
+              </Route>
 
-            {/* Atualização de Usuários */}
-            <Route path="/au" exact><Redirect to="/" /></Route>
-            <Route path="/au/:id">
-              <AtualizacaoUsuario user={user} />
-            </Route>
+              {/* Atualização de Usuários */}
+              <Route path="/au" exact><Redirect to="/" /></Route>
+              <Route path="/au/:id">
+                <AtualizacaoUsuario />
+              </Route>
 
-            {/* Páginas para Testes */}
-            <Route path="/testes" component={Testes} />
+              {/* Páginas para Testes */}
+              <Route path="/testes" component={Testes} />
+            </DataContextProvider>
           </div>
         </Fragment>
       </Switch>
-    </BrowserRouter>
+    </Router>
   )
 }
 

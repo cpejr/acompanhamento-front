@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
-import './listagemEquipamentoStyle';
-
+import React, { useState, useContext } from 'react';
 import { Link } from "react-router-dom"
-import StickyHeadTable from './Tabela';
 
 import {
   Button,
   InputBase,
   Typography
 } from "@material-ui/core";
-
-import ListEquipments from '../../services/data'
-import { useStyles } from './listagemEquipamentoStyle';
 import SearchIcon from '@material-ui/icons/Search';
 
-export default function ListagemEquipamento(props) {
+import ordenar from '../../services/ordenar';
+import { DataContext } from '../../context/DataContext';
+import { useStyles } from './listagemEquipamentoStyle';
+import StickyHeadTable from './Tabela';
+
+export default function ListagemEquipamento() {
   const classes = useStyles();
 
-  const equipmentsOriginal = ListEquipments;
+  const { equipmentsList } = useContext(DataContext);
 
-  const [ordem, setOrdem] = useState({ alfabetica: false, by: "ultimaVisita" });
+  const equipmentsOriginal = equipmentsList;
+
+  const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
 
   function FindEquipmentbyID(searchEquipment) {
@@ -38,42 +39,6 @@ export default function ListagemEquipamento(props) {
       setEquipmentsListToDisplay(equipmentsOriginal);
     }
   }
-
-  function sortOrdem(a, b) {
-    if (a > b) {
-      return 1;
-    }
-    if (a < b) {
-      return -1;
-    }
-    return 0;
-  }//função que ordena itens de um array
-
-  function ordenar(equipments) {
-    equipments.sort((a, b) => {
-      switch (ordem.by) {
-        case "serie":
-          a = a.id_equipment
-          b = b.id_equipment
-          break;
-        case "cliente":
-          a = a.client
-          b = b.client
-          break;
-        case "ultimaVisita":
-          a = a.last_collect_date.split("/").reverse().join("");
-          b = b.last_collect_date.split("/").reverse().join("");
-          break;
-
-        default:
-          break;
-      }
-      return (
-        ordem.alfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
-      )
-    });
-    return equipments;
-  }// logica da ordenação (alfabetica ou inversa)
 
   return (
     <React.Fragment>
@@ -104,13 +69,15 @@ export default function ListagemEquipamento(props) {
         <div className={classes.table}>
           <StickyHeadTable
             equipmentsListToDisplay={
-              ordenar(equipmentsListToDisplay).map((equipment) => {
-                return {
-                  id_equipment: equipment.id_equipment,
-                  client: equipment.client,
-                  last_collect_date: equipment.last_collect_date,
-                }
-              })
+              ordenar(equipmentsListToDisplay, ordem.by, ordem.alfabetica,
+                ordem.by === "last_collect_date" ? true : false)
+                .map((equipment) => {
+                  return {
+                    id_equipment: equipment.id_equipment,
+                    client: equipment.client,
+                    last_collect_date: equipment.last_collect_date,
+                  }
+                })
             }
             setOrdem={setOrdem}
             ordem={ordem} />

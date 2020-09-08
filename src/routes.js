@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom'
+import { Route, Router, Switch, Redirect } from 'react-router-dom'
+import history from './history';
 
 import Home from './pages/Home'
 import Login from './pages/Login'
@@ -21,7 +22,7 @@ function Routes(props) {
   const classes = useStyles();
 
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <Route component={Home} exact path='/' />
         <Route path="/login" component={Login} />
@@ -60,7 +61,7 @@ function Routes(props) {
           </div>
         </Fragment>
       </Switch>
-    </BrowserRouter>
+    </Router>
   )
 }
 

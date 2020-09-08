@@ -1,5 +1,5 @@
-function ordenar(equipments, ordemBy, ordemAlfabetica, date) {
-  equipments.sort((a, b) => {
+function ordenar(data, ordemBy, ordemAlfabetica, date) {
+  data.sort((a, b) => {
     if (date) {
       a = a[ordemBy].split("/").reverse().join("");
       b = b[ordemBy].split("/").reverse().join("");
@@ -23,7 +23,7 @@ function ordenar(equipments, ordemBy, ordemAlfabetica, date) {
       ordemAlfabetica ? sortOrdem(a, b) : -sortOrdem(a, b)
     )
   });
-  return equipments;
+  return data;
 }// logica da ordenação (alfabetica ou inversa)
 
 export default ordenar;

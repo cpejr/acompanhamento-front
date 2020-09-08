@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 
@@ -20,10 +20,11 @@ import {
 import { useStyles } from './menuStyles'
 import AdminList from './adminList';
 import ClientList from './clientList';
+import { AuthContext } from '../../context/AuthContext';
 
-export default function Menu({ isClient, user }) {
+export default function Menu() {
   const classes = useStyles();
-
+  const { user, isClient } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -51,7 +52,7 @@ export default function Menu({ isClient, user }) {
         </div>
         <div className={classes.user}>
           <Typography variant="subtitle1" className={classes.userName}>
-            {user}
+            {user.name}
           </Typography>
         </div>
       </div>

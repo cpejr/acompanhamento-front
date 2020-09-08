@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import './listagemEquipamentoStyle';
-
+import React, { useState, useContext } from 'react';
 import { Link } from "react-router-dom"
-import StickyHeadTable from './Tabela';
 
 import {
   Button,
   InputBase,
   Typography
 } from "@material-ui/core";
-
-import ListEquipments from '../../services/data'
-import ordenar from '../../services/ordenar'
-import { useStyles } from './listagemEquipamentoStyle';
 import SearchIcon from '@material-ui/icons/Search';
 
-export default function ListagemEquipamento(props) {
+import ordenar from '../../services/ordenar';
+import { DataContext } from '../../context/DataContext';
+import { useStyles } from './listagemEquipamentoStyle';
+import StickyHeadTable from './Tabela';
+
+export default function ListagemEquipamento() {
   const classes = useStyles();
 
-  const equipmentsOriginal = ListEquipments;
+  const { equipmentsList } = useContext(DataContext);
+
+  const equipmentsOriginal = equipmentsList;
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);

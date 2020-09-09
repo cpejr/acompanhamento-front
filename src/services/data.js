@@ -8,7 +8,7 @@ const DATA = [
         instalation_date: '01/01/2020',
         maintenance_date: '01/01/2021',
         last_collect_date: '01/07/2020',
-        situation: 'ok',
+        situation: 'Ok',
         observation: '',
     },
     {
@@ -20,7 +20,7 @@ const DATA = [
         instalation_date: '20/07/2019',
         maintenance_date: '20/07/2020',
         last_collect_date: '20/05/2020',
-        situation: 'revisao',
+        situation: 'Revisão',
         observation: '',
     },
     {
@@ -32,7 +32,7 @@ const DATA = [
         instalation_date: '03/03/2003',
         maintenance_date: '10/08/2020',
         last_collect_date: '08/06/2020',
-        situation: 'atencao',
+        situation: 'Atenção',
         observation: '',
     },
     {
@@ -44,7 +44,7 @@ const DATA = [
         instalation_date: '04/08/2019',
         maintenance_date: '04/08/2020',
         last_collect_date: '04/04/2020',
-        situation: 'atencao',
+        situation: 'Atenção',
         observation: '',
     },
     {
@@ -56,7 +56,7 @@ const DATA = [
         instalation_date: '05/05/2020',
         maintenance_date: '05/05/2021',
         last_collect_date: '20/05/2020',
-        situation: 'ok',
+        situation: 'Ok',
         observation: '',
     },
     {
@@ -68,7 +68,7 @@ const DATA = [
         instalation_date: '05/05/2020',
         maintenance_date: '05/05/2021',
         last_collect_date: '20/05/2020',
-        situation: 'ok',
+        situation: 'Ok',
         observation: '',
     },
     {
@@ -80,7 +80,7 @@ const DATA = [
         instalation_date: '05/05/2020',
         maintenance_date: '05/05/2021',
         last_collect_date: '20/05/2020',
-        situation: 'ok',
+        situation: 'Ok',
         observation: '',
     },
     {
@@ -92,7 +92,7 @@ const DATA = [
         instalation_date: '05/05/2020',
         maintenance_date: '05/05/2021',
         last_collect_date: '20/05/2020',
-        situation: 'ok',
+        situation: 'Ok',
         observation: '',
     },
     {
@@ -104,7 +104,7 @@ const DATA = [
         instalation_date: '05/05/2020',
         maintenance_date: '05/05/2021',
         last_collect_date: '20/05/2020',
-        situation: 'ok',
+        situation: 'Ok',
         observation: '',
     }
 ]

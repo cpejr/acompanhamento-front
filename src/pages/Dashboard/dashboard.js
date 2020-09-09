@@ -22,9 +22,9 @@ export default function Dashboard() {
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
 
     equipmentsList.forEach(equipment => {
-      if (equipment.situation === "ok") numOk++;
-      else if (equipment.situation === "atencao") numAtencao++;
-      else if (equipment.situation === "revisao") numRevisao++;
+      if (equipment.situation === "Ok") numOk++;
+      else if (equipment.situation === "Atenção") numAtencao++;
+      else if (equipment.situation === "Revisão") numRevisao++;
     });
 
     setSitNum({

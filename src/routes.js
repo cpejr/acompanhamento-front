@@ -14,6 +14,7 @@ import ListagemUsuario from './pages/ListagemUsuario';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
 import Testes from './pages/Testes';
+import ListagemDashboard from './pages/ListagemDashboard';
 
 import { useStyles } from './routesStyles';
 
@@ -33,6 +34,9 @@ function Routes() {
               <Route path="/dashboard">
                 <Dashboard />
               </Route>
+
+              {/* Listagem de Usuários via Dashboard */}
+              <Route path="/listagemdashboard/:situacao" component={ListagemDashboard} />
 
               {/* Cadastro de Equipamentos */}
               <Route path="/cadastroequipamento" component={CadastroEquipamento} />

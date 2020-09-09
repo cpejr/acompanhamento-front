@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import {
     Button,
@@ -10,15 +10,18 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import ordenar from '../../services/ordenar';
 import { DataContext } from '../../context/DataContext';
-import { useStyles } from './listagemEquipamentoStyle';
+import { useStyles } from './ListagemDashboardStyle';
 import StickyHeadTable from './Tabela';
+import data from '../../services/data';
 
 export default function ListagemDashboard() {
     const classes = useStyles();
+    const { situacao } = useParams();
+    const equipmentsOriginal = data.filter(equipment => equipment.situation === situacao)
+
+    console.log(equipmentsOriginal);
 
     const { equipmentsList } = useContext(DataContext);
-
-    const equipmentsOriginal = equipmentsList;
 
     const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
     const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);

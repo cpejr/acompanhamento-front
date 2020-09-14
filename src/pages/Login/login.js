@@ -85,7 +85,7 @@ export default function Login() {
           />
 
           <div>
-            <Link to="/" className={classes.forgotPassword}>Esqueci minha senha!</Link>
+            <Link to="./esquecisenha" className={classes.forgotPassword}>Esqueci minha senha!</Link>
           </div>
 
           <div>

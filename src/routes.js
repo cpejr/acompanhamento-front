@@ -15,6 +15,7 @@ import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
 import Testes from './pages/Testes';
 import ListagemDashboard from './pages/ListagemDashboard';
+import EsqueciSenha from './pages/EsqueciSenha';
 
 import { useStyles } from './routesStyles';
 
@@ -26,6 +27,7 @@ function Routes() {
       <Switch>
         <Route component={Home} exact path='/' />
         <Route path="/login" component={Login} />
+        <Route path="/esquecisenha" component={EsqueciSenha} />
         <Fragment>
           <Menu />
           <div className={classes.spaceContent}>

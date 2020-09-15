@@ -22,8 +22,8 @@ const useStyles = makeStyles({
     color: "#FFFFFF",
     fontFamily: "Roboto, sans-serif",
     fontWeight: "bold",
-    width: "552px",
-    height: "73px",
+    width: "21rem",
+    height: "5rem",
     backgroundColor: "#FE2121",
     border: "1px solid rgba(0, 0, 0, 0.12)",
     borderRadius: "2px"

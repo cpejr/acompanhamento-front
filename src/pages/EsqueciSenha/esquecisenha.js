@@ -70,6 +70,7 @@ export default function EsqueciSenha() {
                 } />
               </InputAdornment>,
             }}
+            autoComplete={false}
             type="email"
             variant="outlined"
             id="email"

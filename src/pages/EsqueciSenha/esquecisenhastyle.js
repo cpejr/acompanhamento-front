@@ -40,7 +40,7 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    margin: "40px 0",
+    margin: "20px 0 30px",
     [theme.breakpoints.only('xs')]: {
       margin: "20px 0",
       fontSize: "25px"
@@ -82,8 +82,8 @@ export const useStyles = makeStyles(theme => ({
 
     width: "100%",
     height: "56px",
-    marginBottom: "20px",
     marginTop: "20px",
+    marginBottom: "10px",
 
     "&:hover": {
       background: vermelhoPadraoEscuro,

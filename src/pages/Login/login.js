@@ -39,8 +39,7 @@ export default function Login() {
   return (
     <React.Fragment>
       <CssBaseline /> {/* Reseta todo estilo padrão do navegador (margens e padding) */}
-
-      <div className={classes.root}> {/* Envolve toda página */}
+      <div className={classes.root}>
         <div className={classes.loginLogo}></div>
 
         <div className={classes.loginBox}>
@@ -49,9 +48,7 @@ export default function Login() {
           <Typography className={classes.loginTxt}>Login</Typography>
 
           {/* Email */}
-          <TextField className={classes.email}
-            // label="email"
-            id="outlined-start-adornment"
+          <TextField className={classes.input}
             InputProps={{
               startAdornment: <InputAdornment position="start">
                 <FiMail size={24} className={classes.icon} />
@@ -61,15 +58,13 @@ export default function Login() {
           />
 
           {/* Senha */}
-          <OutlinedInput className={classes.password}
-            id="outlined-adornment-password"
+          <OutlinedInput className={classes.input}
             type={values.showPassword ? 'text' : 'password'}
             value={values.password}
             onChange={handleChange('password')}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"

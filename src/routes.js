@@ -16,6 +16,8 @@ import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
 import Testes from './pages/Testes';
 import ListagemDashboard from './pages/ListagemDashboard';
 import EsqueciSenha from './pages/EsqueciSenha';
+import DefiniçaoSenha from './pages/DefiniçaoSenha';
+
 
 import { useStyles } from './routesStyles';
 
@@ -28,6 +30,7 @@ function Routes() {
         <Route component={Home} exact path='/' />
         <Route path="/login" component={Login} />
         <Route path="/esquecisenha" component={EsqueciSenha} />
+        <Route path="/definiçaosenha" component={DefiniçaoSenha} />
         <Fragment>
           <Menu />
           <div className={classes.spaceContent}>

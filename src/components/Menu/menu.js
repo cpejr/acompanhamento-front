@@ -20,6 +20,7 @@ import {
 import { useStyles } from './menuStyles'
 import AdminList from './adminList';
 import ClientList from './clientList';
+import ShortcutsList from './shortcutsList';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function Menu() {
@@ -106,7 +107,8 @@ export default function Menu() {
           </div>
           <Divider />
           <List>
-            {isClient ? <ClientList /> : <AdminList />}
+            {/* {isClient ? <ClientList /> : <AdminList />} */}
+            <ShortcutsList isClient={isClient} />
           </List>
         </Drawer>
       </Hidden>
@@ -146,7 +148,8 @@ export default function Menu() {
           </div>
           <Divider />
           <List>
-            {isClient ? <ClientList /> : <AdminList />}
+            {/* {isClient ? <ClientList /> : <AdminList />} */}
+            <ShortcutsList isClient={isClient} />
           </List>
         </Drawer>
       </Hidden>

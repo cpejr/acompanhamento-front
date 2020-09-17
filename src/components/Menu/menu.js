@@ -108,7 +108,7 @@ export default function Menu() {
           <Divider />
           <List>
             {/* {isClient ? <ClientList /> : <AdminList />} */}
-            <ShortcutsList isClient={isClient} />
+            <ShortcutsList isClient={isClient} hidden={(open || mobileOpen)} />
           </List>
         </Drawer>
       </Hidden>
@@ -149,7 +149,7 @@ export default function Menu() {
           <Divider />
           <List>
             {/* {isClient ? <ClientList /> : <AdminList />} */}
-            <ShortcutsList isClient={isClient} />
+            <ShortcutsList isClient={isClient} hideen={true} />
           </List>
         </Drawer>
       </Hidden>

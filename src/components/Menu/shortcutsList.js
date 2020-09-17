@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  Tooltip
 } from '@material-ui/core'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TocIcon from '@material-ui/icons/Toc';
@@ -51,15 +52,17 @@ const Items = [
   },
 ];
 
-const ShortcutsList = ({ isClient }) => (
+const ShortcutsList = ({ isClient, hidden }) => (
   <>
     {Items
       .filter(({ adminOnly }) => isClient ? !adminOnly : true)
       .map(({ title, to, icon }) => (
-        <ListItem button component={Link} to={to}>
-          <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText>{title}</ListItemText>
-        </ListItem>
+        <Tooltip title={title} placement="right" disableHoverListener={hidden} arrow>
+          <ListItem button component={Link} to={to}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText>{title}</ListItemText>
+          </ListItem>
+        </Tooltip>
       ))}
   </>
 )

@@ -15,7 +15,7 @@ function ClientList() {
       <ListItem
         button
         component={Link}
-        to=""
+        to="/au/me"
       >
         <ListItemIcon><PersonIcon /></ListItemIcon>
         <ListItemText>Perfil</ListItemText>

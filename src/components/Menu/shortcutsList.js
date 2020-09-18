@@ -22,7 +22,7 @@ const Items = [
   },
   {
     title: "Perfil",
-    to: "/",
+    to: "/au/me",
     icon: <PersonIcon />,
     adminOnly: true
   },

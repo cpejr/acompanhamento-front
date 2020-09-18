@@ -11,13 +11,13 @@ import {
   Snackbar,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { useStyles } from './definiçaosenhastyle';
+import { useStyles } from './definicaoNovaSenhaStyle';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import history from '../../history';
 
-export default function DefiniçãoSenha() {
+export default function DefinicaoNovaSenha() {
   const classes = useStyles();
 
   const [error1, setError1] = React.useState("");

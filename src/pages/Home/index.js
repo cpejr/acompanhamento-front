@@ -47,7 +47,7 @@ export default function Home() {
           </Button>
         </Link>
 
-        <Link to="/definiçaosenha" className={classes.link}>
+        <Link to="/definicaosenha" className={classes.link}>
           <Button variant="contained" className={classes.button}>
             Ir para Redefinição de Senha
           </Button>

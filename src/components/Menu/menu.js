@@ -15,11 +15,12 @@ import {
   Typography,
   Divider,
   IconButton,
+  Menu as MenuPerfil,
+  MenuItem,
+  Button
 } from '@material-ui/core';
 
 import { useStyles } from './menuStyles'
-import AdminList from './adminList';
-import ClientList from './clientList';
 import ShortcutsList from './shortcutsList';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -45,18 +46,18 @@ export default function Menu() {
     return (
       <div className={classes.headerInfos}>
         <div className={classes.mainTitle}>
-          <Link className={classes.buttonHome} to="/app">
+          <Link className={classes.link} to="/dashboard">
             <Typography variant="h6" className={classes.pagTitle} noWrap>
               Paraíso das Bombas
             </Typography>
           </Link>
         </div>
         <div className={classes.user}>
-          <Typography variant="subtitle1" className={classes.userName}>
+          <Button className={classes.link} component={Link} to="/au/me">
             {user.name}
-          </Typography>
+          </Button>
         </div>
-      </div>
+      </div >
     );
   }
 

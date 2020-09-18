@@ -84,7 +84,7 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center"
   },
-  buttonHome: {
+  link: {
     textDecoration: "none",
     color: "white"
   },

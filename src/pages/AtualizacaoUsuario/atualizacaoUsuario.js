@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   CssBaseline,
   Paper,
@@ -15,19 +15,24 @@ import { useParams } from 'react-router';
 
 import { useStyles } from './atualizacaoUsuarioStyle'
 import users from '../../services/people'
+import { AuthContext } from '../../context/AuthContext';
 
 function AtualizacaoUsuario() {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const user = users.people.find(user => user.id === id);
-
-    setUserData(user);
-  }, [id])
+    if (id === "me") {
+      setUserData(user);
+    } else {
+      const user = users.people.find(user => user.id === id);
+      setUserData(user);
+    }
+  }, [id, user])
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -88,7 +93,7 @@ function AtualizacaoUsuario() {
       <div className={classes.root}>
 
         <h1 className={classes.title}>
-          Detalhes do Usuário
+          {id === "me" ? "Seu Perfil" : "Detalhes do Usuário"}
         </h1>
 
         <AreYouSure />
@@ -181,6 +186,7 @@ function AtualizacaoUsuario() {
               </Button>
               <Button variant="contained" color="secondary" className={classes.btn}
                 onClick={handleDelete}
+                disabled={id === "me" && !updating}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>

@@ -15,20 +15,20 @@ import {
   Typography,
   Divider,
   IconButton,
-  Menu as MenuPerfil,
-  MenuItem,
   Button
 } from '@material-ui/core';
 
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
 import { AuthContext } from '../../context/AuthContext';
+import MenuPerfil from '../MenuPerfil';
 
 export default function Menu() {
   const classes = useStyles();
   const { user, isClient } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen)
@@ -42,6 +42,14 @@ export default function Menu() {
     setOpen(false);
   };
 
+  const handleClickMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   const HeaderToolbar = () => {
     return (
       <div className={classes.headerInfos}>
@@ -53,9 +61,15 @@ export default function Menu() {
           </Link>
         </div>
         <div className={classes.user}>
-          <Button className={classes.link} component={Link} to="/au/me">
+          <Button
+            className={classes.link}
+            aria-controls="customized-menu"
+            aria-haspopup="true"
+            onClick={handleClickMenu}
+          >
             {user.name}
           </Button>
+          <MenuPerfil handleClose={handleCloseMenu} handleClick={handleClickMenu} anchorEl={anchorEl} />
         </div>
       </div >
     );

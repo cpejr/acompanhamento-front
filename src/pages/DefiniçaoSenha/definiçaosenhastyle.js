@@ -61,6 +61,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     width: "100%",
+    marginBottom: "20px",
   },
 
   buttonDefiniçao: {

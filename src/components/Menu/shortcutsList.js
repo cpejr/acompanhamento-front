@@ -57,7 +57,7 @@ const ShortcutsList = ({ isClient, hidden }) => (
     {Items
       .filter(({ adminOnly }) => isClient ? !adminOnly : true)
       .map(({ title, to, icon }) => (
-        <Tooltip title={title} placement="right" disableHoverListener={hidden} arrow>
+        <Tooltip title={title} key={title} placement="right" disableHoverListener={hidden} arrow>
           <ListItem button component={Link} to={to}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText>{title}</ListItemText>

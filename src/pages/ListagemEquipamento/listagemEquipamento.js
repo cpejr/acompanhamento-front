@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 import {
   Button,
@@ -16,9 +16,13 @@ import StickyHeadTable from './Tabela';
 export default function ListagemEquipamento() {
   const classes = useStyles();
 
-  const { equipmentsList } = useContext(DataContext);
+  const query = new URLSearchParams(useLocation().search);
+  const situation = query.get('situation');
 
-  const equipmentsOriginal = equipmentsList;
+  const allEquipment = useContext(DataContext).equipmentsList;
+  const equipmentsOriginal = situation ?
+    allEquipment.filter(equipment => equipment.situation === situation) :
+    allEquipment;
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);

@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core'
-import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
 import { vermelhoPadrao, vermelhoPadraoEscuro, azulPadrao, background, textFontFamilyPadrao } from '../../StylePadrao/stylePadrao';
 

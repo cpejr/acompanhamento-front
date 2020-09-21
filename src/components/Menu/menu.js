@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import history from '../../history'
 import clsx from 'clsx';
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -10,46 +11,52 @@ import {
   Drawer,
   AppBar,
   Toolbar,
-  List,
   CssBaseline,
   Typography,
   Divider,
   IconButton,
-  Button
+  Button,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
 
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
 import { AuthContext } from '../../context/AuthContext';
-import MenuPerfil from '../MenuPerfil';
 
 export default function Menu() {
   const classes = useStyles();
   const { user, isClient } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  // MenuProfile
+  const [openMenu, setOpenMenu] = React.useState(false);
+  const handleToggleMenu = () => {
+    setOpenMenu(!openMenu);
+  };
+  const handleClickMenu = (path) => {
+    setOpenMenu(false);
+    history.push(path);
+  }
+
+  // Drawer
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen)
   }
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
-  const handleClickMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
+  // Appbar
   const HeaderToolbar = () => {
     return (
       <div className={classes.headerInfos}>
@@ -60,17 +67,31 @@ export default function Menu() {
             </Typography>
           </Link>
         </div>
-        <div className={classes.user}>
+
+        {/* Menu e perfil */}
+        <div className={classes.userProfile}>
           <Button
             className={classes.link}
-            aria-controls="customized-menu"
-            aria-haspopup="true"
-            onClick={handleClickMenu}
+            onClick={handleToggleMenu}
           >
             {user.name}
           </Button>
-          <MenuPerfil handleClose={handleCloseMenu} handleClick={handleClickMenu} anchorEl={anchorEl} />
-        </div>
+          {openMenu && <Paper
+            className={classes.menuProfile}
+          >
+            <List>
+              <ListItem button onClick={() => handleClickMenu('/au/me')}>
+                <ListItemIcon><PersonIcon /></ListItemIcon>
+                <ListItemText>Perfil</ListItemText>
+              </ListItem>
+              <ListItem button onClick={() => handleClickMenu('/login')}>
+                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                <ListItemText>Sair</ListItemText>
+              </ListItem>
+            </List>
+          </Paper>}
+        </div >
+
       </div >
     );
   }

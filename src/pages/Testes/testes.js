@@ -1,31 +1,36 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
-
-import MenuPerfil from '../../components/MenuPerfil';
+import { Button, Menu as MenuProfile, MenuItem } from '@material-ui/core';
 
 function Testes() {
+  // MenuProfile
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
 
-  const handleClickMenu = (event) => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
+
+
   return (
-    <>
+    <div>
       <Button
-        aria-controls="customized-menu"
-        aria-haspopup="true"
-        variant="contained"
-        color="primary"
-        onClick={handleClickMenu}
+        onClick={handleMenu}
       >
-        Open Menu
+        Você
       </Button>
-      <MenuPerfil handleClose={handleCloseMenu} handleClick={handleClickMenu} anchorEl={anchorEl} />
-    </>
+      <MenuProfile
+        anchorEl={anchorEl}
+        open={openMenu}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+        <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+      </MenuProfile>
+    </div>
   );
 }
 

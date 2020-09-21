@@ -1,11 +1,37 @@
 import React from 'react';
-import history from '../../history';
+import { Button, Menu as MenuProfile, MenuItem } from '@material-ui/core';
 
-export default function Testes() {
-  function mudarUrl() {
-    history.push('dashboard');
-  }
+function Testes() {
+  // MenuProfile
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenu = Boolean(anchorEl);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+
   return (
-    <button onClick={mudarUrl}>Vai para a dashboard</button>
+    <div>
+      <Button
+        onClick={handleMenu}
+      >
+        Você
+      </Button>
+      <MenuProfile
+        anchorEl={anchorEl}
+        open={openMenu}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={handleCloseMenu}>Profile</MenuItem>
+        <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+      </MenuProfile>
+    </div>
   );
 }
+
+export default Testes;

@@ -52,7 +52,7 @@ export default function EsqueciSenha() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.esquecisenhaLogo}></div>
+        <Link to="/" className={classes.loginLogo}></Link>
 
         <Snackbar autoHideDuration={6000} open={openMensage} onClose={handleCloseMensage}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>

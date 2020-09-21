@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {FiLock, FiAlertTriangle} from "react-icons/fi";
+import { FiLock, FiAlertTriangle } from "react-icons/fi";
 import {
   TextField,
   CssBaseline,
@@ -38,18 +38,16 @@ export default function DefinicaoNovaSenha() {
     setError1("");
     setError2("");
     console.log(`senha: ${senha} senhaConfirmar: ${senhaConfirmar}`);
-    if(senha.length > 4){
-      if(senha === senhaConfirmar){
+    if (senha.length > 4) {
+      if (senha === senhaConfirmar) {
         setOpenMensage(true);
         setTimeout(() => {
           history.push('/login');
         }, 5000);
       }
-      else
-      {setError2("Senhas diferentes");}
+      else { setError2("Senhas diferentes"); }
     }
-    else
-    {setError1("Senha curta");}
+    else { setError1("Senha curta"); }
     // enviei para o backend e espero uma resposta para
     // se conseguir enviar codigo:
   }
@@ -64,7 +62,7 @@ export default function DefinicaoNovaSenha() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.definiçaosenhaLogo}></div>
+        <Link to="/" className={classes.loginLogo}></Link>
 
         <Snackbar autoHideDuration={5000} open={openMensage} onClose={handleCloseMensage}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
@@ -94,12 +92,12 @@ export default function DefinicaoNovaSenha() {
             </InputAdornment>}
             labelWidth={0}
             error={!!error1}
-            />
-            {!!error1 && <>
-              <p className={classes.errorText}>
-                <FiAlertTriangle /> {error1}
-              </p>
-            </>}
+          />
+          {!!error1 && <>
+            <p className={classes.errorText}>
+              <FiAlertTriangle /> {error1}
+            </p>
+          </>}
 
           <OutlinedInput className={classes.input}
             id="senhaConfirmar"
@@ -125,9 +123,9 @@ export default function DefinicaoNovaSenha() {
               <FiAlertTriangle /> {error2}
             </p>
           </>}
-      
-            <Button className={classes.buttonDefiniçao} onClick={handleSubmit} disabled={openMensage}>
-              Confirmar nova senha
+
+          <Button className={classes.buttonDefiniçao} onClick={handleSubmit} disabled={openMensage}>
+            Confirmar nova senha
             </Button>
         </div>
       </div>

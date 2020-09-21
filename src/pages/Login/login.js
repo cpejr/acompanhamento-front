@@ -40,7 +40,7 @@ export default function Login() {
     <React.Fragment>
       <CssBaseline /> {/* Reseta todo estilo padrão do navegador (margens e padding) */}
       <div className={classes.root}>
-        <div className={classes.loginLogo}></div>
+        <Link to="/" className={classes.loginLogo}></Link>
 
         <div className={classes.loginBox}>
 

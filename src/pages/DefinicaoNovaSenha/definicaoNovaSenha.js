@@ -76,6 +76,7 @@ export default function DefinicaoNovaSenha() {
           <OutlinedInput className={classes.input}
             type={showPassword ? 'text' : 'password'}
             id="senha"
+            placeholder="Criar senha"
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -100,6 +101,7 @@ export default function DefinicaoNovaSenha() {
 
           <OutlinedInput className={classes.input}
             id="senhaConfirmar"
+            placeholder="Confirmar senha"
             type={showPassword ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">

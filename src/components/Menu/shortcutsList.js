@@ -33,8 +33,8 @@ const Items = [
     adminOnly: true
   },
   {
-    title: "Cadastro de equipamento",
-    to: "/cadastroequipamento",
+    title: "Cadastro de modelo",
+    to: "/cadastromodelo",
     icon: <PlaylistAddIcon />,
     adminOnly: true
   },

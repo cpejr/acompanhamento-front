@@ -7,10 +7,10 @@ import {
   Button,
 } from "@material-ui/core"
 
-import { useStyles } from './cadastroEquipamentoStyle';
+import { useStyles } from './cadastroModeloStyle';
 import nextInput from '../../services/nextInput';
 
-export default function CadastroEquipamento(props) {
+export default function CadastroModelo(props) {
   const classes = useStyles();
 
   // Mecanismo do Form

@@ -19,10 +19,9 @@ import history from '../../history';
 export default function DefinicaoNovaSenha() {
   const classes = useStyles();
 
-  const [error1, setError1] = React.useState("");
-  const [error2, setError2] = React.useState("");
+  const [error, setError] = React.useState({ error1: "", error2: "" });
   const [success, setOpenMessage] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState({ pass: false, passConfirm: false });
 
   const handleCloseMessage = (event, reason) => {
     if (reason === 'clickaway') {
@@ -31,34 +30,41 @@ export default function DefinicaoNovaSenha() {
     setOpenMessage(false);
   }
 
-  const handleSubmit = () => {
-    const senha = document.getElementById("senha").value;
-    const senhaConfirmar = document.getElementById("senhaConfirmar").value;
-    setError1("");
-    setError2("");
-    console.log(`senha: ${senha} senhaConfirmar: ${senhaConfirmar}`);
-    if (senha.length > 4) {
+  const errorAnalise = (senha, senhaConfirmar) => {
+    setError(() => ({ error1: "", error2: "" }));
+    // console.log(`senha: ${senha} senhaConfirmar: ${senhaConfirmar}`);
+
+    if (senha.length >= 4) {
       if (senha === senhaConfirmar) {
         setOpenMessage(true);
       }
-      else { setError2("Senhas diferentes"); }
+      else setError(prev => ({ ...prev, error2: "Senhas diferentes" }));
     }
-    else { setError1("Senha curta"); }
+    else if (senha === '') setError(prev => ({ ...prev, error1: "Insira uma senha" }));
+    else setError(prev => ({ ...prev, error1: "Senha curta" }));
     // enviei para o backend e espero uma resposta para
     // se conseguir enviar codigo:
   }
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
+  const handleSubmit = (event) => {
+    event.preventDefault(); //bloqueia eventos padrões do submit
+
+    if (success) history.push('/login');
+    const senha = document.getElementById("senha").value;
+    const senhaConfirmar = document.getElementById("senhaConfirmar").value;
+
+    errorAnalise(senha, senhaConfirmar);
+  }
+
+  const handleClickShowPassword = (who) => {
+    setShowPassword(prev => ({ ...prev, [who]: !prev[who] }));
   };
-
-
 
   return (
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <Link to="/" className={classes.loginLogo}></Link>
+        <Link to="/" className={classes.logo}></Link>
 
         {/* autoHideDuration={5000} */}
         <Snackbar open={success} onClose={handleCloseMessage}
@@ -68,20 +74,20 @@ export default function DefinicaoNovaSenha() {
           </Alert>
         </Snackbar>
 
-        <div className={classes.definiçaosenhaForm}>
+        <form onSubmit={handleSubmit} className={classes.definiçaosenhaForm}>
           <Typography className={classes.title}>Definição de Nova Senha</Typography>
 
           <OutlinedInput className={classes.input}
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword.pass ? 'text' : 'password'}
             id="senha"
             placeholder="Criar senha"
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  onClick={handleClickShowPassword}
+                  onClick={() => handleClickShowPassword("pass")}
                   edge="end"
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword.pass ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
@@ -89,25 +95,25 @@ export default function DefinicaoNovaSenha() {
               <FiLock size={24} className={classes.icon} />
             </InputAdornment>}
             labelWidth={0}
-            error={!!error1}
+            error={!!error.error1}
           />
-          {!!error1 && <>
+          {!!error.error1 && <>
             <p className={classes.errorText}>
-              <FiAlertTriangle /> {error1}
+              <FiAlertTriangle /> {error.error1}
             </p>
           </>}
 
           <OutlinedInput className={classes.input}
             id="senhaConfirmar"
             placeholder="Confirmar senha"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword.passConfirm ? 'text' : 'password'}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  onClick={handleClickShowPassword}
+                  onClick={() => handleClickShowPassword("passConfirm")}
                   edge="end"
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                  {showPassword.passConfirm ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
@@ -115,20 +121,20 @@ export default function DefinicaoNovaSenha() {
               <FiLock size={24} className={classes.icon} />
             </InputAdornment>}
             labelWidth={0}
-            error={!!error2}
+            error={!!error.error2}
           />
-          {!!error2 && <>
+          {!!error.error2 && <>
             <p className={classes.errorText}>
-              <FiAlertTriangle /> {error2}
+              <FiAlertTriangle /> {error.error2}
             </p>
           </>}
 
           <Button className={classes.buttonDefiniçao}
-            onClick={success ? () => { history.push('/login') } : handleSubmit}
+            type="submit"
           >
             {success ? "Fazer login" : "Confirmar nova senha"}
           </Button>
-        </div>
+        </form>
       </div>
     </React.Fragment >
 

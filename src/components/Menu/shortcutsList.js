@@ -12,8 +12,13 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
+<<<<<<<
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
+=======
+<<<<<<< Updated upstream
+>>>>>>>
 import PostAddIcon from '@material-ui/icons/PostAdd';
+import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 
 const Items = [
   {

@@ -8,16 +8,11 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
 
-    width: "90%",
-    padding: "50px 0 66px 50px",
-    paddingTop: "50px",
-    paddingRight: "0px",
-    paddingBottom: "66px",
-    paddingLeft: "50px",
+    width: "100%",
+    padding: "50px 60px 60px 50px",
 
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 30px",
-      width: "100%",
     },
   },
 
@@ -51,23 +46,15 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
   },
 
-  form: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "13px 13px 13px 13px",
-  },
-
-  containerForm: {
-    padding: "20px 60px 40px",
-
-    display: "flex",
-    flexDirection: "column",
-
-    width: "500px",
+  formContainer: {
+    padding: "40px 60px",
+    borderRadius: "13px",
     [theme.breakpoints.only("xs")]: {
-      padding: "0 5% 10%",
-      width: "100%",
-      alignItems: "center"
+      padding: "10%",
     },
+  },
+  form: {
+    maxWidth: "800px"
   },
 
   inputs: {
@@ -83,10 +70,13 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: azulPadraoClaro,
 
     marginTop: "20px",
-
     padding: "10px",
     paddingLeft: "15px",
     paddingRight: "20px",
+    width: "150px",
+    [theme.breakpoints.only("xs")]: {
+      width: "100%",
+    },
 
     fontFamily: textFontFamilyPadrao,
     fontStyle: "normal",

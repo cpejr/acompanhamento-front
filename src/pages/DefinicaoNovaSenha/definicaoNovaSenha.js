@@ -96,6 +96,7 @@ export default function DefinicaoNovaSenha() {
             </InputAdornment>}
             labelWidth={0}
             error={!!error.error1}
+            autoComplete="off"
           />
           {!!error.error1 && <>
             <p className={classes.errorText}>
@@ -122,6 +123,7 @@ export default function DefinicaoNovaSenha() {
             </InputAdornment>}
             labelWidth={0}
             error={!!error.error2}
+            autoComplete="off"
           />
           {!!error.error2 && <>
             <p className={classes.errorText}>

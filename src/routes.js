@@ -12,6 +12,7 @@ import CadastroUsuario from './pages/CadastroUsuario';
 import CadastroModelo from './pages/CadastroModelo';
 import CadastroEquipamento from './pages/CadastroEquipamento';
 import ListagemUsuario from './pages/ListagemUsuario';
+import ListagemModelo from './pages/ListagemModelo';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
 import Testes from './pages/Testes';
@@ -55,6 +56,11 @@ function Routes() {
               {/* Listagem de Usuários */}
               <Route path="/listagemusuario">
                 <ListagemUsuario />
+              </Route>
+
+              {/* Listagem de Modelo */}
+              <Route path="/listagemmodelo">
+                <ListagemModelo />
               </Route>
 
               {/* Listagem de Equipamentos */}

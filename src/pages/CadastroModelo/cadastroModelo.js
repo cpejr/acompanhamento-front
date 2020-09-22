@@ -88,12 +88,12 @@ export default function CadastroModelo(props) {
               <Grid item xs={12} md={6}>
                 <Autocomplete
                   freeSolo
+                  className={classes.inputs}
                   options={["Motor", "Bomba hidráulica"]}
                   renderInput={params => (
                     <TextField
                       name="type"
                       {...params}
-                      className={classes.inputs}
                       value={formData.type}
                       onChange={handleChangeInput}
                       label="Tipo de equipamento"

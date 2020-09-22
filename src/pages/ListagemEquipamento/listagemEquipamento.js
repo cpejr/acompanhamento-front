@@ -4,7 +4,11 @@ import { Link, useLocation } from "react-router-dom"
 import {
   Button,
   InputBase,
-  Typography
+  Typography,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Select,
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -15,6 +19,7 @@ import StickyHeadTable from './Tabela';
 
 export default function ListagemEquipamento() {
   const classes = useStyles();
+  const [filterby, setFilterby] = useState("");
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get('situation');
@@ -69,6 +74,17 @@ export default function ListagemEquipamento() {
               }}
             />
           </div>
+          {/* <FormControl variant="filled" className={classes.inputType}>
+            <InputLabel id="tipo">Filtro</InputLabel>
+            <Select
+              labelId="filtro"
+              value={filterby}
+              onChange={(e) => setFilterby(e.target.value)}
+            >
+              <MenuItem value="modelo" >Modelo</MenuItem>
+              <MenuItem value="cliente" >Cliente</MenuItem>
+            </Select>
+          </FormControl> */}
         </div>
         <div className={classes.table}>
           <StickyHeadTable
@@ -78,6 +94,7 @@ export default function ListagemEquipamento() {
                 .map((equipment) => {
                   return {
                     id_equipment: equipment.id_equipment,
+                    model_equipment: equipment.model_equipment,
                     client: equipment.client,
                     last_collect_date: equipment.last_collect_date,
                   }

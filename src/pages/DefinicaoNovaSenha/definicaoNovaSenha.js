@@ -21,14 +21,14 @@ export default function DefinicaoNovaSenha() {
 
   const [error1, setError1] = React.useState("");
   const [error2, setError2] = React.useState("");
-  const [openMensage, setOpenMensage] = React.useState(false);
+  const [openMessage, setOpenMessage] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleCloseMensage = (event, reason) => {
+  const handleCloseMessage = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpenMensage(false);
+    setOpenMessage(false);
   }
 
   const handleSubmit = () => {
@@ -39,11 +39,8 @@ export default function DefinicaoNovaSenha() {
     console.log(`senha: ${senha} senhaConfirmar: ${senhaConfirmar}`);
     if (senha.length > 4) {
       if (senha === senhaConfirmar) {
-        setOpenMensage(true);
-        setTimeout(() => {
-          history.push('/login');
-        }, 5000);
-      }
+        setOpenMessage(true);
+      } 
       else { setError2("Senhas diferentes"); }
     }
     else { setError1("Senha curta"); }
@@ -63,7 +60,8 @@ export default function DefinicaoNovaSenha() {
       <div className={classes.root}>
         <Link to="/" className={classes.loginLogo}></Link>
 
-        <Snackbar autoHideDuration={5000} open={openMensage} onClose={handleCloseMensage}
+        {/* autoHideDuration={5000} */}
+        <Snackbar  open={openMessage} onClose={handleCloseMessage}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <Alert elevation={6} variant="filled" severity="success">
             A senha foi redefinida com sucesso!
@@ -125,8 +123,10 @@ export default function DefinicaoNovaSenha() {
             </p>
           </>}
 
-          <Button className={classes.buttonDefiniçao} onClick={handleSubmit} disabled={openMensage}>
-            Confirmar nova senha
+          <Button   className={classes.buttonDefiniçao} 
+            onClick={handleSubmit} 
+            >
+            {openMessage ? "Fazer login" : "Confirmar nova senha"}  
             </Button>
         </div>
       </div>

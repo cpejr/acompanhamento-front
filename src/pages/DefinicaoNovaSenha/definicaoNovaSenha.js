@@ -21,7 +21,7 @@ export default function DefinicaoNovaSenha() {
 
   const [error1, setError1] = React.useState("");
   const [error2, setError2] = React.useState("");
-  const [openMessage, setOpenMessage] = React.useState(false);
+  const [success, setOpenMessage] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleCloseMessage = (event, reason) => {
@@ -40,7 +40,7 @@ export default function DefinicaoNovaSenha() {
     if (senha.length > 4) {
       if (senha === senhaConfirmar) {
         setOpenMessage(true);
-      } 
+      }
       else { setError2("Senhas diferentes"); }
     }
     else { setError1("Senha curta"); }
@@ -61,7 +61,7 @@ export default function DefinicaoNovaSenha() {
         <Link to="/" className={classes.loginLogo}></Link>
 
         {/* autoHideDuration={5000} */}
-        <Snackbar  open={openMessage} onClose={handleCloseMessage}
+        <Snackbar open={success} onClose={handleCloseMessage}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <Alert elevation={6} variant="filled" severity="success">
             A senha foi redefinida com sucesso!
@@ -123,11 +123,11 @@ export default function DefinicaoNovaSenha() {
             </p>
           </>}
 
-          <Button   className={classes.buttonDefiniçao} 
-            onClick={handleSubmit} 
-            >
-            {openMessage ? "Fazer login" : "Confirmar nova senha"}  
-            </Button>
+          <Button className={classes.buttonDefiniçao}
+            onClick={success ? () => { history.push('/login') } : handleSubmit}
+          >
+            {success ? "Fazer login" : "Confirmar nova senha"}
+          </Button>
         </div>
       </div>
     </React.Fragment >

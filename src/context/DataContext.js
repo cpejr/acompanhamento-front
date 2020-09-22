@@ -15,7 +15,7 @@ const DataContext = createContext();
 function DataContextProvider({ children }) {
   const classes = useStyles();
 
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [usersList] = useState(CreatePeople.people);
   const [equipmentsList] = useState(DATA);
 

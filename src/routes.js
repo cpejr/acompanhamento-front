@@ -10,6 +10,7 @@ import Menu from './components/Menu';
 import Dashboard from './pages/Dashboard/dashboard';
 import CadastroUsuario from './pages/CadastroUsuario';
 import CadastroModelo from './pages/CadastroModelo';
+import CadastroEquipamento from './pages/CadastroEquipamento';
 import ListagemUsuario from './pages/ListagemUsuario';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
@@ -44,6 +45,9 @@ function Routes() {
 
               {/* Cadastro de Modelo */}
               <Route path="/cadastromodelo" component={CadastroModelo} />
+
+              {/* Cadastro de Equipamento */}
+              <Route path="/cadastroequipamento" component={CadastroEquipamento} />
 
               {/* Cadastro de Usuários */}
               <Route path="/cadastrousuario" component={CadastroUsuario} />

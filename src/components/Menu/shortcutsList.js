@@ -12,6 +12,7 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 
 const Items = [
   {
@@ -36,6 +37,12 @@ const Items = [
     title: "Cadastro de modelo",
     to: "/cadastromodelo",
     icon: <PlaylistAddIcon />,
+    adminOnly: true
+  },
+  {
+    title: "Cadastro de equipamento",
+    to: "/cadastroequipamento",
+    icon: < PostAddIcon />,
     adminOnly: true
   },
   {

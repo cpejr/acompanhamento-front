@@ -45,7 +45,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  loginLogo: {
+  logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
     position: "absolute",
     width: "180px",

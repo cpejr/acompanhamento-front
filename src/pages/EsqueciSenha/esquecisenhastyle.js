@@ -46,7 +46,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  esquecisenhaLogo: {
+  logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
     position: "absolute",
     width: "180px",
@@ -90,16 +90,16 @@ export const useStyles = makeStyles(theme => ({
   },
 
   errorText: {
-    color: "#ff6961",
+    // color: "#ff6961",
+    color: "white",
     fontWeight: "400",
     lineHeight: "0",
   },
   resubmitText: {
     color: "white",
     fontWeight: "400",
-    marginTop: "30px",
+    marginTop: "20px",
     marginBottom: "20px",
     lineHeight: "0",
   }
-
 }))

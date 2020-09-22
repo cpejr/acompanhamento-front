@@ -43,7 +43,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  definiçaosenhaLogo: {
+  logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
     position: "absolute",
     width: "180px",
@@ -60,7 +60,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     width: "100%",
-    marginBottom: "20px",
+    marginTop: "20px",
   },
 
   buttonDefiniçao: {
@@ -71,20 +71,22 @@ export const useStyles = makeStyles(theme => ({
     fontFamily: textFontFamilyPadrao,
     fontWeight: "500",
     fontSize: "14px",
-    lineHeight: "16px",
-    textTransform: "uppercase",
     color: "#FFFFFF",
 
     cursor: "pointer",
 
     width: "100%",
     height: "56px",
-    marginTop: "20px",
+    marginTop: "40px",
     marginBottom: "10px",
 
     "&:hover": {
       background: vermelhoPadraoEscuro,
     }
   },
+  errorText: {
+    color: "white",
+    lineHeight: "0",
+  }
 
 }))

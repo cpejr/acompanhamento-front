@@ -9,7 +9,7 @@ import Login from './pages/Login'
 import Menu from './components/Menu';
 import Dashboard from './pages/Dashboard/dashboard';
 import CadastroUsuario from './pages/CadastroUsuario';
-import CadastroEquipamento from './pages/CadastroEquipamento';
+import CadastroModelo from './pages/CadastroModelo';
 import ListagemUsuario from './pages/ListagemUsuario';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
@@ -42,8 +42,8 @@ function Routes() {
               {/* Listagem de Usuários via Dashboard
               <Route path="/listagemdashboard/:situacao" component={ListagemDashboard} /> */}
 
-              {/* Cadastro de Equipamentos */}
-              <Route path="/cadastroequipamento" component={CadastroEquipamento} />
+              {/* Cadastro de Modelo */}
+              <Route path="/cadastromodelo" component={CadastroModelo} />
 
               {/* Cadastro de Usuários */}
               <Route path="/cadastrousuario" component={CadastroUsuario} />

@@ -2,6 +2,7 @@ const DATA = [
     {
         id_model: '1',
         id_equipment: '101',
+        model_equipment: 'Nowak',
         cpf_client: '1111111111',
         client: 'Antonio',
         equipment_model: '',
@@ -14,6 +15,7 @@ const DATA = [
     {
         id_model: '2',
         id_equipment: '102',
+        model_equipment: 'Ksb Hydrobloc',
         cpf_client: '2222222222',
         client: 'Jota',
         equipment_model: '',
@@ -26,6 +28,7 @@ const DATA = [
     {
         id_model: '3',
         id_equipment: '103',
+        model_equipment: 'Acquapump',
         cpf_client: '3333333333',
         client: 'Juliana',
         equipment_model: '',
@@ -38,6 +41,7 @@ const DATA = [
     {
         id_model: '4',
         id_equipment: '104',
+        model_equipment: 'BC-98 SCHNEIDER',
         cpf_client: '4444444444',
         client: 'João',
         equipment_model: '',
@@ -50,6 +54,7 @@ const DATA = [
     {
         id_model: '5',
         id_equipment: '105',
+        model_equipment: 'Schneider Bc-21 F2',
         cpf_client: '5555555555',
         client: 'Maiara',
         equipment_model: '',
@@ -62,6 +67,7 @@ const DATA = [
     {
         id_model: '6',
         id_equipment: '106',
+        model_equipment: 'Monoestágio Thebe Th-12',
         cpf_client: '5555555555',
         client: 'Maria',
         equipment_model: '',
@@ -74,6 +80,7 @@ const DATA = [
     {
         id_model: '7',
         id_equipment: '107',
+        model_equipment: 'Ksb Hydrobloc',
         cpf_client: '5555555555',
         client: 'Roberto',
         equipment_model: '',
@@ -86,6 +93,7 @@ const DATA = [
     {
         id_model: '8',
         id_equipment: '108',
+        model_equipment: 'Acquapump',
         cpf_client: '5555555555',
         client: 'Julia',
         equipment_model: '',
@@ -98,6 +106,7 @@ const DATA = [
     {
         id_model: '9',
         id_equipment: '109',
+        model_equipment: 'Monoestágio Thebe Th-12',
         cpf_client: '5555555555',
         client: 'Carol',
         equipment_model: '',

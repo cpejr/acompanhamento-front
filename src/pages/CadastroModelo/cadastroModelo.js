@@ -50,7 +50,18 @@ export default function CadastroModelo(props) {
     }
 
     api.post('/model/create', data)
-      .then(res => { console.log(res) })
+      .then(res => {
+        setFormData({
+          modelName: '',
+          type: '',
+          manufacturer: '',
+          releaseYear: '',
+          temperatureLimit: '',
+          currentLimit: '',
+          voltageLimit: ''
+        });
+        console.log(res);
+      })
       .catch(err => { console.error(err) })
   }
 

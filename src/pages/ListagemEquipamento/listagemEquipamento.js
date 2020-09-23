@@ -6,7 +6,6 @@ import {
   InputBase,
   Typography,
   MenuItem,
-  InputLabel,
   FormControl,
   Select,
 } from "@material-ui/core";
@@ -32,13 +31,24 @@ export default function ListagemEquipamento() {
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
 
-  function FindEquipmentbyID(searchEquipment) {
+  function FindEquipment(searchEquipment) {
     if (searchEquipment.length > 0) {
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), 'g');
 
       equipmentsOriginal.forEach((item) => {
-        const probable = item.id_equipment.toLowerCase().match(filteredEquipment);
+        var probable;
+        switch (filterby) {
+          case "ID":
+            probable = item.id_equipment.toLowerCase().match(filteredEquipment);
+            break;
+          case "Modelo":
+            probable = item.model_equipment.toLowerCase().match(filteredEquipment);
+            break;
+          case "Cliente":
+            probable = item.client.toLowerCase().match(filteredEquipment);
+            break;
+        }
         if (probable) {
           equipmentsListToDisplay.push(item);
         }
@@ -60,31 +70,41 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
+        <div className={classes.searchplusfilter}>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <div className={classes.searchInput}>
+              <InputBase className={classes.placeholder}
+                placeholder="Procurar equipamento"
+                onChange={(e) => FindEquipment(e.target.value)}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.input,
+                }}
+              />
+            </div>
           </div>
-          <div className={classes.searchInput}>
-            <InputBase className={classes.placeholder}
-              placeholder="Procurar equipamento"
-              onChange={(e) => FindEquipmentbyID(e.target.value)}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.input,
-              }}
-            />
-          </div>
-          {/* <FormControl variant="filled" className={classes.inputType}>
-            <InputLabel id="tipo">Filtro</InputLabel>
-            <Select
-              labelId="filtro"
+          <FormControl className={classes.filter}>
+            {/* <InputLabel
+              color="primary"
+              variant='filled'
+            >
+              Filtro
+            </InputLabel> */}
+            <Select className={classes.selectItens}
               value={filterby}
               onChange={(e) => setFilterby(e.target.value)}
+              displayEmpty={true}
+              native={false}
+              variant='outlined'
             >
-              <MenuItem value="modelo" >Modelo</MenuItem>
-              <MenuItem value="cliente" >Cliente</MenuItem>
+              <MenuItem value="ID">ID</MenuItem>
+              <MenuItem value="Modelo">Modelo</MenuItem>
+              <MenuItem value="Cliente">Cliente</MenuItem>
             </Select>
-          </FormControl> */}
+          </FormControl>
         </div>
         <div className={classes.table}>
           <StickyHeadTable

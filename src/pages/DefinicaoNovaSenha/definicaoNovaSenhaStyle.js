@@ -60,7 +60,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     width: "100%",
-    marginTop: "20px",
+    marginTop: "10px",
   },
 
   buttonDefiniçao: {
@@ -87,6 +87,8 @@ export const useStyles = makeStyles(theme => ({
   errorText: {
     color: "white",
     lineHeight: "0",
+    padding: "3px",
+    marginTop:"2px",
   }
 
 }))

@@ -16,9 +16,11 @@ function DataContextProvider({ children }) {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(true);
-  const [usersList] = useState(CreatePeople.people);
   const [equipmentsList, setEquipmentsList] = useState([{}]);
+  const [modelsList, setModelsList] = useState([{}]);
+  const [clientsList, setClientsList] = useState([{}]);
 
+  // get equipments
   useEffect(() => {
     (async () => {
       await backend.getEquipments()
@@ -32,11 +34,43 @@ function DataContextProvider({ children }) {
     )();
   }, [])
 
+  // get models
+  useEffect(() => {
+    (async () => {
+      await backend.getModels()
+        .then(data => {
+          const models = data.data
+          setTimeout(() => {
+            setModelsList(models);
+          }, 700);
+        })
+    }
+    )();
+  }, [])
+
+  // get clients
+  useEffect(() => {
+    (async () => {
+      await backend.getClients()
+        .then(data => {
+          const clients = data.client
+          setTimeout(() => {
+            setClientsList(clients);
+          }, 700);
+        })
+    }
+    )();
+  }, [])
+
   useEffect(() => {
     if (equipmentsList[0].client)
       setLoading(false);
+    else if (modelsList[0].modelName)
+      setLoading(false);
+    else if (clientsList[0].name)
+      setLoading(false);
     else setLoading(true);
-  }, [equipmentsList])
+  }, [clientsList, equipmentsList, modelsList])
 
   if (loading) { //pagina de carregamento
     return (
@@ -47,7 +81,7 @@ function DataContextProvider({ children }) {
   }
 
   return (
-    <DataContext.Provider value={{ usersList, equipmentsList }}>
+    <DataContext.Provider value={{ clientsList, equipmentsList, modelsList }}>
       {children}
     </DataContext.Provider>
   );

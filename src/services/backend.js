@@ -1,5 +1,6 @@
 import models from './Datas/models';
 import equipments from './Datas/equipments';
+import clients from './Datas/peoples';
 
 // Models promise prototic
 const getModels = () => {
@@ -11,14 +12,22 @@ const getModels = () => {
 
 // Equipments promise prototic
 const getEquipments = () => {
-  const get = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     if (equipments) resolve(equipments);
     else reject({ message: "Error in importing equipments", errorData: equipments });
   })
-  return get;
+};
+
+// Peoples promise prototic
+const getClients = () => {
+  return new Promise((resolve, reject) => {
+    if (clients) resolve(clients);
+    else reject({ message: "Error in importing clients", errorData: clients });
+  })
 };
 
 export default {
   getModels,
   getEquipments,
+  getClients
 }

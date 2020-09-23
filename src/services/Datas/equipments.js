@@ -119,5 +119,3 @@ export default {
     }
   ]
 }
-
-export default DATA;

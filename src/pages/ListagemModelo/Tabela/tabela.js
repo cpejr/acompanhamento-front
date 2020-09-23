@@ -65,13 +65,13 @@ export default function StickyHeadTable(props) {
               </TableCell>
             </TableRow>
           </TableHead>
-          {/* <TableBody>
+          <TableBody>
             {props.modelsListToDisplay
               .map(model => (
-                <TableRow hover tabIndex={-1} key={model.id_model}>
-                  <TableCell>{model.id_model}</TableCell>
-                  <TableCell>{model.type_model}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{model.producer_model}
+                <TableRow hover tabIndex={-1} key={model.id}>
+                  <TableCell>{model.modelName}</TableCell>
+                  <TableCell>{model.type}</TableCell>
+                  <TableCell className={classes.lastTableCell}>{model.manufacturer}
                     <Link to='/'>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
@@ -80,7 +80,7 @@ export default function StickyHeadTable(props) {
               )
               )}
             {props.modelsListToDisplay.length <= 0 ? <Typography className={classes.nullModel}> Este modelo não foi encontrado </Typography> : null}
-          </TableBody> */}
+          </TableBody>
         </Table>
       </TableContainer>
     </Paper >

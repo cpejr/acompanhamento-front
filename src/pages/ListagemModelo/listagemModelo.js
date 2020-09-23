@@ -30,6 +30,7 @@ export default function ListagemModelo() {
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
+  console.log(modelsListToDisplay);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {
@@ -47,6 +48,8 @@ export default function ListagemModelo() {
             break;
           case "Fabricante":
             probable = item.producer_model.toLowerCase().match(filteredModel);
+            break;
+          default:
             break;
         }
         if (probable) {
@@ -105,11 +108,12 @@ export default function ListagemModelo() {
             modelsListToDisplay={
               ordenar(modelsListToDisplay, ordem.by, ordem.alfabetica,
                 ordem.by === "id_model" ? true : false)
-                .map((model) => {
+                .map(model => {
                   return {
-                    id_model: model.id_model,
+                    id: model.id,
+                    modelName: model.modelName,
                     type: model.type,
-                    producer: model.producer,
+                    manufacturer: model.manufacturer,
                   }
                 })
             }

@@ -4,7 +4,10 @@ import { Link, useLocation } from "react-router-dom"
 import {
   Button,
   InputBase,
-  Typography
+  Typography,
+  MenuItem,
+  FormControl,
+  Select
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -15,32 +18,44 @@ import StickyHeadTable from './Tabela';
 
 export default function ListagemModelo() {
   const classes = useStyles();
+  const [filterby, setFilterby] = useState("");
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get('situation');
 
-  const allEquipment = useContext(DataContext).equipmentsList;
-  const equipmentsOriginal = situation ?
-    allEquipment.filter(equipment => equipment.situation === situation) :
-    allEquipment;
+  const allModel = useContext(DataContext).modelsList;
+  const modelsOriginal = situation ?
+    allModel.filter(model => model.situation === situation) :
+    allModel;
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
-  const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
+  const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
 
-  function FindEquipmentbyID(searchEquipment) {
-    if (searchEquipment.length > 0) {
-      const equipmentsListToDisplay = [];
-      const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), 'g');
+  function FindModel(searchModel) {
+    if (searchModel.length > 0) {
+      const modelsListToDisplay = [];
+      const filteredModel = new RegExp(searchModel.toLowerCase(), 'g');
 
-      equipmentsOriginal.forEach((item) => {
-        const probable = item.id_equipment.toLowerCase().match(filteredEquipment);
+      modelsOriginal.forEach((item) => {
+        var probable;
+        switch (filterby) {
+          case "Modelo":
+            probable = item.id_model.toLowerCase().match(filteredModel);
+            break;
+          case "Tipo":
+            probable = item.type_model.toLowerCase().match(filteredModel);
+            break;
+          case "Fabricante":
+            probable = item.producer_model.toLowerCase().match(filteredModel);
+            break;
+        }
         if (probable) {
-          equipmentsListToDisplay.push(item);
+          modelsListToDisplay.push(item);
         }
       });
-      setEquipmentsListToDisplay(equipmentsListToDisplay);
+      setModelsListToDisplay(modelsListToDisplay);
     } else {
-      setEquipmentsListToDisplay(equipmentsOriginal);
+      setModelsListToDisplay(modelsOriginal);
     }
   }
 
@@ -55,31 +70,46 @@ export default function ListagemModelo() {
             Adicionar Novo
           </Button>
         </div>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
+        <div className={classes.searchplusfilter}>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <div className={classes.searchInput}>
+              <InputBase className={classes.placeholder}
+                placeholder="Procurar modelo"
+                onChange={(e) => FindModel(e.target.value)}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.input,
+                }}
+              />
+            </div>
           </div>
-          <div className={classes.searchInput}>
-            <InputBase className={classes.placeholder}
-              placeholder="Procurar equipamento"
-              onChange={(e) => FindEquipmentbyID(e.target.value)}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.input,
-              }}
-            />
-          </div>
+          <FormControl className={classes.filter}>
+            <Select className={classes.selectItens}
+              value={filterby}
+              onChange={(e) => setFilterby(e.target.value)}
+              displayEmpty={true}
+              native={false}
+              variant='outlined'
+            >
+              <MenuItem value="Modelo">Modelo</MenuItem>
+              <MenuItem value="Tipo">Tipo</MenuItem>
+              <MenuItem value="Fabricante">Fabricante</MenuItem>
+            </Select>
+          </FormControl>
         </div>
         <div className={classes.table}>
           <StickyHeadTable
-            equipmentsListToDisplay={
-              ordenar(equipmentsListToDisplay, ordem.by, ordem.alfabetica,
-                ordem.by === "last_collect_date" ? true : false)
-                .map((equipment) => {
+            modelsListToDisplay={
+              ordenar(modelsListToDisplay, ordem.by, ordem.alfabetica,
+                ordem.by === "id_model" ? true : false)
+                .map((model) => {
                   return {
-                    id_equipment: equipment.id_equipment,
-                    client: equipment.client,
-                    last_collect_date: equipment.last_collect_date,
+                    id_model: model.id_model,
+                    type: model.type,
+                    producer: model.producer,
                   }
                 })
             }

@@ -95,4 +95,35 @@ export const useStyles = makeStyles(theme => ({
   table: {
     marginTop: "30px"
   },
+  
+  searchplusfilter: {
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column"
+    }
+  },
+
+  filter: {
+    justifyContent: "center",
+    textAlign: "center",
+    borderRadius: "5px",
+    position: 'relative',
+    backgroundColor: azulPadraoClaro,
+    marginTop: "40px",
+    fontSize: "14px",
+    height: "35px",
+    width: "90px",
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "10px",
+    }
+  },
+
+  selectItens: {
+    position: 'relative',
+    height: "100%",
+    width: '100%',
+    fontSize: "12px",
+  }
 }))

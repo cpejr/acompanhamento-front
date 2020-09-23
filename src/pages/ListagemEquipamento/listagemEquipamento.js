@@ -6,7 +6,6 @@ import {
   InputBase,
   Typography,
   MenuItem,
-  InputLabel,
   FormControl,
   Select,
 } from "@material-ui/core";

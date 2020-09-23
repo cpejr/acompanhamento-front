@@ -26,52 +26,52 @@ export default function StickyHeadTable(props) {
             <TableRow>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
-                  active={ordem.by === "id_equipment" ? true : false}
+                  active={ordem.by === "id_model" ? true : false}
                   direction={ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
-                    ordem.by === "id_equipment" ?
+                    ordem.by === "id_model" ?
                       setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "id_equipment" })
+                      setOrdem({ ...ordem, by: "id_model" })
                   }}
                 >
-                  Nº série
+                  Modelo
                 </TableSortLabel>
               </TableCell>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
-                  active={props.ordem.by === "client" ? true : false}
+                  active={props.ordem.by === "type_model" ? true : false}
                   direction={props.ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
-                    ordem.by === "client" ?
+                    ordem.by === "type_model" ?
                       setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "client" })
+                      setOrdem({ ...ordem, by: "type_model" })
                   }}
                 >
-                  Cliente
+                  Tipo
                 </TableSortLabel>
               </TableCell>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
-                  active={props.ordem.by === "last_collect_date" ? true : false}
+                  active={props.ordem.by === "producer_model" ? true : false}
                   direction={props.ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
-                    ordem.by === "last_collect_date" ?
+                    ordem.by === "producer_model" ?
                       setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "last_collect_date" })
+                      setOrdem({ ...ordem, by: "producer_model" })
                   }}
                 >
-                  Última visita
+                  Fabricante
                 </TableSortLabel>
               </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {props.equipmentsListToDisplay
-              .map(equipment => (
-                <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
-                  <TableCell>{equipment.id_equipment}</TableCell>
-                  <TableCell>{equipment.client}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{equipment.last_collect_date}
+          {/* <TableBody>
+            {props.modelsListToDisplay
+              .map(model => (
+                <TableRow hover tabIndex={-1} key={model.id_model}>
+                  <TableCell>{model.id_model}</TableCell>
+                  <TableCell>{model.type_model}</TableCell>
+                  <TableCell className={classes.lastTableCell}>{model.producer_model}
                     <Link to='/'>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
@@ -79,8 +79,8 @@ export default function StickyHeadTable(props) {
                 </TableRow>
               )
               )}
-            {props.equipmentsListToDisplay.length <= 0 ? <Typography className={classes.nullEquipament}> Este equipamento não foi encontrado </Typography> : null}
-          </TableBody>
+            {props.modelsListToDisplay.length <= 0 ? <Typography className={classes.nullModel}> Este modelo não foi encontrado </Typography> : null}
+          </TableBody> */}
         </Table>
       </TableContainer>
     </Paper >

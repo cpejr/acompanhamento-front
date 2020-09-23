@@ -39,6 +39,19 @@ export default function StickyHeadTable(props) {
               </TableCell>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
+                  active={props.ordem.by === "model_equipment" ? true : false}
+                  direction={props.ordem.alfabetica ? "desc" : "asc"}
+                  onClick={() => {
+                    ordem.by === "model_equipment" ?
+                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
+                      setOrdem({ ...ordem, by: "model_equipment" })
+                  }}
+                >
+                  Modelo
+                </TableSortLabel>
+              </TableCell>
+              <TableCell className={classes.tableCell}>
+                <TableSortLabel
                   active={props.ordem.by === "client" ? true : false}
                   direction={props.ordem.alfabetica ? "desc" : "asc"}
                   onClick={() => {
@@ -70,6 +83,7 @@ export default function StickyHeadTable(props) {
               .map(equipment => (
                 <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
                   <TableCell>{equipment.id_equipment}</TableCell>
+                  <TableCell>{equipment.model_equipment}</TableCell>
                   <TableCell>{equipment.client}</TableCell>
                   <TableCell className={classes.lastTableCell}>{equipment.last_collect_date}
                     <Link to='/'>

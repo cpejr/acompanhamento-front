@@ -9,7 +9,6 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 
 import ordenar from '../../services/ordenar';
-import models from '../../services/models';
 import { DataContext } from '../../context/DataContext';
 import { useStyles } from './listagemModeloStyle';
 import StickyHeadTable from './Tabela';

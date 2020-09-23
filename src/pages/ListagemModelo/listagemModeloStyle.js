@@ -95,7 +95,7 @@ export const useStyles = makeStyles(theme => ({
   table: {
     marginTop: "30px"
   },
-  
+
   searchplusfilter: {
     display: "flex",
     flexDirection: "row",
@@ -106,14 +106,14 @@ export const useStyles = makeStyles(theme => ({
 
   filter: {
     justifyContent: "center",
-    textAlign: "center",
+    // textAlign: "left",
     borderRadius: "5px",
     position: 'relative',
     backgroundColor: azulPadraoClaro,
     marginTop: "40px",
     fontSize: "14px",
     height: "35px",
-    width: "90px",
+    width: "120px",
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     [theme.breakpoints.down('sm')]: {
       marginTop: "10px",

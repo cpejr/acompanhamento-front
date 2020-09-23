@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link } from "react-router-dom"
 import {
   Button,
@@ -11,6 +11,7 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 
 import ordenar from '../../services/ordenar';
+import api from '../../services/api';
 import { DataContext } from '../../context/DataContext';
 import { useStyles } from './listagemModeloStyle';
 import StickyHeadTable from './Tabela';
@@ -19,8 +20,25 @@ export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
   const [ordem, setOrdem] = useState({ alfabetica: true, by: "modelName" });
 
-  const modelsOriginal = useContext(DataContext).modelsList;
+  const modelsContext = useContext(DataContext).modelsList;
+  const [modelsOriginal, setModelsOriginal] = useState(modelsContext)
+
+  useEffect(() => {
+    (async () => {
+      api.get('model/index')
+        .then(data => {
+          const models = data.data.data
+          setModelsOriginal(models);
+          setModelsListToDisplay(models);
+        })
+        .catch(err => {
+          console.error("Liga o backend ai mano", err);
+        });
+    })();
+  }, [])
+
   const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
+  console.log(modelsOriginal);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {
@@ -39,6 +57,7 @@ export default function ListagemModelo() {
     }
   }
 
+  console.debug("ListTo", modelsListToDisplay)
   const classes = useStyles();
 
   return (

@@ -90,10 +90,11 @@ export const useStyles = makeStyles(theme => ({
   },
 
   errorText: {
-    // color: "#ff6961",
+    marginTop: "1px",
     color: "white",
     fontWeight: "400",
     lineHeight: "0",
+    padding:"3px",
   },
   resubmitText: {
     color: "white",

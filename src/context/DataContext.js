@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { Backdrop, makeStyles, CircularProgress } from '@material-ui/core'
-import CreatePeople from '../services/people';
 import backend from '../services/backend';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,9 +25,7 @@ function DataContextProvider({ children }) {
       await backend.getEquipments()
         .then(data => {
           const equipments = data.equipment
-          setTimeout(() => {
-            setEquipmentsList(equipments);
-          }, 700);
+          setEquipmentsList(equipments);
         })
     }
     )();
@@ -40,9 +37,7 @@ function DataContextProvider({ children }) {
       await backend.getModels()
         .then(data => {
           const models = data.data
-          setTimeout(() => {
-            setModelsList(models);
-          }, 700);
+          setModelsList(models);
         })
     }
     )();
@@ -54,9 +49,7 @@ function DataContextProvider({ children }) {
       await backend.getClients()
         .then(data => {
           const clients = data.client
-          setTimeout(() => {
-            setClientsList(clients);
-          }, 700);
+          setClientsList(clients);
         })
     }
     )();
@@ -74,9 +67,11 @@ function DataContextProvider({ children }) {
 
   if (loading) { //pagina de carregamento
     return (
-      <Backdrop className={classes.backdrop} open={true}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <React.Fragment>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </React.Fragment>
     )
   }
 

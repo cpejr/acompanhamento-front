@@ -52,6 +52,7 @@ export const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.only("xs")]: {
       marginLeft: "20px",
+      fontSize: "10px",
     },
   },
 
@@ -106,14 +107,13 @@ export const useStyles = makeStyles(theme => ({
 
   filter: {
     justifyContent: "center",
-    textAlign: "center",
     borderRadius: "5px",
     position: 'relative',
     backgroundColor: azulPadraoClaro,
     marginTop: "40px",
     fontSize: "14px",
     height: "35px",
-    width: "90px",
+    width: "120px",
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     [theme.breakpoints.down('sm')]: {
       marginTop: "10px",

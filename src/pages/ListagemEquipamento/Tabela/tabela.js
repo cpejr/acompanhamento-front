@@ -18,64 +18,34 @@ export default function StickyHeadTable(props) {
   const classes = useStyles();
   const { ordem, setOrdem } = props;
 
+  const headerItems = [
+    { title: "Nº série", ordemBy: "id_equipment" },
+    { title: "Modelo", ordemBy: "model_equipment" },
+    { title: "Cliente", ordemBy: "client" },
+    { title: "Última visita", ordemBy: "maintenance_date" },
+  ]
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={ordem.by === "id_equipment" ? true : false}
-                  direction={ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "id_equipment" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "id_equipment" })
-                  }}
-                >
-                  Nº série
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "model_equipment" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "model_equipment" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "model_equipment" })
-                  }}
-                >
-                  Modelo
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "client" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "client" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "client" })
-                  }}
-                >
-                  Cliente
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "last_collect_date" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "last_collect_date" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "last_collect_date" })
-                  }}
-                >
-                  Última visita
-                </TableSortLabel>
-              </TableCell>
+              {headerItems.map(item => (
+                <TableCell className={classes.tableCell} key={item.title}>
+                  <TableSortLabel
+                    active={ordem.by === item.ordemBy ? true : false}
+                    direction={ordem.alfabetica ? "desc" : "asc"}
+                    onClick={() => {
+                      ordem.by === item.ordemBy ?
+                        setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
+                        setOrdem({ ...ordem, by: item.ordemBy })
+                    }}
+                  >
+                    {item.title}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -85,7 +55,7 @@ export default function StickyHeadTable(props) {
                   <TableCell>{equipment.id_equipment}</TableCell>
                   <TableCell>{equipment.model_equipment}</TableCell>
                   <TableCell>{equipment.client}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{equipment.last_collect_date}
+                  <TableCell className={classes.lastTableCell}>{equipment.maintenance_date}
                     <Link to='/'>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>

@@ -18,7 +18,7 @@ import StickyHeadTable from './Tabela';
 
 export default function ListagemEquipamento() {
   const classes = useStyles();
-  const [filterby, setFilterby] = useState("");
+  const [filterby, setFilterby] = useState("client");
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get('situation');
@@ -37,18 +37,7 @@ export default function ListagemEquipamento() {
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), 'g');
 
       equipmentsOriginal.forEach((item) => {
-        var probable;
-        switch (filterby) {
-          case "ID":
-            probable = item.id_equipment.toLowerCase().match(filteredEquipment);
-            break;
-          case "Modelo":
-            probable = item.model_equipment.toLowerCase().match(filteredEquipment);
-            break;
-          case "Cliente":
-            probable = item.client.toLowerCase().match(filteredEquipment);
-            break;
-        }
+        var probable = item[filterby].toLowerCase().match(filteredEquipment);
         if (probable) {
           equipmentsListToDisplay.push(item);
         }
@@ -87,22 +76,14 @@ export default function ListagemEquipamento() {
             </div>
           </div>
           <FormControl className={classes.filter}>
-            {/* <InputLabel
-              color="primary"
-              variant='filled'
-            >
-              Filtro
-            </InputLabel> */}
             <Select className={classes.selectItens}
               value={filterby}
               onChange={(e) => setFilterby(e.target.value)}
-              displayEmpty={true}
-              native={false}
               variant='outlined'
             >
-              <MenuItem value="ID">ID</MenuItem>
-              <MenuItem value="Modelo">Modelo</MenuItem>
-              <MenuItem value="Cliente">Cliente</MenuItem>
+              <MenuItem value="client">Cliente</MenuItem>
+              <MenuItem value="model_equipment">Modelo</MenuItem>
+              <MenuItem value="id_equipment">Nº série</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -110,13 +91,13 @@ export default function ListagemEquipamento() {
           <StickyHeadTable
             equipmentsListToDisplay={
               ordenar(equipmentsListToDisplay, ordem.by, ordem.alfabetica,
-                ordem.by === "last_collect_date" ? true : false)
+                ordem.by === "maintenance_date" ? true : false)
                 .map((equipment) => {
                   return {
                     id_equipment: equipment.id_equipment,
                     model_equipment: equipment.model_equipment,
                     client: equipment.client,
-                    last_collect_date: equipment.last_collect_date,
+                    maintenance_date: equipment.maintenance_date,
                   }
                 })
             }

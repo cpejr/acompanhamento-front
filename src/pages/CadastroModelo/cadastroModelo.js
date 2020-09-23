@@ -8,8 +8,6 @@ import {
   Grid,
   Paper,
   useMediaQuery,
-  Select,
-  MenuItem,
 } from "@material-ui/core"
 import { Autocomplete } from '@material-ui/lab'
 

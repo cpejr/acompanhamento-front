@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import api from '../../services/api';
 
 import {
   CssBaseline,
@@ -28,14 +29,29 @@ export default function CadastroModelo(props) {
     voltageLimit: ''
   });
 
-  function handleChangeInput(event) {
+  function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value })
+    if (valueA)
+      setFormData({ ...formData, type: valueA });
+    else
+      setFormData({ ...formData, [name]: value });
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    const data = {
+      modelName: formData.modelName,
+      type: formData.type,
+      manufacturer: formData.manufacturer,
+      releaseYear: formData.releaseYear,
+      temperatureLimit: formData.temperatureLimit,
+      currentLimit: formData.currentLimit,
+      voltageLimit: formData.voltageLimit
+    }
+
+    api.post('/model/create', data)
+      .then(res => { console.log(res) })
+      .catch(err => { console.error(err) })
   }
 
   // Referencias (próximo a declaração de um ponteiro nulo)
@@ -88,12 +104,12 @@ export default function CadastroModelo(props) {
                   freeSolo
                   className={classes.inputs}
                   options={["Motor", "Bomba hidráulica"]}
+                  onChange={handleChangeInput}
+                  value={formData.type}
                   renderInput={params => (
                     <TextField
                       name="type"
                       {...params}
-                      value={formData.type}
-                      onChange={handleChangeInput}
                       label="Tipo de equipamento"
                       type="text"
                       helperText="*Obrigatório"

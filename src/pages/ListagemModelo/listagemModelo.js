@@ -39,6 +39,7 @@ export default function ListagemModelo() {
     }
   }
 
+  console.debug("ListTo", modelsListToDisplay)
   const classes = useStyles();
 
   return (

@@ -18,10 +18,12 @@ export default function CadastroEquipamento(props) {
     console.log(formData)
   }
 
-  function handleChangeInput(event) {
+  function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value })
-
+    if (valueA)
+      setFormData({ ...formData, modelo: valueA });
+    else
+      setFormData({ ...formData, [name]: value });
   }
 
   // Mecanismo do Form

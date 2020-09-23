@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Link, useLocation } from "react-router-dom"
-
+import { Link } from "react-router-dom"
 import {
   Button,
   InputBase,
@@ -17,41 +16,19 @@ import { useStyles } from './listagemModeloStyle';
 import StickyHeadTable from './Tabela';
 
 export default function ListagemModelo() {
-  const classes = useStyles();
-  const [filterby, setFilterby] = useState("");
+  const [filterby, setFilterby] = useState("modelName");
+  const [ordem, setOrdem] = useState({ alfabetica: true, by: "modelName" });
 
-  const query = new URLSearchParams(useLocation().search);
-  const situation = query.get('situation');
-
-  const allModel = useContext(DataContext).modelsList;
-  const modelsOriginal = situation ?
-    allModel.filter(model => model.situation === situation) :
-    allModel;
-
-  const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
+  const modelsOriginal = useContext(DataContext).modelsList;
   const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
-  console.log(modelsListToDisplay);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {
       const modelsListToDisplay = [];
       const filteredModel = new RegExp(searchModel.toLowerCase(), 'g');
 
-      modelsOriginal.forEach((item) => {
-        var probable;
-        switch (filterby) {
-          case "Modelo":
-            probable = item.id_model.toLowerCase().match(filteredModel);
-            break;
-          case "Tipo":
-            probable = item.type_model.toLowerCase().match(filteredModel);
-            break;
-          case "Fabricante":
-            probable = item.producer_model.toLowerCase().match(filteredModel);
-            break;
-          default:
-            break;
-        }
+      modelsOriginal.forEach(item => {
+        var probable = item[filterby].toLowerCase().match(filteredModel);
         if (probable) {
           modelsListToDisplay.push(item);
         }
@@ -61,6 +38,8 @@ export default function ListagemModelo() {
       setModelsListToDisplay(modelsOriginal);
     }
   }
+
+  const classes = useStyles();
 
   return (
     <React.Fragment>
@@ -93,21 +72,20 @@ export default function ListagemModelo() {
             <Select className={classes.selectItens}
               value={filterby}
               onChange={(e) => setFilterby(e.target.value)}
-              displayEmpty={true}
-              native={false}
+              // displayEmpty={true}
+              // native={false}
               variant='outlined'
             >
-              <MenuItem value="Modelo">Modelo</MenuItem>
-              <MenuItem value="Tipo">Tipo</MenuItem>
-              <MenuItem value="Fabricante">Fabricante</MenuItem>
+              <MenuItem value="modelName">Modelo</MenuItem>
+              <MenuItem value="type">Tipo</MenuItem>
+              <MenuItem value="manufacturer">Fabricante</MenuItem>
             </Select>
           </FormControl>
         </div>
         <div className={classes.table}>
           <StickyHeadTable
             modelsListToDisplay={
-              ordenar(modelsListToDisplay, ordem.by, ordem.alfabetica,
-                ordem.by === "id_model" ? true : false)
+              ordenar(modelsListToDisplay, ordem.by, ordem.alfabetica)
                 .map(model => {
                   return {
                     id: model.id,

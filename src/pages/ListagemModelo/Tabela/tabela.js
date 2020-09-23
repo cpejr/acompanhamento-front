@@ -18,51 +18,33 @@ export default function StickyHeadTable(props) {
   const classes = useStyles();
   const { ordem, setOrdem } = props;
 
+  const headerItens = [
+    { title: "Modelo", ordemBy: "modelName" },
+    { title: "Tipo", ordemBy: "type" },
+    { title: "Fabricante", ordemBy: "manufacturer" }
+  ]
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={ordem.by === "id_model" ? true : false}
-                  direction={ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "id_model" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "id_model" })
-                  }}
-                >
-                  Modelo
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "type_model" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "type_model" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "type_model" })
-                  }}
-                >
-                  Tipo
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "producer_model" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "producer_model" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "producer_model" })
-                  }}
-                >
-                  Fabricante
-                </TableSortLabel>
-              </TableCell>
+              {headerItens.map(item => (
+                <TableCell className={classes.tableCell} key={item.title}>
+                  <TableSortLabel
+                    active={ordem.by === item.ordemBy ? true : false}
+                    direction={ordem.alfabetica ? "desc" : "asc"}
+                    onClick={() => {
+                      ordem.by === item.ordemBy ?
+                        setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
+                        setOrdem({ ...ordem, by: item.ordemBy })
+                    }}
+                  >
+                    {item.title}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>

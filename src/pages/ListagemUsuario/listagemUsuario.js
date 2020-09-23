@@ -19,10 +19,10 @@ import { DataContext } from '../../context/DataContext';
 export default function ListagemUsuario() {
   const classes = useStyles();
 
-  const { usersList } = useContext(DataContext);
+  const { clientsList } = useContext(DataContext);
 
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
-  const [usersListToDisplay, setUsersListToDisplay] = useState(usersList);
+  const [usersListToDisplay, setUsersListToDisplay] = useState(clientsList);
   const [filterThisUsers, setFilterThisUsers] = useState({
     administrador: true,
     funcionario: true,
@@ -34,7 +34,7 @@ export default function ListagemUsuario() {
       const usersListToDisplay = [];
       const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
 
-      usersList.forEach((item) => {
+      clientsList.forEach((item) => {
         const probable = item.name.toLowerCase().match(filteredPeople);
         if (probable) {
           usersListToDisplay.push(item);
@@ -43,7 +43,7 @@ export default function ListagemUsuario() {
       });
       setUsersListToDisplay(usersListToDisplay);
     } else {
-      setUsersListToDisplay(usersList);
+      setUsersListToDisplay(clientsList);
     }
   }
 

@@ -9,13 +9,17 @@ import {
   Grid,
   Paper,
   useMediaQuery,
+  Snackbar
 } from "@material-ui/core"
-import { Autocomplete } from '@material-ui/lab'
+import { Alert, Autocomplete } from '@material-ui/lab'
 
 import { useStyles } from './cadastroModeloStyle';
 import nextInput from '../../services/nextInput';
 
 export default function CadastroModelo(props) {
+  const [openMensage, setOpenMensage] = React.useState({
+    open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
+  });
   const classes = useStyles();
 
   // Mecanismo do Form
@@ -49,6 +53,7 @@ export default function CadastroModelo(props) {
       voltageLimit: formData.voltageLimit
     }
 
+    setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
     api.post('/model/create', data)
       .then(res => {
         setFormData({
@@ -61,8 +66,34 @@ export default function CadastroModelo(props) {
           voltageLimit: ''
         });
         console.log(res);
+        setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
       })
-      .catch(err => { console.error(err) })
+      .catch(error => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+        }
+        console.error(error);
+        setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
+      })
+  }
+
+  const handleCloseMensage = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenMensage(prev => ({ ...prev, open: false }));
   }
 
   // Referencias (próximo a declaração de um ponteiro nulo)
@@ -88,6 +119,14 @@ export default function CadastroModelo(props) {
   return (
     <React.Fragment>
       <CssBaseline />
+
+      <Snackbar autoHideDuration={openMensage.time} open={openMensage.open} onClose={handleCloseMensage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert elevation={6} variant="filled" severity={openMensage.type}>
+          {openMensage.message}
+        </Alert>
+      </Snackbar>
+
       <div className={classes.root}>
         <Typography variant="h3" className={classes.title}>
           Cadastro de um novo Modelo

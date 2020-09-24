@@ -184,12 +184,14 @@ function AtualizacaoUsuario() {
               >
                 {updating ? "Salvar" : "Editar"}
               </Button>
-              <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete}
-                disabled={id === "me" && !updating}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
+              {updating &&
+                <Button variant="contained" color="secondary" className={classes.btn}
+                  onClick={handleDelete}
+                  disabled={id === "me" && !updating}
+                >
+                  {updating ? "Cancelar" : "Excluir"}
+                </Button>
+              }
             </Grid>
 
           </Grid>

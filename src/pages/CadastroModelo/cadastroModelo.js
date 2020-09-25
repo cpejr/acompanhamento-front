@@ -60,7 +60,7 @@ export default function CadastroModelo(props) {
     event.preventDefault();
     console.log(formData);
     if (Object.values(formData).includes("")) {
-      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: null }));
+      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
     }
     else {
       const data = {
@@ -74,7 +74,7 @@ export default function CadastroModelo(props) {
       }
 
       //enviar para o backend
-      setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: 5000 }));
+      setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
       api.post('/model/create', data)
         .then(res => {
           setFormData({

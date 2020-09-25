@@ -55,7 +55,7 @@ export default function CadastroEquipamento(props) {
       cpf_client: "",
     })
     if (Object.values(formData).includes("")) {
-      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: null }));
+      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
     }
     else {
       const data = {

@@ -9,29 +9,43 @@ import {
 import { Alert, Autocomplete } from '@material-ui/lab'
 import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
+import findError from '../../services/findError';
 
 export default function CadastroEquipamento(props) {
   const [openMensage, setOpenMensage] = React.useState(false);
+  const [error, setError] = React.useState({
+    equipment_model: "",
+    id_equipment: "",
+    instalation_date: "",
+    cpf_client: "",
+  });
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
-    modelo: "",
-    numeroSerie: "",
-    dataInstalacao: "2020-09-22",
-    cpf: "",
-
+    equipment_model: "",
+    id_equipment: "",
+    instalation_date: "2020-09-22",
+    cpf_client: "",
   });
 
   function handleSubmit(event) {
     event.preventDefault()
     console.log(formData);
-    setOpenMensage(true);
+    setError({
+      equipment_model: "",
+      id_equipment: "",
+      instalation_date: "",
+      cpf_client: "",
+    })
+    if (!findError("cpf/cnpj", formData.cpf_client))
+      setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
+    else setOpenMensage(true);
   }
 
   function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
     if (valueA)
-      setFormData({ ...formData, modelo: valueA });
+      setFormData({ ...formData, equipment_model: valueA });
     else
       setFormData({ ...formData, [name]: value });
   }
@@ -43,20 +57,18 @@ export default function CadastroEquipamento(props) {
     setOpenMensage(false);
   }
 
-  React.useEffect(() => console.log(formData), [formData])
-
   // Referencias (próximo a declaração de um ponteiro nulo)
-  const modeloRef = useRef(null);
-  const numeroSerieRef = useRef(null);
-  const dataInstalacaoRef = useRef(null);
-  const cpfRef = useRef(null);
+  const equipmentModelRef = useRef(null);
+  const idEquipmentRef = useRef(null);
+  const instalationDateRef = useRef(null);
+  const cpfClientRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
   const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
-    { name: "modelo", ref: numeroSerieRef },
-    { name: "numeroSerie", ref: dataInstalacaoRef },
-    { name: "dataInstalacao", ref: cpfRef },
-    { name: "cpf", ref: buttonSubmitRef }
+    { name: "equipment_model", ref: idEquipmentRef },
+    { name: "id_equipment", ref: instalationDateRef },
+    { name: "instalation_date", ref: cpfClientRef },
+    { name: "cpf_client", ref: buttonSubmitRef }
   ];
 
   const classes = useStyles();
@@ -84,10 +96,10 @@ export default function CadastroEquipamento(props) {
               className={classes.inputs}
               options={["Bomba submersa", "Bomba centrífuga", "Bomba autoaspirante", "Bomba periférica", "Bomba injetora"]}
               onChange={handleChangeInput}
-              value={formData.modelo}
+              // value={formData.equipment_model}
               renderInput={params => (
                 <TextField
-                  name="modelo"
+                  name="equipment_model"
                   {...params}
                   label="Modelo do equipamento"
                   type="text"
@@ -95,30 +107,30 @@ export default function CadastroEquipamento(props) {
                   variant="filled"
                   autoComplete="off"
                   autoFocus
-                  inputRef={modeloRef}
+                  inputRef={equipmentModelRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)}
                 />
               )}
             />
 
             <TextField
-              name="numeroSerie"
+              name="id_equipment"
               className={classes.inputs}
-              value={formData.numeroSerie}
+              value={formData.id_equipment}
               onChange={handleChangeInput}
               label="Número de série"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
               autoComplete="off"
-              inputRef={numeroSerieRef} // atribui um elemento a ref criada
+              inputRef={idEquipmentRef} // atribui um elemento a ref criada
               onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
             />
 
             <TextField
-              name="dataInstalacao"
+              name="instalation_date"
               className={classes.inputs}
-              value={formData.dataInstalacao}
+              value={formData.instalation_date}
               onChange={handleChangeInput}
               label="Data de Instalação"
               type="date"
@@ -126,20 +138,21 @@ export default function CadastroEquipamento(props) {
               variant="filled"
               defaultValue="2020-09-22"
               autoComplete="off"
-              inputRef={dataInstalacaoRef}
+              inputRef={instalationDateRef}
               onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
-              name="cpf"
+              name="cpf_client"
               className={classes.inputs}
-              value={formData.cpf}
+              value={formData.cpf_client}
               onChange={handleChangeInput}
-              label="CPF"
+              label="CPF/CNPJ"
               type="text"
-              helperText="*Obrigatório"
+              helperText={error.cpf_client === "" ? "*Obrigatório" : error.cpf_client}
+              error={error.cpf_client !== ""}
               variant="filled"
-              inputRef={cpfRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
             <div>
               <Button type="submit"

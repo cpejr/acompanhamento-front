@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { Backdrop, makeStyles, CircularProgress } from '@material-ui/core'
 import backend from '../services/backend';
-import api from '../services/api';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

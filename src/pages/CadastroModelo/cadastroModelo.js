@@ -58,50 +58,57 @@ export default function CadastroModelo(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const data = {
-      modelName: formData.modelName,
-      type: formData.type,
-      manufacturer: formData.manufacturer,
-      releaseYear: formData.releaseYear,
-      temperatureLimit: formData.temperatureLimit,
-      currentLimit: formData.currentLimit,
-      voltageLimit: formData.voltageLimit
+    console.log(formData);
+    if (Object.values(formData).includes("")) {
+      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: null }));
     }
+    else {
+      const data = {
+        modelName: formData.modelName,
+        type: formData.type,
+        manufacturer: formData.manufacturer,
+        releaseYear: formData.releaseYear,
+        temperatureLimit: formData.temperatureLimit,
+        currentLimit: formData.currentLimit,
+        voltageLimit: formData.voltageLimit
+      }
 
-    setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
-    api.post('/model/create', data)
-      .then(res => {
-        setFormData({
-          modelName: '',
-          type: '',
-          manufacturer: '',
-          releaseYear: '',
-          temperatureLimit: '',
-          currentLimit: '',
-          voltageLimit: ''
-        });
-        console.log(res);
-        setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
-      })
-      .catch(error => {
-        if (error.response) {
-          // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.log(error.request);
-          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
-        }
-        console.error(error);
-        setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
-      })
+      //enviar para o backend
+      setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: 5000 }));
+      api.post('/model/create', data)
+        .then(res => {
+          setFormData({
+            modelName: '',
+            type: '',
+            manufacturer: '',
+            releaseYear: '',
+            temperatureLimit: '',
+            currentLimit: '',
+            voltageLimit: ''
+          });
+          console.log(res);
+          setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
+        })
+        .catch(error => {
+          if (error.response) {
+            // Request made and server responded
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+          }
+          console.error(error);
+          setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
+        })
+    }
   }
 
   const handleCloseMensage = (event, reason) => {

@@ -11,6 +11,7 @@ import MaskedInput from 'react-text-mask'
 import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
 import findError from '../../services/findError';
+import api from '../../services/api';
 
 function CPFInput(props) {
   const { inputRef, ...other } = props;
@@ -26,7 +27,9 @@ function CPFInput(props) {
 }
 
 export default function CadastroEquipamento(props) {
-  const [openMensage, setOpenMensage] = React.useState(false);
+  const [openMensage, setOpenMensage] = React.useState({
+    open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
+  });
   const [error, setError] = React.useState({
     equipment_model: "",
     id_equipment: "",
@@ -51,9 +54,53 @@ export default function CadastroEquipamento(props) {
       instalation_date: "",
       cpf_client: "",
     })
-    if (!findError("cpf/cnpj", formData.cpf_client))
-      setError(prev => ({ ...prev, cpf_client: "CPF inválido!" }))
-    else setOpenMensage(true);
+    if (Object.values(formData).includes("")) {
+      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: null }));
+    }
+    else {
+      const data = {
+        equipment_model: formData.equipment_model,
+        id_equipment: formData.id_equipment,
+        instalation_date: formData.instalation_date,
+        cpf_client: formData.cpf_client,
+      }
+
+      //enviar para o backend
+      setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
+      api.post('/model/create', data)
+        .then(res => {
+          setFormData({
+            modelName: '',
+            type: '',
+            manufacturer: '',
+            releaseYear: '',
+            temperatureLimit: '',
+            currentLimit: '',
+            voltageLimit: ''
+          });
+          console.log(res);
+          setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
+        })
+        .catch(error => {
+          if (error.response) {
+            // Request made and server responded
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+          }
+          console.error(error);
+          setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
+        })
+    }
   }
 
   function handleChangeInput(event, valueA) {
@@ -68,7 +115,7 @@ export default function CadastroEquipamento(props) {
     if (reason === 'clickaway') {
       return;
     }
-    setOpenMensage(false);
+    setOpenMensage(prev => ({ ...prev, open: false }));
   }
 
   // Referencias (próximo a declaração de um ponteiro nulo)
@@ -91,10 +138,10 @@ export default function CadastroEquipamento(props) {
     <React.Fragment>
       <CssBaseline />
 
-      <Snackbar autoHideDuration={4000} open={openMensage} onClose={handleCloseMensage}
+      <Snackbar autoHideDuration={openMensage.time} open={openMensage.open} onClose={handleCloseMensage}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <Alert elevation={6} variant="filled" severity="success">
-          Cadastrado com sucesso
+        <Alert elevation={6} variant="filled" severity={openMensage.type}>
+          {openMensage.message}
         </Alert>
       </Snackbar>
 
@@ -164,7 +211,7 @@ export default function CadastroEquipamento(props) {
               label="CPF"
               type="text"
               InputProps={{
-                inputComponent: CPFInput,
+                inputComponent: CPFInput
               }}
               helperText={error.cpf_client === "" ? "*Obrigatório" : error.cpf_client}
               error={error.cpf_client !== ""}

@@ -4,12 +4,30 @@ import {
   Typography,
   TextField,
   Button,
-  Snackbar
+  Snackbar,
+  FormControl,
+  InputLabel,
+  FilledInput,
+  FormHelperText
 } from "@material-ui/core"
 import { Alert, Autocomplete } from '@material-ui/lab'
+import MaskedInput from 'react-text-mask'
 import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
 import findError from '../../services/findError';
+
+function CPFInput(props) {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
+    />
+  );
+}
 
 export default function CadastroEquipamento(props) {
   const [openMensage, setOpenMensage] = React.useState(false);
@@ -38,7 +56,7 @@ export default function CadastroEquipamento(props) {
       cpf_client: "",
     })
     if (!findError("cpf/cnpj", formData.cpf_client))
-      setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
+      setError(prev => ({ ...prev, cpf_client: "CPF inválido!" }))
     else setOpenMensage(true);
   }
 
@@ -147,13 +165,17 @@ export default function CadastroEquipamento(props) {
               className={classes.inputs}
               value={formData.cpf_client}
               onChange={handleChangeInput}
-              label="CPF/CNPJ"
+              label="CPF"
               type="text"
+              InputProps={{
+                inputComponent: CPFInput,
+              }}
               helperText={error.cpf_client === "" ? "*Obrigatório" : error.cpf_client}
               error={error.cpf_client !== ""}
               variant="filled"
               inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
+
             <div>
               <Button type="submit"
                 ref={buttonSubmitRef} // neste caso o button pode ser acessado 

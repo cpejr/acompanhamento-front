@@ -11,10 +11,25 @@ import {
   useMediaQuery,
   Snackbar
 } from "@material-ui/core"
-import { Alert, Autocomplete } from '@material-ui/lab'
+import { Alert, Autocomplete } from '@material-ui/lab';
+import MaskedInput from 'react-text-mask';
+import findError from '../../services/findError';
 
 import { useStyles } from './cadastroModeloStyle';
 import nextInput from '../../services/nextInput';
+
+function YearInput(props) {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[/\d/, /\d/, /\d/, /\d/]}
+    />
+  );
+}
 
 export default function CadastroModelo(props) {
   const [openMensage, setOpenMensage] = React.useState({
@@ -191,6 +206,9 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
+                  InputProps={{
+                    inputComponent: YearInput
+                  }}
                   inputRef={releaseYearRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
               </Grid>

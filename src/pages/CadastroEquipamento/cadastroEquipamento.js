@@ -57,6 +57,8 @@ export default function CadastroEquipamento(props) {
     if (Object.values(formData).includes("")) {
       setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
     }
+    else if (!findError("cpf/cnpj", formData.cpf_client))
+      setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
     else {
       const data = {
         equipment_model: formData.equipment_model,

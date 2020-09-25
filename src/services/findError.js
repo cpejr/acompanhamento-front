@@ -12,6 +12,10 @@ export default function findError(type, content) {
       const reCpfCnpj = /([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/g;
       return reCpfCnpj.test(content);
 
+    case "year":
+      const reYear = /\d{4}/g;
+      return reYear.test(content);
+
     default:
       return "";
   }

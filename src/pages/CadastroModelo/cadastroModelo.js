@@ -47,6 +47,9 @@ export default function CadastroModelo(props) {
     currentLimit: '',
     voltageLimit: ''
   });
+  const [error, setError] = useState({
+    releaseYear: '',
+  });
 
   function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
@@ -59,9 +62,15 @@ export default function CadastroModelo(props) {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(formData);
+    setError({
+      releaseYear: "",
+    })
+
     if (Object.values(formData).includes("")) {
       setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
     }
+    else if (!findError("year", formData.releaseYear))
+      setError(prev => ({ ...prev, releaseYear: "Ano inválido" }))
     else {
       const data = {
         modelName: formData.modelName,
@@ -210,7 +219,8 @@ export default function CadastroModelo(props) {
                   onChange={handleChangeInput}
                   label="Ano de lançamento"
                   type="text"
-                  helperText="*Obrigatório"
+                  helperText={error.releaseYear === "" ? "*Obrigatório" : error.releaseYear}
+                  error={error.releaseYear !== ""}
                   variant="filled"
                   autoComplete="off"
                   InputProps={{

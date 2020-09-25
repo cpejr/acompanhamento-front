@@ -31,9 +31,6 @@ export default function CadastroEquipamento(props) {
     open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
   });
   const [error, setError] = React.useState({
-    equipment_model: "",
-    id_equipment: "",
-    instalation_date: "",
     cpf_client: "",
   });
 
@@ -49,9 +46,6 @@ export default function CadastroEquipamento(props) {
     event.preventDefault()
     console.log(formData);
     setError({
-      equipment_model: "",
-      id_equipment: "",
-      instalation_date: "",
       cpf_client: "",
     })
     if (Object.values(formData).includes("")) {

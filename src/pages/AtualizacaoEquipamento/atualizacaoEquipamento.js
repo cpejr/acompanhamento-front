@@ -13,16 +13,149 @@ import {
 } from "@material-ui/core"
 import { useParams } from 'react-router';
 
+import { useStyles } from './atualizacaoEquipamentoStyle'
+import users from '../../services/people'
+import { AuthContext } from '../../context/AuthContext';
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
-  return (
-    <h1>
-        Olá mundo
-    </h1>
+  const [updating, setUpdating] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (id === "me") {
+      setUserData(user);
+    } else {
+      const user = users.people.find(user => user.id === id);
+      setUserData(user);
+    }
+  }, [id, user])
+
+  function handleChangeInput(event) {
+    const { name, value } = event.target;
+    setUserData({ ...userData, [name]: value });
+  }
+
+  function handleSubmit() {
+    if (!updating) setUpdating(true)
+    else {
+      console.log(userData)
+      alert("Salvando no banco de dados...")
+      setUpdating(false)
+    }
+  }
+
+  function handleDelete(confirmation) {
+    if (updating) setUpdating(false) //cancelar
+    else if (confirmation === true) { // excuir de verdade
+      setDeleting(false);
+      alert("Excluindo usuário do banco de dados...")
+    }
+    else { // confirmar exclusão
+      setDeleting(true);
+    }
+  }
+
+  const classes = useStyles({ updating });
+
+  const AreYouSure = () => (
+    <Dialog
+      open={deleting}
+      onClose={() => setDeleting(false)}
+    >
+      <DialogTitle>Excluir equipamento?</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Você tem certeza que deseja excluir este equipamento?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={() => setDeleting(false)}>
+          Cancelar
+          </Button>
+        <Button color="secondary" onClick={() => handleDelete(true)}>
+          Excluir
+          </Button>
+      </DialogActions>
+    </Dialog>
   );
 
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <div className={classes.root}>
+
+        <h1 className={classes.title}>
+          {id === "me" ? "Seu Perfil" : "Detalhes do Equipamento"}
+        </h1>
+
+        <AreYouSure />
+
+        <Paper className={classes.containerForm} elevation={0}>
+          <Grid container >
+            <Grid item xs={12} md={6} className={classes.grid}>
+              <TextField
+                label="Modelo"
+                name="model"
+                className={classes.input}
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+              />
+              <TextField
+                label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
+                name="cpf"
+                className={classes.input}
+                variant="filled"
+                disabled //cpf não deve alterar
+                onChange={handleChangeInput}
+              />
+              <TextField
+                label="Número de série"
+                name="numeroserie"
+                className={classes.input}
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+              />
+              <TextField
+                label="Data instalação"
+                name="date"
+                type="date"
+                defaultValue="2020-09-22"
+                className={classes.input}
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+              />
+            </Grid>
+            
+
+            <Grid className={classes.centralizar} item xs={12}>
+              <Button variant="contained" color="primary" className={classes.btn}
+                onClick={handleSubmit}
+              >
+                {updating ? "Salvar" : "Editar"}
+              </Button>
+
+                <Button variant="contained" color="secondary" className={classes.btn}
+                  onClick={handleDelete}
+                    disabled={id==="me" &&! updating}
+                >
+                  {updating ? "Cancelar" : "Excluir"}
+                </Button>
+            </Grid>
+
+          </Grid>
+        </Paper>
+
+      </div>
+    </React.Fragment >
+  );
 }
+
 
 export default AtualizacaoEquipamento;

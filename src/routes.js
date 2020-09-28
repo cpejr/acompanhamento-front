@@ -15,6 +15,7 @@ import ListagemUsuario from './pages/ListagemUsuario';
 import ListagemModelo from './pages/ListagemModelo';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
+import AtualizacaoEquipamento from './pages/AtualizacaoEquipamento';
 import Testes from './pages/Testes';
 // import ListagemDashboard from './pages/ListagemDashboard';
 import EsqueciSenha from './pages/EsqueciSenha';
@@ -72,6 +73,11 @@ function Routes() {
               <Route path="/au" exact><Redirect to="/" /></Route>
               <Route path="/au/:id">
                 <AtualizacaoUsuario />
+              </Route>
+
+              {/* Atualização de Equipamentos */}
+              <Route path="/atualizacaoequipamento">
+                <AtualizacaoEquipamento />
               </Route>
 
               {/* Páginas para Testes */}

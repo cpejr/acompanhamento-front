@@ -54,7 +54,7 @@ export default function StickyHeadTable(props) {
                   <TableCell>{model.modelName}</TableCell>
                   <TableCell>{model.type}</TableCell>
                   <TableCell className={classes.lastTableCell}>{model.manufacturer}
-                    <Link to='/'>
+                    <Link to={`/am/${model.id}`}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
                   </TableCell>

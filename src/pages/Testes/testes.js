@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, FormControl, InputLabel, FilledInput, TextField, FormHelperText } from '@material-ui/core';
+import { Button, FormControl, InputLabel, FilledInput, FormHelperText } from '@material-ui/core';
 import MaskedInput from 'react-text-mask'
 
 function CPFInput(props) {

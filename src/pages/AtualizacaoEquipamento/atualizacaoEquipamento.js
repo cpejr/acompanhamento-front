@@ -15,53 +15,49 @@ import {
 import { useParams } from 'react-router';
 
 import { useStyles } from './atualizacaoEquipamentoStyle'
-import equipaments from '../../services/data'
-import { AuthContext } from '../../context/AuthContext';
+import { DataContext } from '../../context/DataContext';
 
 function AtualizacaoEquipamento() {
-  const { id_equipament } = useParams();
-  const { equipment} = useContext(AuthContext);
+  const { id_equipment } = useParams();
+  const { equipmentsList } = useContext(DataContext);
 
   const [updating, setUpdating] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [equipmentData, setEquipmentData] = useState({});
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (id_equipament === "me") {
-      setUserData(equipment);
-    } else {
-      const equipment = user.data.find(equipment => equipment.id_equipament=== id_equipament);
-      setUserData(equipment);
-    }
-  }, [id_equipament, equipment])
+      const equipment = equipmentsList.find(equipment => equipment.id_equipment=== id_equipment);
+      setEquipmentData(equipment);
+
+  }, [id_equipment, equipmentsList])
 
   const classes = useStyles({ updating });
 
-  // if (!userData) {
-  //   return (
-  //     <React.Fragment>
-  //       <CssBaseline />
-  //       <div className={classes.root}>
-  //         <h1 className={classes.title}>
-  //           Detalhes do Equipamento
-  //         </h1>
-  //         <Paper className={classes.containerForm} elevation={0}>
-  //           <Typography variant="h5">Dados inválidos!</Typography>
-  //         </Paper>
-  //       </div>
-  //     </React.Fragment>
-  //   );
-  // }
+  if (!equipmentData) {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.root}>
+          <h1 className={classes.title}>
+            Detalhes do Equipamento
+          </h1>
+          <Paper className={classes.containerForm} elevation={0}>
+            <Typography variant="h5">Dados inválidos!</Typography>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
+  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
-    setUserData({ ...userData, [name]: value });
+    setEquipmentData({ ...equipmentData, [name]: value });
   }
 
   function handleSubmit() {
     if (!updating) setUpdating(true)
     else {
-      console.log(userData)
+      console.log(equipmentData)
       alert("Salvando no banco de dados...")
       setUpdating(false)
     }
@@ -107,7 +103,7 @@ function AtualizacaoEquipamento() {
       <div className={classes.root}>
 
         <h1 className={classes.title}>
-          {id_equipament === "me" ? "Seu Perfil" : "Detalhes do Equipamento"}
+          Detalhes do Equipamento
         </h1>
 
         <AreYouSure />
@@ -117,37 +113,41 @@ function AtualizacaoEquipamento() {
             <Grid item xs={12} md={6} className={classes.grid}>
               <TextField
                 label="Modelo"
-                name="model"
+                name="model_equipment"
                 className={classes.input}
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
+                value={equipmentData.model_equipment}
               />
               <TextField
                 label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-                name="cpf"
+                name="cpf_client"
                 className={classes.input}
                 variant="filled"
                 disabled //cpf não deve alterar
                 onChange={handleChangeInput}
+                value={equipmentData.cpf_client}
               />
               <TextField
                 label="Número de série"
-                name="numeroserie"
+                name="id_equipment"
                 className={classes.input}
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
+                value={equipmentData.id_equipment}
               />
               <TextField
                 label="Data instalação"
-                name="date"
+                name="instalation_date"
                 type="date"
-                defaultValue="2020-09-22"
                 className={classes.input}
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
+                //value={equipmentData.instalation_date}
+                defaultValue="2020-11-10"
               />
             </Grid>
 
@@ -159,21 +159,11 @@ function AtualizacaoEquipamento() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
 
-<<<<<<< Updated upstream
-              <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete}
-                disabled={id === "me" && !updating}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
-=======
                 <Button variant="contained" color="secondary" className={classes.btn}
-                  onClick={handleDelete}
-                    disabled={id_equipament==="me" &&! updating}
-                >
+                  onClick={handleDelete}>
                   {updating ? "Cancelar" : "Excluir"}
                 </Button>
->>>>>>> Stashed changes
+
             </Grid>
 
           </Grid>

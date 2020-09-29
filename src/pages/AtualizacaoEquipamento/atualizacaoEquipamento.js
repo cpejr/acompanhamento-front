@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Typography
 } from "@material-ui/core"
 import { useParams } from 'react-router';
 
@@ -33,6 +34,24 @@ function AtualizacaoEquipamento() {
       setUserData(user);
     }
   }, [id, user])
+
+  const classes = useStyles({ updating });
+
+  // if (!userData) {
+  //   return (
+  //     <React.Fragment>
+  //       <CssBaseline />
+  //       <div className={classes.root}>
+  //         <h1 className={classes.title}>
+  //           Detalhes do Equipamento
+  //         </h1>
+  //         <Paper className={classes.containerForm} elevation={0}>
+  //           <Typography variant="h5">Dados inválidos!</Typography>
+  //         </Paper>
+  //       </div>
+  //     </React.Fragment>
+  //   );
+  // }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -59,7 +78,6 @@ function AtualizacaoEquipamento() {
     }
   }
 
-  const classes = useStyles({ updating });
 
   const AreYouSure = () => (
     <Dialog
@@ -132,7 +150,7 @@ function AtualizacaoEquipamento() {
                 onChange={handleChangeInput}
               />
             </Grid>
-            
+
 
             <Grid className={classes.centralizar} item xs={12}>
               <Button variant="contained" color="primary" className={classes.btn}
@@ -141,12 +159,12 @@ function AtualizacaoEquipamento() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
 
-                <Button variant="contained" color="secondary" className={classes.btn}
-                  onClick={handleDelete}
-                    disabled={id==="me" &&! updating}
-                >
-                  {updating ? "Cancelar" : "Excluir"}
-                </Button>
+              <Button variant="contained" color="secondary" className={classes.btn}
+                onClick={handleDelete}
+                disabled={id === "me" && !updating}
+              >
+                {updating ? "Cancelar" : "Excluir"}
+              </Button>
             </Grid>
 
           </Grid>

@@ -26,6 +26,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   containerForm: {
     padding: "50px 50px 30px",
+    marginBottom: "50px",
     borderRadius: "13px",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5%",

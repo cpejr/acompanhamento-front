@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Typography
 } from "@material-ui/core"
 import { useParams } from 'react-router';
 
@@ -33,6 +34,24 @@ function AtualizacaoUsuario() {
       setUserData(user);
     }
   }, [id, user])
+
+  const classes = useStyles({ updating });
+
+  if (!userData) {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.root}>
+          <h1 className={classes.title}>
+            Detalhes de Usuário
+          </h1>
+          <Paper className={classes.containerForm} elevation={0}>
+            <Typography variant="h5">Dados inválidos!</Typography>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
+  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -58,12 +77,6 @@ function AtualizacaoUsuario() {
       setDeleting(true);
     }
   }
-
-  // React.useEffect(() => {
-  //   console.log(userData)
-  // }, [userData])
-
-  const classes = useStyles({ updating });
 
   const AreYouSure = () => (
     <Dialog

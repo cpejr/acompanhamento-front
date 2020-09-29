@@ -9,12 +9,28 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Typography
 } from "@material-ui/core"
 import { useParams } from 'react-router';
 
 import { useStyles } from './atualizacaoModeloStyle'
 import { DataContext } from '../../context/DataContext';
+
+import MaskedInput from 'react-text-mask';
+
+function YearInput(props) {
+  const { inputRef, ...other } = props;
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[/\d/, /\d/, /\d/, /\d/]}
+    />
+  );
+}
 
 function AtualizacaoModelo() {
   const { id } = useParams();
@@ -28,6 +44,24 @@ function AtualizacaoModelo() {
     const data = modelsList.find(model => model.id === id);
     setModel(data);
   }, [id, modelsList])
+
+  const classes = useStyles({ updating });
+
+  if (!model) {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.root}>
+          <h1 className={classes.title}>
+            Detalhes do Modelo
+          </h1>
+          <Paper className={classes.containerForm} elevation={0}>
+            <Typography variant="h5">Dados inválidos!</Typography>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
+  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -53,12 +87,6 @@ function AtualizacaoModelo() {
       setDeleting(true);
     }
   }
-
-  React.useEffect(() => {
-    console.debug("Model", model);
-  }, [model])
-
-  const classes = useStyles({ updating });
 
   const AreYouSure = () => (
     <Dialog
@@ -94,85 +122,120 @@ function AtualizacaoModelo() {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          <Grid container >
-            <Grid item xs={12} md={6} className={classes.grid}>
+          <Grid container>
+            <Grid item xs={12} md={12} className={classes.grid}>
               <TextField
-                label="Nome"
-                name="name"
-                value={model.name}
+                name="modelName"
                 className={classes.input}
-                variant="filled"
-                disabled
+                value={model.modelName}
                 onChange={handleChangeInput}
-              />
-              <TextField
-                label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-                name="cpf"
-                value={model.cpf}
-                className={classes.input}
+                label="Nome do modelo"
+                type="text"
+                helperText="*Obrigatório"
                 variant="filled"
-                disabled //cpf não deve alterar
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Função"
-                name="funcao"
-                value={model.funcao}
-                className={classes.input}
-                variant="filled"
-                disabled //quem pode alterar este dado???
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Endereço"
-                name="adress"
-                value={model.adress}
-                className={classes.input}
-                variant="filled"
+                autoComplete="off"
+                autoFocus
                 disabled={!updating}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.grid}>
+              {/* <Autocomplete
+                value={model.type}
+                freeSolo
+                className={classes.input}
+                options={["Motor", "Bomba hidráulica"]}
                 onChange={handleChangeInput}
+                disabled={!updating}
+                renderInput={params => (
+                  <TextField
+                    name="type"
+                    {...params}
+                    label="Tipo de equipamento"
+                    type="text"
+                    helperText="*Obrigatório"
+                    variant="filled"
+                    autoComplete="off"
+                  />
+                )}
+              /> */}
+              <TextField
+                value={model.type}
+                className={classes.input}
+                name="type"
+                onChange={handleChangeInput}
+                disabled={!updating}
+                label="Tipo de equipamento"
+                type="text"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+              />
+              <TextField
+                name="manufacturer"
+                className={classes.input}
+                value={model.manufacturer}
+                onChange={handleChangeInput}
+                label="Fabricante"
+                type="text"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+              />
+              <TextField
+                name="releaseYear"
+                className={classes.input}
+                value={model.releaseYear}
+                onChange={handleChangeInput}
+                label="Ano de lançamento"
+                type="text"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+                InputProps={{
+                  inputComponent: YearInput
+                }}
               />
             </Grid>
             <Grid item xs={12} md={6} className={classes.grid}>
               <TextField
-                label="Telefone"
-                name="phone"
+                name="temperatureLimit"
                 className={classes.input}
-                variant="filled"
-                value={model.phone}
-                disabled={!updating}
+                value={model.temperatureLimit}
                 onChange={handleChangeInput}
+                label="Limite temperatura"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
               />
               <TextField
-                label="Email"
-                name="email"
+                name="currentLimit"
                 className={classes.input}
-                variant="filled"
-                value={model.email}
-                disabled={!updating}
+                value={model.currentLimit}
                 onChange={handleChangeInput}
+                label="Limite corrente"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
               />
               <TextField
-                label="Senha"
-                name="password"
+                name="voltageLimit"
                 className={classes.input}
-                variant="filled"
-                type="password"
-                defaultValue="123456"
-                disabled //deve ser tão fácil alterar a senha???
+                value={model.voltageLimit}
                 onChange={handleChangeInput}
-              />
-              <TextField
-                label="Situação"
-                name="situacao" // não existe este dado no banco de dados
-                className={classes.input}
+                label="Limite tensão"
+                type="number"
+                helperText="*Obrigatório"
                 variant="filled"
-                defaultValue="Bem de saúde"
+                autoComplete="off"
                 disabled={!updating}
-                onChange={handleChangeInput}
               />
             </Grid>
-
             <Grid className={classes.centralizar} item xs={12}>
               <Button variant="contained" color="primary" className={classes.btn}
                 onClick={handleSubmit}
@@ -185,7 +248,6 @@ function AtualizacaoModelo() {
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
             </Grid>
-
           </Grid>
         </Paper>
 

@@ -56,7 +56,7 @@ export default function StickyHeadTable(props) {
                   <TableCell>{equipment.model_equipment}</TableCell>
                   <TableCell>{equipment.client}</TableCell>
                   <TableCell className={classes.lastTableCell}>{equipment.maintenance_date}
-                    <Link to='/atualizacaoEquipamento'>
+                    <Link to={`/ae/${equipment.id_equipment}`}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
                   </TableCell>

@@ -15,25 +15,25 @@ import {
 import { useParams } from 'react-router';
 
 import { useStyles } from './atualizacaoEquipamentoStyle'
-import users from '../../services/people'
+import equipaments from '../../services/data'
 import { AuthContext } from '../../context/AuthContext';
 
 function AtualizacaoEquipamento() {
-  const { id } = useParams();
-  const { user } = useContext(AuthContext);
+  const { id_equipament } = useParams();
+  const { equipment} = useContext(AuthContext);
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (id === "me") {
-      setUserData(user);
+    if (id_equipament === "me") {
+      setUserData(equipment);
     } else {
-      const user = users.people.find(user => user.id === id);
-      setUserData(user);
+      const equipment = user.data.find(equipment => equipment.id_equipament=== id_equipament);
+      setUserData(equipment);
     }
-  }, [id, user])
+  }, [id_equipament, equipment])
 
   const classes = useStyles({ updating });
 
@@ -107,7 +107,7 @@ function AtualizacaoEquipamento() {
       <div className={classes.root}>
 
         <h1 className={classes.title}>
-          {id === "me" ? "Seu Perfil" : "Detalhes do Equipamento"}
+          {id_equipament === "me" ? "Seu Perfil" : "Detalhes do Equipamento"}
         </h1>
 
         <AreYouSure />
@@ -159,12 +159,21 @@ function AtualizacaoEquipamento() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
 
+<<<<<<< Updated upstream
               <Button variant="contained" color="secondary" className={classes.btn}
                 onClick={handleDelete}
                 disabled={id === "me" && !updating}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
+=======
+                <Button variant="contained" color="secondary" className={classes.btn}
+                  onClick={handleDelete}
+                    disabled={id_equipament==="me" &&! updating}
+                >
+                  {updating ? "Cancelar" : "Excluir"}
+                </Button>
+>>>>>>> Stashed changes
             </Grid>
 
           </Grid>

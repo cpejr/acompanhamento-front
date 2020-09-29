@@ -82,7 +82,8 @@ function Routes() {
               </Route>
 
               {/* Atualização de Equipamentos */}
-              <Route path="/atualizacaoequipamento">
+              <Route path="/ae" exact><Redirect to="/" /></Route>
+              <Route path="/ae/:id_equipment">
                 <AtualizacaoEquipamento />
               </Route>
 

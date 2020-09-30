@@ -10,10 +10,13 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Typography
+  Typography,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core"
-import { useParams } from 'react-router';
+import api from '../../services/api';
 
+import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoModeloStyle'
 import { DataContext } from '../../context/DataContext';
 
@@ -38,12 +41,22 @@ function AtualizacaoModelo() {
 
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
+  const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const data = modelsList.find(model => model.id === id);
-    setModel(data);
-  }, [id, modelsList])
+    (async () => {
+      await api.get(`model/${id}`)
+        .then((selected) => {
+          setModel(selected.data.model)
+        })
+        .catch(err => {
+          console.error("Backend is not working properly", err);
+        });
+      setLoading(false)
+      // const data = modelsList.find(model => model.id === id);
+    })();
+  }, [id])
 
   const classes = useStyles({ updating });
 
@@ -109,6 +122,16 @@ function AtualizacaoModelo() {
       </DialogActions>
     </Dialog>
   );
+
+  if (loading) {
+    return (
+      <React.Fragment>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </React.Fragment>
+    )
+  }
 
   return (
     <React.Fragment>

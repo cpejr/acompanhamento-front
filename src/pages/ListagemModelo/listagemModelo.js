@@ -42,7 +42,6 @@ export default function ListagemModelo() {
   }, [])
 
   const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
-  console.log(modelsOriginal);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {

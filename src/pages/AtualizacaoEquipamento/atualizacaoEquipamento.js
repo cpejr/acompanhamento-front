@@ -10,30 +10,41 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Typography
+  Typography,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core"
-import { useParams } from 'react-router';
+import api from '../../services/api';
 
+import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 import { DataContext } from '../../context/DataContext';
 
 function AtualizacaoEquipamento() {
-  const { id_equipment } = useParams();
+  const { id } = useParams();
   const { equipmentsList } = useContext(DataContext);
 
   const [updating, setUpdating] = useState(false);
-  const [equipmentData, setEquipmentData] = useState({});
+  const [equipment, setEquipment] = useState({});
+  const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-      const equipment = equipmentsList.find(equipment => equipment.id_equipment=== id_equipment);
-      setEquipmentData(equipment);
-
-  }, [id_equipment, equipmentsList])
+    (async () => {
+      await api.get(`equipment/${id}`)
+        .then((selected) => {
+          setEquipment(selected.data.equipment)
+        })
+        .catch(err => {
+          console.error("Backend is not working properly", err);
+        });
+      setLoading(false)
+    })();
+  }, [id])
 
   const classes = useStyles({ updating });
 
-  if (!equipmentData) {
+  if (!equipment) {
     return (
       <React.Fragment>
         <CssBaseline />
@@ -51,13 +62,13 @@ function AtualizacaoEquipamento() {
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
-    setEquipmentData({ ...equipmentData, [name]: value });
+    setEquipment({ ...equipment, [name]: value });
   }
 
   function handleSubmit() {
     if (!updating) setUpdating(true)
     else {
-      console.log(equipmentData)
+      console.log(equipment)
       alert("Salvando no banco de dados...")
       setUpdating(false)
     }
@@ -73,7 +84,6 @@ function AtualizacaoEquipamento() {
       setDeleting(true);
     }
   }
-
 
   const AreYouSure = () => (
     <Dialog
@@ -97,6 +107,16 @@ function AtualizacaoEquipamento() {
     </Dialog>
   );
 
+  if (loading) {
+    return (
+      <React.Fragment>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </React.Fragment>
+    )
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -112,41 +132,41 @@ function AtualizacaoEquipamento() {
           <Grid container >
             <Grid item xs={12} md={6} className={classes.grid}>
               <TextField
-                label="Modelo"
-                name="model_equipment"
                 className={classes.input}
+                value={equipment.equipment_model}
+                name="model_equipment"
+                label="Modelo"
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
-                value={equipmentData.model_equipment}
               />
               <TextField
-                label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-                name="cpf_client"
                 className={classes.input}
+                value={equipment.cpf_client}
+                name="cpf_client"
+                label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
                 variant="filled"
                 disabled //cpf não deve alterar
                 onChange={handleChangeInput}
-                value={equipmentData.cpf_client}
               />
               <TextField
-                label="Número de série"
+                className={classes.input}
                 name="id_equipment"
-                className={classes.input}
+                value={equipment.id}
+                label="Número de série"
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
-                value={equipmentData.id_equipment}
               />
               <TextField
-                label="Data instalação"
-                name="instalation_date"
-                type="date"
                 className={classes.input}
+                value={equipment.instalation_date}
+                name="instalation_date"
+                label="Data instalação"
+                type="date"
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
-                //value={equipmentData.instalation_date}
                 defaultValue="2020-11-10"
               />
             </Grid>
@@ -159,10 +179,10 @@ function AtualizacaoEquipamento() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
 
-                <Button variant="contained" color="secondary" className={classes.btn}
-                  onClick={handleDelete}>
-                  {updating ? "Cancelar" : "Excluir"}
-                </Button>
+              <Button variant="contained" color="secondary" className={classes.btn}
+                onClick={handleDelete}>
+                {updating ? "Cancelar" : "Excluir"}
+              </Button>
 
             </Grid>
 

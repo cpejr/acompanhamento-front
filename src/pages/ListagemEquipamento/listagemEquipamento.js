@@ -85,14 +85,6 @@ export default function ListagemEquipamento() {
     )
   }
 
-  // if (loading) {
-  //   return (
-  //     <p className={classes.loading}>
-  //       Carregando...
-  //     </p>
-  //   )
-  // }
-
   return (
     <React.Fragment>
       <div className={classes.root}>
@@ -128,7 +120,7 @@ export default function ListagemEquipamento() {
             >
               <MenuItem value="client">Cliente</MenuItem>
               <MenuItem value="model_equipment">Modelo</MenuItem>
-              <MenuItem value="id_equipment">Nº série</MenuItem>
+              <MenuItem value="id">Nº série</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -140,7 +132,7 @@ export default function ListagemEquipamento() {
                 .map((equipment) => {
                   var formattedDate = getRequiredDateFormat(equipment.updatedAt)
                   return {
-                    id_equipment: equipment.id_equipment,
+                    id: equipment.id,
                     equipment_model: equipment.equipment_model,
                     cpf_client: equipment.cpf_client,
                     updatedAt: formattedDate,

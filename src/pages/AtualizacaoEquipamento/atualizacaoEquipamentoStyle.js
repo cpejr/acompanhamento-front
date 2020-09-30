@@ -13,6 +13,10 @@ export const useStyles = makeStyles((theme) => ({
       padding: "30px 5%",
     },
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
   title: {
     marginBottom: "30px",
 

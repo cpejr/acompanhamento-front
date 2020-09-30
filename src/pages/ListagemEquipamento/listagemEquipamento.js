@@ -8,6 +8,8 @@ import {
   MenuItem,
   FormControl,
   Select,
+  Backdrop,
+  CircularProgress
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -32,17 +34,21 @@ export default function ListagemEquipamento() {
 
   const allEquipment = useContext(DataContext).equipmentsList;
   const [equipmentsOriginal, setEquipmentsOriginal] = useState(allEquipment);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('equipment/index')
-      .then(equipment => {
-        const equipments = equipment.data.equipment
-        setEquipmentsOriginal(equipments);
-        setEquipmentsListToDisplay(equipments);
-      })
-      .catch(err => {
-        console.error("Backend is not working", err);
-      });
+    (async () => {
+      await api.get('equipment/index')
+        .then(equipment => {
+          const equipments = equipment.data.equipment
+          setEquipmentsOriginal(equipments);
+          setEquipmentsListToDisplay(equipments);
+        })
+        .catch(err => {
+          console.error("Backend is not working", err);
+        });
+      setLoading(false);
+    })();
   }, [])
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
@@ -68,6 +74,24 @@ export default function ListagemEquipamento() {
   function getRequiredDateFormat(timeStamp, format = "DD/MM/YYYY") {
     return moment(timeStamp).format(format);
   }
+
+  if (loading) { 
+    return (
+      <React.Fragment>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </React.Fragment>
+    )
+  }
+
+  // if (loading) {
+  //   return (
+  //     <p className={classes.loading}>
+  //       Carregando...
+  //     </p>
+  //   )
+  // }
 
   return (
     <React.Fragment>

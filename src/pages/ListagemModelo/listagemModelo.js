@@ -6,7 +6,9 @@ import {
   Typography,
   MenuItem,
   FormControl,
-  Select
+  Select,
+  CircularProgress,
+  Backdrop
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -22,17 +24,21 @@ export default function ListagemModelo() {
 
   const modelsContext = useContext(DataContext).modelsList;
   const [modelsOriginal, setModelsOriginal] = useState(modelsContext)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('model/index')
-      .then(model => {
-        const models = model.data.data
-        setModelsOriginal(models);
-        setModelsListToDisplay(models);
-      })
-      .catch(err => {
-        console.error("Liga o backend ai mano", err);
-      });
+    (async () => {
+      await api.get('model/index')
+        .then(model => {
+          const models = model.data.data
+          setModelsOriginal(models);
+          setModelsListToDisplay(models);
+        })
+        .catch(err => {
+          console.error("Liga o backend ai mano", err);
+        });
+      setLoading(false)
+    })();
   }, [])
 
   const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
@@ -57,6 +63,16 @@ export default function ListagemModelo() {
 
   console.debug("ListTo", modelsListToDisplay)
   const classes = useStyles();
+
+  if (loading) {
+    return (
+      <React.Fragment>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </React.Fragment>
+    )
+  }
 
   return (
     <React.Fragment>

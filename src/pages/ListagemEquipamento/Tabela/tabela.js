@@ -51,12 +51,12 @@ export default function StickyHeadTable(props) {
           <TableBody>
             {props.equipmentsListToDisplay
               .map(equipment => (
-                <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
+                <TableRow hover tabIndex={-1} key={equipment.id}>
                   <TableCell>{equipment.id_equipment}</TableCell>
-                  <TableCell>{equipment.model_equipment}</TableCell>
-                  <TableCell>{equipment.client}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{equipment.maintenance_date}
-                    <Link to={`/ae/${equipment.id_equipment}`}>
+                  <TableCell>{equipment.equipment_model}</TableCell>
+                  <TableCell>{equipment.cpf_client}</TableCell>
+                  <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
+                    <Link to={`/ae/${equipment.id}`}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
                   </TableCell>

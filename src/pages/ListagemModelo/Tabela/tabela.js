@@ -18,7 +18,7 @@ export default function StickyHeadTable(props) {
   const classes = useStyles();
   const { ordem, setOrdem } = props;
 
-  const headerItens = [
+  const headerItems = [
     { title: "Modelo", ordemBy: "modelName" },
     { title: "Tipo", ordemBy: "type" },
     { title: "Fabricante", ordemBy: "manufacturer" }
@@ -30,7 +30,7 @@ export default function StickyHeadTable(props) {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              {headerItens.map(item => (
+              {headerItems.map(item => (
                 <TableCell className={classes.tableCell} key={item.title}>
                   <TableSortLabel
                     active={ordem.by === item.ordemBy ? true : false}

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation } from "react-router-dom"
 
 import {
@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
+import api from '../../services/api';
+import moment from "moment";
 import ordenar from '../../services/ordenar';
 import { DataContext } from '../../context/DataContext';
 import { useStyles } from './listagemEquipamentoStyle';
@@ -20,13 +22,28 @@ export default function ListagemEquipamento() {
   const classes = useStyles();
   const [filterby, setFilterby] = useState("client");
 
-  const query = new URLSearchParams(useLocation().search);
-  const situation = query.get('situation');
+  // const query = new URLSearchParams(useLocation().search);
+  // const situation = query.get('situation');
+
+  // const allEquipment = useContext(DataContext).equipmentsList;
+  // const equipmentsOriginal = situation ?
+  //   allEquipment.filter(equipment => equipment.situation === situation) :
+  //   allEquipment;
 
   const allEquipment = useContext(DataContext).equipmentsList;
-  const equipmentsOriginal = situation ?
-    allEquipment.filter(equipment => equipment.situation === situation) :
-    allEquipment;
+  const [equipmentsOriginal, setEquipmentsOriginal] = useState(allEquipment);
+
+  useEffect(() => {
+    api.get('equipment/index')
+      .then(equipment => {
+        const equipments = equipment.data.equipment
+        setEquipmentsOriginal(equipments);
+        setEquipmentsListToDisplay(equipments);
+      })
+      .catch(err => {
+        console.error("Backend is not working", err);
+      });
+  }, [])
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
@@ -46,6 +63,10 @@ export default function ListagemEquipamento() {
     } else {
       setEquipmentsListToDisplay(equipmentsOriginal);
     }
+  }
+
+  function getRequiredDateFormat(timeStamp, format = "DD/MM/YYYY") {
+    return moment(timeStamp).format(format);
   }
 
   return (
@@ -91,13 +112,14 @@ export default function ListagemEquipamento() {
           <StickyHeadTable
             equipmentsListToDisplay={
               ordenar(equipmentsListToDisplay, ordem.by, ordem.alfabetica,
-                ordem.by === "maintenance_date" ? true : false)
+                ordem.by === "updateAt" ? true : false)
                 .map((equipment) => {
+                  var formattedDate = getRequiredDateFormat(equipment.updatedAt)
                   return {
                     id_equipment: equipment.id_equipment,
-                    model_equipment: equipment.model_equipment,
-                    client: equipment.client,
-                    maintenance_date: equipment.maintenance_date,
+                    equipment_model: equipment.equipment_model,
+                    cpf_client: equipment.cpf_client,
+                    updatedAt: formattedDate,
                   }
                 })
             }

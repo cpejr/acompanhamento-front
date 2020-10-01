@@ -5,6 +5,8 @@ import {
   TextField,
   Button,
   Snackbar,
+  CircularProgress,
+  Backdrop
 } from "@material-ui/core"
 import { Alert, Autocomplete } from '@material-ui/lab'
 import MaskedInput from 'react-text-mask'
@@ -12,6 +14,7 @@ import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
 import findError from '../../services/findError';
 import api from '../../services/api';
+import { format, parseISO } from 'date-fns';
 
 function CPFInput(props) {
   const { inputRef, ...other } = props;
@@ -33,46 +36,87 @@ export default function CadastroEquipamento(props) {
   const [error, setError] = React.useState({
     cpf_client: "",
   });
+  const [models, setModels] = React.useState([{}]);
+  const [loading, setLoading] = useState(true);
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
-    equipment_model: "",
+    id_model: "132",
     id_equipment: "",
-    instalation_date: "2020-09-22",
+    equipment_model: "",
+    instalation_date: format(new Date(), "yyyy-MM-dd"),
+    situation: "Ok",
     cpf_client: "",
+    //opcionais
+    observation: "",
   });
+
+  //pegar modelos
+  React.useEffect(() => {
+    api.get('model/index')
+      .then(model => {
+        const models = model.data.data;
+        setModels(models);
+      })
+      .catch(error => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+          setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+        }
+        setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
+      });
+    setLoading(false)
+  }, [])
 
   function handleSubmit(event) {
     event.preventDefault()
-    console.log(formData);
     setError({
       cpf_client: "",
     })
-    if (Object.values(formData).includes("")) {
+
+    // coloque os opcionais por ultimo e para cada um adione um pop()
+    let formDataWithoutNotRequired = Object.values(formData);
+    // formDataWithoutNotRequired.pop()
+    if (formDataWithoutNotRequired.includes("")) {
       setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
     }
     else if (!findError("cpf/cnpj", formData.cpf_client))
       setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
     else {
       const data = {
-        equipment_model: formData.equipment_model,
+        id_model: formData.id_model,
         id_equipment: formData.id_equipment,
-        instalation_date: formData.instalation_date,
+        equipment_model: formData.equipment_model,
+        instalation_date: parseISO(formData.instalation_date),
+        situation: formData.situation,
         cpf_client: formData.cpf_client,
+        observation: formData.observation
       }
 
       //enviar para o backend
       setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
-      api.post('/model/create', data)
+      api.post('/equipment/create', data)
         .then(res => {
           setFormData({
-            modelName: '',
-            type: '',
-            manufacturer: '',
-            releaseYear: '',
-            temperatureLimit: '',
-            currentLimit: '',
-            voltageLimit: ''
+            id_model: "132",
+            id_equipment: "",
+            equipment_model: "",
+            instalation_date: format(new Date(), "yyyy-MM-dd"),
+            situation: "Ok",
+            cpf_client: "",
+            //opcionais
+            observation: "",
           });
           console.log(res);
           setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
@@ -93,8 +137,7 @@ export default function CadastroEquipamento(props) {
             console.log('Error', error.message);
             setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
           }
-          console.error(error);
-          setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
+          setOpenMensage(({ open: true, message: `Error: ${error.message}`, type: 'error', time: 5000 }));
         })
     }
   }
@@ -119,16 +162,28 @@ export default function CadastroEquipamento(props) {
   const idEquipmentRef = useRef(null);
   const instalationDateRef = useRef(null);
   const cpfClientRef = useRef(null);
+  const observationRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
   const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
     { name: "equipment_model", ref: idEquipmentRef },
     { name: "id_equipment", ref: instalationDateRef },
     { name: "instalation_date", ref: cpfClientRef },
-    { name: "cpf_client", ref: buttonSubmitRef }
+    { name: "cpf_client", ref: observationRef },
+    { name: "observation", ref: buttonSubmitRef }
   ];
 
   const classes = useStyles();
+
+  if (loading) {
+    return (
+      <React.Fragment>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </React.Fragment>
+    )
+  }
 
   return (
     <React.Fragment>
@@ -151,7 +206,7 @@ export default function CadastroEquipamento(props) {
           <div className={classes.containerForm}>
             <Autocomplete
               className={classes.inputs}
-              options={["Bomba submersa", "Bomba centrífuga", "Bomba autoaspirante", "Bomba periférica", "Bomba injetora"]}
+              options={models.map(model => model.modelName)}
               onChange={handleChangeInput}
               // value={formData.equipment_model}
               renderInput={params => (
@@ -213,6 +268,18 @@ export default function CadastroEquipamento(props) {
               error={error.cpf_client !== ""}
               variant="filled"
               inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+            />
+
+            <TextField
+              name="observation"
+              className={classes.inputs}
+              value={formData.observation}
+              onChange={handleChangeInput}
+              label="Observações"
+              type="text"
+              helperText="Opcional"
+              variant="filled"
+              inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <div>

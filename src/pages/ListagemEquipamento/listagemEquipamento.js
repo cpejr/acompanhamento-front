@@ -120,7 +120,7 @@ export default function ListagemEquipamento() {
             >
               <MenuItem value="client">Cliente</MenuItem>
               <MenuItem value="model_equipment">Modelo</MenuItem>
-              <MenuItem value="id">Nº série</MenuItem>
+              <MenuItem value="id_equipment">Nº série</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -132,7 +132,8 @@ export default function ListagemEquipamento() {
                 .map((equipment) => {
                   var formattedDate = getRequiredDateFormat(equipment.updatedAt)
                   return {
-                    id: equipment.id_equipment,
+                    id: equipment.id,
+                    id_equipment: equipment.id_equipment,
                     equipment_model: equipment.equipment_model,
                     cpf_client: equipment.cpf_client,
                     updatedAt: formattedDate,

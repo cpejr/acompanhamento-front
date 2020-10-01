@@ -59,7 +59,7 @@ export const useStyles = makeStyles(theme => ({
 
   inputs: {
     width: "100%",
-    marginTop: "20px",
+    marginBottom: "20px",
   },
 
 

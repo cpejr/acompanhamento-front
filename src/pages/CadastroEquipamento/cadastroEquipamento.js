@@ -79,12 +79,13 @@ export default function CadastroEquipamento(props) {
     setLoading(false)
   }, [])
 
-  React.useEffect(() => {
-    console.debug("FormData: ", formData)
-  }, [formData])
+  // React.useEffect(() => {
+  //   console.debug("FormData: ", formData)
+  // }, [formData])
 
   function handleSubmit(event) {
     event.preventDefault()
+    console.debug("FormData: ", formData)
     setError({
       cpf_client: "",
     })
@@ -107,6 +108,7 @@ export default function CadastroEquipamento(props) {
         cpf_client: formData.cpf_client,
         observation: formData.observation
       }
+      console.debug("Data: ", data)
 
       //enviar para o backend
       setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
@@ -149,9 +151,9 @@ export default function CadastroEquipamento(props) {
   function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
     if (valueA) {// from autocomplete
-      setFormData({ ...formData, equipment_model: valueA });
-      const selectedMmodel = models.find(model => model.modelName === valueA);
-      setFormData({ ...formData, id_model: selectedMmodel.id })
+      setFormData(prev => ({ ...prev, equipment_model: valueA }));
+      const selectedModel = models.find(model => model.modelName === valueA);
+      setFormData(prev => ({ ...prev, id_model: selectedModel.id }))
     } else
       setFormData({ ...formData, [name]: value });
   }
@@ -223,6 +225,7 @@ export default function CadastroEquipamento(props) {
                   type="text"
                   helperText="*Obrigatório"
                   variant="filled"
+                  required
                   autoComplete="off"
                   autoFocus
                   inputRef={equipmentModelRef}
@@ -240,6 +243,7 @@ export default function CadastroEquipamento(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
+              required
               autoComplete="off"
               inputRef={idEquipmentRef} // atribui um elemento a ref criada
               onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
@@ -254,7 +258,6 @@ export default function CadastroEquipamento(props) {
               type="date"
               helperText="*Obrigatório"
               variant="filled"
-              defaultValue="2020-09-22"
               autoComplete="off"
               inputRef={instalationDateRef}
               onKeyPress={e => nextInput(e, relacionamentosRef)}
@@ -270,6 +273,7 @@ export default function CadastroEquipamento(props) {
               InputProps={{
                 inputComponent: CPFInput
               }}
+              required
               helperText={error.cpf_client === "" ? "*Obrigatório" : error.cpf_client}
               error={error.cpf_client !== ""}
               variant="filled"
@@ -283,7 +287,9 @@ export default function CadastroEquipamento(props) {
               onChange={handleChangeInput}
               label="Observações"
               type="text"
-              helperText="Opcional"
+              helperText="*Obrigatório"
+              required
+              autoComplete="off"
               variant="filled"
               inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />

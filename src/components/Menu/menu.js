@@ -74,7 +74,7 @@ export default function Menu() {
             className={classes.link}
             onClick={handleToggleMenu}
           >
-            {user.name}
+            {user.name.split(' ')[0]}
           </Button>
           {openMenu && <Paper
             className={classes.menuProfile}

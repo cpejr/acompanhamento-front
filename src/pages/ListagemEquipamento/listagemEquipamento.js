@@ -75,7 +75,7 @@ export default function ListagemEquipamento() {
     return moment(timeStamp).format(format);
   }
 
-  if (loading) { 
+  if (loading) {
     return (
       <React.Fragment>
         <Backdrop className={classes.backdrop} open={true}>
@@ -132,7 +132,7 @@ export default function ListagemEquipamento() {
                 .map((equipment) => {
                   var formattedDate = getRequiredDateFormat(equipment.updatedAt)
                   return {
-                    id: equipment.id,
+                    id: equipment.id_equipment,
                     equipment_model: equipment.equipment_model,
                     cpf_client: equipment.cpf_client,
                     updatedAt: formattedDate,

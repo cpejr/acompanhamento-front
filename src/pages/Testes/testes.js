@@ -1,54 +1,34 @@
 import React from 'react';
-import { Button, FormControl, InputLabel, FilledInput, FormHelperText } from '@material-ui/core';
-import MaskedInput from 'react-text-mask'
+import axios from 'axios';
 
-function CPFInput(props) {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={(ref) => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
-    />
-  );
-}
+const api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com/"
+})
 
-function Testes() {
-  const [values, setValues] = React.useState({
-    cpf_client: '',
-  });
+export default function Testes() {
+  const [posts, setPosts] = React.useState()
 
-  const handleChangeInput = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
+  React.useEffect(() => {
+    api.get("posts")
+      .then(response => {
+        console.log(response.data);
+        setPosts(response.data);
+      })
+      .catch(err => console.debug("Olha aqui", err.message));
+  }, [])
 
-  function mostrar() {
-    console.log(values.cpf_client)
+  if (posts === undefined) {
+    return <h1>Carregando...</h1>
   }
 
   return (
     <div>
-      <FormControl
-        error={true}
-      >
-        <InputLabel>CPF</InputLabel>
-        <FilledInput
-          value={values.cpf_client}
-          onChange={handleChangeInput}
-          name="cpf_client"
-          inputComponent={CPFInput}
-        />
-        <FormHelperText>*Obrigatório</FormHelperText>
-      </FormControl>
-
-      <Button onClick={mostrar}>Mostrar</Button>
+      {posts.map(post => (
+        <>
+          <h2>{post.title}</h2>
+          <p>{post.body}</p>
+        </>
+      ))}
     </div>
   );
 }
-
-export default Testes;

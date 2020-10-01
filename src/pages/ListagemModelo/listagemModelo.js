@@ -27,18 +27,16 @@ export default function ListagemModelo() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      await api.get('model/index')
-        .then(model => {
-          const models = model.data.data
-          setModelsOriginal(models);
-          setModelsListToDisplay(models);
-        })
-        .catch(err => {
-          console.error("Liga o backend ai mano", err);
-        });
-      setLoading(false)
-    })();
+    api.get('model/index')
+      .then(model => {
+        const models = model.data.data
+        setModelsOriginal(models);
+        setModelsListToDisplay(models);
+      })
+      .catch(err => {
+        console.error("Liga o backend ai mano", err);
+      });
+    setLoading(false)
   }, [])
 
   const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);

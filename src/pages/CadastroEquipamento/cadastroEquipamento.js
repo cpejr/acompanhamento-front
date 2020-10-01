@@ -41,7 +41,7 @@ export default function CadastroEquipamento(props) {
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
-    id_model: "132",
+    id_model: "",
     id_equipment: "",
     equipment_model: "",
     instalation_date: format(new Date(), "yyyy-MM-dd"),
@@ -78,6 +78,10 @@ export default function CadastroEquipamento(props) {
       });
     setLoading(false)
   }, [])
+
+  React.useEffect(() => {
+    console.debug("FormData: ", formData)
+  }, [formData])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -144,9 +148,11 @@ export default function CadastroEquipamento(props) {
 
   function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
-    if (valueA)
+    if (valueA) {// from autocomplete
       setFormData({ ...formData, equipment_model: valueA });
-    else
+      const selectedMmodel = models.find(model => model.modelName === valueA);
+      setFormData({ ...formData, id_model: selectedMmodel.id })
+    } else
       setFormData({ ...formData, [name]: value });
   }
 

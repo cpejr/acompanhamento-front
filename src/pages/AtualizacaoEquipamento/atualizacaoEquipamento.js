@@ -19,14 +19,12 @@ import moment from 'moment';
 
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
-import { DataContext } from '../../context/DataContext';
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
-  const { equipmentsList } = useContext(DataContext);
-
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
+  const [equipmentOriginal, setEquipmentOriginal] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
@@ -40,7 +38,9 @@ function AtualizacaoEquipamento() {
           var date = selected.data.equipment[0].instalation_date;
           var instalation_date = getRequiredDateFormat(date);
           setEquipment(selected.data.equipment[0]);
-          setEquipment((prev) => ({ ...prev, instalation_date }))
+          setEquipmentOriginal(selected.data.equipment[0]);
+          setEquipment(prev => ({ ...prev, instalation_date }))
+          setEquipmentOriginal(prev => ({ ...prev, instalation_date }));
         })
         .catch(err => {
           console.error("Backend is not working properly", err);
@@ -50,7 +50,6 @@ function AtualizacaoEquipamento() {
   }, [id])
 
   const classes = useStyles({ updating });
-  console.log(equipment)
 
   if (!equipment) {
     return (
@@ -76,14 +75,17 @@ function AtualizacaoEquipamento() {
   function handleSubmit() {
     if (!updating) setUpdating(true)
     else {
-      console.log(equipment)
-      alert("Salvando no banco de dados...")
-      setUpdating(false)
+      alert("Salvando no banco de dados...");
+      setEquipmentOriginal(equipment);
+      setUpdating(false);
     }
   }
 
   function handleDelete(confirmation) {
-    if (updating) setUpdating(false) //cancelar
+    if (updating) { //cancelar
+      setUpdating(false);
+      setEquipment(equipmentOriginal)
+    }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
       alert("Excluindo usuário do banco de dados...")

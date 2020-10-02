@@ -37,10 +37,9 @@ function YearInput(props) {
 
 function AtualizacaoModelo() {
   const { id } = useParams();
-  const { modelsList } = useContext(DataContext);
-
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
+  const [modelOriginal, setModelOriginal] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
 
@@ -49,6 +48,7 @@ function AtualizacaoModelo() {
       await api.get(`model/${id}`)
         .then((selected) => {
           setModel(selected.data.model)
+          setModelOriginal(selected.data.model)
         })
         .catch(err => {
           console.error("Backend is not working properly", err);
@@ -86,12 +86,16 @@ function AtualizacaoModelo() {
     else {
       console.log(model)
       alert("Salvando no banco de dados...")
+      setModelOriginal(model)
       setUpdating(false)
     }
   }
 
   function handleDelete(confirmation) {
-    if (updating) setUpdating(false) //cancelar
+    if (updating) { //cancelar
+      setUpdating(false);
+      setModel(modelOriginal)
+    }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
       alert("Excluindo modelo do banco de dados...")

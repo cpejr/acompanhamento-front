@@ -185,7 +185,7 @@ function AtualizacaoUsuario() {
                 type="password"
                 defaultValue="123456"
                 disabled //deve ser tão fácil alterar a senha???
-                onChange={handleChangeInput}
+              // onChange={handleChangeInput}
               />
               <TextField
                 label="Situação"
@@ -194,7 +194,7 @@ function AtualizacaoUsuario() {
                 variant="filled"
                 defaultValue="Bem de saúde"
                 disabled={!updating}
-                onChange={handleChangeInput}
+              // onChange={handleChangeInput}
               />
             </Grid>
 

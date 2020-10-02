@@ -15,6 +15,7 @@ import {
   CircularProgress
 } from "@material-ui/core"
 import api from '../../services/api';
+import moment from 'moment';
 
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
@@ -30,10 +31,16 @@ function AtualizacaoEquipamento() {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
+    function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
+      return moment(timeStamp).format(format);
+    }
     (async () => {
       await api.get(`equipment/${id}`)
         .then((selected) => {
-          setEquipment(selected.data.equipment)
+          var date = selected.data.equipment[0].instalation_date;
+          var instalation_date = getRequiredDateFormat(date);
+          setEquipment(selected.data.equipment[0]);
+          setEquipment((prev) => ({...prev, instalation_date}))
         })
         .catch(err => {
           console.error("Backend is not working properly", err);
@@ -43,6 +50,7 @@ function AtualizacaoEquipamento() {
   }, [id])
 
   const classes = useStyles({ updating });
+  console.log(equipment)
 
   if (!equipment) {
     return (
@@ -132,42 +140,42 @@ function AtualizacaoEquipamento() {
           <Grid container >
             <Grid item xs={12} md={6} className={classes.grid}>
               <TextField
+                name="equipment_model"
                 className={classes.input}
                 value={equipment.equipment_model}
-                name="model_equipment"
                 label="Modelo"
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
               />
               <TextField
+                name="cpf_client"
                 className={classes.input}
                 value={equipment.cpf_client}
-                name="cpf_client"
                 label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
                 variant="filled"
                 disabled //cpf não deve alterar
                 onChange={handleChangeInput}
               />
               <TextField
-                className={classes.input}
                 name="id_equipment"
-                value={equipment.id}
+                className={classes.input}
+                value={equipment.id_equipment}
                 label="Número de série"
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
               />
               <TextField
+                name="instalation_date"
                 className={classes.input}
                 value={equipment.instalation_date}
-                name="instalation_date"
                 label="Data instalação"
                 type="date"
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
-                defaultValue="2020-11-10"
+
               />
             </Grid>
 

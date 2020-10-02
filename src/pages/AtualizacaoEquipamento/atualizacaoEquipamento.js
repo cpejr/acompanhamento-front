@@ -40,7 +40,7 @@ function AtualizacaoEquipamento() {
           var date = selected.data.equipment[0].instalation_date;
           var instalation_date = getRequiredDateFormat(date);
           setEquipment(selected.data.equipment[0]);
-          setEquipment((prev) => ({...prev, instalation_date}))
+          setEquipment((prev) => ({ ...prev, instalation_date }))
         })
         .catch(err => {
           console.error("Backend is not working properly", err);
@@ -175,7 +175,16 @@ function AtualizacaoEquipamento() {
                 variant="filled"
                 disabled={!updating}
                 onChange={handleChangeInput}
-
+              />
+              <TextField
+                name="observation"
+                className={classes.input}
+                value={equipment.observation}
+                label="Observações"
+                type="text"
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
               />
             </Grid>
 

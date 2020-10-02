@@ -24,14 +24,17 @@ function AtualizacaoUsuario() {
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
+  const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (id === "me") {
       setUserData(user);
+      setUserDataOriginal(user)
     } else {
       const user = users.people.find(user => user.id === id);
       setUserData(user);
+      setUserDataOriginal(user);
     }
   }, [id, user])
 
@@ -63,12 +66,16 @@ function AtualizacaoUsuario() {
     else {
       console.log(userData)
       alert("Salvando no banco de dados...")
+      setUserDataOriginal(userData);
       setUpdating(false)
     }
   }
 
   function handleDelete(confirmation) {
-    if (updating) setUpdating(false) //cancelar
+    if (updating) { //cancelar
+      setUpdating(false);
+      setUserData(userDataOriginal);
+    }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
       alert("Excluindo usuário do banco de dados...")
@@ -198,7 +205,7 @@ function AtualizacaoUsuario() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
 
-              {!(id==="me" && updating===false) &&
+              {!(id === "me" && updating === false) &&
                 <Button variant="contained" color="secondary" className={classes.btn}
                   onClick={handleDelete}
                 >

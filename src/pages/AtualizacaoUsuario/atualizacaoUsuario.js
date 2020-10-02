@@ -197,10 +197,10 @@ function AtualizacaoUsuario() {
               >
                 {updating ? "Salvar" : "Editar"}
               </Button>
-              {updating &&
+
+              {!(id==="me" && updating===false) &&
                 <Button variant="contained" color="secondary" className={classes.btn}
                   onClick={handleDelete}
-                  disabled={id === "me" && !updating}
                 >
                   {updating ? "Cancelar" : "Excluir"}
                 </Button>

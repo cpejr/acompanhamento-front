@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CssBaseline,
   Paper,
@@ -18,7 +18,6 @@ import api from '../../services/api';
 
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoModeloStyle'
-import { DataContext } from '../../context/DataContext';
 
 import MaskedInput from 'react-text-mask';
 
@@ -54,7 +53,6 @@ function AtualizacaoModelo() {
           console.error("Backend is not working properly", err);
         });
       setLoading(false)
-      // const data = modelsList.find(model => model.id === id);
     })();
   }, [id])
 

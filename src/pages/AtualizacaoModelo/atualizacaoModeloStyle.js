@@ -52,7 +52,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   btn: {
-    margin: "30px 40px 0",
+    margin: "30px 10px 0",
     width: "150px",
     height: "50px",
 

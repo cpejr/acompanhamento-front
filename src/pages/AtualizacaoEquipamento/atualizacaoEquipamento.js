@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CssBaseline,
   Paper,
   TextField,
-  Grid,
   Button,
   Dialog,
   DialogTitle,
@@ -139,59 +138,58 @@ function AtualizacaoEquipamento() {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          <Grid container >
-            <Grid item xs={12} md={6} className={classes.grid}>
-              <TextField
-                name="equipment_model"
-                className={classes.input}
-                value={equipment.equipment_model}
-                label="Modelo"
-                variant="filled"
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-              <TextField
-                name="cpf_client"
-                className={classes.input}
-                value={equipment.cpf_client}
-                label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-                variant="filled"
-                disabled //cpf não deve alterar
-                onChange={handleChangeInput}
-              />
-              <TextField
-                name="id_equipment"
-                className={classes.input}
-                value={equipment.id_equipment}
-                label="Número de série"
-                variant="filled"
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-              <TextField
-                name="instalation_date"
-                className={classes.input}
-                value={equipment.instalation_date}
-                label="Data instalação"
-                type="date"
-                variant="filled"
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-              <TextField
-                name="observation"
-                className={classes.input}
-                value={equipment.observation}
-                label="Observações"
-                type="text"
-                variant="filled"
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-            </Grid>
+          <div container className={classes.leftSection}>
+            <TextField
+              name="equipment_model"
+              className={classes.input}
+              value={equipment.equipment_model}
+              label="Modelo"
+              variant="filled"
+              disabled={!updating}
+              onChange={handleChangeInput}
+            />
+            <TextField
+              name="cpf_client"
+              className={classes.input}
+              value={equipment.cpf_client}
+              label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
+              variant="filled"
+              disabled //cpf não deve alterar
+              onChange={handleChangeInput}
+            />
+            <TextField
+              name="id_equipment"
+              className={classes.input}
+              value={equipment.id_equipment}
+              label="Número de série"
+              variant="filled"
+              disabled={!updating}
+              onChange={handleChangeInput}
+            />
+            <TextField
+              name="instalation_date"
+              className={classes.input}
+              value={equipment.instalation_date}
+              label="Data instalação"
+              type="date"
+              variant="filled"
+              disabled={!updating}
+              onChange={handleChangeInput}
+            />
+            <TextField
+              name="observation"
+              className={classes.input}
+              value={equipment.observation}
+              label="Observações"
+              type="text"
+              variant="filled"
+              disabled={!updating}
+              onChange={handleChangeInput}
+            />
+            {/* </Grid> */}
 
 
-            <Grid className={classes.centralizar} item xs={12}>
+            <div className={classes.centralizar} >
               <Button variant="contained" color="primary" className={classes.btn}
                 onClick={handleSubmit}
               >
@@ -203,9 +201,9 @@ function AtualizacaoEquipamento() {
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
 
-            </Grid>
+            </div>
 
-          </Grid>
+          </div>
         </Paper>
 
       </div>

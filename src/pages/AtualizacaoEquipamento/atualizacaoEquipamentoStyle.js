@@ -30,17 +30,17 @@ export const useStyles = makeStyles((theme) => ({
   },
   containerForm: {
     padding: "50px 50px 30px",
-    margin: "30px",
+    marginBottom: "50px",
     borderRadius: "13px",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5%",
     },
   },
-  grid: {
-    padding: "0 40px",
+  leftSection: {
+    maxWidth: "350px",
     [theme.breakpoints.only("xs")]: {
-      padding: "0",
-    },
+      maxWidth: "100%"
+    }
   },
   input: {
     boxSizing: "border-box",
@@ -49,13 +49,10 @@ export const useStyles = makeStyles((theme) => ({
   },
   centralizar: {
     display: "flex",
-    padding: "0 40px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "0",
-    },
+    justifyContent: "center",
   },
   btn: {
-    margin: "30px 30px 0",
+    margin: "30px 10px 0",
     width: "150px",
     height: "50px",
 

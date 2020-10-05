@@ -14,7 +14,7 @@ import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
 import findError from '../../services/findError';
 import api from '../../services/api';
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, isAfter } from 'date-fns';
 
 function CPFInput(props) {
   const { inputRef, ...other } = props;
@@ -35,6 +35,7 @@ export default function CadastroEquipamento(props) {
   });
   const [error, setError] = React.useState({
     cpf_client: "",
+    instalation_date: ""
   });
   const [models, setModels] = React.useState([{}]);
   const [loading, setLoading] = useState(true);
@@ -79,15 +80,12 @@ export default function CadastroEquipamento(props) {
     setLoading(false)
   }, [])
 
-  // React.useEffect(() => {
-  //   console.debug("FormData: ", formData)
-  // }, [formData])
-
   function handleSubmit(event) {
     event.preventDefault()
     console.debug("FormData: ", formData)
     setError({
       cpf_client: "",
+      instalation_date: ""
     })
 
     // coloque os opcionais por ultimo e para cada um adione um pop()
@@ -98,6 +96,8 @@ export default function CadastroEquipamento(props) {
     }
     else if (!findError("cpf/cnpj", formData.cpf_client))
       setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
+    else if (isAfter(parseISO(formData.instalation_date), new Date()))
+      setError(prev => ({ ...prev, instalation_date: "Data inválida!" }))
     else {
       const data = {
         id_model: formData.id_model,
@@ -256,7 +256,8 @@ export default function CadastroEquipamento(props) {
               onChange={handleChangeInput}
               label="Data de Instalação"
               type="date"
-              helperText="*Obrigatório"
+              helperText={error.instalation_date === "" ? "*Obrigatório" : error.instalation_date}
+              error={error.instalation_date !== ""}
               variant="filled"
               autoComplete="off"
               inputRef={instalationDateRef}

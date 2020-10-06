@@ -14,7 +14,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import TimelineIcon from '@material-ui/icons/Timeline';
+// import TimelineIcon from '@material-ui/icons/Timeline';
 
 const Items = [
   {
@@ -65,12 +65,12 @@ const Items = [
     icon: <TocIcon />,
     adminOnly: false
   },
-  {
-    title: "Funcionamento de equipamentos",
-    to: "/funcionamentoequipamento",
-    icon: < TimelineIcon />,
-    adminOnly: true
-  },
+  // {
+  //   title: "Funcionamento de equipamentos",
+  //   to: "/funcionamentoequipamento",
+  //   icon: < TimelineIcon />,
+  //   adminOnly: true
+  // },
 ];
 
 const ShortcutsList = ({ isClient, hidden }) => (

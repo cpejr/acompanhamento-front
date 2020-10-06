@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useStyles } from './tabelaStyle';
 import {
   Paper,
@@ -13,6 +12,8 @@ import {
   Typography
 } from '@material-ui/core';
 import { FiMoreHorizontal } from "react-icons/fi"
+
+import LinkMenu from '../../../components/LinkMenu'
 
 export default function StickyHeadTable(props) {
   const classes = useStyles();
@@ -56,9 +57,9 @@ export default function StickyHeadTable(props) {
                   <TableCell>{equipment.equipment_model}</TableCell>
                   <TableCell>{equipment.cpf_client}</TableCell>
                   <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
-                    <Link to={`/ae/${equipment.id}`}>
+                    <LinkMenu id={equipment.id}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
-                    </Link>
+                    </LinkMenu>
                   </TableCell>
                 </TableRow>
               )

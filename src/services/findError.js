@@ -17,7 +17,7 @@ export default function findError(type, content) {
       return reYear.test(content);
 
     case "date":
-      const reDate = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/;
+      const reDate = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
       return reDate.test(content)
 
     default:

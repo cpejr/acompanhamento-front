@@ -18,6 +18,8 @@ import api from '../../services/api';
 
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoModeloStyle'
+import { parseISO, isAfter } from 'date-fns';
+import findError from '../../services/findError';
 
 import MaskedInput from 'react-text-mask';
 
@@ -41,6 +43,9 @@ function AtualizacaoModelo() {
   const [modelOriginal, setModelOriginal] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState({
+    releaseYear: '',
+  });
 
   useEffect(() => {
     (async () => {
@@ -80,7 +85,17 @@ function AtualizacaoModelo() {
   }
 
   function handleSubmit() {
+    setError({
+      releaseYear: "",
+    })
     if (!updating) setUpdating(true)
+    else if (Object.values(model).includes("")) {
+      // setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
+    }
+    else if (!findError("year", model.releaseYear))
+      setError(prev => ({ ...prev, releaseYear: "Data inválido" }))
+    else if (isAfter(parseISO(model.releaseYear), new Date()))
+      setError(prev => ({ ...prev, releaseYear: "Ano inválido!" }))
     else {
       console.log(model)
       alert("Salvando no banco de dados...")
@@ -92,7 +107,10 @@ function AtualizacaoModelo() {
   function handleDelete(confirmation) {
     if (updating) { //cancelar
       setUpdating(false);
-      setModel(modelOriginal)
+      setModel(modelOriginal);
+      setError({
+        releaseYear: "",
+      })
     }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
@@ -111,7 +129,8 @@ function AtualizacaoModelo() {
       <DialogTitle>Excluir modelo?</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Você tem certeza que deseja excluir este modelo?
+          Você tem certeza que deseja excluir este modelo? Equipamento que fazem
+          uso deste modelo podem ser afetados!
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -214,7 +233,8 @@ function AtualizacaoModelo() {
                 onChange={handleChangeInput}
                 label="Ano de lançamento"
                 type="text"
-                helperText="*Obrigatório"
+                helperText={error.releaseYear === "" ? "*Obrigatório" : error.releaseYear}
+                error={error.releaseYear !== ""}
                 variant="filled"
                 autoComplete="off"
                 disabled={!updating}

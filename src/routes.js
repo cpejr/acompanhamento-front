@@ -17,6 +17,7 @@ import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
 import AtualizacaoEquipamento from './pages/AtualizacaoEquipamento';
 import AtualizacaoModelo from './pages/AtualizacaoModelo';
+import FuncionamentoEquipamento from './pages/FuncionamentoEquipamento';
 import Testes from './pages/Testes';
 import EsqueciSenha from './pages/EsqueciSenha';
 import DefinicaoNovaSenha from './pages/DefinicaoNovaSenha';
@@ -86,6 +87,12 @@ function Routes() {
               <Route path="/ae/:id">
                 <AtualizacaoEquipamento />
               </Route>
+
+              {/* Funcionamento de Equipamentos */}
+              <Route path="/funcionamentoequipamento">
+                <FuncionamentoEquipamento />
+              </Route>
+
 
               {/* Páginas para Testes */}
               <Route path="/testes" component={Testes} />

@@ -24,8 +24,8 @@ export default function ListagemEquipamento() {
   const classes = useStyles();
   const [filterby, setFilterby] = useState("client");
 
-  // const query = new URLSearchParams(useLocation().search);
-  // const situation = query.get('situation');
+  const query = new URLSearchParams(useLocation().search);
+  const situation = query.get('situation');
 
   // const allEquipment = useContext(DataContext).equipmentsList;
   // const equipmentsOriginal = situation ?
@@ -37,19 +37,18 @@ export default function ListagemEquipamento() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      await api.get('equipment/index')
-        .then(equipment => {
-          const equipments = equipment.data.equipment
-          setEquipmentsOriginal(equipments);
-          setEquipmentsListToDisplay(equipments);
-        })
-        .catch(err => {
-          console.error("Backend is not working", err);
-        });
-      setLoading(false);
-    })();
-  }, [])
+    const url = situation ? `equipment/find_situation/${situation}` : 'equipment/index';
+    api.get(url)
+      .then(equipment => {
+        const equipments = equipment.data.equipment
+        setEquipmentsOriginal(equipments);
+        setEquipmentsListToDisplay(equipments);
+      })
+      .catch(err => {
+        console.error("Backend is not working", err);
+      });
+    setLoading(false);
+  }, [situation])
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);

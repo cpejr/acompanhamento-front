@@ -14,8 +14,10 @@ import {
   CircularProgress
 } from "@material-ui/core"
 import api from '../../services/api';
+// import { AuthContext } from '../../context/AuthContext'
 import moment from 'moment';
-
+// import { parseISO, isAfter } from 'date-fns';
+// import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 
@@ -26,6 +28,11 @@ function AtualizacaoEquipamento() {
   const [equipmentOriginal, setEquipmentOriginal] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
+  // const [error, setError] = useState({
+  //   instalation_date: '',
+  // });
+
+  // const { sendMessage } = useContext(AuthContext);
 
   useEffect(() => {
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
@@ -72,7 +79,17 @@ function AtualizacaoEquipamento() {
   }
 
   function handleSubmit() {
+    // setError({
+    //   instalation_date: "",
+    // })
     if (!updating) setUpdating(true)
+    // else if (Object.values(equipment).includes("")) {
+    //   sendMessage('Alguns campos estão vazios', 'info');
+    // }
+    // else if (!findError("date", equipment[0].instalation_date))
+    //   setError(prev => ({ ...prev, instalation_date: "Data inválida" }))
+    // else if (isAfter(parseISO(equipment[0].instalation_date), new Date()))
+    //   setError(prev => ({ ...prev, instalation_date: "Data inválida" }))
     else {
       alert("Salvando no banco de dados...");
       setEquipmentOriginal(equipment);
@@ -84,6 +101,9 @@ function AtualizacaoEquipamento() {
     if (updating) { //cancelar
       setUpdating(false);
       setEquipment(equipmentOriginal)
+      // setError({
+      //   instalation_date: "",
+      // })
     }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);

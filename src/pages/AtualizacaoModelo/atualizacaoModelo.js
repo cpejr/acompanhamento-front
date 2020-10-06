@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   CssBaseline,
   Paper,
@@ -20,6 +20,7 @@ import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
+import { AuthContext } from '../../context/AuthContext'
 
 import MaskedInput from 'react-text-mask';
 
@@ -46,6 +47,8 @@ function AtualizacaoModelo() {
   const [error, setError] = useState({
     releaseYear: '',
   });
+
+  const { sendMessage } = useContext(AuthContext);
 
   useEffect(() => {
     (async () => {
@@ -90,7 +93,7 @@ function AtualizacaoModelo() {
     })
     if (!updating) setUpdating(true)
     else if (Object.values(model).includes("")) {
-      // setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
+      sendMessage('Alguns campos estão vazios', 'info');
     }
     else if (!findError("year", model.releaseYear))
       setError(prev => ({ ...prev, releaseYear: "Data inválido" }))

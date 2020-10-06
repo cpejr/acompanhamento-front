@@ -1,20 +1,20 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
   CssBaseline,
   Typography,
   TextField,
   Button,
-  Snackbar,
   CircularProgress,
   Backdrop
 } from "@material-ui/core"
-import { Alert, Autocomplete } from '@material-ui/lab'
+import { Autocomplete } from '@material-ui/lab'
 import MaskedInput from 'react-text-mask'
 import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
 import findError from '../../services/findError';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
+import { AuthContext } from '../../context/AuthContext'
 
 function CPFInput(props) {
   const { inputRef, ...other } = props;
@@ -30,15 +30,14 @@ function CPFInput(props) {
 }
 
 export default function CadastroEquipamento(props) {
-  const [openMensage, setOpenMensage] = React.useState({
-    open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
-  });
   const [error, setError] = React.useState({
     cpf_client: "",
     instalation_date: ""
   });
   const [models, setModels] = React.useState([{}]);
   const [loading, setLoading] = useState(true);
+
+  const { sendMessage } = useContext(AuthContext);
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
@@ -61,10 +60,10 @@ export default function CadastroEquipamento(props) {
       })
       .catch(error => {
         console.log(error);
-        setOpenMensage(({ open: true, message: `Error 504: ${error.message}`, type: 'error', time: 5000 }));
+        sendMessage(`Error 504: ${error.message}`, 'error')
       });
     setLoading(false)
-  }, [])
+  }, [sendMessage])
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -78,7 +77,7 @@ export default function CadastroEquipamento(props) {
     let formDataWithoutNotRequired = Object.values(formData);
     // formDataWithoutNotRequired.pop()
     if (formDataWithoutNotRequired.includes("")) {
-      setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
+      sendMessage('Alguns campos estão vazios', 'info')
     }
     else if (!findError("cpf/cnpj", formData.cpf_client))
       setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
@@ -97,7 +96,7 @@ export default function CadastroEquipamento(props) {
       console.debug("Data: ", data)
 
       //enviar para o backend
-      setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
+      sendMessage('Realizando cadastro...', 'info', null)
       api.post('/equipment/create', data)
         .then(res => {
           setFormData({
@@ -111,7 +110,7 @@ export default function CadastroEquipamento(props) {
             observation: "",
           });
           console.log(res);
-          setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
+          sendMessage('Cadastrado com sucesso')
         })
         .catch(error => {
           if (error.response) {
@@ -119,17 +118,17 @@ export default function CadastroEquipamento(props) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
-            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+            sendMessage('Error 501: Falha no cadastro', 'error')
           } else if (error.request) {
             // The request was made but no response was received
             console.log(error.request);
-            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+            sendMessage('Error 501: Falha no cadastro', 'error')
           } else {
             // Something happened in setting up the request that triggered an Error
             console.log('Error', error.message);
-            setOpenMensage(({ open: true, message: "Error 501: Falha no cadastro", type: 'error', time: 5000 }));
+            sendMessage('Error 501: Falha no cadastro', 'error')
           }
-          setOpenMensage(({ open: true, message: `Error: ${error.message}`, type: 'error', time: 5000 }));
+          sendMessage(`Error: ${error.message}`, 'error')
         })
     }
   }
@@ -142,13 +141,6 @@ export default function CadastroEquipamento(props) {
       setFormData(prev => ({ ...prev, id_model: selectedModel.id }))
     } else
       setFormData({ ...formData, [name]: value });
-  }
-
-  const handleCloseMensage = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenMensage(prev => ({ ...prev, open: false }));
   }
 
   // Referencias (próximo a declaração de um ponteiro nulo)
@@ -182,14 +174,6 @@ export default function CadastroEquipamento(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-
-      <Snackbar autoHideDuration={openMensage.time} open={openMensage.open} onClose={handleCloseMensage}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-        <Alert elevation={6} variant="filled" severity={openMensage.type}>
-          {openMensage.message}
-        </Alert>
-      </Snackbar>
-
       <div className={classes.root}>
         <Typography variant="h3" className={classes.title}>
           Cadastro de um novo equipamento

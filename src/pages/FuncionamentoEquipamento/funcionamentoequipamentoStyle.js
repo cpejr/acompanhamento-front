@@ -13,35 +13,41 @@ export const useStyles = makeStyles(theme => ({
   },
   chartContainer: {
     width: "100%",
-    marginBottom: "35px",
+    border: "1px solid rgba(0,0,0,.2)",
   },
   chart: {
     background: "white",
-    border: "1px solid rgba(0,0,0,.2)",
+    borderRight: "1px solid rgba(0,0,0,.2)",
     padding: "0 20px 10px",
   },
   chartTable: {
-    // height: "300px",
-    padding: "10px 0",
     background: "white",
-    border: "1px solid rgba(0,0,0,.2)",
+    // height: "100%",
 
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-
-    "& h2": {
-      lineHeight: "0",
-      color: "rgba(0,0,0,.4)",
-      fontSize: "12px",
-    },
-    "& p": {
-      lineHeight: "0",
-      fontWeight: "bold",
-      color: "rgba(0,0,0,1)",
-      fontSize: "16px",
-    },
+  },
+  itemTable: {
+    // height: "70px",
+    padding: "12px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    border: "1px solid rgba(0,0,0,.2)",
+  },
+  itemBody: {
+    lineHeight: "0",
+    fontWeight: "bold",
+    color: "rgba(0,0,0,1)",
+    fontSize: "16px",
+  },
+  itemTitle: {
+    lineHeight: "0",
+    color: "rgba(0,0,0,.4)",
+    fontSize: "12px",
   },
   selectPeriod: {
     width: "100px",
@@ -53,10 +59,10 @@ export const useStyles = makeStyles(theme => ({
   },
   chartButtons: {
     height: "20px",
-    // background: "blue",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: "35px",
   },
   changeChartButton: {
     cursor: "pointer"
@@ -78,7 +84,9 @@ export const useStyles = makeStyles(theme => ({
   center: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    background: "red",
+    border: "1px solid black"
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,

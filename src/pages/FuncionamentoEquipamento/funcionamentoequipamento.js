@@ -123,20 +123,20 @@ export default function FuncionamentoEquipamento() {
               periodChart={periodChart}
               setPeriodChart={setPeriodChart} />
           </Grid>
-          <Grid item md={12} xs={12} className={classes.chartButtons}>
-            <Tooltip title="Temperatura" arrow>
-              <input type="radio" onChange={() => handleChangeChartData("temperature")}
-                checked={selectedChart === "temperature"} />
-            </Tooltip>
-            <Tooltip title="Corrente" arrow>
-              <input type="radio" onChange={() => handleChangeChartData("current")}
-                checked={selectedChart === "current"} />
-            </Tooltip>
-            <Tooltip title="Tensão" arrow>
-              <input type="radio" onChange={() => handleChangeChartData("voltage")}
-                checked={selectedChart === "voltage"} />
-            </Tooltip>
-          </Grid>
+        </Grid>
+        <Grid item md={12} xs={12} className={classes.chartButtons}>
+          <Tooltip title="Temperatura" arrow>
+            <input type="radio" onChange={() => handleChangeChartData("temperature")}
+              checked={selectedChart === "temperature"} />
+          </Tooltip>
+          <Tooltip title="Corrente" arrow>
+            <input type="radio" onChange={() => handleChangeChartData("current")}
+              checked={selectedChart === "current"} />
+          </Tooltip>
+          <Tooltip title="Tensão" arrow>
+            <input type="radio" onChange={() => handleChangeChartData("voltage")}
+              checked={selectedChart === "voltage"} />
+          </Tooltip>
         </Grid>
         <Grid item md={12} xs={12} className={classes.table}>
           <Table equipment={equipment} />

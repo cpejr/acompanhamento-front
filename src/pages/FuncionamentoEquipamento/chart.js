@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box,
   CssBaseline,
-  Select,
-  MenuItem,
-  TextField
 } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
 import { useStyles } from './funcionamentoequipamentoStyle';

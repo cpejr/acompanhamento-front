@@ -4,7 +4,6 @@ import {
   CssBaseline,
   Select,
   MenuItem,
-  TextField,
   Grid
 } from '@material-ui/core';
 import { useStyles } from './funcionamentoequipamentoStyle'
@@ -75,34 +74,28 @@ const elementsFixedOfTable = [
     title: "Situação",
     value: "situation",
     unity: "",
-    last: true
   },
 ]
 
 export default function ChartTable({ dataToShow, periodChart, setPeriodChart }) {
   const classes = useStyles();
 
-  const Module = ({ title, value, unity, last }) => (
-    <Grid xs={6} md={12} item>
-      <h2 className={classes.moduleTitle}>{title}</h2>
-      <p className={classes.moduleValue}>{
+  const Module = ({ title, value, unity }) => (
+    <Grid xs={6} md={12} item className={classes.itemTable}>
+      <h2 className={classes.itemTitle}>{title}</h2>
+      <p className={classes.itemBody}>{
         value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" ?
           formatDistanceToNow(dataToShow[value], { locale: ptBR }) :
           dataToShow[value]
       } {unity}</p>
-
-      {!last && <hr className={classes.divider} />}
     </Grid>
   )
 
   const PeriodModele = ({ number, type }) => (
-    <Grid xs={6} md={12} item>
-      <h2 className={classes.moduleTitle}>Período</h2>
+    <Grid xs={6} md={12} item className={classes.itemTable}>
+      <h2 className={classes.itemTitle}>Período</h2>
       <Box display="flex" justifyContent="space-around" alignItems="center">
-        {/* <TextField defaultValue={12} className={classes.inputPeriod}
-          size="small" /> */}
-
-        <p className={classes.moduleValue}>{number}</p>
+        <p className={classes.itemBody}>{number}</p>
         <Select
           defaultValue={10}
           className={classes.selectPeriod}
@@ -117,8 +110,6 @@ export default function ChartTable({ dataToShow, periodChart, setPeriodChart }) 
           <MenuItem value={"all"}>tudo</MenuItem>
         </Select >
       </Box>
-
-      <hr className={classes.divider} />
     </Grid>
   )
 
@@ -133,11 +124,13 @@ export default function ChartTable({ dataToShow, periodChart, setPeriodChart }) 
 
       <PeriodModele number={periodChart.value} type={periodChart.type} />
 
-      {elementsOfTable[dataToShow.type]
-        .concat(elementsFixedOfTable)
-        .map((props) => (
-          <Module key={props.title} {...props} />
-        ))}
-    </Grid>
+      {
+        elementsOfTable[dataToShow.type]
+          .concat(elementsFixedOfTable)
+          .map((props) => (
+            <Module key={props.title} {...props} />
+          ))
+      }
+    </Grid >
   )
 }

@@ -10,3 +10,5 @@ export default function App() {
     </AuthContextProvider>
   );
 }
+
+// Teste

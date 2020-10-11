@@ -58,14 +58,27 @@ export const useStyles = makeStyles(theme => ({
     width: "30px",
   },
   chartButtons: {
-    height: "20px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: "35px",
-  },
-  changeChartButton: {
-    cursor: "pointer"
+    margin: "5px 0 35px",
+
+    "& button": {
+      fontWeight: "bold",
+      margin: "0 5px",
+      width: "30px",
+      height: "30px",
+      outline: "none",
+      border: "none",
+      borderRadius: "50%",
+      cursor: "pointer",
+
+      background: "transparent",
+      transition: "background .3s",
+    },
+    "&>button:hover": {
+      background: "rgba(0,0,0,.2)",
+    }
   },
   table: {
     width: "100%",

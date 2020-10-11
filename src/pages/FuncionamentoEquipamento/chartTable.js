@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   CssBaseline,
-  Select,
-  MenuItem,
   Grid
 } from '@material-ui/core';
 import { useStyles } from './funcionamentoequipamentoStyle'
@@ -77,8 +75,13 @@ const elementsFixedOfTable = [
   },
 ]
 
-export default function ChartTable({ dataToShow, periodChart, setPeriodChart }) {
+export default function ChartTable({ dataToShow, setPeriodChart }) {
   const classes = useStyles();
+
+  const [tempSelectedChart, setTempSelectedChart] = useState({
+    type: "mounth",
+    value: 1
+  })
 
   const Module = ({ title, value, unity }) => (
     <Grid xs={6} md={12} item className={classes.itemTable}>
@@ -91,39 +94,33 @@ export default function ChartTable({ dataToShow, periodChart, setPeriodChart }) 
     </Grid>
   )
 
-  const PeriodModele = ({ number, type }) => (
-    <Grid xs={6} md={12} item className={classes.itemTable}>
-      <h2 className={classes.itemTitle}>Período</h2>
-      <Box display="flex" justifyContent="space-around" alignItems="center">
-        <p className={classes.itemBody}>{number}</p>
-        <Select
-          defaultValue={10}
-          className={classes.selectPeriod}
-          variant="standard"
-          value={type}
-          onChange={handleChangePeriod}
-        >
-          <MenuItem value={"hour"}>horas</MenuItem>
-          <MenuItem value={"day"}>dias</MenuItem>
-          <MenuItem value={"mounth"}>meses</MenuItem>
-          <MenuItem value={"year"}> anos</MenuItem >
-          <MenuItem value={"all"}>tudo</MenuItem>
-        </Select >
-      </Box>
-    </Grid>
-  )
+  const handleChangeTempPeriod = (e) => {
+    const { name, value } = e.target;
+    setTempSelectedChart(prev => ({ ...prev, [name]: value }))
+  }
 
-  const handleChangePeriod = (e) => {
-    const type = e.target.value;
-    setPeriodChart(prev => ({ ...prev, type }))
+  const sendChangeOfPeriod = () => {
+    setPeriodChart(tempSelectedChart)
   }
 
   return (
     <Grid container>
       <CssBaseline />
 
-      <PeriodModele number={periodChart.value} type={periodChart.type} />
-
+      <Grid xs={6} md={12} item className={classes.itemTable}>
+        <h2 className={classes.itemTitle}>Período</h2>
+        <Box display="flex" justifyContent="space-around" alignItems="center">
+          <input type="number" name="value" value={tempSelectedChart.value} onChange={handleChangeTempPeriod} />
+          <select onChange={handleChangeTempPeriod} name="type" value={tempSelectedChart.type}>
+            <option value="hour">horas</option>
+            <option value="day">dias</option>
+            <option value="mounth">meses</option>
+            <option value="year">anos</option>
+            <option value="all">tudo</option>
+          </select>
+          <button onClick={sendChangeOfPeriod}>Atualizar</button>
+        </Box>
+      </Grid>
       {
         elementsOfTable[dataToShow.type]
           .concat(elementsFixedOfTable)

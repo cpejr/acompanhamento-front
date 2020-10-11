@@ -15,7 +15,6 @@ import Table from './table';
 import Chart from './chart';
 
 export default function FuncionamentoEquipamento() {
-  const classes = useStyles();
   // const { id } = useParams();
   const id = "9c662f70-041c-11eb-a5d4-d9a33cd11de3"
 
@@ -86,6 +85,12 @@ export default function FuncionamentoEquipamento() {
     setDataToShow(prev => ({ ...prev, ...data })) //first time
   }, [equipment, equipmentData, selectedChart]);
 
+  useEffect(() => {
+    console.log(periodChart)
+  }, [periodChart])
+
+  const classes = useStyles();
+
   if (loading || Object.keys(dataToShow).length === 0) {
     return (
       <React.Fragment>
@@ -105,6 +110,11 @@ export default function FuncionamentoEquipamento() {
     changeDataToShow("type", type)
   }
 
+  const changeColor = (type) => {
+    if (selectedChart === type) return ({ background: "red", color: "white" })
+    return ({ color: "black" });
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -120,22 +130,24 @@ export default function FuncionamentoEquipamento() {
           <Grid item md={3} xs={12} className={classes.chartTable}>
             <ChartTable
               dataToShow={dataToShow}
-              periodChart={periodChart}
               setPeriodChart={setPeriodChart} />
           </Grid>
         </Grid>
         <Grid item md={12} xs={12} className={classes.chartButtons}>
           <Tooltip title="Temperatura" arrow>
-            <input type="radio" onChange={() => handleChangeChartData("temperature")}
-              checked={selectedChart === "temperature"} />
+            <button onClick={() => handleChangeChartData("temperature")}
+              style={changeColor("temperature")}
+            >T</button>
           </Tooltip>
           <Tooltip title="Corrente" arrow>
-            <input type="radio" onChange={() => handleChangeChartData("current")}
-              checked={selectedChart === "current"} />
+            <button onClick={() => handleChangeChartData("current")}
+              style={changeColor("current")}
+            >C</button>
           </Tooltip>
           <Tooltip title="Tensão" arrow>
-            <input type="radio" onChange={() => handleChangeChartData("voltage")}
-              checked={selectedChart === "voltage"} />
+            <button onClick={() => handleChangeChartData("voltage")}
+              style={changeColor("voltage")}
+            >V</button>
           </Tooltip>
         </Grid>
         <Grid item md={12} xs={12} className={classes.table}>

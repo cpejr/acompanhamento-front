@@ -50,12 +50,33 @@ export const useStyles = makeStyles(theme => ({
     fontSize: "12px",
   },
   selectPeriod: {
-    width: "100px",
-    marginLeft: "10px",
-    height: "32px",
+    width: "10ch",
+    margin: "0 10px",
+    // height: "30px",
   },
   inputPeriod: {
-    width: "30px",
+    width: "5ch",
+    // height: "30px",
+  },
+  sendChange: {
+    height: "30px",
+    minWidth: "30px",
+    padding: "0",
+    // marginLeft: "10px",
+    // outline: "none",
+    // border: "1px solid black",
+    // borderRadius: "50%",
+    // background: "rgba(0,0,0,0.1)",
+
+    // cursor: "pointer",
+
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "center",
+
+    // "&:hover": {
+    //   background: "rgba(0,0,0,0.3)",
+    // }
   },
   chartButtons: {
     display: "flex",

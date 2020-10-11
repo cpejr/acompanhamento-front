@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import {
   Box,
   CssBaseline,
-  Grid
+  Grid,
+  Select,
+  MenuItem,
+  TextField,
+  FormControl,
+  Button
 } from '@material-ui/core';
+import CachedIcon from '@material-ui/icons/Cached';
 import { useStyles } from './funcionamentoequipamentoStyle'
 import { ptBR } from 'date-fns/locale';
 import { formatDistanceToNow } from 'date-fns/esm';
@@ -110,15 +116,36 @@ export default function ChartTable({ dataToShow, setPeriodChart }) {
       <Grid xs={6} md={12} item className={classes.itemTable}>
         <h2 className={classes.itemTitle}>Período</h2>
         <Box display="flex" justifyContent="space-around" alignItems="center">
-          <input type="number" name="value" value={tempSelectedChart.value} onChange={handleChangeTempPeriod} />
-          <select onChange={handleChangeTempPeriod} name="type" value={tempSelectedChart.type}>
-            <option value="hour">horas</option>
-            <option value="day">dias</option>
-            <option value="mounth">meses</option>
-            <option value="year">anos</option>
-            <option value="all">tudo</option>
-          </select>
-          <button onClick={sendChangeOfPeriod}>Atualizar</button>
+          <TextField
+            type="number"
+            name="value"
+            value={tempSelectedChart.value}
+            onChange={handleChangeTempPeriod}
+            className={classes.inputPeriod}
+          // helperText="Quant."
+          />
+          <FormControl
+            className={classes.selectPeriod}
+          >
+            <Select
+              value={tempSelectedChart.type}
+              onChange={handleChangeTempPeriod}
+              name="type"
+            >
+              <MenuItem value="hour">horas</MenuItem>
+              <MenuItem value="day">dias</MenuItem>
+              <MenuItem value="mounth">meses</MenuItem>
+              <MenuItem value="year">anos</MenuItem>
+              <MenuItem value="all">tudo</MenuItem>
+            </Select>
+            {/* <FormHelperText>Contagem</FormHelperText> */}
+          </FormControl>
+          <Button
+            onClick={sendChangeOfPeriod}
+            className={classes.sendChange}
+          >
+            <CachedIcon />
+          </Button>
         </Box>
       </Grid>
       {

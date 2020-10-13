@@ -21,6 +21,7 @@ import FuncionamentoEquipamento from './pages/FuncionamentoEquipamento';
 import Testes from './pages/Testes';
 import EsqueciSenha from './pages/EsqueciSenha';
 import DefinicaoNovaSenha from './pages/DefinicaoNovaSenha';
+import TestEquipment from './pages/TestEquipment';
 
 import { useStyles } from './routesStyles';
 
@@ -34,6 +35,7 @@ function Routes() {
         <Route path="/login" component={Login} />
         <Route path="/esquecisenha" component={EsqueciSenha} />
         <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
+        <Route path="/testequipment" component={TestEquipment} />
         <Fragment>
           <Menu />
           <div className={classes.spaceContent}>

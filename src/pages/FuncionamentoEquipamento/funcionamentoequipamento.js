@@ -7,18 +7,20 @@ import {
   Backdrop,
   Tooltip
 } from '@material-ui/core';
-import { getTime, parseISO } from 'date-fns';
+import { getTime, parseISO, subDays, subHours, subMonths, subYears } from 'date-fns';
 
 import { useStyles } from './funcionamentoequipamentoStyle'
 import ChartTable from './chartTable';
 import Table from './table';
 import Chart from './chart';
+import { isAfter } from 'date-fns/esm';
 
 export default function FuncionamentoEquipamento() {
   // const { id } = useParams();
   const id = "9c662f70-041c-11eb-a5d4-d9a33cd11de3"
 
   const [equipmentData, setEquipmentData] = useState([]);
+  const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState([]);
   const [equipment, setEquipment] = useState({});
   const [selectedChart, setSelectedChart] = useState("temperature");
   const [periodChart, setPeriodChart] = useState({
@@ -45,7 +47,7 @@ export default function FuncionamentoEquipamento() {
     // get datas of equipment
     api.get(`data/equipament/${id}`).then(response => {
       const data = response.data.data;
-      setEquipmentData(data)
+      setEquipmentDataWithoutPeriod(data)
     })
 
     // get equipment
@@ -55,6 +57,37 @@ export default function FuncionamentoEquipamento() {
 
     setLoading(false)
   }, [id]);
+
+  useEffect(() => {
+    if (equipmentDataWithoutPeriod[0]) {
+      var dateMin;
+      switch (periodChart.type) {
+        case "hour":
+          dateMin = subHours(new Date(), periodChart.value)
+          break;
+        case "day":
+          dateMin = subDays(new Date(), periodChart.value)
+          break;
+        case "mounth":
+          dateMin = subMonths(new Date(), periodChart.value)
+          break;
+        case "year":
+          dateMin = subYears(new Date(), periodChart.value)
+          break;
+
+        default:
+          dateMin = new Date()
+          break;
+      }
+
+      const dataFiltered = periodChart.type !== 'all' ? equipmentDataWithoutPeriod.filter(data => {
+        const createdAt = parseISO(data.createdAt)
+        return isAfter(createdAt, dateMin)
+      }) : equipmentDataWithoutPeriod
+
+      setEquipmentData(dataFiltered)
+    }
+  }, [equipmentDataWithoutPeriod, periodChart])
 
   useEffect(() => {
     var tempMax = 0;
@@ -84,10 +117,6 @@ export default function FuncionamentoEquipamento() {
     }
     setDataToShow(prev => ({ ...prev, ...data })) //first time
   }, [equipment, equipmentData, selectedChart]);
-
-  useEffect(() => {
-    console.log(periodChart)
-  }, [periodChart])
 
   const classes = useStyles();
 
@@ -130,7 +159,8 @@ export default function FuncionamentoEquipamento() {
           <Grid item md={3} xs={12} className={classes.chartTable}>
             <ChartTable
               dataToShow={dataToShow}
-              setPeriodChart={setPeriodChart} />
+              setPeriodChart={setPeriodChart}
+              periodChart={periodChart} />
           </Grid>
         </Grid>
         <Grid item md={12} xs={12} className={classes.chartButtons}>

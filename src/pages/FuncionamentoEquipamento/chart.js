@@ -72,8 +72,59 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
           ]
         }}
         options={{
+<<<<<<< Updated upstream
 
         }} />
+=======
+          // drawHorizontalLine: {
+          //   lineY: [30, 30],
+          //   lineColor: "rgba(50, 155, 255, 0.85)",
+          //   text: 'Obj 67 & 68',
+          //   textPosition: 720,
+          //   textFont: '18px sans-serif',
+          //   textColor: "rgba(50, 155, 255, 0.85)"
+
+          annotation: {
+            annotations: [{
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: 32,
+              borderColor: 'rgb(75, 0, 0)',
+              borderWidth: 4,
+              label: {
+                enabled: false,
+                content: 'Test label'
+              }
+            }]
+          }
+          // },
+          // responsive: true,
+          // title: {
+          //   display: true,
+          //   text: 'Chart.js Drsw Line on Chart'
+          // },
+          // tooltips: {
+          //   mode: 'index',
+          //   intersect: true
+          // },
+          // annotation: {
+          //   annotations: [{
+          //     type: 'line',
+          //     mode: 'horizontal',
+          //     scaleID: 'y-axis-0',
+          //     value: 30,
+          //     borderColor: 'rgb(75, 192, 192)',
+          //     borderWidth: 20,
+          //     label: {
+          //       enabled: true,
+          //       content: 'Test label'
+          //     }
+          // }]
+        }
+        }
+      />
+>>>>>>> Stashed changes
     </>
   )
 }

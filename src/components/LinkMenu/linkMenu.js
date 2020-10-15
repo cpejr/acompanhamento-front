@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Paper,
   List,
@@ -13,28 +13,31 @@ import EditIcon from '@material-ui/icons/Edit';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
 export const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "relative",
-  },
   link: {
     textDecoration: "none",
     color: "black"
   },
-  menu: {
+  menu: (props) => ({
     zIndex: "10",
     position: "absolute",
-    right: "0",
-    top: "20px",
+    left: props.x - 150,
+    top: props.y + 27,
     width: "150px"
-  },
+  }
+  ),
 }));
 
 export default ({ children, id, ...rest }) => {
-  const classes = useStyles()
-
-  const [openMenu, setOpenMenu] = React.useState(false);
-  const handleToggleMenu = () => {
+  const [openMenu, setOpenMenu] = useState(false);
+  const [coordenadas, setCoordenadas] = useState({
+    x: 0,
+    y: 0,
+  });
+  const classes = useStyles(coordenadas)
+  const handleToggleMenu = (e) => {
     setOpenMenu(!openMenu);
+    setCoordenadas({ x: e.clientX, y: e.clientY });
+    console.log(e.clientX)
   };
   const handleClickMenu = (path) => {
     setOpenMenu(false);
@@ -42,7 +45,7 @@ export default ({ children, id, ...rest }) => {
   }
 
   return (
-    <div className={classes.root} {...rest}>
+    <div {...rest}>
       {openMenu && <Paper className={classes.menu}>
         <List>
           <ListItem button onClick={() => handleClickMenu(`/ae/${id}`)}>
@@ -58,7 +61,7 @@ export default ({ children, id, ...rest }) => {
 
       <Link
         className={classes.link}
-        onClick={handleToggleMenu}>
+        onClick={(e) => handleToggleMenu(e)}>
         {children}
       </Link>
     </div>

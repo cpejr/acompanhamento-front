@@ -21,32 +21,33 @@ export const useStyles = makeStyles((theme) => ({
     zIndex: "10",
     position: "absolute",
     left: props.x - 150,
-    top: props.y + 27,
+    top: props.y + 13,
     width: "150px"
   }
   ),
 }));
 
-export default ({ children, id, ...rest }) => {
-  const [openMenu, setOpenMenu] = useState(false);
+export default ({ children, id, openMenu, setOpenMenu, ...rest }) => {
+  // const [openMenu, setOpenMenu] = useState(false);
   const [coordenadas, setCoordenadas] = useState({
     x: 0,
     y: 0,
   });
   const classes = useStyles(coordenadas)
   const handleToggleMenu = (e) => {
-    setOpenMenu(!openMenu);
+    if (openMenu === id) setOpenMenu("");
+    else setOpenMenu(id)
+
     setCoordenadas({ x: e.clientX, y: e.clientY });
-    console.log(e.clientX)
   };
   const handleClickMenu = (path) => {
-    setOpenMenu(false);
+    setOpenMenu(id);
     history.push(path);
   }
 
   return (
     <div {...rest}>
-      {openMenu && <Paper className={classes.menu}>
+      {openMenu === id && <Paper className={classes.menu}>
         <List>
           <ListItem button onClick={() => handleClickMenu(`/ae/${id}`)}>
             <ListItemIcon><EditIcon /></ListItemIcon>

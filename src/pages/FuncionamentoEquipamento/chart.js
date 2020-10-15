@@ -56,14 +56,24 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
           labels: equipmentData.map(data =>
             format(parseISO(data.createdAt), dateLabalFormat())
           ),
-          datasets: [{
-            label: 'Atual',
-            borderColor: "red",
-            data: equipmentData.map(data => data[selectedChart]),
-            fill: false,
-          }]
+          datasets: [
+            {
+              label: 'Atual',
+              borderColor: "red",
+              data: equipmentData.map(data => data[selectedChart]),
+              fill: false,
+            },
+            {
+              label: 'Modelo',
+              borderColor: "blue",
+              data: equipmentData.map(data => equipmentData[3][selectedChart]),
+              fill: false,
+            }
+          ]
         }}
-        options={{}} />
+        options={{
+
+        }} />
     </>
   )
 }

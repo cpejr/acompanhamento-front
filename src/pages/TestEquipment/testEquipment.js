@@ -18,9 +18,9 @@ export default function TestEquipment() {
     //   { temperature: 33 },
     //   { temperature: 33 },
     // ]);
-    api.get('testequipment/index')
+    api.get('data/equipament/bd23d030-0414-11eb-a5d4-d9a33cd11de3')
       .then(testequipment => {
-        const equipments = testequipment.data.testEquipment
+        const equipments = testequipment.data.data
         setTestEquipments(equipments);
       })
       .catch(err => {

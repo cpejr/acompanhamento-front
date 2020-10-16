@@ -29,6 +29,10 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: "bold",
     color: "rgba(0,0,0,.7)",
     fontSize: "24px",
+    [theme.breakpoints.only('xs')]: {
+      fontSize: "16px",
+      top: "60%"
+    },
 
     top: "50%",
     left: "52%",

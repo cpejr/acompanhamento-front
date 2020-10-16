@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns";
 import React, { useState, useEffect } from "react";
 import api from '../../services/api';
+import ordenar from '../../services/ordenar';
 
 import { useStyles } from './testEquipmentStyle';
 
@@ -10,18 +11,9 @@ export default function TestEquipment() {
   const classes = useStyles();
 
   useEffect(() => {
-    // setTestEquipments([
-    //   { temperature: 33 },
-    //   { temperature: 33 },
-    //   { temperature: 33 },
-    //   { temperature: 33 },
-    //   { temperature: 33 },
-    //   { temperature: 33 },
-    //   { temperature: 33 },
-    // ]);
     api.get('data/equipament/bd23d030-0414-11eb-a5d4-d9a33cd11de3')
       .then(testequipment => {
-        const equipments = testequipment.data.data
+        const equipments = ordenar(testequipment.data.data, "createdAt", true)
         setTestEquipments(equipments);
       })
       .catch(err => {

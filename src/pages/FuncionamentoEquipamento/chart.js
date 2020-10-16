@@ -30,13 +30,17 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
   }, [dataToShow]);
 
   const dateLabalFormat = () => {
-    switch (periodChart) {
+    switch (periodChart.type) {
+      case "hour":
+        return "HH:mm";
+      case "day":
+        return "dd/MM";
       case "mounth":
         return "dd/MM";
-      case "day":
-        return "HH:mm";
-      case "voltage":
-        return "Tensão";
+      case "year":
+        return "MM/yyyy";
+      case "all":
+        return "MM/yyyy";
 
       default:
         return "dd/MM";
@@ -44,13 +48,18 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
   }
 
   return (
-    <>
+    <React.Fragment>
       <CssBaseline />
 
       <h2 className={classes.title}>{chartTitle}</h2>
       <p className={classes.subtitle}>
         {format(new Date(), "PPPP", { locale: ptBR })}
       </p>
+
+      {!equipmentData[0] && <p className={classes.chartAlert}>
+        Não há dados no período selecionado...
+      </p>}
+
       <Line
         data={{
           labels: equipmentData.map(data =>
@@ -59,35 +68,20 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
           datasets: [
             {
               label: 'Atual',
-              borderColor: "red",
+              borderColor: "blue",
               data: equipmentData.map(data => data[selectedChart]),
               fill: false,
             },
             {
-              label: 'Modelo',
-              borderColor: "blue",
-              data: equipmentData.map(data => equipmentData[3][selectedChart]),
+              label: 'Máximo do Modelo',
+              borderColor: "red",
+              data: equipmentData.map(data => equipmentData[3][selectedChart] + 2),
               fill: false,
             }
           ]
         }}
-        options={{
-          // annotation: {
-          //   annotations: [{
-          //     type: 'line',
-          //     mode: 'horizontal',
-          //     scaleID: 'y-axis-0',
-          //     value: 32,
-          //     borderColor: 'rgb(75, 0, 0)',
-          //     borderWidth: 4,
-          //     label: {
-          //       enabled: false,
-          //       content: 'Test label'
-          //     }
-          //   }]
-          // }
-        }}
+        options={{}}
       />
-    </>
+    </React.Fragment>
   )
 }

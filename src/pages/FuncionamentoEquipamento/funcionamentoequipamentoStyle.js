@@ -20,6 +20,19 @@ export const useStyles = makeStyles(theme => ({
     background: "white",
     borderRight: "1px solid rgba(0,0,0,.2)",
     padding: "0 20px 10px",
+    position: "relative"
+  },
+  chartAlert: {
+    position: "absolute",
+    // lineHeight: "0",
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "rgba(0,0,0,.7)",
+    fontSize: "24px",
+
+    top: "50%",
+    left: "52%",
+    transform: "translate(-50%, -50%)"
   },
   chartTable: {
     background: "white",

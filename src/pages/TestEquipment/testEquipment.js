@@ -1,3 +1,4 @@
+import { format, parseISO } from "date-fns";
 import React, { useState, useEffect } from "react";
 import api from '../../services/api';
 
@@ -34,7 +35,12 @@ export default function TestEquipment() {
         Dados teste coletados:
         <ul>
           {testEquipments.map(equipment => (
-            <li key={equipment.temperature}>{JSON.stringify(equipment)}</li>
+            <>
+              <li key={equipment.temperature}>
+                update in {format(parseISO(equipment.createdAt), "dd/MM/yyyy HH:mm")}, temperature: {equipment.temperature}
+              </li>
+              <br />
+            </>
           ))
           }
         </ul>

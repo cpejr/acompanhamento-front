@@ -75,7 +75,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
             {
               label: 'Máximo do Modelo',
               borderColor: "red",
-              data: equipmentData.map(data => equipmentData[3][selectedChart] + 2),
+              data: equipmentData.map(data => 30),
               fill: false,
             }
           ]

@@ -7,7 +7,7 @@ import { useStyles } from './funcionamentoequipamentoStyle';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export default function ({ dataToShow, equipmentData, selectedChart, periodChart }) {
+export default function ({ dataToShow, equipmentData, selectedChart, periodChart, limiteModel }) {
   const classes = useStyles();
 
   const [chartTitle, setChartTitle] = useState("");
@@ -75,7 +75,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
             {
               label: 'Máximo do Modelo',
               borderColor: "red",
-              data: equipmentData.map(data => 30),
+              data: equipmentData.map(data => limiteModel[selectedChart]),
               fill: false,
             }
           ]

@@ -26,6 +26,7 @@ const dados = {
 }
 
 // 1 -> get >> console.log()
-// 2 -> dados >> useStates()
-// 3 -> filtrar os dados com o selectedChart (concatenar a string com Limit)
-// 4 -> jogar no gráfico
+// 2 -> colocar o id certo
+// 3 -> dados >> useStates()
+// 4 -> filtrar os dados com o selectedChart (concatenar a string com Limit)
+// 5 -> jogar no gráfico

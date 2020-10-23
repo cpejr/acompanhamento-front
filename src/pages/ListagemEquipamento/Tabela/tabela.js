@@ -22,9 +22,9 @@ export default function StickyHeadTable(props) {
 
   const headerItems = [
     { title: "Nº série", ordemBy: "id_equipment" },
-    { title: "Modelo", ordemBy: "model_equipment" },
-    { title: "Cliente", ordemBy: "client" },
-    { title: "Última visita", ordemBy: "maintenance_date" },
+    { title: "Modelo", ordemBy: "equipment_model" },
+    { title: "Cliente", ordemBy: "cpf_client" },
+    { title: "Última visita", ordemBy: "updatedAt" },
   ]
 
   return (

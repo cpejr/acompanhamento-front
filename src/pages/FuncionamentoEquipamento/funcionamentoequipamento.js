@@ -23,6 +23,7 @@ export default function FuncionamentoEquipamento() {
   const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState([]);
   const [equipment, setEquipment] = useState({});
   const [selectedChart, setSelectedChart] = useState("temperature");
+  const [limiteModel, setLimiteModel] = useState({});
   const [periodChart, setPeriodChart] = useState({
     type: "mounth",
     value: 1,
@@ -55,8 +56,24 @@ export default function FuncionamentoEquipamento() {
       setEquipment(response.data.equipment[0])
     })
 
-    setLoading(false)
+
   }, [id]);
+
+  useEffect(() => {
+
+    // get datas of equipment
+    api.get(`model/${equipment.id_model}`).then(response => {
+      const current = response.data.model.currentLimit;
+      const voltage = response.data.model.voltageLimit;
+      const temperature = response.data.model.temperatureLimit;
+
+      setLimiteModel({
+        current, voltage, temperature
+      })
+    }).catch(err => console.error(err))
+
+    setLoading(false)
+  }, [equipment]);
 
   useEffect(() => {
     if (equipmentDataWithoutPeriod[0]) {
@@ -154,7 +171,8 @@ export default function FuncionamentoEquipamento() {
               dataToShow={dataToShow}
               equipmentData={equipmentData}
               selectedChart={selectedChart}
-              periodChart={periodChart} />
+              periodChart={periodChart} 
+              limiteModel={limiteModel} />
           </Grid>
           <Grid item md={3} xs={12} className={classes.chartTable}>
             <ChartTable

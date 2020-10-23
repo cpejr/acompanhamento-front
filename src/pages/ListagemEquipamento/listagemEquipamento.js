@@ -22,7 +22,7 @@ import StickyHeadTable from './Tabela';
 
 export default function ListagemEquipamento() {
   const classes = useStyles();
-  const [filterby, setFilterby] = useState("client");
+  const [filterby, setFilterby] = useState("id_equipment");
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get('situation');
@@ -32,8 +32,8 @@ export default function ListagemEquipamento() {
   //   allEquipment.filter(equipment => equipment.situation === situation) :
   //   allEquipment;
 
-  const allEquipment = useContext(DataContext).equipmentsList;
-  const [equipmentsOriginal, setEquipmentsOriginal] = useState(allEquipment);
+  const equipmentsContext = useContext(DataContext).equipmentsList;
+  const [equipmentsOriginal, setEquipmentsOriginal] = useState(equipmentsContext);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -117,8 +117,8 @@ export default function ListagemEquipamento() {
               onChange={(e) => setFilterby(e.target.value)}
               variant='outlined'
             >
-              <MenuItem value="client">Cliente</MenuItem>
-              <MenuItem value="model_equipment">Modelo</MenuItem>
+              <MenuItem value="cpf_client">Cliente</MenuItem>
+              <MenuItem value="equipment_model">Modelo</MenuItem>
               <MenuItem value="id_equipment">Nº série</MenuItem>
             </Select>
           </FormControl>

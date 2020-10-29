@@ -20,6 +20,7 @@ import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
+import { Autocomplete } from '@material-ui/lab';
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
@@ -29,7 +30,7 @@ function AtualizacaoEquipamento() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState({
-        instalation_date: '',
+    instalation_date: '',
   });
   const { sendMessage } = useContext(AuthContext);
 
@@ -42,7 +43,7 @@ function AtualizacaoEquipamento() {
         .then((selected) => {
           var date = selected.data.equipment[0].instalation_date;
           var instalation_date = getRequiredDateFormat(date);
-         
+
           setEquipment(selected.data.equipment[0]);
           setEquipmentOriginal(selected.data.equipment[0]);
           setEquipment(prev => ({ ...prev, instalation_date }))
@@ -86,7 +87,7 @@ function AtualizacaoEquipamento() {
     else if (Object.values(equipment).includes("")) {
       sendMessage('Alguns campos estão vazios', 'info');
     }
-    else if (!findError("date", equipment.instalation_date)){
+    else if (!findError("date", equipment.instalation_date)) {
       setError(prev => ({ ...prev, instalation_date: "Data inválidaaaaa" }))
       console.log(equipment.instalation_date);
     }
@@ -192,14 +193,23 @@ function AtualizacaoEquipamento() {
 
         <Paper className={classes.containerForm} elevation={0}>
           <div container className={classes.leftSection}>
-            <TextField
-              name="equipment_model"
+            <Autocomplete
+              freeSolo
               className={classes.input}
-              value={equipment.equipment_model}
-              label="Modelo"
-              variant="filled"
-              disabled={!updating}
+              options={["Bomba 3000 extreme", "Bomba hidráulica", "Water 2.6.7 LTS"]}
               onChange={handleChangeInput}
+              value={equipment.equipment_model}
+              renderInput={params => (
+                <TextField
+                  name="equipment_model"
+                  {...params}
+                  value={equipment.equipment_model}
+                  label="Modelo"
+                  variant="filled"
+                  disabled={!updating}
+                  autoComplete="off"
+                  onChange={handleChangeInput} />
+              )}
             />
             <TextField
               name="cpf_client"

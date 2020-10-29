@@ -101,9 +101,36 @@ function AtualizacaoModelo() {
       setError(prev => ({ ...prev, releaseYear: "Ano inválido!" }))
     else {
       console.log(model)
-      alert("Salvando no banco de dados...")
-      setModelOriginal(model)
+      const {
+        modelName,
+        type,
+        manufacturer,
+        releaseYear,
+        temperatureLimit,
+        currentLimit,
+        voltageLimit,
+      } = model;
+      const data = {
+        modelName,
+        type,
+        manufacturer,
+        releaseYear,
+        temperatureLimit,
+        currentLimit,
+        voltageLimit,
+      }
+      sendMessage("Alterando dados...", "info", null);
+      api.put(`model/${id}`, data)
+      .then(response => {
+          sendMessage("Dados alterados");
+          setModelOriginal(data);
+      })
+      .catch(err => {
+        console.log(err);
+        sendMessage(`Erro: ${err.message}`, "error");
+      })
       setUpdating(false)
+
     }
   }
 

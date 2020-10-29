@@ -42,6 +42,7 @@ function AtualizacaoEquipamento() {
         .then((selected) => {
           var date = selected.data.equipment[0].instalation_date;
           var instalation_date = getRequiredDateFormat(date);
+         
           setEquipment(selected.data.equipment[0]);
           setEquipmentOriginal(selected.data.equipment[0]);
           setEquipment(prev => ({ ...prev, instalation_date }))
@@ -92,8 +93,39 @@ function AtualizacaoEquipamento() {
     else if (isAfter(parseISO(equipment.instalation_date), new Date()))
       setError(prev => ({ ...prev, instalation_date: "Data inválida" }))
     else {
-      alert("Salvando no banco de dados...");
-      setEquipmentOriginal(equipment);
+      console.log(equipment)
+      const {
+        id_model,
+        id_equipment,
+        equipment_model,
+        instalation_date,
+        maintenance_date,
+        last_collect_date,
+        situation,
+        cpf_client,
+        observation,
+        work_time,
+      } = equipment;
+      const data = {
+        id_model,
+        id_equipment,
+        equipment_model,
+        instalation_date,
+        maintenance_date,
+        last_collect_date,
+        situation,
+        cpf_client,
+        observation,
+        work_time,
+      }
+      sendMessage("Alterando dados...", "info", null);
+      api.put(`equipment/${id}`, data).then(response => {
+        sendMessage("Dados alterados");
+        setEquipmentOriginal(response.data.equipment);
+      }).catch(err => {
+        sendMessage(`Erro: ${err.message}`, "error");
+        console.log(err)
+      })
       setUpdating(false);
     }
   }

@@ -23,18 +23,18 @@ const Items = [
     icon: <DonutLargeIcon />,
     adminOnly: false
   },
-  {
-    title: "Perfil",
-    to: "/au/me",
-    icon: <PersonIcon />,
-    adminOnly: true
-  },
-  {
-    title: "Cadastro de usuário",
-    to: "/cadastrousuario",
-    icon: <PersonAddIcon />,
-    adminOnly: true
-  },
+  // {
+  //   title: "Perfil",
+  //   to: "/au/me",
+  //   icon: <PersonIcon />,
+  //   adminOnly: true
+  // },
+  // {
+  //   title: "Cadastro de usuário",
+  //   to: "/cadastrousuario",
+  //   icon: <PersonAddIcon />,
+  //   adminOnly: true
+  // },
   {
     title: "Cadastro de modelo",
     to: "/cadastromodelo",
@@ -47,12 +47,12 @@ const Items = [
     icon: < PostAddIcon />,
     adminOnly: true
   },
-  {
-    title: "Lista de usuários",
-    to: "/listagemusuario",
-    icon: <PeopleIcon />,
-    adminOnly: true
-  },
+  // {
+  //   title: "Lista de usuários",
+  //   to: "/listagemusuario",
+  //   icon: <PeopleIcon />,
+  //   adminOnly: true
+  // },
   {
     title: "Lista de modelo",
     to: "/listagemmodelo",

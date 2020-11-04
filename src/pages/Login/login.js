@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiLock } from "react-icons/fi"
 import {
@@ -12,17 +12,22 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { AuthContext } from '../../context/AuthContext';
 
 import { useStyles } from './styles'
 
 export default function Login() {
-
   const classes = useStyles();
+  const { sendMessage } = useContext(AuthContext);
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     password: '',
     showPassword: false,
   });
+
+  useEffect(() => {
+    sendMessage("Apenas click em Entrar", "info");
+  }, []);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -84,7 +89,7 @@ export default function Login() {
           </div>
 
           <div>
-            <Button className={classes.buttonLogin} component={Link} to="/">Entrar</Button>
+            <Button className={classes.buttonLogin} component={Link} to="/dashboard">Entrar</Button>
           </div>
 
         </div>

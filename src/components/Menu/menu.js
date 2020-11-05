@@ -23,7 +23,7 @@ import {
   ListItemIcon,
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import PersonIcon from '@material-ui/icons/Person';
+// import PersonIcon from '@material-ui/icons/Person';
 
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';

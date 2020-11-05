@@ -27,7 +27,7 @@ export default function Login() {
 
   useEffect(() => {
     sendMessage("Apenas click em Entrar", "info");
-  }, []);
+  }, [sendMessage]);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });

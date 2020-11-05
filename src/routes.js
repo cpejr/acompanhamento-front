@@ -4,7 +4,7 @@ import history from './history';
 
 import { DataContextProvider } from './context/DataContext';
 
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import Login from './pages/Login'
 import Menu from './components/Menu';
 import Dashboard from './pages/Dashboard/dashboard';

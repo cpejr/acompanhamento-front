@@ -6,7 +6,8 @@ import {
   CssBaseline,
   Typography,
   OutlinedInput,
-  Button
+  Button,
+  Snackbar
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -15,6 +16,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { AuthContext } from '../../context/AuthContext';
 
 import { useStyles } from './styles'
+import { Alert } from '@material-ui/lab';
 
 export default function Login() {
   const classes = useStyles();
@@ -24,10 +26,6 @@ export default function Login() {
     password: '',
     showPassword: false,
   });
-
-  useEffect(() => {
-    sendMessage("Apenas click em Entrar", "info");
-  }, [sendMessage]);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -46,6 +44,13 @@ export default function Login() {
       <CssBaseline /> {/* Reseta todo estilo padrão do navegador (margens e padding) */}
       <div className={classes.root}>
         <Link to="/" className={classes.logo}></Link>
+
+        <Snackbar autoHideDuration={null} open={true}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+          <Alert elevation={6} variant="filled" severity="info">
+            Apenas click em Entrar
+          </Alert>
+        </Snackbar>
 
         <div className={classes.loginBox}>
 

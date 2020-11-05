@@ -22,12 +22,13 @@ import StickyHeadTable from './Tabela';
 export default function ListagemEquipamento() {
   const classes = useStyles();
   const [filterby, setFilterby] = useState("id_equipment");
+  const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
+  const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState();
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get('situation');
-
-  const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const url = situation ? `equipment/find_situation/${situation}` : 'equipment/index';
@@ -42,9 +43,6 @@ export default function ListagemEquipamento() {
         console.error("Backend is not working", err);
       });
   }, [situation])
-
-  const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
-  const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState(equipmentsOriginal);
 
   function FindEquipment(searchEquipment) {
     if (searchEquipment.length > 0) {

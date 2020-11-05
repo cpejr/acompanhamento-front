@@ -27,7 +27,8 @@ function AtualizacaoEquipamento() {
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
   const [equipmentOriginal, setEquipmentOriginal] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [modelsList, setModelsList] = useState([]);
+  const [loading, setLoading] = useState({ equipment: true, models: true });
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState({
     instalation_date: '',
@@ -38,22 +39,28 @@ function AtualizacaoEquipamento() {
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
       return moment(timeStamp).format(format);
     }
-    (async () => {
-      await api.get(`equipment/${id}`)
-        .then((selected) => {
-          var date = selected.data.equipment[0].instalation_date;
-          var instalation_date = getRequiredDateFormat(date);
+    api.get(`equipment/${id}`)
+      .then((selected) => {
+        var date = selected.data.equipment[0].instalation_date;
+        var instalation_date = getRequiredDateFormat(date);
 
-          setEquipment(selected.data.equipment[0]);
-          setEquipmentOriginal(selected.data.equipment[0]);
-          setEquipment(prev => ({ ...prev, instalation_date }))
-          setEquipmentOriginal(prev => ({ ...prev, instalation_date }));
-        })
-        .catch(err => {
-          console.error("Backend is not working properly", err);
-        });
-      setLoading(false)
-    })();
+        setEquipment(selected.data.equipment[0]);
+        setEquipmentOriginal(selected.data.equipment[0]);
+        setEquipment(prev => ({ ...prev, instalation_date }))
+        setEquipmentOriginal(prev => ({ ...prev, instalation_date }));
+        setLoading(prev => ({ ...prev, equipment: false }))
+      })
+      .catch(err => {
+        console.error("Backend is not working properly", err);
+      });
+    api.get(`model/index`)
+      .then(models => {
+        setModelsList(models.data.data);
+        setLoading(prev => ({ ...prev, models: false }))
+      })
+      .catch(err => {
+        console.error("Backend is not working properly", err);
+      });
   }, [id])
 
   const classes = useStyles({ updating });
@@ -170,7 +177,7 @@ function AtualizacaoEquipamento() {
     </Dialog>
   );
 
-  if (loading) {
+  if (loading.equipment || loading.models) {
     return (
       <React.Fragment>
         <Backdrop className={classes.backdrop} open={true}>
@@ -192,11 +199,11 @@ function AtualizacaoEquipamento() {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          <div container className={classes.leftSection}>
+          <div className={classes.leftSection}>
             <Autocomplete
               freeSolo
               className={classes.input}
-              options={["Bomba 3000 extreme", "Bomba hidráulica", "Water 2.6.7 LTS"]}
+              options={modelsList.map(model => model.modelName)}
               onChange={handleChangeInput}
               value={equipment.equipment_model}
               renderInput={params => (

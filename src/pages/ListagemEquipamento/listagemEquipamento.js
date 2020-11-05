@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from "react-router-dom"
 
 import {
@@ -16,7 +16,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import api from '../../services/api';
 import moment from "moment";
 import ordenar from '../../services/ordenar';
-import { DataContext } from '../../context/DataContext';
 import { useStyles } from './listagemEquipamentoStyle';
 import StickyHeadTable from './Tabela';
 
@@ -27,13 +26,7 @@ export default function ListagemEquipamento() {
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get('situation');
 
-  // const allEquipment = useContext(DataContext).equipmentsList;
-  // const equipmentsOriginal = situation ?
-  //   allEquipment.filter(equipment => equipment.situation === situation) :
-  //   allEquipment;
-
-  const equipmentsContext = useContext(DataContext).equipmentsList;
-  const [equipmentsOriginal, setEquipmentsOriginal] = useState(equipmentsContext);
+  const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,11 +36,11 @@ export default function ListagemEquipamento() {
         const equipments = equipment.data.equipment
         setEquipmentsOriginal(equipments);
         setEquipmentsListToDisplay(equipments);
+        setLoading(false);
       })
       .catch(err => {
         console.error("Backend is not working", err);
       });
-    setLoading(false);
   }, [situation])
 
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });

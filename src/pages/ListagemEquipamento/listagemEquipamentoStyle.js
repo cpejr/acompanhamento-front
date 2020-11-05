@@ -65,9 +65,27 @@ export const useStyles = makeStyles(theme => ({
     border: "2px solid rgba(0,0,0,0.8)",
     marginRight: theme.spacing(2),
     marginLeft: 0,
+    height: "40px",
     width: '486px',
     [theme.breakpoints.down('xs')]: {
       width: "100%",
+    }
+  },
+
+  filter: {
+    justifyContent: "center",
+    borderRadius: "5px",
+    position: 'relative',
+    // backgroundColor: azulPadraoClaro,
+    border: "2px solid rgba(0,0,0,0.8)",
+    marginTop: "40px",
+    fontSize: "20px",
+    height: "40px",
+    width: "120px",
+    outline: "none",
+    // transition: theme.transitions.create(['border-color', 'box-shadow']),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "10px",
     }
   },
 
@@ -107,25 +125,15 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  filter: {
-    justifyContent: "center",
-    borderRadius: "5px",
-    position: 'relative',
-    backgroundColor: azulPadraoClaro,
-    marginTop: "40px",
-    fontSize: "14px",
-    height: "35px",
-    width: "120px",
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    [theme.breakpoints.down('sm')]: {
-      marginTop: "10px",
-    }
-  },
-
   selectItens: {
     position: 'relative',
     height: "100%",
     width: '100%',
     fontSize: "12px",
-  }
+  },
+
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
 }))

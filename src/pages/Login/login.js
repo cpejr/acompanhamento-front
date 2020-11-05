@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiLock } from "react-icons/fi"
 import {
@@ -13,14 +13,12 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { AuthContext } from '../../context/AuthContext';
 
 import { useStyles } from './styles'
 import { Alert } from '@material-ui/lab';
 
 export default function Login() {
   const classes = useStyles();
-  const { sendMessage } = useContext(AuthContext);
 
   const [values, setValues] = useState({
     password: '',

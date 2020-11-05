@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom"
 import {
   Button,
@@ -14,17 +14,15 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import ordenar from '../../services/ordenar';
 import api from '../../services/api';
-import { DataContext } from '../../context/DataContext';
 import { useStyles } from './listagemModeloStyle';
 import StickyHeadTable from './Tabela';
 
 export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
   const [ordem, setOrdem] = useState({ alfabetica: true, by: "modelName" });
-
-  const modelsContext = useContext(DataContext).modelsList;
-  const [modelsOriginal, setModelsOriginal] = useState(modelsContext)
+  const [modelsOriginal, setModelsOriginal] = useState()
   const [loading, setLoading] = useState(true);
+  const [modelsListToDisplay, setModelsListToDisplay] = useState();
 
   useEffect(() => {
     api.get('model/index')
@@ -32,14 +30,12 @@ export default function ListagemModelo() {
         const models = model.data.data
         setModelsOriginal(models);
         setModelsListToDisplay(models);
+        setLoading(false)
       })
       .catch(err => {
-        console.error("Liga o backend ai mano", err);
+        console.error("Não foi possivel estabelecer conecção com o backend", err);
       });
-    setLoading(false)
   }, [])
-
-  const [modelsListToDisplay, setModelsListToDisplay] = useState(modelsOriginal);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {

@@ -40,7 +40,7 @@ export default function ListagemEquipamento() {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Backend is not working", err);
+        console.error("Não foi possivel estabelecer conecção com o backend", err);
       });
   }, [situation])
 

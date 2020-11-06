@@ -16,7 +16,7 @@ import Chart from './chart';
 
 export default function FuncionamentoEquipamento() {
   // const { id } = useParams();
-  const id = "9c662f70-041c-11eb-a5d4-d9a33cd11de3"
+  const id = "bd23d030-0414-11eb-a5d4-d9a33cd11de3"
 
   const [equipmentData, setEquipmentData] = useState([]);
   const [equipment, setEquipment] = useState({});
@@ -43,10 +43,14 @@ export default function FuncionamentoEquipamento() {
 
   useEffect(() => {
     // get datas of equipment
-    api.get(`data/equipament/${id}`).then(response => {
+    // api.get(`/data/equipamentDate/${id}`, {
+    api.post(`data/equipamentDate/bd23d030-0414-11eb-a5d4-d9a33cd11de3`, {
+      minDate: "2010-10-23T13:50",
+      numOfElements: 100
+    }).then(response => {
       const data = response.data.data;
       setEquipmentData(data)
-    })
+    }).catch(err => console.log(err))
 
     // get equipment
     api.get(`equipment/${id}`).then(response => {

@@ -13,14 +13,12 @@ import { useStyles } from './funcionamentoequipamentoStyle'
 import ChartTable from './chartTable';
 import Table from './table';
 import Chart from './chart';
-import { isAfter } from 'date-fns/esm';
 
 export default function FuncionamentoEquipamento() {
   // const { id } = useParams();
   const id = "bd23d030-0414-11eb-a5d4-d9a33cd11de3"
 
   const [equipmentData, setEquipmentData] = useState([]);
-  const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState([]);
   const [equipment, setEquipment] = useState({});
   const [selectedChart, setSelectedChart] = useState("temperature");
   const [periodChart, setPeriodChart] = useState({
@@ -41,57 +39,49 @@ export default function FuncionamentoEquipamento() {
     worktime: getTime(parseISO('2020-08-12')),
     situation: "",
   })
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState({ equipment: true, data: true });
 
   useEffect(() => {
-    // get datas of equipment
-    // api.get(`/data/equipamentDate/${id}`, {
-    api.post(`data/equipamentDate/bd23d030-0414-11eb-a5d4-d9a33cd11de3`, {
-      minDate: "2010-10-23T13:50",
-      numOfElements: 100
-    }).then(response => {
-      const data = response.data.data;
-      setEquipmentDataWithoutPeriod(data)
-    }).catch(err => console.log(err))
-
     // get equipment
     api.get(`equipment/${id}`).then(response => {
       setEquipment(response.data.equipment[0])
+      setLoading(prev => ({ ...prev, equipment: false }))
     })
-
-    setLoading(false)
   }, [id]);
 
   useEffect(() => {
-    if (equipmentDataWithoutPeriod[0]) {
-      var dateMin;
-      switch (periodChart.type) {
-        case "hour":
-          dateMin = subHours(new Date(), periodChart.value)
-          break;
-        case "day":
-          dateMin = subDays(new Date(), periodChart.value)
-          break;
-        case "mounth":
-          dateMin = subMonths(new Date(), periodChart.value)
-          break;
-        case "year":
-          dateMin = subYears(new Date(), periodChart.value)
-          break;
+    // if (equipmentDataWithoutPeriod[0]) {
+    var dateMin;
+    switch (periodChart.type) {
+      case "hour":
+        dateMin = subHours(new Date(), periodChart.value)
+        break;
+      case "day":
+        dateMin = subDays(new Date(), periodChart.value)
+        break;
+      case "mounth":
+        dateMin = subMonths(new Date(), periodChart.value)
+        break;
+      case "year":
+        dateMin = subYears(new Date(), periodChart.value)
+        break;
 
-        default:
-          dateMin = new Date()
-          break;
-      }
-
-      const dataFiltered = periodChart.type !== 'all' ? equipmentDataWithoutPeriod.filter(data => {
-        const createdAt = parseISO(data.createdAt)
-        return isAfter(createdAt, dateMin)
-      }) : equipmentDataWithoutPeriod
-
-      setEquipmentData(dataFiltered)
+      default:
+        dateMin = new Date()
+        break;
     }
-  }, [equipmentDataWithoutPeriod, periodChart])
+
+    api.post(`data/equipamentDate/${id}`, {
+      minDate: dateMin,
+      numOfElements: 70
+    }).then(response => {
+      const data = response.data.data;
+      setEquipmentData(data)
+
+      setLoading(prev => ({ ...prev, data: false }))
+    }).catch(err => console.log(err))
+
+  }, [periodChart])
 
   useEffect(() => {
     var tempMax = 0;
@@ -124,7 +114,7 @@ export default function FuncionamentoEquipamento() {
 
   const classes = useStyles();
 
-  if (loading || Object.keys(dataToShow).length === 0) {
+  if ((loading.data && loading.equipment) || Object.keys(dataToShow).length === 0) {
     return (
       <React.Fragment>
         <Backdrop className={classes.backdrop} open={true}>

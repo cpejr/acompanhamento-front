@@ -30,7 +30,7 @@ export default function StickyHeadTable(props) {
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               {headerItems.map(item => (

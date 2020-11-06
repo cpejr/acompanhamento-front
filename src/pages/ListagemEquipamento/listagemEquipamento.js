@@ -23,7 +23,8 @@ export default function ListagemEquipamento() {
   const classes = useStyles();
   const [filterby, setFilterby] = useState("id_equipment");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [modelList, setModelList] = useState([])
+  const [loading, setLoading] = useState({ model: true, equipments: true, changeNameModel: true, setDisplay: true });
   const [ordem, setOrdem] = useState({ alfabetica: false, by: "last_collect_date" });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState();
 
@@ -34,15 +35,41 @@ export default function ListagemEquipamento() {
     const url = situation ? `equipment/find_situation/${situation}` : 'equipment/index';
     api.get(url)
       .then(equipment => {
-        const equipments = equipment.data.equipment
+        var equipments = equipment.data.equipment
         setEquipmentsOriginal(equipments);
-        setEquipmentsListToDisplay(equipments);
-        setLoading(false);
+        setEquipmentsListToDisplay(equipments)
+        setLoading(prev => ({ ...prev, equipments: false }));
+      })
+      .catch(err => {
+        console.error("Não foi possivel estabelecer conecção com o backend", err);
+      });
+
+    api.get(`/model/index`)
+      .then(model => {
+        setModelList(model.data.data)
+        setLoading(prev => ({ ...prev, model: false }));
       })
       .catch(err => {
         console.error("Não foi possivel estabelecer conecção com o backend", err);
       });
   }, [situation])
+
+  useEffect(() => {
+    setEquipmentsOriginal(velhosEquip => {
+      return velhosEquip.map(equipment => {
+        if (modelList[0].id) {
+          equipment.equipment_model = modelList.find(model => model.id === equipment.id_model).modelName
+        }
+        return equipment
+      })
+    })
+    setLoading(prev => ({ ...prev, changeNameModel: false }));
+  }, [modelList])
+
+  useEffect(() => {
+    setEquipmentsListToDisplay(equipmentsOriginal)
+    setLoading(prev => ({ ...prev, setDisplay: false }));
+  }, [equipmentsOriginal])
 
   function FindEquipment(searchEquipment) {
     if (searchEquipment.length > 0) {
@@ -65,7 +92,7 @@ export default function ListagemEquipamento() {
     return moment(timeStamp).format(format);
   }
 
-  if (loading) {
+  if (loading.model && loading.equipments && loading.changeNameModel && loading.setDisplay) {
     return (
       <React.Fragment>
         <Backdrop className={classes.backdrop} open={true}>

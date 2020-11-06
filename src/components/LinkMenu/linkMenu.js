@@ -8,14 +8,17 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import history from '../../history'
-import { Link } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import TimelineIcon from '@material-ui/icons/Timeline';
 
 export const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: "none",
-    color: "black"
+    color: "black",
+    background: "transparent",
+    outline: "none",
+    border: "none",
+    height: "100%"
   },
   menu: (props) => ({
     zIndex: "10",
@@ -60,11 +63,11 @@ export default ({ children, id, openMenu, setOpenMenu, ...rest }) => {
         </List>
       </Paper>}
 
-      <Link
+      <button
         className={classes.link}
         onClick={(e) => handleToggleMenu(e)}>
         {children}
-      </Link>
+      </button>
     </div>
   );
 }

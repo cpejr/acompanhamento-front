@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { azulPadraoClaro } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -19,6 +20,23 @@ export const useStyles = makeStyles(theme => ({
     background: "white",
     borderRight: "1px solid rgba(0,0,0,.2)",
     padding: "0 20px 10px",
+    position: "relative"
+  },
+  chartAlert: {
+    position: "absolute",
+    // lineHeight: "0",
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "rgba(0,0,0,.7)",
+    fontSize: "24px",
+    [theme.breakpoints.only('xs')]: {
+      fontSize: "16px",
+      top: "60%"
+    },
+
+    top: "50%",
+    left: "52%",
+    transform: "translate(-50%, -50%)"
   },
   chartTable: {
     background: "white",
@@ -62,21 +80,6 @@ export const useStyles = makeStyles(theme => ({
     height: "30px",
     minWidth: "30px",
     padding: "0",
-    // marginLeft: "10px",
-    // outline: "none",
-    // border: "1px solid black",
-    // borderRadius: "50%",
-    // background: "rgba(0,0,0,0.1)",
-
-    // cursor: "pointer",
-
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
-
-    // "&:hover": {
-    //   background: "rgba(0,0,0,0.3)",
-    // }
   },
   chartButtons: {
     display: "flex",
@@ -106,6 +109,33 @@ export const useStyles = makeStyles(theme => ({
 
     background: "white",
     border: "1px solid rgba(0,0,0,.2)",
+  },
+
+  //table
+  container: {
+    maxHeight: 550,
+  },
+
+  tableCell: {
+    minWidth: "170px",
+    position: "sticky",
+    backgroundColor: azulPadraoClaro,
+    fontWeight: "500",
+    fontSize: "16px"
+  },
+
+  lastTableCell: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+
+  nullEquipament: {
+    padding: "18px",
+    width: "350px",
+    fontWeight: "400",
+    fontSize: "16px",
+    textAlign: "left",
   },
 
   //utilitys

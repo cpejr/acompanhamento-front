@@ -81,13 +81,10 @@ const elementsFixedOfTable = [
   },
 ]
 
-export default function ChartTable({ dataToShow, setPeriodChart }) {
+export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) {
   const classes = useStyles();
 
-  const [tempSelectedChart, setTempSelectedChart] = useState({
-    type: "mounth",
-    value: 1
-  })
+  const [tempSelectedChart, setTempSelectedChart] = useState(periodChart)
 
   const Module = ({ title, value, unity }) => (
     <Grid xs={6} md={12} item className={classes.itemTable}>
@@ -122,7 +119,7 @@ export default function ChartTable({ dataToShow, setPeriodChart }) {
             value={tempSelectedChart.value}
             onChange={handleChangeTempPeriod}
             className={classes.inputPeriod}
-          // helperText="Quant."
+            disabled={tempSelectedChart.type === 'all'}
           />
           <FormControl
             className={classes.selectPeriod}
@@ -138,7 +135,6 @@ export default function ChartTable({ dataToShow, setPeriodChart }) {
               <MenuItem value="year">anos</MenuItem>
               <MenuItem value="all">tudo</MenuItem>
             </Select>
-            {/* <FormHelperText>Contagem</FormHelperText> */}
           </FormControl>
           <Button
             onClick={sendChangeOfPeriod}

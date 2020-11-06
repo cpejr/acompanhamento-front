@@ -44,17 +44,17 @@ export default function ({ equipment }) {
   return (
     <>
       <CssBaseline />
-      <TableContainer>
-        <Table>
+      <TableContainer className={classes.container}>
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell>Propriedade</TableCell>
-              <TableCell>Valor</TableCell>
+              <TableCell className={classes.tableCell}>Propriedade</TableCell>
+              <TableCell className={classes.tableCell}>Valor</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {dataToTable.map(({ name, value }) => (
-              <TableRow key={name}>
+              <TableRow hover tabIndex={-1} key={name}>
                 <TableCell>{name}</TableCell>
                 <TableCell>{value}</TableCell>
               </TableRow>

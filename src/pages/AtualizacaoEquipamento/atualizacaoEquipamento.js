@@ -143,7 +143,7 @@ function AtualizacaoEquipamento() {
     }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
-      alert("Excluindo usuário do banco de dados...")
+      alert("Equipamento excluído do banco de dados!")
       api.delete(`equipment/${id}`).then((response) => {
         console.log(response.data)
         history.push("/listagemequipamento");

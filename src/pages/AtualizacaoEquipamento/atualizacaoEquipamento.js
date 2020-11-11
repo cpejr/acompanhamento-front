@@ -16,6 +16,7 @@ import {
 import api from '../../services/api';
 import { AuthContext } from '../../context/AuthContext'
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { useParams } from 'react-router';
@@ -24,6 +25,7 @@ import { Autocomplete } from '@material-ui/lab';
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
+  const history = useHistory();
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
   const [equipmentOriginal, setEquipmentOriginal] = useState({});
@@ -142,6 +144,12 @@ function AtualizacaoEquipamento() {
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
       alert("Excluindo usuário do banco de dados...")
+      api.delete(`equipment/${id}`).then((response) => {
+        console.log(response.data)
+        history.push("/listagemequipamento");
+      }).catch((err) => {
+        console.log(err)
+      })
     }
     else { // confirmar exclusão
       setDeleting(true);

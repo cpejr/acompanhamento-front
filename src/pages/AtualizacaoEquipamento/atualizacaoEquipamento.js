@@ -143,11 +143,12 @@ function AtualizacaoEquipamento() {
     }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
-      alert("Equipamento excluído do banco de dados!")
+      sendMessage("Excluindo equipamento...", "info", null);
       api.delete(`equipment/${id}`).then((response) => {
-        console.log(response.data)
+        sendMessage("Equipamento excluído com sucesso");
         history.push("/listagemequipamento");
       }).catch((err) => {
+        sendMessage(`Erro ao excluir o equipamento: ${err.message}`, "error");
         console.log(err)
       })
     }

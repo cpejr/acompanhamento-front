@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Button,
   InputBase,
@@ -8,41 +8,45 @@ import {
   FormControl,
   Select,
   CircularProgress,
-  Backdrop
+  Backdrop,
 } from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from "@material-ui/icons/Search";
 
-import ordenar from '../../services/ordenar';
-import api from '../../services/api';
-import { useStyles } from './listagemModeloStyle';
-import StickyHeadTable from './Tabela';
+import ordenar from "../../services/ordenar";
+import api from "../../services/api";
+import { useStyles } from "./listagemModeloStyle";
+import StickyHeadTable from "./Tabela";
 
 export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
   const [ordem, setOrdem] = useState({ alfabetica: true, by: "modelName" });
-  const [modelsOriginal, setModelsOriginal] = useState()
+  const [modelsOriginal, setModelsOriginal] = useState();
   const [loading, setLoading] = useState(true);
   const [modelsListToDisplay, setModelsListToDisplay] = useState();
 
   useEffect(() => {
-    api.get('model/index')
-      .then(model => {
-        const models = model.data.data
+    api
+      .get("model/index")
+      .then((model) => {
+        const models = model.data.data;
         setModelsOriginal(models);
         setModelsListToDisplay(models);
-        setLoading(false)
+        setLoading(false);
       })
-      .catch(err => {
-        console.error("Não foi possivel estabelecer conecção com o backend", err);
+      .catch((err) => {
+        console.error(
+          "Não foi possivel estabelecer conecção com o backend",
+          err
+        );
       });
-  }, [])
+  }, []);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {
       const modelsListToDisplay = [];
-      const filteredModel = new RegExp(searchModel.toLowerCase(), 'g');
+      const filteredModel = new RegExp(searchModel.toLowerCase(), "g");
 
-      modelsOriginal.forEach(item => {
+      modelsOriginal.forEach((item) => {
         var probable = item[filterby].toLowerCase().match(filteredModel);
         if (probable) {
           modelsListToDisplay.push(item);
@@ -63,7 +67,7 @@ export default function ListagemModelo() {
           <CircularProgress color="inherit" />
         </Backdrop>
       </React.Fragment>
-    )
+    );
   }
 
   return (
@@ -73,7 +77,11 @@ export default function ListagemModelo() {
           <Typography variant="h3" className={classes.title}>
             Modelos
           </Typography>
-          <Button component={Link} to="/cadastromodelo" className={classes.buttonAdd}>
+          <Button
+            component={Link}
+            to="/cadastromodelo"
+            className={classes.buttonAdd}
+          >
             Adicionar Novo
           </Button>
         </div>
@@ -83,7 +91,8 @@ export default function ListagemModelo() {
               <SearchIcon />
             </div>
             <div className={classes.searchInput}>
-              <InputBase className={classes.placeholder}
+              <InputBase
+                className={classes.placeholder}
                 placeholder="Procurar modelo"
                 onChange={(e) => FindModel(e.target.value)}
                 classes={{
@@ -94,12 +103,13 @@ export default function ListagemModelo() {
             </div>
           </div>
           <FormControl className={classes.filter}>
-            <Select className={classes.selectItens}
+            <Select
+              className={classes.selectItens}
               value={filterby}
               onChange={(e) => setFilterby(e.target.value)}
               // displayEmpty={true}
               // native={false}
-              variant='outlined'
+              variant="outlined"
             >
               <MenuItem value="modelName">Modelo</MenuItem>
               <MenuItem value="type">Tipo</MenuItem>
@@ -109,21 +119,23 @@ export default function ListagemModelo() {
         </div>
         <div className={classes.table}>
           <StickyHeadTable
-            modelsListToDisplay={
-              ordenar(modelsListToDisplay, ordem.by, ordem.alfabetica)
-                .map(model => {
-                  return {
-                    id: model.id,
-                    modelName: model.modelName,
-                    type: model.type,
-                    manufacturer: model.manufacturer,
-                  }
-                })
-            }
+            modelsListToDisplay={ordenar(
+              modelsListToDisplay,
+              ordem.by,
+              ordem.alfabetica
+            ).map((model) => {
+              return {
+                id: model.id,
+                modelName: model.modelName,
+                type: model.type,
+                manufacturer: model.manufacturer,
+              };
+            })}
             setOrdem={setOrdem}
-            ordem={ordem} />
+            ordem={ordem}
+          />
         </div>
       </div>
     </React.Fragment>
-  )
+  );
 }

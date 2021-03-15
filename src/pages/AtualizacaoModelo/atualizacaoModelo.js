@@ -318,7 +318,7 @@ function AtualizacaoModelo() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
               <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete} disabled={!updating}
+                onClick={handleDelete}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>

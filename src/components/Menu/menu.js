@@ -23,7 +23,7 @@ import {
   ListItemIcon,
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-// import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@material-ui/icons/Person';
 
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
@@ -80,10 +80,10 @@ export default function Menu() {
             className={classes.menuProfile}
           >
             <List>
-              {/* <ListItem button onClick={() => handleClickMenu('/au/me')}>
+              <ListItem button onClick={() => handleClickMenu('/au/me')}>
                 <ListItemIcon><PersonIcon /></ListItemIcon>
                 <ListItemText>Perfil</ListItemText>
-              </ListItem> */}
+              </ListItem>
               <ListItem button onClick={() => handleClickMenu('/login')}>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText>Sair</ListItemText>

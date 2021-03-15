@@ -293,7 +293,6 @@ function AtualizacaoEquipamento() {
                 color="secondary"
                 className={classes.btn}
                 onClick={handleDelete}
-                disabled={!updating}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>

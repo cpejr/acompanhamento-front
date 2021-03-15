@@ -8,13 +8,13 @@ import {
 } from '@material-ui/core'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import TocIcon from '@material-ui/icons/Toc';
-// import PersonAddIcon from '@material-ui/icons/PersonAdd';
-// import PeopleIcon from '@material-ui/icons/People';
-// import PersonIcon from '@material-ui/icons/Person';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PeopleIcon from '@material-ui/icons/People';
+import PersonIcon from '@material-ui/icons/Person';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-// import TimelineIcon from '@material-ui/icons/Timeline';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 const Items = [
   {
@@ -23,18 +23,18 @@ const Items = [
     icon: <DonutLargeIcon />,
     adminOnly: false
   },
-  // {
-  //   title: "Perfil",
-  //   to: "/au/me",
-  //   icon: <PersonIcon />,
-  //   adminOnly: true
-  // },
-  // {
-  //   title: "Cadastro de usuário",
-  //   to: "/cadastrousuario",
-  //   icon: <PersonAddIcon />,
-  //   adminOnly: true
-  // },
+  {
+    title: "Perfil",
+    to: "/au/me",
+    icon: <PersonIcon />,
+    adminOnly: true
+  },
+  {
+    title: "Cadastro de usuário",
+    to: "/cadastrousuario",
+    icon: <PersonAddIcon />,
+    adminOnly: true
+  },
   {
     title: "Cadastro de modelo",
     to: "/cadastromodelo",
@@ -47,12 +47,12 @@ const Items = [
     icon: < PostAddIcon />,
     adminOnly: true
   },
-  // {
-  //   title: "Lista de usuários",
-  //   to: "/listagemusuario",
-  //   icon: <PeopleIcon />,
-  //   adminOnly: true
-  // },
+  {
+    title: "Lista de usuários",
+    to: "/listagemusuario",
+    icon: <PeopleIcon />,
+    adminOnly: true
+  },
   {
     title: "Lista de modelo",
     to: "/listagemmodelo",
@@ -65,12 +65,12 @@ const Items = [
     icon: <TocIcon />,
     adminOnly: false
   },
-  // {
-  //   title: "Funcionamento de equipamentos",
-  //   to: "/funcionamentoequipamento",
-  //   icon: < TimelineIcon />,
-  //   adminOnly: true
-  // },
+  {
+    title: "Funcionamento de equipamentos",
+    to: "/funcionamentoequipamento",
+    icon: < TimelineIcon />,
+    adminOnly: true
+  },
 ];
 
 const ShortcutsList = ({ isClient, hidden }) => (

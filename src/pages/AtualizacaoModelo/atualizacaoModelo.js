@@ -121,14 +121,14 @@ function AtualizacaoModelo() {
       }
       sendMessage("Alterando dados...", "info", null);
       api.put(`model/${id}`, data)
-      .then(response => {
+        .then(response => {
           sendMessage("Dados alterados");
           setModelOriginal(data);
-      })
-      .catch(err => {
-        console.log(err);
-        sendMessage(`Erro: ${err.message}`, "error");
-      })
+        })
+        .catch(err => {
+          console.log(err);
+          sendMessage(`Erro: ${err.message}`, "error");
+        })
       setUpdating(false)
 
     }
@@ -318,7 +318,7 @@ function AtualizacaoModelo() {
                 {updating ? "Salvar" : "Editar"}
               </Button>
               <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete}
+                onClick={handleDelete} disabled={!updating}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>

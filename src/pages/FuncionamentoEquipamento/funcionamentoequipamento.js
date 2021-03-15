@@ -1,33 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../services/api';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import api from "../../services/api";
 import {
   CssBaseline,
   Grid,
   CircularProgress,
   Backdrop,
-  Tooltip
-} from '@material-ui/core';
-import { getTime, parseISO, subDays, subHours, subMonths, subYears } from 'date-fns';
+  Tooltip,
+} from "@material-ui/core";
+import {
+  getTime,
+  parseISO,
+  subDays,
+  subHours,
+  subMonths,
+  subYears,
+} from "date-fns";
 
-import { useStyles } from './funcionamentoequipamentoStyle'
-import ChartTable from './chartTable';
-import Table from './table';
-import Chart from './chart';
-import { isAfter } from 'date-fns/esm';
+import { useStyles } from "./funcionamentoequipamentoStyle";
+import ChartTable from "./chartTable";
+import Table from "./table";
+import Chart from "./chart";
+import { isAfter } from "date-fns/esm";
 
 export default function FuncionamentoEquipamento() {
-  // const { id } = useParams();
-  const id = "9c662f70-041c-11eb-a5d4-d9a33cd11de3"
+  const { id } = useParams();
+  const idDados = "bd23d030-0414-11eb-a5d4-d9a33cd11de3";
 
   const [equipmentData, setEquipmentData] = useState([]);
-  const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState([]);
+  const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState(
+    []
+  );
   const [equipment, setEquipment] = useState({});
   const [selectedChart, setSelectedChart] = useState("temperature");
   const [limiteModel, setLimiteModel] = useState({});
   const [periodChart, setPeriodChart] = useState({
     type: "mounth",
     value: 1,
-  })
+  });
   const [dataToShow, setDataToShow] = useState({
     type: selectedChart,
     tempMax: 0,
@@ -36,43 +46,45 @@ export default function FuncionamentoEquipamento() {
     tempMin: 0,
     currMin: 0,
     voltMin: 0,
-    tempLastAlert: getTime(parseISO('2020-09-16')),
-    currLastAlert: getTime(parseISO('2020-10-09')),
-    voltLastAlert: getTime(parseISO('2020-08-01')),
-    worktime: getTime(parseISO('2020-08-12')),
+    tempLastAlert: getTime(parseISO("2020-09-16")),
+    currLastAlert: getTime(parseISO("2020-10-09")),
+    voltLastAlert: getTime(parseISO("2020-08-01")),
+    worktime: getTime(parseISO("2020-08-12")),
     situation: "",
-  })
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // get datas of equipment
-    api.get(`data/equipament/${id}`).then(response => {
+    api.get(`data/equipament/${idDados}`).then((response) => {
       const data = response.data.data;
-      setEquipmentDataWithoutPeriod(data)
-    })
+      setEquipmentDataWithoutPeriod(data);
+    });
 
     // get equipment
-    api.get(`equipment/${id}`).then(response => {
-      setEquipment(response.data.equipment[0])
-    })
-
-
+    api.get(`equipment/${id}`).then((response) => {
+      setEquipment(response.data.equipment[0]);
+    });
   }, [id]);
 
   useEffect(() => {
-
     // get datas of equipment
-    api.get(`model/${equipment.id_model}`).then(response => {
-      const current = response.data.model.currentLimit;
-      const voltage = response.data.model.voltageLimit;
-      const temperature = response.data.model.temperatureLimit;
+    api
+      .get(`model/${equipment.id_model}`)
+      .then((response) => {
+        const current = response.data.model.currentLimit;
+        const voltage = response.data.model.voltageLimit;
+        const temperature = response.data.model.temperatureLimit;
 
-      setLimiteModel({
-        current, voltage, temperature
+        setLimiteModel({
+          current,
+          voltage,
+          temperature,
+        });
       })
-    }).catch(err => console.error(err))
+      .catch((err) => console.error(err));
 
-    setLoading(false)
+    setLoading(false);
   }, [equipment]);
 
   useEffect(() => {
@@ -80,31 +92,34 @@ export default function FuncionamentoEquipamento() {
       var dateMin;
       switch (periodChart.type) {
         case "hour":
-          dateMin = subHours(new Date(), periodChart.value)
+          dateMin = subHours(new Date(), periodChart.value);
           break;
         case "day":
-          dateMin = subDays(new Date(), periodChart.value)
+          dateMin = subDays(new Date(), periodChart.value);
           break;
         case "mounth":
-          dateMin = subMonths(new Date(), periodChart.value)
+          dateMin = subMonths(new Date(), periodChart.value);
           break;
         case "year":
-          dateMin = subYears(new Date(), periodChart.value)
+          dateMin = subYears(new Date(), periodChart.value);
           break;
 
         default:
-          dateMin = new Date()
+          dateMin = new Date();
           break;
       }
 
-      const dataFiltered = periodChart.type !== 'all' ? equipmentDataWithoutPeriod.filter(data => {
-        const createdAt = parseISO(data.createdAt)
-        return isAfter(createdAt, dateMin)
-      }) : equipmentDataWithoutPeriod
+      const dataFiltered =
+        periodChart.type !== "all"
+          ? equipmentDataWithoutPeriod.filter((data) => {
+              const createdAt = parseISO(data.createdAt);
+              return isAfter(createdAt, dateMin);
+            })
+          : equipmentDataWithoutPeriod;
 
-      setEquipmentData(dataFiltered)
+      setEquipmentData(dataFiltered);
     }
-  }, [equipmentDataWithoutPeriod, periodChart])
+  }, [equipmentDataWithoutPeriod, periodChart]);
 
   useEffect(() => {
     var tempMax = 0;
@@ -114,12 +129,12 @@ export default function FuncionamentoEquipamento() {
     var voltMax = 0;
     var voltMin = 0;
     if (equipmentData[0]) {
-      tempMax = Math.max(...equipmentData.map(data => data.temperature))
-      tempMin = Math.min(...equipmentData.map(data => data.temperature))
-      currMax = Math.max(...equipmentData.map(data => data.current))
-      currMin = Math.min(...equipmentData.map(data => data.current))
-      voltMax = Math.max(...equipmentData.map(data => data.voltage))
-      voltMin = Math.min(...equipmentData.map(data => data.voltage))
+      tempMax = Math.max(...equipmentData.map((data) => data.temperature));
+      tempMin = Math.min(...equipmentData.map((data) => data.temperature));
+      currMax = Math.max(...equipmentData.map((data) => data.current));
+      currMin = Math.min(...equipmentData.map((data) => data.current));
+      voltMax = Math.max(...equipmentData.map((data) => data.voltage));
+      voltMin = Math.min(...equipmentData.map((data) => data.voltage));
     }
     const data = {
       type: selectedChart,
@@ -131,8 +146,8 @@ export default function FuncionamentoEquipamento() {
       voltMin,
       situation: equipment.situation,
       // worktime: equipment.work_time
-    }
-    setDataToShow(prev => ({ ...prev, ...data })) //first time
+    };
+    setDataToShow((prev) => ({ ...prev, ...data })); //first time
   }, [equipment, equipmentData, selectedChart]);
 
   const classes = useStyles();
@@ -144,22 +159,24 @@ export default function FuncionamentoEquipamento() {
           <CircularProgress color="inherit" />
         </Backdrop>
       </React.Fragment>
-    )
+    );
   }
 
   const changeDataToShow = (property, value) => {
-    setDataToShow(prev => ({ ...prev, [property]: value }))
-  }
+    setDataToShow((prev) => ({ ...prev, [property]: value }));
+  };
 
   const handleChangeChartData = (type) => {
-    setSelectedChart(type)
-    changeDataToShow("type", type)
-  }
+    setSelectedChart(type);
+    changeDataToShow("type", type);
+  };
 
   const changeColor = (type) => {
-    if (selectedChart === type) return ({ background: "red", color: "white" })
-    return ({ color: "black" });
-  }
+    if (selectedChart === type) return { background: "red", color: "white" };
+    return { color: "black" };
+  };
+
+  console.log(dataToShow);
 
   return (
     <div className={classes.root}>
@@ -171,31 +188,42 @@ export default function FuncionamentoEquipamento() {
               dataToShow={dataToShow}
               equipmentData={equipmentData}
               selectedChart={selectedChart}
-              periodChart={periodChart} 
-              limiteModel={limiteModel} />
+              periodChart={periodChart}
+              limiteModel={limiteModel}
+            />
           </Grid>
           <Grid item md={3} xs={12} className={classes.chartTable}>
             <ChartTable
               dataToShow={dataToShow}
               setPeriodChart={setPeriodChart}
-              periodChart={periodChart} />
+              periodChart={periodChart}
+            />
           </Grid>
         </Grid>
         <Grid item md={12} xs={12} className={classes.chartButtons}>
           <Tooltip title="Temperatura" arrow>
-            <button onClick={() => handleChangeChartData("temperature")}
+            <button
+              onClick={() => handleChangeChartData("temperature")}
               style={changeColor("temperature")}
-            >T</button>
+            >
+              T
+            </button>
           </Tooltip>
           <Tooltip title="Corrente" arrow>
-            <button onClick={() => handleChangeChartData("current")}
+            <button
+              onClick={() => handleChangeChartData("current")}
               style={changeColor("current")}
-            >C</button>
+            >
+              C
+            </button>
           </Tooltip>
           <Tooltip title="Tensão" arrow>
-            <button onClick={() => handleChangeChartData("voltage")}
+            <button
+              onClick={() => handleChangeChartData("voltage")}
               style={changeColor("voltage")}
-            >V</button>
+            >
+              V
+            </button>
           </Tooltip>
         </Grid>
         <Grid item md={12} xs={12} className={classes.table}>
@@ -203,5 +231,5 @@ export default function FuncionamentoEquipamento() {
         </Grid>
       </Grid>
     </div>
-  )
+  );
 }

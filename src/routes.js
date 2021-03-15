@@ -4,7 +4,7 @@ import history from './history';
 
 import { DataContextProvider } from './context/DataContext';
 
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import Login from './pages/Login'
 import Menu from './components/Menu';
 import Dashboard from './pages/Dashboard/dashboard';
@@ -30,7 +30,7 @@ function Routes() {
   return (
     <Router history={history}>
       <Switch>
-        <Route component={Home} exact path='/' />
+        <Route path="/" exact><Redirect to="/login" /></Route>
         <Route path="/login" component={Login} />
         <Route path="/esquecisenha" component={EsqueciSenha} />
         <Route path="/definicaosenha" component={DefinicaoNovaSenha} />

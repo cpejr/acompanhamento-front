@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiLock } from "react-icons/fi"
 import {
@@ -6,7 +6,8 @@ import {
   CssBaseline,
   Typography,
   OutlinedInput,
-  Button
+  Button,
+  Snackbar
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -14,12 +15,12 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { useStyles } from './styles'
+import { Alert } from '@material-ui/lab';
 
 export default function Login() {
-
   const classes = useStyles();
 
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     password: '',
     showPassword: false,
   });
@@ -41,6 +42,13 @@ export default function Login() {
       <CssBaseline /> {/* Reseta todo estilo padrão do navegador (margens e padding) */}
       <div className={classes.root}>
         <Link to="/" className={classes.logo}></Link>
+
+        <Snackbar autoHideDuration={null} open={true}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+          <Alert elevation={6} variant="filled" severity="info">
+            Apenas click em Entrar
+          </Alert>
+        </Snackbar>
 
         <div className={classes.loginBox}>
 
@@ -84,7 +92,7 @@ export default function Login() {
           </div>
 
           <div>
-            <Button className={classes.buttonLogin} component={Link} to="/">Entrar</Button>
+            <Button className={classes.buttonLogin} component={Link} to="/dashboard">Entrar</Button>
           </div>
 
         </div>

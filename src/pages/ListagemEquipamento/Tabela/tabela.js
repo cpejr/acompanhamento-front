@@ -23,14 +23,14 @@ export default function StickyHeadTable(props) {
   const headerItems = [
     { title: "Nº série", ordemBy: "id_equipment" },
     { title: "Modelo", ordemBy: "equipment_model" },
-    { title: "Cliente", ordemBy: "cpf_client" },
+    { title: "CPF cliente", ordemBy: "cpf_client" },
     { title: "Última visita", ordemBy: "updatedAt" },
   ]
 
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
               {headerItems.map(item => (

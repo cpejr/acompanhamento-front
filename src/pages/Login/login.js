@@ -54,8 +54,9 @@ export default function Login() {
 
           {/* Título */}
           <Typography className={classes.loginTxt}>Login</Typography>
-
+          
           {/* Email */}
+          <h5 style={{ color: "white", margin: "0" }}>Email</h5>
           <TextField className={classes.input}
             InputProps={{
               startAdornment: <InputAdornment position="start">
@@ -64,7 +65,7 @@ export default function Login() {
             }}
             variant="outlined"
           />
-
+          <h5 style={{ color: "white", margin: "0" }}>Senha</h5>
           {/* Senha */}
           <OutlinedInput className={classes.input}
             type={values.showPassword ? 'text' : 'password'}

@@ -68,8 +68,7 @@ export default function EsqueciSenha() {
           <TextField className={classes.email}
             InputProps={{
               startAdornment: <InputAdornment position="start">
-                <FiMail size={24} className={classes.icon
-                } />
+                <FiMail size={24} className={classes.icon} />
               </InputAdornment>,
             }}
             type="email"

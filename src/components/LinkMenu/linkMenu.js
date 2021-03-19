@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import history from '../../history'
-import EditIcon from '@material-ui/icons/Edit';
 import TimelineIcon from '@material-ui/icons/Timeline';
+import SearchIcon from '@material-ui/icons/Search';
 
 export const useStyles = makeStyles((theme) => ({
   link: {
@@ -53,12 +53,12 @@ export default ({ children, id, openMenu, setOpenMenu, ...rest }) => {
       {openMenu === id && <Paper className={classes.menu}>
         <List>
           <ListItem button onClick={() => handleClickMenu(`/ae/${id}`)}>
-            <ListItemIcon><EditIcon /></ListItemIcon>
-            <ListItemText>Editar</ListItemText>
+            <ListItemIcon><SearchIcon /></ListItemIcon>
+            <ListItemText>Detalhes</ListItemText>
           </ListItem>
           <ListItem button onClick={() => handleClickMenu(`/funcionamentoequipamento/${id}`)}>
             <ListItemIcon><TimelineIcon /></ListItemIcon>
-            <ListItemText>Detalhes</ListItemText>
+            <ListItemText>Dados</ListItemText>
           </ListItem>
         </List>
       </Paper>}

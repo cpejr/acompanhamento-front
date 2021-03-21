@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiMail, FiLock } from "react-icons/fi"
+import { FiMail, FiLock, FiAlertTriangle } from "react-icons/fi"
 import {
   TextField,
   CssBaseline,
@@ -19,23 +19,41 @@ import { Alert } from '@material-ui/lab';
 
 export default function Login() {
   const classes = useStyles();
-
+  
+  
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
   });
-
+  
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
-
+  
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
-
+  
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  
+  const [ error, setError ] = useState("");
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    setError("");
+
+    switch (email) {
+      case "":
+        setError("Insira seu email");
+        break;
+      default:
+        setError("Email inválido");
+        break;
+    }
+  }
+  
 
   return (
     <React.Fragment>
@@ -55,47 +73,57 @@ export default function Login() {
           {/* Título */}
           <Typography className={classes.loginTxt}>Login</Typography>
           
-          {/* Email */}
-          <h5 style={{ color: "white", margin: "0" }}>Email</h5>
-          <TextField className={classes.input}
-            InputProps={{
-              startAdornment: <InputAdornment position="start">
-                <FiMail size={24} className={classes.icon} />
-              </InputAdornment>,
-            }}
-            variant="outlined"
-          />
-          <h5 style={{ color: "white", margin: "0" }}>Senha</h5>
-          {/* Senha */}
-          <OutlinedInput className={classes.input}
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            onChange={handleChange('password')}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            startAdornment={<InputAdornment position="start">
-              <FiLock size={24} className={classes.icon} />
-            </InputAdornment>}
-            labelWidth={0}
-          />
+          <form className={classes.loginForm} onSubmit={handleSubmit}>
+            {/* Email */}
+            <h5 style={{ color: "white", margin: "0" }}>Email</h5>
+            <TextField className={classes.input}
+              InputProps={{
+                startAdornment: <InputAdornment position="start">
+                  <FiMail size={24} className={classes.icon} />
+                </InputAdornment>,
+              }}
+              variant="outlined"
+              type="email"
+              id="email"
+              error={!!error}
+            />
+            {!!error && <>
+              <p className={classes.errorTextLogin}>
+                <FiAlertTriangle /> {error}
+              </p>
+            </>}
 
-          <div>
-            <Link to="./esquecisenha" className={classes.forgotPassword}>Esqueci minha senha!</Link>
-          </div>
+            {/* Senha */}
+            <h5 style={{ color: "white", margin: "0" }}>Senha</h5>
+            <OutlinedInput className={classes.input}
+              type={values.showPassword ? 'text' : 'password'}
+              value={values.password}
+              onChange={handleChange('password')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              startAdornment={<InputAdornment position="start">
+                <FiLock size={24} className={classes.icon} />
+              </InputAdornment>}
+              labelWidth={0}
+            />
 
-          <div>
-            <Button className={classes.buttonLogin} component={Link} to="/dashboard">Entrar</Button>
-          </div>
+            <div style={{marginTop:"15px"}}>
+              <Link to="./esquecisenha" className={classes.forgotPassword}>Esqueci minha senha!</Link>
+            </div>
 
+            <div>
+              <Button type="submit" className={classes.buttonLogin} component={Link} to="/dashboard">Entrar</Button>
+            </div>
+          </form>
         </div>
       </div>
 

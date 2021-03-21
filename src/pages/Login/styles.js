@@ -44,6 +44,14 @@ export const useStyles = makeStyles(theme => ({
       fontSize: "25px"
     }
   },
+  
+  errorTextLogin: {
+    margin: "0px",
+    color: "white",
+    fontWeight: "400",
+    lineHeight: "0",
+    marginBottom: "15px",
+  },
 
   logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
@@ -62,7 +70,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     width: "100%",
-    marginBottom: "20px",
+    marginBottom: "5px",
   },
 
   forgotPassword: {

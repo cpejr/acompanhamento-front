@@ -65,12 +65,6 @@ const Items = [
     icon: <TocIcon />,
     adminOnly: false
   },
-  {
-    title: "Funcionamento de equipamentos",
-    to: "/funcionamentoequipamento",
-    icon: < TimelineIcon />,
-    adminOnly: true
-  },
 ];
 
 const ShortcutsList = ({ isClient, hidden }) => (

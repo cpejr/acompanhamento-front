@@ -22,7 +22,7 @@ export default function StickyHeadTable(props) {
 
   const headerItems = [
     { title: "Nº série", ordemBy: "id_equipment" },
-    { title: "Modelo", ordemBy: "equipment_model" },
+    // { title: "Modelo", ordemBy: "equipment_model" },
     { title: "CPF cliente", ordemBy: "cpf_client" },
     { title: "Última visita", ordemBy: "updatedAt" },
   ]
@@ -55,7 +55,7 @@ export default function StickyHeadTable(props) {
               .map(equipment => (
                 <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
                   <TableCell>{equipment.id_equipment}</TableCell>
-                  <TableCell>{equipment.equipment_model}</TableCell>
+                  {/* <TableCell>{equipment.equipment_model}</TableCell> */}
                   <TableCell>{equipment.cpf_client}</TableCell>
                   <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
                     <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>

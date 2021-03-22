@@ -239,7 +239,7 @@ export default function CadastroEquipamento(props) {
               className={classes.inputs}
               value={formData.cpf_client}
               onChange={handleChangeInput}
-              label="CPF"
+              label="CPF/CNPJ do cliente"
               type="text"
               InputProps={{
                 inputComponent: CPFInput

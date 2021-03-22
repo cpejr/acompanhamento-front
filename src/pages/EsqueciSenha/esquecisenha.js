@@ -64,11 +64,11 @@ export default function EsqueciSenha() {
 
         <form className={classes.esquecisenhaForm} onSubmit={handleSubmit} >
           <Typography className={classes.title}>Esqueci minha senha!</Typography>
+          <h4 style={{ color: "white", margin: "0" }}>Email</h4>
           <TextField className={classes.email}
             InputProps={{
               startAdornment: <InputAdornment position="start">
-                <FiMail size={24} className={classes.icon
-                } />
+                <FiMail size={24} className={classes.icon} />
               </InputAdornment>,
             }}
             type="email"

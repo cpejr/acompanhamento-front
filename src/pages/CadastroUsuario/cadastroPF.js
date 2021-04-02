@@ -20,7 +20,7 @@ function CadastroPF(props) {
   } = props;
 
   const classes = useStyles();
-
+  const buttonRef = useRef(null);
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
   const [birth, setBirth] = useState("");
@@ -32,6 +32,7 @@ function CadastroPF(props) {
 
   async function handleRegister() {
     const data = {
+      type: props.type,
       name: name,
       birthdate: birth,
       cpf: cpf,
@@ -39,19 +40,27 @@ function CadastroPF(props) {
       number: number,
       password: senha,
     };
-
-    try {
-      console.log("OPA", data);
-      const response = await api.post("/user", data);
-      alert(`Você foi cadastrado com sucesso.`);
-    } catch (err) {
-      alert.error("Teve um erro no cadastro, tente novamente.");
-    }
+    if (
+      data.type !== "" &&
+      data.name !== "" &&
+      data.cpf !== "" &&
+      data.email !== "" &&
+      data.number !== "" &&
+      data.password !== ""
+    ) {
+      try {
+        console.log("OPA", data);
+        const response = await api.post("/user", data);
+        alert(`Você foi cadastrado com sucesso.`);
+      } catch (err) {
+        alert.error("Teve um erro no cadastro, tente novamente.");
+      }
+    } else alert("Todos os campos devem estar preenchidos");
   }
 
   return (
     <div>
-      <form onSubmit={() => handleSubmit("cadastroPF")}>
+      <form onSubmit={() => handleRegister()}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
           <Grid item xs={12} md={6}>
             <TextField
@@ -84,7 +93,7 @@ function CadastroPF(props) {
               value={formData.nascimento}
               helperText="(Opcional)"
               variant="filled"
-              type="date"
+              type="text"
               onChange={(e) => setBirth(e.target.value)}
             />
 

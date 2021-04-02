@@ -51,6 +51,8 @@ function CadastroFuncionario(props) {
       data.number !== "" &&
       data.password !== ""
     ) {
+      if (email !== emailConfirm) alert("Os emails estão diferentes.");
+      if (senha !== senhaConfirm) alert("As senhas não batem.");
       try {
         console.log("OPA", data);
         const response = await api.post("/user", data);
@@ -75,6 +77,7 @@ function CadastroFuncionario(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setName(e.target.value)}
+              required
             />
 
             <TextField
@@ -83,9 +86,11 @@ function CadastroFuncionario(props) {
               value={formData.cpf}
               label="CPF"
               type="text"
+              inputProps={{ maxLength: 11 }}
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setCpf(e.target.value)}
+              required
             />
 
             <TextField
@@ -105,10 +110,12 @@ function CadastroFuncionario(props) {
               className={classes.inputForm}
               value={formData.telefone}
               label="Número de telefone"
-              type="number"
+              type="text"
               helperText="*Obrigatório"
               variant="filled"
+              inputProps={{ maxLength: 11 }}
               onChange={(e) => setNumber(e.target.value)}
+              required
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -121,6 +128,7 @@ function CadastroFuncionario(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <TextField
               name="emailConfirmar"
@@ -131,6 +139,7 @@ function CadastroFuncionario(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setEmailConfirm(e.target.value)}
+              required
             />
 
             <TextField
@@ -143,6 +152,7 @@ function CadastroFuncionario(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setSenha(e.target.value)}
+              required
             />
 
             <TextField
@@ -155,6 +165,7 @@ function CadastroFuncionario(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setSenhaConfirm(e.target.value)}
+              required
             />
 
             <TextField
@@ -167,6 +178,7 @@ function CadastroFuncionario(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setSituacao(e.target.value)}
+              required
             />
 
             <FormControlLabel

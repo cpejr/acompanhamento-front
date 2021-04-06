@@ -12,7 +12,7 @@ import { useStyles } from './cadastroUsuarioStyle';
 import nextInput from '../../services/nextInput';
 
 function CadastroFuncionario(props) {
-  const { formData, handleChangeCheck, handleChangeInput, handleSubmit } = props;
+  const { formData, handleChangeCheck, handleChangeInput, handleSubmit, mode } = props;
 
   const classes = useStyles();
 
@@ -49,12 +49,13 @@ function CadastroFuncionario(props) {
             <TextField
               name="nome"
               className={classes.inputForm}
-              value={formData.nome}
+              value={formData.name}
               onChange={handleChangeInput}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
+              disabled= {mode === 'view'}
               inputRef={nomeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
@@ -66,6 +67,7 @@ function CadastroFuncionario(props) {
               label="CPF" type="text"
               helperText="*Obrigatório"
               variant="filled"
+              disabled= {!(mode === 'create')}
               inputRef={cpfRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
@@ -79,6 +81,7 @@ function CadastroFuncionario(props) {
               helperText="(Opcional)"
               variant="filled"
               type="date"
+              disabled= {mode === 'view'}
               inputRef={nascimentoRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
@@ -91,6 +94,7 @@ function CadastroFuncionario(props) {
               type="number"
               helperText="*Obrigatório"
               variant="filled"
+              disabled= {mode === 'view'}
               inputRef={telefoneRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
@@ -104,6 +108,7 @@ function CadastroFuncionario(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
+              disabled= {mode === 'view'}
               inputRef={situacaoRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
           </Grid>
@@ -117,46 +122,51 @@ function CadastroFuncionario(props) {
               type="email"
               helperText="*Obrigatório"
               variant="filled"
+              disabled= {!(mode === 'create')}
               inputRef={emailRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
-            <TextField
-              name="emailConfirmar"
-              className={classes.inputForm}
-              value={formData.emailConfirmar}
-              onChange={handleChangeInput}
-              label="Confirmar e-mail"
-              type="email"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputRef={emailConfirmarRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
-
-            <TextField
-              name="senha"
-              autoComplete="off"
-              className={classes.inputForm}
-              value={formData.senha}
-              onChange={handleChangeInput}
-              label="Criar senha"
-              type="password"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputRef={senhaRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
-
-            <TextField
-              name="senhaConfirmar"
-              autoComplete="off"
-              className={classes.inputForm}
-              value={formData.senhaConfirmar}
-              onChange={handleChangeInput}
-              label="Confirmar senha"
-              type="password"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputRef={senhaConfirmarRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            {mode === 'create' && 
+              <>
+                <TextField
+                  name="emailConfirmar"
+                  className={classes.inputForm}
+                  value={formData.emailConfirmar}
+                  onChange={handleChangeInput}
+                  label="Confirmar e-mail"
+                  type="email"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  inputRef={emailConfirmarRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                />
+                
+                <TextField
+                  name="senha"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={formData.senha}
+                  onChange={handleChangeInput}
+                  label="Criar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  inputRef={senhaRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                />
+    
+                <TextField
+                  name="senhaConfirmar"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={formData.senhaConfirmar}
+                  onChange={handleChangeInput}
+                  label="Confirmar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  inputRef={senhaConfirmarRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                />
+              </>
+            }
 
             <FormControlLabel
               className={classes.checkbox}
@@ -167,15 +177,19 @@ function CadastroFuncionario(props) {
                   onChange={handleChangeCheck}
                   color="primary"
                   size="small"
-                  inputRef={emailPromocionalRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  disabled={mode === 'view'}
+                  inputRef={emailPromocionalRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)}
                 />
               }
               label="Desejo receber emails promocionais"
             />
           </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
-          </Grid>
+          {mode === 'create' &&
+            <Grid item xs={12}>
+              <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
+            </Grid>
+          }
         </Grid>
       </form>
     </div>

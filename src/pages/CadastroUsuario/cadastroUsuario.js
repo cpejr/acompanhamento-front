@@ -82,7 +82,9 @@ export default function CadastroUsuario() {
                 handleChangeCheck={handleChangeCheck}
                 handleChangeInput={handleChangeInput}
                 formData={formData}
-                handleSubmit={handleSubmit} />
+                handleSubmit={handleSubmit}
+                mode={'create'}
+              />
             </div>}
 
             {formType === "pf" && <div>
@@ -93,7 +95,9 @@ export default function CadastroUsuario() {
                 handleChangeCheck={handleChangeCheck}
                 handleChangeInput={handleChangeInput}
                 formData={formData}
-                handleSubmit={handleSubmit} />
+                handleSubmit={handleSubmit}
+                mode={'create'}
+              />
             </div>}
 
             {formType === "funcionario" && <div>
@@ -104,7 +108,9 @@ export default function CadastroUsuario() {
                 handleChangeCheck={handleChangeCheck}
                 handleChangeInput={handleChangeInput}
                 formData={formData}
-                handleSubmit={handleSubmit} />
+                handleSubmit={handleSubmit} 
+                mode={'create'}
+              />
             </div>}
 
           </Box>

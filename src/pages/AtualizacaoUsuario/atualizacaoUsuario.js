@@ -120,9 +120,8 @@ function AtualizacaoUsuario() {
         </h1>
 
         <AreYouSure />
-        {console.log(userData) }
         <Paper className={classes.containerForm} elevation={0}>
-          {userData.funcao === "Cliente" && userData.cpf ?
+          {(userData.funcao === "Cliente" && userData.cpf) || id === "me"  ? //TODO alterar
             <CadastroPF
               formData={userData}
               handleChangeInput={handleChangeInput}

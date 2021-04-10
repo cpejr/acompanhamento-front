@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Link } from "react-router-dom"
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Typography,
@@ -10,42 +10,81 @@ import {
   Checkbox,
 } from "@material-ui/core";
 
-import { useStyles } from './listagemUsuarioStyle';
-import StickyHeadTable from './Tabela';
-import SearchIcon from '@material-ui/icons/Search';
-import ordenar from '../../services/ordenar';
-import { DataContext } from '../../context/DataContext';
-
+import { useStyles } from "./listagemUsuarioStyle";
+import StickyHeadTable from "./Tabela";
+import SearchIcon from "@material-ui/icons/Search";
+import ordenar from "../../services/ordenar";
+import { DataContext } from "../../context/DataContext";
+import api from "../../services/api";
 export default function ListagemUsuario() {
   const classes = useStyles();
 
   const { usersList } = useContext(DataContext);
 
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
-  const [usersListToDisplay, setUsersListToDisplay] = useState(usersList);
+  const [employees, setEmployees] = useState([]);
+  const [usersListToDisplay, setUsersListToDisplay] = useState([]);
   const [filterThisUsers, setFilterThisUsers] = useState({
     administrador: true,
     funcionario: true,
     cliente: true,
-  })
+  });
 
-  function FindPeoplebyName(searchPerson) {
-    if (searchPerson.length > 0) {
-      const usersListToDisplay = [];
-      const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
-
-      usersList.forEach((item) => {
-        const probable = item.name.toLowerCase().match(filteredPeople);
-        if (probable) {
-          usersListToDisplay.push(item);
-        }
-
-      });
-      setUsersListToDisplay(usersListToDisplay);
-    } else {
-      setUsersListToDisplay(usersList);
+  async function getEmployees() {
+    try {
+      const response = await api.get("/users");
+      console.log("Response: ", response);
+      setEmployees([...response.data.user]);
+      setUsersListToDisplay([...response.data.user]);
+    } catch (error) {
+      console.warn(error);
+      alert("Erro ao buscar funcionários");
     }
   }
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
+
+  function FindPeoplebyName(searchPerson) {
+    //Seta para vazio
+    setUsersListToDisplay([]);
+
+    const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
+    employees.forEach((employee) => {
+      if (employee.name.toLowerCase().match(filteredPeople)) {
+        //Adiciona funcionario filtrado ao array
+        setUsersListToDisplay((usersListToDisplay) => [
+          ...usersListToDisplay,
+          employee,
+        ]);
+        // funcionario.push(employee);
+        // setEmployees(funcionario);
+      }
+    });
+
+    // Se nao tiver nada no Input de busca, cooca todos
+    if (filteredPeople === "") {
+      setUsersListToDisplay([...employees]);
+    }
+  }
+
+  // function FindPeoplebyName(searchPerson) {
+  //   if (searchPerson.length > 0) {
+  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
+
+  //     employees.filter((item) => {
+  //       const probable = item.name.toLowerCase().match(filteredPeople);
+  //       if (probable) {
+  //         usersListToDisplay.push(item);
+  //         console.log("UserList: ", usersListToDisplay);
+  //       }
+  //     });
+  //     setUsersListToDisplay(usersListToDisplay);
+  //   } else {
+  //     setUsersListToDisplay(employees);
+  //   }
+  // }
 
   // function FindPeoplebyEmail(searchPerson) {
   //   if (searchPerson.length > 0) {
@@ -64,26 +103,70 @@ export default function ListagemUsuario() {
   //   }
   // }
 
-  const filterByUsers = (props) => {
-    let users = props;
+  const filterByUsers = (employees) => {
+    let users = employees;
+
+    console.log("Employee: ", users);
 
     //Remove ou não administrador
     if (!filterThisUsers.administrador) {
-      users = users.filter(user => user.funcao !== "Administrador")
+      employees.forEach((employee) => {
+        if (employee.name.toLowerCase().match("Administrador")) {
+          //Adiciona funcionario filtrado ao array
+          setUsersListToDisplay((usersListToDisplay) => [
+            ...usersListToDisplay,
+            employee,
+          ]);
+        }
+      });
     }
 
     //Remove ou não funcionário
     if (!filterThisUsers.funcionario) {
-      users = users.filter(user => user.funcao !== "Funcionário")
+      employees.forEach((employee) => {
+        if (employee.type.toLowerCase().match("Funcionario")) {
+          //Adiciona funcionario filtrado ao array
+          setUsersListToDisplay((usersListToDisplay) => [
+            ...usersListToDisplay,
+            employee,
+          ]);
+        }
+      });
     }
 
     //Remove ou não cliente
     if (!filterThisUsers.cliente) {
-      users = users.filter(user => user.funcao !== "Cliente")
+      users = users.filter((user) => user.type !== "PF" || user.type !== "PJ");
     }
 
+    employees.forEach((employee) => {
+      if (employee.name.toLowerCase().match("Administrador")) {
+        //Adiciona funcionario filtrado ao array
+        setUsersListToDisplay((usersListToDisplay) => [
+          ...usersListToDisplay,
+          employee,
+        ]);
+      }
+    });
+    //   if (employee.name.toLowerCase().match("Funcionario")) {
+    //     //Adiciona funcionario filtrado ao array
+    //     setUsersListToDisplay((usersListToDisplay) => [
+    //       ...usersListToDisplay,
+    //       employee,
+    //     ]);
+    //   }
+    //     if (employee.name.toLowerCase().match("PF" || "PJ")) {
+    //       //Adiciona funcionario filtrado ao array
+    //       setUsersListToDisplay((usersListToDisplay) => [
+    //         ...usersListToDisplay,
+    //         employee,
+    //       ]);
+    //   // funcionario.push(employee);
+    //   // setEmployees(funcionario);
+    // }
+
     return users;
-  }
+  };
 
   return (
     <React.Fragment>
@@ -93,7 +176,11 @@ export default function ListagemUsuario() {
           <Typography variant="h3" className={classes.title}>
             Usuários
           </Typography>
-          <Button component={Link} to="/cadastrousuario" className={classes.buttonAdd}>
+          <Button
+            component={Link}
+            to="/cadastrousuario"
+            className={classes.buttonAdd}
+          >
             Adicionar Novo
           </Button>
         </div>
@@ -103,7 +190,8 @@ export default function ListagemUsuario() {
             <SearchIcon />
           </div>
           <div className={classes.searchInput}>
-            <InputBase className={classes.placeholder}
+            <InputBase
+              className={classes.placeholder}
               placeholder="Procurar usuário por nome ou email"
               onChange={(e) => {
                 FindPeoplebyName(e.target.value);
@@ -127,8 +215,9 @@ export default function ListagemUsuario() {
                 onChange={() =>
                   setFilterThisUsers({
                     ...filterThisUsers,
-                    administrador: !filterThisUsers.administrador
-                  })}
+                    administrador: !filterThisUsers.administrador,
+                  })
+                }
                 color="default"
               />
             }
@@ -142,8 +231,9 @@ export default function ListagemUsuario() {
                 onChange={() =>
                   setFilterThisUsers({
                     ...filterThisUsers,
-                    funcionario: !filterThisUsers.funcionario
-                  })}
+                    funcionario: !filterThisUsers.funcionario,
+                  })
+                }
                 color="default"
               />
             }
@@ -157,8 +247,9 @@ export default function ListagemUsuario() {
                 onChange={() =>
                   setFilterThisUsers({
                     ...filterThisUsers,
-                    cliente: !filterThisUsers.cliente
-                  })}
+                    cliente: !filterThisUsers.cliente,
+                  })
+                }
                 color="default"
               />
             }
@@ -168,22 +259,23 @@ export default function ListagemUsuario() {
 
         <div className={classes.table}>
           <StickyHeadTable
-            usersListToDisplay={
-              ordenar(filterByUsers(usersListToDisplay), "name", ordemAlfabetica)
-                .map((user) => {
-                  return {
-                    id: user.id,
-                    name: user.name,
-                    funcao: user.funcao,
-                    data: user.lastactive,
-                  }
-                })
-            }
+            usersListToDisplay={ordenar(
+              filterByUsers(usersListToDisplay),
+              "name",
+              ordemAlfabetica
+            ).map((employees) => {
+              return {
+                id: employees.id,
+                name: employees.name,
+                funcao: employees.type,
+                data: employees.updateAt,
+              };
+            })}
             setOrdemAlfabetica={setOrdemAlfabetica}
-            ordemAlfabetica={ordemAlfabetica} />
+            ordemAlfabetica={ordemAlfabetica}
+          />
         </div>
-
       </div>
     </React.Fragment>
-  )
+  );
 }

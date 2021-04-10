@@ -52,7 +52,10 @@ export default function ListagemUsuario() {
 
     const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
     employees.forEach((employee) => {
-      if (employee.name.toLowerCase().match(filteredPeople)) {
+      if (
+        employee.name.toLowerCase().match(filteredPeople) ||
+        employee.type.toLowerCase().match(filteredPeople)
+      ) {
         //Adiciona funcionario filtrado ao array
         setUsersListToDisplay((usersListToDisplay) => [
           ...usersListToDisplay,
@@ -103,67 +106,23 @@ export default function ListagemUsuario() {
   //   }
   // }
 
-  const filterByUsers = (employees) => {
-    let users = employees;
-
-    console.log("Employee: ", users);
+  const filterByUsers = (props) => {
+    let users = props;
 
     //Remove ou não administrador
     if (!filterThisUsers.administrador) {
-      employees.forEach((employee) => {
-        if (employee.name.toLowerCase().match("Administrador")) {
-          //Adiciona funcionario filtrado ao array
-          setUsersListToDisplay((usersListToDisplay) => [
-            ...usersListToDisplay,
-            employee,
-          ]);
-        }
-      });
+      users = users.filter((user) => user.funcao !== "Administrador");
     }
 
     //Remove ou não funcionário
     if (!filterThisUsers.funcionario) {
-      employees.forEach((employee) => {
-        if (employee.type.toLowerCase().match("Funcionario")) {
-          //Adiciona funcionario filtrado ao array
-          setUsersListToDisplay((usersListToDisplay) => [
-            ...usersListToDisplay,
-            employee,
-          ]);
-        }
-      });
+      users = users.filter((user) => user.funcao !== "Funcionário");
     }
 
     //Remove ou não cliente
     if (!filterThisUsers.cliente) {
-      users = users.filter((user) => user.type !== "PF" || user.type !== "PJ");
+      users = users.filter((user) => user.funcao !== "Cliente");
     }
-
-    employees.forEach((employee) => {
-      if (employee.name.toLowerCase().match("Administrador")) {
-        //Adiciona funcionario filtrado ao array
-        setUsersListToDisplay((usersListToDisplay) => [
-          ...usersListToDisplay,
-          employee,
-        ]);
-      }
-    });
-    //   if (employee.name.toLowerCase().match("Funcionario")) {
-    //     //Adiciona funcionario filtrado ao array
-    //     setUsersListToDisplay((usersListToDisplay) => [
-    //       ...usersListToDisplay,
-    //       employee,
-    //     ]);
-    //   }
-    //     if (employee.name.toLowerCase().match("PF" || "PJ")) {
-    //       //Adiciona funcionario filtrado ao array
-    //       setUsersListToDisplay((usersListToDisplay) => [
-    //         ...usersListToDisplay,
-    //         employee,
-    //       ]);
-    //   // funcionario.push(employee);
-    //   // setEmployees(funcionario);
-    // }
 
     return users;
   };
@@ -206,56 +165,7 @@ export default function ListagemUsuario() {
             />
           </div>
         </div>
-        <div className={classes.searchFilter}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                className={classes.checkbox}
-                checked={filterThisUsers.administrador}
-                onChange={() =>
-                  setFilterThisUsers({
-                    ...filterThisUsers,
-                    administrador: !filterThisUsers.administrador,
-                  })
-                }
-                color="default"
-              />
-            }
-            label="Administrador"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                className={classes.checkbox}
-                checked={filterThisUsers.funcionario}
-                onChange={() =>
-                  setFilterThisUsers({
-                    ...filterThisUsers,
-                    funcionario: !filterThisUsers.funcionario,
-                  })
-                }
-                color="default"
-              />
-            }
-            label="Funcionário"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                className={classes.checkbox}
-                checked={filterThisUsers.cliente}
-                onChange={() =>
-                  setFilterThisUsers({
-                    ...filterThisUsers,
-                    cliente: !filterThisUsers.cliente,
-                  })
-                }
-                color="default"
-              />
-            }
-            label="Cliente"
-          />
-        </div>
+        <div className={classes.searchFilter}></div>
 
         <div className={classes.table}>
           <StickyHeadTable

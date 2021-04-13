@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core'
-import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadraoEscuro } from '../../StylePadrao/stylePadrao';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
 
@@ -8,12 +8,8 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
 
-    width: "90%",
-    padding: "50px 0 66px 50px",
-    paddingTop: "50px",
-    paddingRight: "0px",
-    paddingBottom: "66px",
-    paddingLeft: "50px",
+    width: "100%",
+    padding: "50px 60px 60px 50px",
 
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 30px",
@@ -53,18 +49,18 @@ export const useStyles = makeStyles(theme => ({
 
   form: {
     backgroundColor: "#FFFFFF",
-    borderRadius: "13px 13px 13px 13px",
+    borderRadius: "13px",
   },
 
   containerForm: {
-    padding: "20px 60px 40px",
+    padding: "40px 60px",
 
     display: "flex",
     flexDirection: "column",
 
-    width: "500px",
+    maxWidth: "500px",
     [theme.breakpoints.only("xs")]: {
-      padding: "0 5% 10%",
+      padding: "10% 5%",
       width: "100%",
       alignItems: "center"
     },
@@ -72,7 +68,7 @@ export const useStyles = makeStyles(theme => ({
 
   inputs: {
     width: "100%",
-    marginTop: "20px",
+    marginBottom: "20px",
   },
 
 
@@ -83,10 +79,13 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: azulPadraoClaro,
 
     marginTop: "20px",
-
     padding: "10px",
     paddingLeft: "15px",
     paddingRight: "20px",
+    width: "150px",
+    [theme.breakpoints.only("xs")]: {
+      width: "100%",
+    },
 
     fontFamily: textFontFamilyPadrao,
     fontStyle: "normal",
@@ -97,5 +96,8 @@ export const useStyles = makeStyles(theme => ({
     color: "#FFFFFF",
 
     cursor: "pointer",
+    "&:hover": {
+      backgroundColor: azulPadraoEscuro,
+    },
   },
 }))

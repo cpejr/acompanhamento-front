@@ -12,12 +12,7 @@ import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
 
 function CadastroPJ(props) {
-  const {
-    handleChangeCheck,
-    handleSubmit,
-    formData,
-    handleChangeInput,
-  } = props;
+  const { handleChangeCheck, handleSubmit, formData, handleChangeInput, mode } = props;
 
   const classes = useStyles();
   const buttonRef = useRef(null);
@@ -74,6 +69,7 @@ function CadastroPJ(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setName(e.target.value)}
+              disabled= {mode === 'view'}
               required
             />
 
@@ -86,6 +82,7 @@ function CadastroPJ(props) {
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => setCnpj(e.target.value)}
+              disabled= {mode === 'view'}
               required
             />
 
@@ -99,6 +96,7 @@ function CadastroPJ(props) {
               variant="filled"
               inputProps={{ maxLength: 11 }}
               onChange={(e) => setNumber(e.target.value)}
+              disabled= {mode === 'view'}
               required
             />
           </Grid>
@@ -111,46 +109,53 @@ function CadastroPJ(props) {
               type="email"
               helperText="*Obrigatório"
               variant="filled"
+              disabled= {mode !== 'create'}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <TextField
-              name="emailConfirmar"
-              className={classes.inputForm}
-              value={formData.emailConfirmar}
-              label="Confirmar e-mail"
-              type="email"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => setEmailConfirm(e.target.value)}
-              required
-            />
+            {
+              mode === 'create' &&
+              <>
+                <TextField
+                  name="emailConfirmar"
+                  className={classes.inputForm}
+                  value={formData.emailConfirmar}
+                  label="Confirmar e-mail"
+                  type="email"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  onChange={(e) => setEmailConfirm(e.target.value)}
+                  required
+                />
 
-            <TextField
-              name="senha"
-              autoComplete="off"
-              className={classes.inputForm}
-              value={formData.senha}
-              label="Criar senha"
-              type="password"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => setSenha(e.target.value)}
-              required
-            />
+                <TextField
+                  name="senha"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={formData.senha}
+                  label="Criar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  onChange={(e) => setSenha(e.target.value)}
+                  required
+                />
 
-            <TextField
-              name="senhaConfirmar"
-              autoComplete="off"
-              className={classes.inputForm}
-              value={formData.senhaConfirmar}
-              label="Confirmar senha"
-              type="password"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => setSenhaConfirm(e.target.value)}
-              required
-            />
+                <TextField
+                  name="senhaConfirmar"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={formData.senhaConfirmar}
+                  label="Confirmar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  onChange={(e) => setSenhaConfirm(e.target.value)}
+                  required
+                />
+              </>
+            }
+            
 
             <FormControlLabel
               className={classes.checkbox}
@@ -161,20 +166,21 @@ function CadastroPJ(props) {
                   onChange={handleChangeCheck}
                   color="primary"
                   size="small"
+                  disabled={mode === 'view'}
                 />
               }
               label="Desejo receber emails promocionais"
             />
           </Grid>
           <Grid item xs={12}>
-            <Button
-              type="submit"
-              ref={buttonRef}
-              className={classes.buttonRegister}
-              onClick={handleRegister}
-            >
-              Cadastrar
-            </Button>
+          { mode === 'create' &&
+            <Grid item xs={12}>
+              <Button type="submit"
+                      ref={buttonRef} className={classes.buttonRegister}>
+                Cadastrar
+              </Button>
+            </Grid>
+          }
           </Grid>
         </Grid>
       </form>

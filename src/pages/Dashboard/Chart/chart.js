@@ -24,7 +24,7 @@ export default function Graphic(props) {
             var chartData = activePoints[0]['_chart'].config.data;
             var idx = activePoints[0]['_index'];
             var label = chartData.labels[idx];
-            history.push(`/listagemdashboard/${label}`);
+            history.push(`/listagemequipamento?situation=${label}`);
           }
         }
       }}

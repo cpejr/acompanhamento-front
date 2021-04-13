@@ -88,6 +88,15 @@ export const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "white"
   },
+  userProfile: {
+    position: "relative",
+  },
+  menuProfile: {
+    position: "absolute",
+    right: "0",
+    top: "45px",
+    width: "150px"
+  },
   pagTitle: {
     [theme.breakpoints.up("xs")]: {
       fontSize: "24px",
@@ -95,13 +104,5 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("xs")]: {
       fontSize: "16px",
     }
-  },
-  user: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  userName: {
-    textAlign: "center",
   },
 }));

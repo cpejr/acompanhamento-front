@@ -9,7 +9,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "lima@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
       tipo: "admin"
     },
     {
@@ -21,7 +21,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "britto@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "3",
@@ -32,7 +32,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "marinho@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "4",
@@ -43,7 +43,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "braga@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "5",
@@ -54,7 +54,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "rivello@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "6",
@@ -65,7 +65,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "miranda@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "7",
@@ -76,7 +76,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "brant@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "8",
@@ -87,7 +87,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "marques@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "9",
@@ -98,7 +98,7 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "barros@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "10",
@@ -109,18 +109,20 @@ const CreatePeople = {
       adress: "blablabla",
       cpf: "515151511", //CPF unico
       email: "barros@cpe.com",
-      phone: "98989898",
+      telefone: "98989898",
     },
     {
       id: "11",
-      funcao: "Administrador",
+      funcao: "Cliente",
       lastactive: "05/08/2020",
-      name: "Fulano",
-      birth: "02/02/2000",
+      name: "CPEjr",
+      razaoSocial: 'Consultoria e Projetos Elétricos Junior',
+      inscricaoEstadual: "2263210bvgb55",
       adress: "blablabla",
-      cpf: "515151511", //CPF unico
-      email: "barros@cpe.com",
-      phone: "98989898",
+      cnpj: "515151511-0001/2019", //cnpj unico
+      email: "cpejr@cpejr.com.br",
+      telefone: "98989898",
+      emailPromocional: true,
     },
   ]
 }

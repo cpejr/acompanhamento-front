@@ -12,6 +12,9 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
+import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import TimelineIcon from '@material-ui/icons/Timeline';
 
 const Items = [
   {
@@ -22,7 +25,7 @@ const Items = [
   },
   {
     title: "Perfil",
-    to: "/",
+    to: "/au/me",
     icon: <PersonIcon />,
     adminOnly: true
   },
@@ -33,15 +36,27 @@ const Items = [
     adminOnly: true
   },
   {
+    title: "Cadastro de modelo",
+    to: "/cadastromodelo",
+    icon: <PlaylistAddIcon />,
+    adminOnly: true
+  },
+  {
     title: "Cadastro de equipamento",
     to: "/cadastroequipamento",
-    icon: <PlaylistAddIcon />,
+    icon: < PostAddIcon />,
     adminOnly: true
   },
   {
     title: "Lista de usuários",
     to: "/listagemusuario",
     icon: <PeopleIcon />,
+    adminOnly: true
+  },
+  {
+    title: "Lista de modelo",
+    to: "/listagemmodelo",
+    icon: <PlaylistPlayIcon />,
     adminOnly: true
   },
   {
@@ -57,7 +72,7 @@ const ShortcutsList = ({ isClient, hidden }) => (
     {Items
       .filter(({ adminOnly }) => isClient ? !adminOnly : true)
       .map(({ title, to, icon }) => (
-        <Tooltip title={title} placement="right" disableHoverListener={hidden} arrow>
+        <Tooltip title={title} key={title} placement="right" disableHoverListener={hidden} arrow>
           <ListItem button component={Link} to={to}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText>{title}</ListItemText>

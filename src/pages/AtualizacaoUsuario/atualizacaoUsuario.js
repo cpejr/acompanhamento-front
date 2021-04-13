@@ -9,13 +9,17 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Typography
 } from "@material-ui/core"
 import { useParams } from 'react-router';
 
 import { useStyles } from './atualizacaoUsuarioStyle'
 import users from '../../services/people'
 import { AuthContext } from '../../context/AuthContext';
+import CadastroPF from "../CadastroUsuario/cadastroPF";
+import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
+import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 
 function AtualizacaoUsuario() {
   const { id } = useParams();
@@ -23,16 +27,37 @@ function AtualizacaoUsuario() {
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
+  const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (id === "me") {
       setUserData(user);
+      setUserDataOriginal(user)
     } else {
       const user = users.people.find(user => user.id === id);
       setUserData(user);
+      setUserDataOriginal(user);
     }
   }, [id, user])
+
+  const classes = useStyles({ updating });
+
+  if (!userData) {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.root}>
+          <h1 className={classes.title}>
+            Detalhes de Usuário
+          </h1>
+          <Paper className={classes.containerForm} elevation={0}>
+            <Typography variant="h5">Dados inválidos!</Typography>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
+  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -44,12 +69,16 @@ function AtualizacaoUsuario() {
     else {
       console.log(userData)
       alert("Salvando no banco de dados...")
+      setUserDataOriginal(userData);
       setUpdating(false)
     }
   }
 
   function handleDelete(confirmation) {
-    if (updating) setUpdating(false) //cancelar
+    if (updating) { //cancelar
+      setUpdating(false);
+      setUserData(userDataOriginal);
+    }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
       alert("Excluindo usuário do banco de dados...")
@@ -58,12 +87,6 @@ function AtualizacaoUsuario() {
       setDeleting(true);
     }
   }
-
-  // React.useEffect(() => {
-  //   console.log(userData)
-  // }, [userData])
-
-  const classes = useStyles({ updating });
 
   const AreYouSure = () => (
     <Dialog
@@ -97,101 +120,48 @@ function AtualizacaoUsuario() {
         </h1>
 
         <AreYouSure />
-
         <Paper className={classes.containerForm} elevation={0}>
-          <Grid container >
-            <Grid item xs={12} md={6} className={classes.grid}>
-              <TextField
-                label="Nome"
-                name="name"
-                value={userData.name}
-                className={classes.input}
-                variant="filled"
-                disabled
-                onChange={handleChangeInput}
+          {(userData.funcao === "Cliente" && userData.cpf) || id === "me"  ? //TODO alterar
+            <CadastroPF
+              formData={userData}
+              handleChangeInput={handleChangeInput}
+              mode={ updating? 'edit':'view'}
+            />
+            :
+            (userData.funcao === "Cliente" && userData.cnpj ?
+              
+            <CadastroPJ
+                formData={userData}
+                handleChangeInput={handleChangeInput}
+                mode={ updating? 'edit':'view'}
               />
-              <TextField
-                label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-                name="cpf"
-                value={userData.cpf}
-                className={classes.input}
-                variant="filled"
-                disabled //cpf não deve alterar
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Função"
-                name="funcao"
-                value={userData.funcao}
-                className={classes.input}
-                variant="filled"
-                disabled //quem pode alterar este dado???
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Endereço"
-                name="adress"
-                value={userData.adress}
-                className={classes.input}
-                variant="filled"
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.grid}>
-              <TextField
-                label="Telefone"
-                name="phone"
-                className={classes.input}
-                variant="filled"
-                value={userData.phone}
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Email"
-                name="email"
-                className={classes.input}
-                variant="filled"
-                value={userData.email}
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Senha"
-                name="password"
-                className={classes.input}
-                variant="filled"
-                type="password"
-                defaultValue="123456"
-                disabled //deve ser tão fácil alterar a senha???
-                onChange={handleChangeInput}
-              />
-              <TextField
-                label="Situação"
-                name="situacao" // não existe este dado no banco de dados
-                className={classes.input}
-                variant="filled"
-                defaultValue="Bem de saúde"
-                disabled={!updating}
-                onChange={handleChangeInput}
-              />
-            </Grid>
-
-            <Grid className={classes.centralizar} item xs={12}>
-              <Button variant="contained" color="primary" className={classes.btn}
-                onClick={handleSubmit}
-              >
-                {updating ? "Salvar" : "Editar"}
-              </Button>
+              :
+                (userData.funcao === "Funcionário" || userData.funcao === "Administrador" ?
+                    <CadastroFuncionario
+                      formData={userData}
+                      handleChangeInput={handleChangeInput}
+                      mode={ updating? 'edit':'view'}
+                    />
+                    :
+                    null
+                )
+            )
+          }
+        
+          <Grid className={classes.centralizar} item xs={12}>
+            <Button variant="contained" color="primary" className={classes.btn}
+              onClick={handleSubmit}
+            >
+              {updating ? "Salvar" : "Editar"}
+            </Button>
+      
+            {!(id === "me" && updating === false) &&
               <Button variant="contained" color="secondary" className={classes.btn}
                 onClick={handleDelete}
-                disabled={id === "me" && !updating}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
-            </Grid>
-
+            }
           </Grid>
         </Paper>
 

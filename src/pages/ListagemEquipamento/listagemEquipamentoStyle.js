@@ -6,13 +6,9 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     width: "90%",
-    padding: "50px 0 66px 50px",
-    paddingTop: "50px",
-    paddingRight: "0px",
-    paddingBottom: "66px",
-    paddingLeft: "50px",
+    padding: "50px 0 80px 50px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "30px 5% 80px",
       width: "100%",
     },
   },
@@ -52,6 +48,7 @@ export const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.only("xs")]: {
       marginLeft: "20px",
+      fontSize: "10px",
     },
   },
 
@@ -59,12 +56,31 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "40px",
     position: 'relative',
     borderRadius: "5px",
-    backgroundColor: azulPadraoClaro,
+    // backgroundColor: azulPadraoClaro,
+    border: "2px solid rgba(0,0,0,0.8)",
     marginRight: theme.spacing(2),
     marginLeft: 0,
+    height: "40px",
     width: '486px',
     [theme.breakpoints.down('xs')]: {
       width: "100%",
+    }
+  },
+
+  filter: {
+    justifyContent: "center",
+    borderRadius: "5px",
+    position: 'relative',
+    // backgroundColor: azulPadraoClaro,
+    border: "2px solid rgba(0,0,0,0.8)",
+    marginTop: "40px",
+    fontSize: "20px",
+    height: "40px",
+    width: "120px",
+    outline: "none",
+    // transition: theme.transitions.create(['border-color', 'box-shadow']),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "10px",
     }
   },
 
@@ -94,5 +110,25 @@ export const useStyles = makeStyles(theme => ({
 
   table: {
     marginTop: "30px"
+  },
+
+  searchplusfilter: {
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column"
+    }
+  },
+
+  selectItens: {
+    position: 'relative',
+    height: "100%",
+    width: '100%',
+    fontSize: "12px",
+  },
+
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }))

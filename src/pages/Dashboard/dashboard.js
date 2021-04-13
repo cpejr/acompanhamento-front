@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core';
 
 import { useStyles } from './dashboardStyles';
 import { vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
+
 import Graphic from './Chart';
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';

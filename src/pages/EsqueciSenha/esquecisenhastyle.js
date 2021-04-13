@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core'
-import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
 import { vermelhoPadrao, vermelhoPadraoEscuro, azulPadrao, background, textFontFamilyPadrao } from '../../StylePadrao/stylePadrao';
 
@@ -47,7 +46,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  esquecisenhaLogo: {
+  logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
     position: "absolute",
     width: "180px",
@@ -91,16 +90,17 @@ export const useStyles = makeStyles(theme => ({
   },
 
   errorText: {
-    color: "#ff6961",
+    marginTop: "1px",
+    color: "white",
     fontWeight: "400",
     lineHeight: "0",
+    padding:"3px",
   },
   resubmitText: {
     color: "white",
     fontWeight: "400",
-    marginTop: "30px",
+    marginTop: "20px",
     marginBottom: "20px",
     lineHeight: "0",
   }
-
 }))

@@ -75,6 +75,7 @@ export default function CadastroUsuario() {
                   handleChangeInput={handleChangeInput}
                   formData={formData}
                   type="PJ"
+                  mode={'create'}
                 />
               </div>
             )}
@@ -89,6 +90,7 @@ export default function CadastroUsuario() {
                   handleChangeInput={handleChangeInput}
                   formData={formData}
                   type={"PF"}
+                  mode={'create'}
                 />
               </div>
             )}
@@ -103,6 +105,7 @@ export default function CadastroUsuario() {
                   handleChangeInput={handleChangeInput}
                   formData={formData}
                   type={"funcionario"}
+                  mode={'create'}
                 />
               </div>
             )}

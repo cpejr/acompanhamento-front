@@ -19,7 +19,7 @@ import api from "../../services/api";
 export default function ListagemUsuario() {
   const classes = useStyles();
 
-  const { usersList } = useContext(DataContext);
+  const { clientsList } = useContext(DataContext);
 
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
   const [employees, setEmployees] = useState([]);

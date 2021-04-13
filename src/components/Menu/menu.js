@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import history from '../../history'
 import clsx from 'clsx';
 
 import MenuIcon from '@material-ui/icons/Menu';
@@ -10,15 +11,19 @@ import {
   Drawer,
   AppBar,
   Toolbar,
-  List,
   CssBaseline,
   Typography,
   Divider,
   IconButton,
-  Menu as MenuPerfil,
-  MenuItem,
-  Button
+  Button,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
 } from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import PersonIcon from '@material-ui/icons/Person';
 
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
@@ -30,18 +35,28 @@ export default function Menu() {
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  // MenuProfile
+  const [openMenu, setOpenMenu] = React.useState(false);
+  const handleToggleMenu = () => {
+    setOpenMenu(!openMenu);
+  };
+  const handleClickMenu = (path) => {
+    setOpenMenu(false);
+    history.push(path);
+  }
+
+  // Drawer
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen)
   }
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
+  // Appbar
   const HeaderToolbar = () => {
     return (
       <div className={classes.headerInfos}>
@@ -52,11 +67,31 @@ export default function Menu() {
             </Typography>
           </Link>
         </div>
-        <div className={classes.user}>
-          <Button className={classes.link} component={Link} to="/au/me">
-            {user.name}
+
+        {/* Menu e perfil */}
+        <div className={classes.userProfile}>
+          <Button
+            className={classes.link}
+            onClick={handleToggleMenu}
+          >
+            {user.name.split(' ')[0]}
           </Button>
-        </div>
+          {openMenu && <Paper
+            className={classes.menuProfile}
+          >
+            <List>
+              <ListItem button onClick={() => handleClickMenu('/au/me')}>
+                <ListItemIcon><PersonIcon /></ListItemIcon>
+                <ListItemText>Perfil</ListItemText>
+              </ListItem>
+              <ListItem button onClick={() => handleClickMenu('/login')}>
+                <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                <ListItemText>Sair</ListItemText>
+              </ListItem>
+            </List>
+          </Paper>}
+        </div >
+
       </div >
     );
   }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useStyles } from './tabelaStyle';
 import {
   Paper,
@@ -14,55 +13,41 @@ import {
 } from '@material-ui/core';
 import { FiMoreHorizontal } from "react-icons/fi"
 
+import LinkMenu from '../../../components/LinkMenu'
+
 export default function StickyHeadTable(props) {
   const classes = useStyles();
   const { ordem, setOrdem } = props;
+  const [openMenu, setOpenMenu] = React.useState("");
+
+  const headerItems = [
+    { title: "Nº série", ordemBy: "id_equipment" },
+    // { title: "Modelo", ordemBy: "equipment_model" },
+    { title: "CPF cliente", ordemBy: "cpf_client" },
+    { title: "Última visita", ordemBy: "updatedAt" },
+  ]
 
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={ordem.by === "id_equipment" ? true : false}
-                  direction={ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "id_equipment" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "id_equipment" })
-                  }}
-                >
-                  Nº série
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "client" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "client" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "client" })
-                  }}
-                >
-                  Cliente
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className={classes.tableCell}>
-                <TableSortLabel
-                  active={props.ordem.by === "last_collect_date" ? true : false}
-                  direction={props.ordem.alfabetica ? "desc" : "asc"}
-                  onClick={() => {
-                    ordem.by === "last_collect_date" ?
-                      setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
-                      setOrdem({ ...ordem, by: "last_collect_date" })
-                  }}
-                >
-                  Última visita
-                </TableSortLabel>
-              </TableCell>
+              {headerItems.map(item => (
+                <TableCell className={classes.tableCell} key={item.title}>
+                  <TableSortLabel
+                    active={ordem.by === item.ordemBy ? true : false}
+                    direction={ordem.alfabetica ? "desc" : "asc"}
+                    onClick={() => {
+                      ordem.by === item.ordemBy ?
+                        setOrdem({ ...ordem, alfabetica: !ordem.alfabetica }) :
+                        setOrdem({ ...ordem, by: item.ordemBy })
+                    }}
+                  >
+                    {item.title}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -70,11 +55,12 @@ export default function StickyHeadTable(props) {
               .map(equipment => (
                 <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
                   <TableCell>{equipment.id_equipment}</TableCell>
-                  <TableCell>{equipment.client}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{equipment.last_collect_date}
-                    <Link to='/'>
+                  {/* <TableCell>{equipment.equipment_model}</TableCell> */}
+                  <TableCell>{equipment.cpf_client}</TableCell>
+                  <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
+                    <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
-                    </Link>
+                    </LinkMenu>
                   </TableCell>
                 </TableRow>
               )

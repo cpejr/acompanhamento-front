@@ -17,7 +17,8 @@ function CadastroFuncionario(props) {
     handleChangeCheck, 
     handleChangeInput, 
     handleSubmit, 
-    mode 
+    mode,
+    type 
   } = props;
 
   const classes = useStyles();
@@ -45,9 +46,11 @@ function CadastroFuncionario(props) {
     setZipcode(formData.zipcode);
   }, [formData])
 
-  async function handleRegister() {
+  async function handleRegister(e) {
+    e.preventDefault();
+
     const data = {
-      type: props.type,
+      type: type,
       name: name,
       birthdate: birthdate,
       cpf: cpf,
@@ -108,6 +111,18 @@ function CadastroFuncionario(props) {
       case 'email':
         setEmail(event.target.value);
         break;
+
+      case 'emailConfirm':
+      setEmailConfirm(event.target.value);
+      break;
+
+    case 'password':
+      setSenha(event.target.value);
+      break;
+
+    case 'passwordConfirm':
+      setSenhaConfirm(event.target.value);
+      break;
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
@@ -115,7 +130,7 @@ function CadastroFuncionario(props) {
 
   return (
     <div>
-      <form onSubmit={() => handleRegister()}>
+      <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
           <Grid item xs={12} md={6}>
             <TextField
@@ -225,38 +240,38 @@ function CadastroFuncionario(props) {
                   <TextField
                     name="emailConfirmar"
                     className={classes.inputForm}
-                    value={formData.emailConfirmar}
+                    value={emailConfirm}
                     label="Confirmar e-mail"
                     type="email"
                     helperText="*Obrigatório"
                     variant="filled"
-                    onChange={(e) => setEmailConfirm(e.target.value)}
+                    onChange={(e) => handleInput(e, 'emailConfirm')}
                     required
                   />
 
                   <TextField
-                    name="senha"
+                    name="password"
                     autoComplete="off"
                     className={classes.inputForm}
-                    value={formData.senha}
+                    value={senha}
                     label="Criar senha"
                     type="password"
                     helperText="*Obrigatório"
                     variant="filled"
-                    onChange={(e) => setSenha(e.target.value)}
+                    onChange={(e) => handleInput(e, 'password')}
                     required
                   />
 
                   <TextField
-                    name="senhaConfirmar"
+                    name="passowordConfirm"
                     autoComplete="off"
                     className={classes.inputForm}
-                    value={formData.senhaConfirmar}
+                    value={senhaConfirm}
                     label="Confirmar senha"
                     type="password"
                     helperText="*Obrigatório"
                     variant="filled"
-                    onChange={(e) => setSenhaConfirm(e.target.value)}
+                    onChange={(e) => handleInput(e, 'passwordConfirm')}
                     required
                   />
                 </>

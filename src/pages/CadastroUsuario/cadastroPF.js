@@ -12,12 +12,14 @@ import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
 
 function CadastroPF(props) {
+ 
   const { 
     formData, 
     handleChangeCheck, 
     handleChangeInput, 
     handleSubmit, 
-    mode 
+    mode,
+    type 
   } = props;
 
   const classes = useStyles();
@@ -45,6 +47,7 @@ function CadastroPF(props) {
   }, [formData])
 
   function handleInput(event, type) {
+    
     switch (type) {
       case 'name':
         setName(event.target.value);
@@ -73,14 +76,28 @@ function CadastroPF(props) {
       case 'email':
         setEmail(event.target.value);
         break;
+
+      case 'emailConfirm':
+        setEmailConfirm(event.target.value);
+        break;
+
+      case 'password':
+        setSenha(event.target.value);
+        break;
+
+      case 'passwordConfirm':
+        setSenhaConfirm(event.target.value);
+        break;
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
   }
 
-  async function handleRegister() {
+  async function handleRegister(e) {
+    e.preventDefault();
+
     const data = {
-      type: props.type,
+      type: type,
       name: name,
       birthdate: birthdate,
       cpf: cpf,
@@ -104,8 +121,8 @@ function CadastroPF(props) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
       try {
-        console.log("OPA", data);
         const response = await api.post("/user", data);
+        console.log(response);
         alert(`Você foi cadastrado com sucesso.`);
       } catch (err) {
         console.log("Teve um erro no cadastro, tente novamente.");
@@ -115,7 +132,7 @@ function CadastroPF(props) {
 
   return (
     <div>
-      <form onSubmit={() => handleRegister()}>
+      <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
           <Grid item xs={12} md={6}>
             <TextField
@@ -205,7 +222,7 @@ function CadastroPF(props) {
             <TextField
               name="email"
               className={classes.inputForm}
-              defaultValue={email}
+              value={email}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório"
@@ -219,40 +236,40 @@ function CadastroPF(props) {
               mode === 'create' && 
               <>
                 <TextField
-                  name="emailConfirmar"
+                  name="emailConfirm"
                   className={classes.inputForm}
-                  defaultValue={formData.email}
+                  value={emailConfirm}
                   label="Confirmar e-mail"
                   type="email"
                   helperText="*Obrigatório"
                   variant="filled"
-                  onChange={(e) => setEmailConfirm(e.target.value)}
+                  onChange={(e) => handleInput(e, 'emailConfirm')}
                   required
                 />
 
                 <TextField
-                  name="senha"
+                  name="password"
                   autoComplete="off"
                   className={classes.inputForm}
-                  defaultValue={formData.password}
+                  value={senha}
                   label="Criar senha"
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
-                  onChange={(e) => setSenha(e.target.value)}
+                  onChange={(e) => handleInput(e, 'password')}
                   required
                 />
 
                 <TextField
-                  name="senhaConfirmar"
+                  name="passwordConfirm"
                   autoComplete="off"
                   className={classes.inputForm}
-                  defaultValue={formData.password}
+                  value={senhaConfirm}
                   label="Confirmar senha"
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
-                  onChange={(e) => setSenhaConfirm(e.target.value)}
+                  onChange={(e) => handleInput(e, 'passwordConfirm')}
                   required
                 />
               </>

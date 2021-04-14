@@ -104,7 +104,7 @@ export default function CadastroUsuario() {
                   handleChangeCheck={handleChangeCheck}
                   handleChangeInput={handleChangeInput}
                   formData={formData}
-                  type={"funcionario"}
+                  type={"Funcionario"}
                   mode={'create'}
                 />
               </div>

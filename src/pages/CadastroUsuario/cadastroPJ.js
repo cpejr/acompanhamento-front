@@ -17,7 +17,8 @@ function CadastroPJ(props) {
     handleSubmit, 
     formData, 
     handleChangeInput,
-    mode 
+    mode,
+    type 
   } = props;
 
   const classes = useStyles();
@@ -67,14 +68,28 @@ function CadastroPJ(props) {
       case 'email':
         setEmail(event.target.value);
         break;
+
+      case 'emailConfirm':
+        setEmailConfirm(event.target.value);
+        break;
+
+      case 'password':
+        setSenha(event.target.value);
+        break;
+
+      case 'passwordConfirm':
+        setSenhaConfirm(event.target.value);
+        break;
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
   }
 
-  async function handleRegister() {
+  async function handleRegister(e) {
+    e.preventDefault();
+
     const data = {
-      type: props.type,
+      type: type,
       name: name,
       cnpj: cnpj,
       email: email,
@@ -82,6 +97,7 @@ function CadastroPJ(props) {
       password: senha,
       address: address,
       zipcode: zipcode,
+      birthdate: '00/00/0000', // gambiarra
     };
     if (
       data.type !== "" &&
@@ -101,14 +117,15 @@ function CadastroPJ(props) {
         const response = await api.post("/user", data);
         alert(`Você foi cadastrado com sucesso.`);
       } catch (err) {
-        alert.error("Teve um erro no cadastro, tente novamente.");
+        alert("Teve um erro no cadastro, tente novamente.");
+        console.log(err)
       }
     } else alert("Todos os campos devem estar preenchidos");
   }
 
   return (
     <div>
-      <form onSubmit={() => handleRegister()}>
+      <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
           <Grid item xs={12} md={6}>
             <TextField

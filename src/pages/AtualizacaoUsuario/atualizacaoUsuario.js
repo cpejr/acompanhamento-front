@@ -10,7 +10,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Typography
+  Typography,
+  useRadioGroup
 } from "@material-ui/core"
 import { useParams } from 'react-router';
 
@@ -20,8 +21,12 @@ import { AuthContext } from '../../context/AuthContext';
 import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
+import api from "../../services/api";
+import { RssFeed } from '@material-ui/icons';
+
 
 function AtualizacaoUsuario() {
+
   const { id } = useParams();
   const { user } = useContext(AuthContext);
 
@@ -30,33 +35,32 @@ function AtualizacaoUsuario() {
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    if (id === "me") {
-      setUserData(user);
-      setUserDataOriginal(user)
-    } else {
-      const user = users.people.find(user => user.id === id);
-      setUserData(user);
-      setUserDataOriginal(user);
-    }
-  }, [id, user])
-
   const classes = useStyles({ updating });
 
-  if (!userData) {
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <h1 className={classes.title}>
-            Detalhes de Usuário
-          </h1>
-          <Paper className={classes.containerForm} elevation={0}>
-            <Typography variant="h5">Dados inválidos!</Typography>
-          </Paper>
-        </div>
-      </React.Fragment>
-    );
+  // useEffect(() => {
+  //   if (id === "me") {
+  //     setUserData(user);
+  //     setUserDataOriginal(user)
+  //   } else {
+  //     const user = users.people.find(user => user.id === id);
+  //     setUserData(user);
+  //     setUserDataOriginal(user);
+  //   }
+  // }, [id, user])
+
+  // pega os dados do usuário com o id
+  useEffect(() => getUserData(), [id]);
+
+  async function getUserData() {
+    try {
+      const response = await api.get(`/users/${id}`);
+
+      setUserData(response.data.user);
+      setUserDataOriginal(response.data.user);
+    } catch (error) {
+      console.warn(error);
+      alert("Erro ao buscar funcionários");
+    }
   }
 
   function handleChangeInput(event) {
@@ -64,12 +68,25 @@ function AtualizacaoUsuario() {
     setUserData({ ...userData, [name]: value });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!updating) setUpdating(true)
     else {
-      console.log(userData)
-      alert("Salvando no banco de dados...")
-      setUserDataOriginal(userData);
+      try {
+        const updatedFields = {
+          name: userData.name,
+          birthdate: userData.birthdate,
+          phonenumber: userData.phonenumber,
+          address: userData.address,
+          zipcode: userData.zipcode,
+        }
+
+        const response = await api.put(`/users/${id}`, updatedFields);
+        console.log(response)
+      } catch (error) {
+        console.log(error);
+        alert("Erro ao atualizar funcionários");
+      }
+      
       setUpdating(false)
     }
   }
@@ -86,6 +103,24 @@ function AtualizacaoUsuario() {
     else { // confirmar exclusão
       setDeleting(true);
     }
+  }
+
+  // ---------------------------- // 
+
+  if (!userData) {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.root}>
+          <h1 className={classes.title}>
+            Detalhes de Usuário
+          </h1>
+          <Paper className={classes.containerForm} elevation={0}>
+            <Typography variant="h5">Dados inválidos!</Typography>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
   }
 
   const AreYouSure = () => (
@@ -120,32 +155,33 @@ function AtualizacaoUsuario() {
         </h1>
 
         <AreYouSure />
+
         <Paper className={classes.containerForm} elevation={0}>
-          {(userData.funcao === "Cliente" && userData.cpf) || id === "me"  ? //TODO alterar
-            <CadastroPF
-              formData={userData}
-              handleChangeInput={handleChangeInput}
-              mode={ updating? 'edit':'view'}
-            />
-            :
-            (userData.funcao === "Cliente" && userData.cnpj ?
-              
-            <CadastroPJ
+          { userData.type === 'PF' || id === "me"  ? 
+              <CadastroPF
                 formData={userData}
                 handleChangeInput={handleChangeInput}
-                mode={ updating? 'edit':'view'}
+                mode={ updating ? 'edit' : 'view'}
               />
               :
-                (userData.funcao === "Funcionário" || userData.funcao === "Administrador" ?
-                    <CadastroFuncionario
-                      formData={userData}
-                      handleChangeInput={handleChangeInput}
-                      mode={ updating? 'edit':'view'}
-                    />
-                    :
-                    null
-                )
-            )
+              (userData.funcao === "Cliente" && userData.cnpj ?
+                
+              <CadastroPJ
+                  formData={userData}
+                  handleChangeInput={handleChangeInput}
+                  mode={ updating? 'edit' : 'view'}
+                />
+                :
+                  (userData.funcao === "Funcionário" || userData.funcao === "Administrador" ?
+                      <CadastroFuncionario
+                        formData={userData}
+                        handleChangeInput={handleChangeInput}
+                        mode={ updating? 'edit':'view'}
+                      />
+                      :
+                      null
+                  )
+              )
           }
         
           <Grid className={classes.centralizar} item xs={12}>

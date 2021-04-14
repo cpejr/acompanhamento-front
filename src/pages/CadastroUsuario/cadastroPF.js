@@ -12,7 +12,13 @@ import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
 
 function CadastroPF(props) {
-  const { formData, handleChangeCheck, handleChangeInput, handleSubmit, mode } = props;
+  const { 
+    formData, 
+    handleChangeCheck, 
+    handleChangeInput, 
+    handleSubmit, 
+    mode 
+  } = props;
 
   const classes = useStyles();
   const buttonRef = useRef(null);
@@ -24,6 +30,43 @@ function CadastroPF(props) {
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
+  const [address, setAddress] = useState('');
+  const [zipCode, setZipCode] = useState('');
+
+  function handleInput(event, type) {
+    
+    switch (type) {
+      case 'name':
+        setName(event.target.value);
+        break;
+      
+      case 'cpf':
+        setCpf(event.target.value);
+        break;
+
+      case 'birthdate':
+        setBirth(event.target.value);
+        break;
+
+      case 'phonenumber':
+        setNumber(event.target.value);
+        break;
+
+      case 'address':
+        setAddress(event.target.value);
+        break;
+
+      case 'zipCode':
+        setZipCode(event.target.value);
+        break;
+
+      case 'email':
+        setEmail(event.target.value);
+        break;
+    }
+
+    handleChangeInput(event); // retorna para a AtualizaUsuario
+  }
 
   async function handleRegister() {
     const data = {
@@ -34,14 +77,19 @@ function CadastroPF(props) {
       email: email,
       number: number,
       password: senha,
+      address: address,
+      zipCode: zipCode
     };
+
     if (
       data.type !== "" &&
       data.name !== "" &&
       data.cpf !== "" &&
       data.email !== "" &&
       data.number !== "" &&
-      data.password !== ""
+      data.password !== "" &&
+      data.address !== "" &&
+      data.zipCode !== "" 
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -61,74 +109,100 @@ function CadastroPF(props) {
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
           <Grid item xs={12} md={6}>
             <TextField
-              name="nome"
+              name="name"
               className={classes.inputForm}
-              value={formData.nome}
+              // value={name}
+              defaultValue={formData.name}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => handleInput(e, 'name')}
               required
               disabled= {mode === 'view'}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
               name="cpf"
               className={classes.inputForm}
-              value={formData.cpf}
+              defaultValue={formData.cpf}
               label="CPF"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
               inputProps={{ maxLength: 11 }}
-              onChange={(e) => setCpf(e.target.value)}
+              onChange={(e) => handleInput(e, 'cpf')}
               required
-              disabled= {!(mode === 'create')}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              disabled= {mode !== 'create'}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
-              name="nascimento"
+              name="birthdate"
               className={classes.inputForm}
               label="Data de Nascimento"
-              defaultValue="2017-05-24"
-              value={formData.nascimento}
+              defaultValue={formData.birthdate}
               helperText="(Opcional)"
               variant="filled"
-              onChange={(e) => setBirth(e.target.value)}
+              onChange={(e) => handleInput(e, 'birthdate')}
               type="text"
               disabled= {mode === 'view'}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
-              name="telefone"
+              name="phonenumber"
               className={classes.inputForm}
-              value={formData.telefone}
+              defaultValue={formData.phonenumber}
               label="Número de telefone"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
               inputProps={{ maxLength: 11 }}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(e) => handleInput(e, 'phonenumber')}
               required
               disabled= {mode === 'view'}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
+              name="address"
+              className={classes.inputForm}
+              defaultValue={formData.address}
+              label="Endereço"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, 'address')}
+              required
+            />
+
+            <TextField
+              name="zipcode"
+              className={classes.inputForm}
+              defaultValue={formData.zipcode}
+              label="CEP"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, 'zipCode')}
+              required
+            />
+
+            <TextField
               name="email"
               className={classes.inputForm}
-              value={formData.email}
+              defaultValue={formData.email}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório"
               variant="filled"
-              disabled= {mode === 'create'}
-              onChange={(e) => setEmail(e.target.value)}
+              disabled= {mode !== 'create'}
+              onChange={(e) => handleInput(e, 'email')}
               required
             />
 
@@ -138,7 +212,7 @@ function CadastroPF(props) {
                 <TextField
                   name="emailConfirmar"
                   className={classes.inputForm}
-                  value={formData.emailConfirmar}
+                  defaultValue={formData.email}
                   label="Confirmar e-mail"
                   type="email"
                   helperText="*Obrigatório"
@@ -151,7 +225,7 @@ function CadastroPF(props) {
                   name="senha"
                   autoComplete="off"
                   className={classes.inputForm}
-                  value={formData.senha}
+                  defaultValue={formData.password}
                   label="Criar senha"
                   type="password"
                   helperText="*Obrigatório"
@@ -164,7 +238,7 @@ function CadastroPF(props) {
                   name="senhaConfirmar"
                   autoComplete="off"
                   className={classes.inputForm}
-                  value={formData.senhaConfirmar}
+                  defaultValue={formData.password}
                   label="Confirmar senha"
                   type="password"
                   helperText="*Obrigatório"
@@ -185,16 +259,21 @@ function CadastroPF(props) {
                   color="primary"
                   size="small"
                   disabled={mode === 'view'}
-                  inputRef={emailPromocionalRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  // onKeyPress={e => nextInput(e, relacionamentosRef)}
                 />
               }
               label="Desejo receber emails promocionais" />
           </Grid>
-            {mode === 'create' &&
-              <Grid item xs={12}>
-                <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
-              </Grid>
+            { mode === 'create' &&
+                <Grid item xs={12}>
+                  <Button 
+                    type="submit" 
+                    ref={buttonRef} 
+                    className={classes.buttonRegister}
+                  >
+                    Cadastrar
+                  </Button>
+                </Grid>
             }
         </Grid>
       </form>

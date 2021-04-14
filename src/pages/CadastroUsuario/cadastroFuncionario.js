@@ -74,7 +74,7 @@ function CadastroFuncionario(props) {
               onChange={(e) => setName(e.target.value)}
               required
               disabled= {mode === 'view'}
-              inputRef={nomeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // inputRef={nomeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
@@ -89,7 +89,7 @@ function CadastroFuncionario(props) {
               onChange={(e) => setCpf(e.target.value)}
               required
               disabled= {!(mode === 'create')}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
@@ -103,7 +103,7 @@ function CadastroFuncionario(props) {
               onChange={(e) => setBirth(e.target.value)}
               type="date"
               disabled= {mode === 'view'}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
@@ -117,7 +117,7 @@ function CadastroFuncionario(props) {
               inputProps={{ maxLength: 11 }}
               onChange={(e) => setNumber(e.target.value)}
               required
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
           </Grid>
@@ -192,7 +192,7 @@ function CadastroFuncionario(props) {
               onChange={(e) => setSituacao(e.target.value)}
               disabled= {mode === 'view'}
               required
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <FormControlLabel
@@ -205,8 +205,7 @@ function CadastroFuncionario(props) {
                   color="primary"
                   size="small"
                   disabled={mode === 'view'}
-                  inputRef={emailPromocionalRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  // onKeyPress={e => nextInput(e, relacionamentosRef)}
                 />
               }
               label="Desejo receber emails promocionais"

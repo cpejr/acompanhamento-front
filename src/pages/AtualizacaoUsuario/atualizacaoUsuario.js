@@ -11,9 +11,11 @@ import {
   DialogContentText,
   DialogActions,
   Typography,
-  useRadioGroup
+  Snackbar,
+  CircularProgress
 } from "@material-ui/core"
 import { useParams } from 'react-router';
+import MuiAlert from "@material-ui/lab/Alert";
 
 import { useStyles } from './atualizacaoUsuarioStyle'
 import users from '../../services/people'
@@ -34,6 +36,12 @@ function AtualizacaoUsuario() {
   const [userData, setUserData] = useState({});
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
+
+  // variaveis do snackbar
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState('');
+  const [typeSnackbar, setTypeSnackbar] = useState('info');
+  const [loading, setLoading] = useState(false);
 
   const classes = useStyles({ updating });
 
@@ -69,8 +77,11 @@ function AtualizacaoUsuario() {
   }
 
   async function handleSubmit() {
+
     if (!updating) setUpdating(true)
     else {
+      setLoading(true);
+      
       try {
         const updatedFields = {
           name: userData.name,
@@ -82,12 +93,20 @@ function AtualizacaoUsuario() {
 
         const response = await api.put(`/users/${id}`, updatedFields);
         console.log(response)
+
+        setOpenSnackbar(true);
+        setMessageSnackbar('Usuário atualizado com sucesso!');
+        setTypeSnackbar('success');
       } catch (error) {
         console.log(error);
-        alert("Erro ao atualizar funcionários");
+
+        setOpenSnackbar(true);
+        setMessageSnackbar('Falha ao atualizar usuário.');
+        setTypeSnackbar('error');
       }
       
-      setUpdating(false)
+      setUpdating(false);
+      setLoading(false);
     }
   }
 
@@ -188,7 +207,12 @@ function AtualizacaoUsuario() {
             <Button variant="contained" color="primary" className={classes.btn}
               onClick={handleSubmit}
             >
-              {updating ? "Salvar" : "Editar"}
+              {
+                updating ? "Salvar" : 
+                  loading ? (
+                    <CircularProgress color="secondary" />
+                  ) : "Editar"              
+              }
             </Button>
       
             {!(id === "me" && updating === false) &&
@@ -202,6 +226,17 @@ function AtualizacaoUsuario() {
         </Paper>
 
       </div>
+
+      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={() => setOpenSnackbar(false)}>
+        <MuiAlert
+          onClose={() => setOpenSnackbar(false)}
+          elevation={6}
+          variant="filled"
+          severity={typeSnackbar}
+        >
+          {messageSnackbar}
+        </MuiAlert>
+      </Snackbar>
     </React.Fragment >
   );
 }

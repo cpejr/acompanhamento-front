@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   TextField,
   FormControlLabel,
@@ -24,17 +24,27 @@ function CadastroPF(props) {
   const buttonRef = useRef(null);
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
-  const [birth, setBirth] = useState("");
+  const [birthdate, setBirthdate] = useState("");
   const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
   const [address, setAddress] = useState('');
   const [zipCode, setZipCode] = useState('');
 
+  // seta os valores quando os dados chegarem
+  useEffect(() => {
+    setName(formData.name);
+    setCpf(formData.cpf);
+    setBirthdate(formData.birthdate);
+    setEmail(formData.email);
+    setPhonenumber(formData.phonenumber);
+    setAddress(formData.address);
+    setZipCode(formData.zipcode);
+  }, [formData])
+
   function handleInput(event, type) {
-    
     switch (type) {
       case 'name':
         setName(event.target.value);
@@ -45,11 +55,11 @@ function CadastroPF(props) {
         break;
 
       case 'birthdate':
-        setBirth(event.target.value);
+        setBirthdate(event.target.value);
         break;
 
       case 'phonenumber':
-        setNumber(event.target.value);
+        setPhonenumber(event.target.value);
         break;
 
       case 'address':
@@ -72,10 +82,10 @@ function CadastroPF(props) {
     const data = {
       type: props.type,
       name: name,
-      birthdate: birth,
+      birthdate: birthdate,
       cpf: cpf,
       email: email,
-      number: number,
+      phonenumber: phonenumber,
       password: senha,
       address: address,
       zipCode: zipCode
@@ -86,7 +96,7 @@ function CadastroPF(props) {
       data.name !== "" &&
       data.cpf !== "" &&
       data.email !== "" &&
-      data.number !== "" &&
+      data.phonenumber !== "" &&
       data.password !== "" &&
       data.address !== "" &&
       data.zipCode !== "" 
@@ -111,8 +121,7 @@ function CadastroPF(props) {
             <TextField
               name="name"
               className={classes.inputForm}
-              // value={name}
-              defaultValue={formData.name}
+              value={name}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
@@ -126,7 +135,7 @@ function CadastroPF(props) {
             <TextField
               name="cpf"
               className={classes.inputForm}
-              defaultValue={formData.cpf}
+              value={cpf}
               label="CPF"
               type="text"
               helperText="*Obrigatório"
@@ -142,7 +151,7 @@ function CadastroPF(props) {
               name="birthdate"
               className={classes.inputForm}
               label="Data de Nascimento"
-              defaultValue={formData.birthdate}
+              value={birthdate}
               helperText="(Opcional)"
               variant="filled"
               onChange={(e) => handleInput(e, 'birthdate')}
@@ -154,7 +163,7 @@ function CadastroPF(props) {
             <TextField
               name="phonenumber"
               className={classes.inputForm}
-              defaultValue={formData.phonenumber}
+              value={phonenumber}
               label="Número de telefone"
               type="text"
               helperText="*Obrigatório"
@@ -170,7 +179,7 @@ function CadastroPF(props) {
             <TextField
               name="address"
               className={classes.inputForm}
-              defaultValue={formData.address}
+              value={address}
               label="Endereço"
               type="text"
               helperText="*Obrigatório"
@@ -183,7 +192,7 @@ function CadastroPF(props) {
             <TextField
               name="zipcode"
               className={classes.inputForm}
-              defaultValue={formData.zipcode}
+              value={zipCode}
               label="CEP"
               type="text"
               helperText="*Obrigatório"
@@ -196,7 +205,7 @@ function CadastroPF(props) {
             <TextField
               name="email"
               className={classes.inputForm}
-              defaultValue={formData.email}
+              defaultValue={email}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório"

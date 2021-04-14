@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   TextField,
   FormControlLabel,
@@ -12,18 +12,65 @@ import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
 
 function CadastroPJ(props) {
-  const { handleChangeCheck, handleSubmit, formData, handleChangeInput, mode } = props;
+  const { 
+    handleChangeCheck, 
+    handleSubmit, 
+    formData, 
+    handleChangeInput,
+    mode 
+  } = props;
 
   const classes = useStyles();
   const buttonRef = useRef(null);
   const [name, setName] = useState("");
   const [cnpj, setCnpj] = useState("");
-
   const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  const [address, setAddress] = useState('');
+  const [zipcode, setZipcode] = useState('');
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
+
+  // seta os valores quando os dados chegarem
+  useEffect(() => {
+    setName(formData.name);
+    setCnpj(formData.cnpj);
+    setEmail(formData.email);
+    setPhonenumber(formData.phonenumber);
+    setAddress(formData.address);
+    setZipcode(formData.zipcode);
+  }, [formData]);
+
+  function handleInput(event, type) {
+    switch (type) {
+      case 'name':
+        setName(event.target.value);
+        break;
+      
+      case 'cnpj':
+        setCnpj(event.target.value);
+        break;
+
+      case 'phonenumber':
+        setPhonenumber(event.target.value);
+        break;
+
+      case 'address':
+        setAddress(event.target.value);
+        break;
+
+      case 'zipcode':
+        setZipcode(event.target.value);
+        break;
+
+      case 'email':
+        setEmail(event.target.value);
+        break;
+    }
+
+    handleChangeInput(event); // retorna para a AtualizaUsuario
+  }
 
   async function handleRegister() {
     const data = {
@@ -31,16 +78,20 @@ function CadastroPJ(props) {
       name: name,
       cnpj: cnpj,
       email: email,
-      number: number,
+      phonenumber: phonenumber,
       password: senha,
+      address: address,
+      zipcode: zipcode,
     };
     if (
       data.type !== "" &&
       data.name !== "" &&
       data.cnpj !== "" &&
       data.email !== "" &&
-      data.number !== "" &&
-      data.password !== ""
+      data.phonenumber !== "" &&
+      data.password !== "" &&
+      data.address !== "" &&
+      data.zipcode !== ""
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -61,14 +112,14 @@ function CadastroPJ(props) {
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
           <Grid item xs={12} md={6}>
             <TextField
-              name="nome"
+              name="name"
               className={classes.inputForm}
-              value={formData.nome}
+              value={name}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => handleInput(e, 'name')}
               disabled= {mode === 'view'}
               required
             />
@@ -76,31 +127,58 @@ function CadastroPJ(props) {
             <TextField
               name="cnpj"
               className={classes.inputForm}
-              value={formData.cnpj}
+              value={cnpj}
               label="CNPJ"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              onChange={(e) => setCnpj(e.target.value)}
-              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, 'cnpj')}
+              disabled= {mode !== 'create'}
               required
             />
 
             <TextField
-              name="telefone"
+              name="phonenumber"
               className={classes.inputForm}
-              value={formData.telefone}
+              value={phonenumber}
               label="Número de telefone"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
               inputProps={{ maxLength: 11 }}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(e) => handleInput(e, 'phonenumber')}
               disabled= {mode === 'view'}
               required
             />
           </Grid>
           <Grid item xs={12} md={6}>
+            <TextField
+              name="address"
+              className={classes.inputForm}
+              value={address}
+              label="Endereço"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              onChange={(e) => handleInput(e, 'address')}
+              disabled= {mode === 'view'}
+              required
+            />
+
+            <TextField
+              name="zipcode"
+              className={classes.inputForm}
+              value={zipcode}
+              label="CEP"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              inputProps={{ maxLength: 8 }}
+              onChange={(e) => handleInput(e, 'zipcode')}
+              disabled= {mode === 'view'}
+              required
+            />
+
             <TextField
               name="email"
               className={classes.inputForm}
@@ -110,7 +188,7 @@ function CadastroPJ(props) {
               helperText="*Obrigatório"
               variant="filled"
               disabled= {mode !== 'create'}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleInput(e, 'email')}
               required
             />
             {

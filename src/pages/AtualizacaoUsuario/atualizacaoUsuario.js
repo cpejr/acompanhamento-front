@@ -97,6 +97,9 @@ function AtualizacaoUsuario() {
         setOpenSnackbar(true);
         setMessageSnackbar('Usuário atualizado com sucesso!');
         setTypeSnackbar('success');
+
+        getUserData(); // atualiza com novos dados
+        setUpdating(false);
       } catch (error) {
         console.log(error);
 
@@ -183,7 +186,7 @@ function AtualizacaoUsuario() {
                 mode={ updating ? 'edit' : 'view'}
               />
               :
-              (userData.funcao === "Cliente" && userData.cnpj ?
+              (userData.type === 'PJ' ?
                 
               <CadastroPJ
                   formData={userData}

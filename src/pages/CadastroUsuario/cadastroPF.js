@@ -31,7 +31,7 @@ function CadastroPF(props) {
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
   const [address, setAddress] = useState('');
-  const [zipCode, setZipCode] = useState('');
+  const [zipcode, setZipcode] = useState('');
 
   // seta os valores quando os dados chegarem
   useEffect(() => {
@@ -41,7 +41,7 @@ function CadastroPF(props) {
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
     setAddress(formData.address);
-    setZipCode(formData.zipcode);
+    setZipcode(formData.zipcode);
   }, [formData])
 
   function handleInput(event, type) {
@@ -66,8 +66,8 @@ function CadastroPF(props) {
         setAddress(event.target.value);
         break;
 
-      case 'zipCode':
-        setZipCode(event.target.value);
+      case 'zipcode':
+        setZipcode(event.target.value);
         break;
 
       case 'email':
@@ -88,7 +88,7 @@ function CadastroPF(props) {
       phonenumber: phonenumber,
       password: senha,
       address: address,
-      zipCode: zipCode
+      zipcode: zipcode
     };
 
     if (
@@ -99,7 +99,7 @@ function CadastroPF(props) {
       data.phonenumber !== "" &&
       data.password !== "" &&
       data.address !== "" &&
-      data.zipCode !== "" 
+      data.zipcode !== "" 
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -192,13 +192,13 @@ function CadastroPF(props) {
             <TextField
               name="zipcode"
               className={classes.inputForm}
-              value={zipCode}
+              value={zipcode}
               label="CEP"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
               disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'zipCode')}
+              onChange={(e) => handleInput(e, 'zipcode')}
               required
             />
 

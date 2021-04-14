@@ -194,12 +194,12 @@ function AtualizacaoUsuario() {
                   mode={ updating? 'edit' : 'view'}
                 />
                 :
-                  (userData.funcao === "Funcionário" || userData.funcao === "Administrador" ?
+                  (userData.type === "Funcionario" || userData.type === "Administrador" ?
                       <CadastroFuncionario
                         formData={userData}
                         handleChangeInput={handleChangeInput}
-                        mode={ updating? 'edit':'view'}
-                      />
+                        mode={ updating? 'edit' : 'view'}
+                      /> 
                       :
                       null
                   )

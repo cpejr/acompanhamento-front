@@ -117,7 +117,7 @@ function CadastroPF(props) {
       data.password !== "" &&
       data.address !== "" &&
       data.zipcode !== "" 
-    ) {
+    ) { 
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
       try {

@@ -57,8 +57,24 @@ function AtualizacaoUsuario() {
   // }, [id, user])
 
   // pega os dados do usuário com o id
-  useEffect(() => getUserData(), [id]);
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await api.get(`/users/${id}`);
+  
+        setUserData(response.data.user);
+        setUserDataOriginal(response.data.user);
+      } catch (error) {
+        console.warn(error);
+        alert("Erro ao buscar funcionários");
+      }
+    };
 
+    getUserData();
+  }, [id]);
+
+  // pega os dados do usuário por ID
+  // NÃO USAR dentro de useEffect, somente no meio do codigo
   async function getUserData() {
     try {
       const response = await api.get(`/users/${id}`);
@@ -91,24 +107,38 @@ function AtualizacaoUsuario() {
           zipcode: userData.zipcode,
         }
 
-        const response = await api.put(`/users/${id}`, updatedFields);
-        console.log(response)
+        if ( 
+          updatedFields.name !== '' &&
+          updatedFields.birthdate !== '' &&
+          updatedFields.phonenumber !== '' &&
+          updatedFields.address !== '' &&
+          updatedFields.zipcode !== '' 
+        ) {
+          const response = await api.put(`/users/${id}`, updatedFields);
+          console.log(response)
 
-        setOpenSnackbar(true);
-        setMessageSnackbar('Usuário atualizado com sucesso!');
-        setTypeSnackbar('success');
+          setOpenSnackbar(true);
+          setMessageSnackbar('Usuário atualizado com sucesso!');
+          setTypeSnackbar('success');
 
-        getUserData(); // atualiza com novos dados
-        setUpdating(false);
+          getUserData(); // atualiza com novos dados
+          setUpdating(false);
+        } else {
+          setOpenSnackbar(true);
+          setMessageSnackbar('Dados não permitidos! Tente novamente.');
+          setTypeSnackbar('error');
+        }
+        
       } catch (error) {
         console.log(error);
 
         setOpenSnackbar(true);
         setMessageSnackbar('Falha ao atualizar usuário.');
         setTypeSnackbar('error');
+
+        setUpdating(false);
       }
       
-      setUpdating(false);
       setLoading(false);
     }
   }

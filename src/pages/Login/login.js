@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiLock, FiAlertTriangle } from "react-icons/fi"
 import {
@@ -16,15 +16,26 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { useStyles } from './styles'
 import { Alert } from '@material-ui/lab';
+import {LoginContext} from '../../context/LoginContext';
 
 export default function Login() {
   const classes = useStyles();
-  
+  const {setToken} = useContext(LoginContext);
   
   const [values, setValues] = useState({
+    user: '',
     password: '',
     showPassword: false,
   });
+
+  function login(){
+    if(values.user === 'helio' && values.password === 'helio123'){
+      return {token: '1234'};
+    }else{
+      return {error: 'Usuário ou senha inválidos'};
+    }
+  }
+  
   
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -43,6 +54,13 @@ export default function Login() {
     event.preventDefault();
     const email = document.getElementById("email").value;
     setError("");
+    
+    const {token} = login(values);
+    console.log(values.user);
+
+    if(token) {
+      setToken(token);
+    }
 
     switch (email) {
       case "":
@@ -53,7 +71,17 @@ export default function Login() {
         break;
     }
   }
-  
+
+  function onSubmit(event) {
+    event.preventDefault();
+
+    const {token} = login(values);
+    console.log(values.user);
+
+    if(token) {
+      setToken(token);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -86,6 +114,8 @@ export default function Login() {
               type="email"
               id="email"
               error={!!error}
+              value={values.user}
+              onChange={handleChange('user')}
             />
             {!!error && <>
               <p className={classes.errorTextLogin}>
@@ -120,7 +150,7 @@ export default function Login() {
               <Link to="./esquecisenha" className={classes.forgotPassword}>Esqueci minha senha!</Link>
             </div>
 
-            <div>
+            <div onClick={handleSubmit}>
               <Button type="submit" className={classes.buttonLogin} component={Link} to="/dashboard">Entrar</Button>
             </div>
           </form>

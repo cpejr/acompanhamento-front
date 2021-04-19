@@ -10,9 +10,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Typography
+  Typography,
+  Snackbar,
+  CircularProgress
 } from "@material-ui/core"
 import { useParams } from 'react-router';
+import MuiAlert from "@material-ui/lab/Alert";
 
 import { useStyles } from './atualizacaoUsuarioStyle'
 import users from '../../services/people'
@@ -20,8 +23,12 @@ import { AuthContext } from '../../context/AuthContext';
 import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
+import api from "../../services/api";
+import { RssFeed } from '@material-ui/icons';
+
 
 function AtualizacaoUsuario() {
+
   const { id } = useParams();
   const { user } = useContext(AuthContext);
 
@@ -30,47 +37,90 @@ function AtualizacaoUsuario() {
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    if (id === "me") {
-      setUserData(user);
-      setUserDataOriginal(user)
-    } else {
-      const user = users.people.find(user => user.id === id);
-      setUserData(user);
-      setUserDataOriginal(user);
-    }
-  }, [id, user])
+  // variaveis do snackbar
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState('');
+  const [typeSnackbar, setTypeSnackbar] = useState('info');
+  const [loading, setLoading] = useState(false);
 
   const classes = useStyles({ updating });
 
-  if (!userData) {
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <div className={classes.root}>
-          <h1 className={classes.title}>
-            Detalhes de Usuário
-          </h1>
-          <Paper className={classes.containerForm} elevation={0}>
-            <Typography variant="h5">Dados inválidos!</Typography>
-          </Paper>
-        </div>
-      </React.Fragment>
-    );
-  }
+  // useEffect(() => {
+  //   if (id === "me") {
+  //     setUserData(user);
+  //     setUserDataOriginal(user)
+  //   } else {
+  //     const user = users.people.find(user => user.id === id);
+  //     setUserData(user);
+  //     setUserDataOriginal(user);
+  //   }
+  // }, [id, user])
+
+  // pega os dados do usuário com o id
+  useEffect(() => {
+     api
+      .get(`/user/${id}`)
+      .then((response) => {
+        setUserData(response.data.user);
+        setUserDataOriginal(response.data.user);
+      })
+      .catch((error) => {
+        console.warn(error);
+        alert("Erro ao buscar funcionários");
+      })
+  }, [id]);
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
     setUserData({ ...userData, [name]: value });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
+
     if (!updating) setUpdating(true)
     else {
-      console.log(userData)
-      alert("Salvando no banco de dados...")
-      setUserDataOriginal(userData);
-      setUpdating(false)
+      setLoading(true);
+      
+      try {
+        const updatedFields = {
+          name: userData.name,
+          birthdate: userData.birthdate,
+          phonenumber: userData.phonenumber,
+          address: userData.address,
+          zipcode: userData.zipcode,
+        }
+
+        if ( 
+          updatedFields.name !== '' &&
+          updatedFields.birthdate !== '' &&
+          updatedFields.phonenumber !== '' &&
+          updatedFields.address !== '' &&
+          updatedFields.zipcode !== '' 
+        ) {
+          const response = await api.put(`/users/${id}`, updatedFields);
+
+          setOpenSnackbar(true);
+          setMessageSnackbar('Usuário atualizado com sucesso!');
+          setTypeSnackbar('success');
+
+          setUpdating(false);
+        } else {
+          setOpenSnackbar(true);
+          setMessageSnackbar('Dados não permitidos! Tente novamente.');
+          setTypeSnackbar('error');
+        }
+        
+      } catch (error) {
+        console.log(error);
+
+        setOpenSnackbar(true);
+        setMessageSnackbar('Falha ao atualizar usuário.');
+        setTypeSnackbar('error');
+
+        setUpdating(false);
+      }
+      
+      setLoading(false);
     }
   }
 
@@ -86,6 +136,24 @@ function AtualizacaoUsuario() {
     else { // confirmar exclusão
       setDeleting(true);
     }
+  }
+
+  // ---------------------------- // 
+
+  if (!userData) {
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.root}>
+          <h1 className={classes.title}>
+            Detalhes de Usuário
+          </h1>
+          <Paper className={classes.containerForm} elevation={0}>
+            <Typography variant="h5">Dados inválidos!</Typography>
+          </Paper>
+        </div>
+      </React.Fragment>
+    );
   }
 
   const AreYouSure = () => (
@@ -120,39 +188,45 @@ function AtualizacaoUsuario() {
         </h1>
 
         <AreYouSure />
+
         <Paper className={classes.containerForm} elevation={0}>
-          {(userData.funcao === "Cliente" && userData.cpf) || id === "me"  ? //TODO alterar
-            <CadastroPF
-              formData={userData}
-              handleChangeInput={handleChangeInput}
-              mode={ updating? 'edit':'view'}
-            />
-            :
-            (userData.funcao === "Cliente" && userData.cnpj ?
-              
-            <CadastroPJ
+          { userData.type === 'PF' || id === "me"  ? 
+              <CadastroPF
                 formData={userData}
                 handleChangeInput={handleChangeInput}
-                mode={ updating? 'edit':'view'}
+                mode={ updating ? 'edit' : 'view'}
               />
               :
-                (userData.funcao === "Funcionário" || userData.funcao === "Administrador" ?
-                    <CadastroFuncionario
-                      formData={userData}
-                      handleChangeInput={handleChangeInput}
-                      mode={ updating? 'edit':'view'}
-                    />
-                    :
-                    null
-                )
-            )
+              (userData.type === 'PJ' ?
+                
+              <CadastroPJ
+                  formData={userData}
+                  handleChangeInput={handleChangeInput}
+                  mode={ updating? 'edit' : 'view'}
+                />
+                :
+                  (userData.type === "Funcionario" || userData.type === "Administrador" ?
+                      <CadastroFuncionario
+                        formData={userData}
+                        handleChangeInput={handleChangeInput}
+                        mode={ updating? 'edit' : 'view'}
+                      /> 
+                      :
+                      null
+                  )
+              )
           }
         
           <Grid className={classes.centralizar} item xs={12}>
             <Button variant="contained" color="primary" className={classes.btn}
               onClick={handleSubmit}
             >
-              {updating ? "Salvar" : "Editar"}
+              {
+                updating ? "Salvar" : 
+                  loading ? (
+                    <CircularProgress color="secondary" />
+                  ) : "Editar"              
+              }
             </Button>
       
             {!(id === "me" && updating === false) &&
@@ -166,6 +240,17 @@ function AtualizacaoUsuario() {
         </Paper>
 
       </div>
+
+      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={() => setOpenSnackbar(false)}>
+        <MuiAlert
+          onClose={() => setOpenSnackbar(false)}
+          elevation={6}
+          variant="filled"
+          severity={typeSnackbar}
+        >
+          {messageSnackbar}
+        </MuiAlert>
+      </Snackbar>
     </React.Fragment >
   );
 }

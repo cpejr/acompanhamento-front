@@ -1,161 +1,302 @@
-import React, { useRef } from 'react';
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {
   TextField,
   FormControlLabel,
   Checkbox,
   Grid,
   useMediaQuery,
-  Button
-} from '@material-ui/core';
-
-import { useStyles } from './cadastroUsuarioStyle';
-import nextInput from '../../services/nextInput';
+  Button,
+} from "@material-ui/core";
+import api from "../../services/api";
+import { useStyles } from "./cadastroUsuarioStyle";
+import nextInput from "../../services/nextInput";
+import {AuthContext} from "../../context/AuthContext";
 
 function CadastroPF(props) {
-  const { formData, handleChangeCheck, handleChangeInput, handleSubmit, mode } = props;
+ 
+  const { 
+    formData, 
+    handleChangeCheck, 
+    handleChangeInput, 
+    handleSubmit, 
+    mode,
+    type 
+  } = props;
 
   const classes = useStyles();
-
-  const nomeRef = useRef(null);
-  const cpfRef = useRef(null);
-  const nascimentoRef = useRef(null);
-  const telefoneRef = useRef(null);
-  const emailRef = useRef(null);
-  const emailConfirmarRef = useRef(null);
-  const senhaRef = useRef(null);
-  const senhaConfirmarRef = useRef(null);
-  const emailPromocionalRef = useRef(null);
   const buttonRef = useRef(null);
+  const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const [email, setEmail] = useState("");
+  const [phonenumber, setPhonenumber] = useState("");
+  const [emailConfirm, setEmailConfirm] = useState("");
+  const [senha, setSenha] = useState("");
+  const [senhaConfirm, setSenhaConfirm] = useState("");
+  const [address, setAddress] = useState('');
+  const [zipcode, setZipcode] = useState('');
 
-  const relacionamentosRef = [
-    { name: "nome", ref: cpfRef },
-    { name: "cpf", ref: nascimentoRef },
-    { name: "nascimento", ref: telefoneRef },
-    { name: "telefone", ref: emailRef },
-    { name: "email", ref: emailConfirmarRef },
-    { name: "emailConfirmar", ref: senhaRef },
-    { name: "senha", ref: senhaConfirmarRef },
-    { name: "senhaConfirmar", ref: emailPromocionalRef },
-    { name: "emailPromocional", ref: buttonRef }
-  ];
+  const { sendMessage } = useContext(AuthContext);
+  
+  // seta os valores quando os dados chegarem
+  useEffect(() => {
+    setName(formData.name);
+    setCpf(formData.cpf);
+    setBirthdate(formData.birthdate);
+    setEmail(formData.email);
+    setPhonenumber(formData.phonenumber);
+    setAddress(formData.address);
+    setZipcode(formData.zipcode);
+  }, [formData])
+
+  function handleInput(event, type) {
+    
+    switch (type) {
+      case 'name':
+        setName(event.target.value);
+        break;
+      
+      case 'cpf':
+        setCpf(event.target.value);
+        break;
+
+      case 'birthdate':
+        setBirthdate(event.target.value);
+        break;
+
+      case 'phonenumber':
+        setPhonenumber(event.target.value);
+        break;
+
+      case 'address':
+        setAddress(event.target.value);
+        break;
+
+      case 'zipcode':
+        setZipcode(event.target.value);
+        break;
+
+      case 'email':
+        setEmail(event.target.value);
+        break;
+
+      case 'emailConfirm':
+        setEmailConfirm(event.target.value);
+        break;
+
+      case 'password':
+        setSenha(event.target.value);
+        break;
+
+      case 'passwordConfirm':
+        setSenhaConfirm(event.target.value);
+        break;
+    }
+
+    handleChangeInput(event); // retorna para a AtualizaUsuario
+  }
+
+  async function handleRegister(e) {
+    e.preventDefault();
+
+    const data = {
+      type: type,
+      name: name,
+      birthdate: birthdate,
+      cpf: cpf,
+      email: email,
+      phonenumber: phonenumber,
+      password: senha,
+      address: address,
+      zipcode: zipcode
+    };
+
+    if (
+      data.type !== "" &&
+      data.name !== "" &&
+      data.cpf !== "" &&
+      data.email !== "" &&
+      data.phonenumber !== "" &&
+      data.password !== "" &&
+      data.address !== "" &&
+      data.zipcode !== "" 
+    ) { 
+      if (email !== emailConfirm) alert("Os emails estão diferentes.");
+      if (senha !== senhaConfirm) alert("As senhas não batem.");
+
+      sendMessage('Realizando cadastro...', 'info', null);
+      api
+        .post("/user/create", data)
+        .then((response) => {
+          sendMessage('Cadastrado com sucesso');
+        })
+        .catch ((error) => {
+          if (error.response) {
+            // Request made and server responded
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            sendMessage('Error 501: Falha no cadastro', 'error');
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+            sendMessage('Error 501: Falha no cadastro', 'error');
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            sendMessage('Error 501: Falha no cadastro', 'error');
+          }
+          sendMessage(`Error: ${error.message}`, 'error');
+      })
+    } else sendMessage('Preencha todos os campos', 'error', null);
+  }
 
   return (
     <div>
-      <form onSubmit={() => handleSubmit("cadastroPF")}>
-        <Grid container spacing={useMediaQuery('(min-width:960px)') ? 5 : 0}>
-          <Grid item xs={12} md={6} >
+      <form onSubmit={(e) => handleRegister(e)}>
+        <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
+          <Grid item xs={12} md={6}>
             <TextField
-              name="nome"
+              name="name"
               className={classes.inputForm}
-              value={formData.name}
-              onChange={handleChangeInput}
+              value={name}
               label="Nome Completo"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
+              onChange={(e) => handleInput(e, 'name')}
+              required
               disabled= {mode === 'view'}
-              inputRef={nomeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
               name="cpf"
               className={classes.inputForm}
-              value={formData.cpf}
-              onChange={handleChangeInput}
+              value={cpf}
               label="CPF"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              disabled= {!(mode === 'create')}
-              inputRef={cpfRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              inputProps={{ maxLength: 11 }}
+              onChange={(e) => handleInput(e, 'cpf')}
+              required
+              disabled= {mode !== 'create'}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
-              name="nascimento"
+              name="birthdate"
               className={classes.inputForm}
               label="Data de Nascimento"
-              defaultValue="2017-05-24"
-              value={formData.nascimento}
-              onChange={handleChangeInput}
+              value={birthdate}
               helperText="(Opcional)"
               variant="filled"
-              type="date"
+              onChange={(e) => handleInput(e, 'birthdate')}
+              type="text"
               disabled= {mode === 'view'}
-              inputRef={nascimentoRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <TextField
-              name="telefone"
+              name="phonenumber"
               className={classes.inputForm}
-              value={formData.telefone}
-              onChange={handleChangeInput}
+              value={phonenumber}
               label="Número de telefone"
-              type="number"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              inputProps={{ maxLength: 11 }}
+              onChange={(e) => handleInput(e, 'phonenumber')}
+              required
+              disabled= {mode === 'view'}
+              // onKeyPress={e => nextInput(e, relacionamentosRef)}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              name="address"
+              className={classes.inputForm}
+              value={address}
+              label="Endereço"
+              type="text"
               helperText="*Obrigatório"
               variant="filled"
               disabled= {mode === 'view'}
-              inputRef={telefoneRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              onChange={(e) => handleInput(e, 'address')}
+              required
             />
 
+            <TextField
+              name="zipcode"
+              className={classes.inputForm}
+              value={zipcode}
+              label="CEP"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, 'zipcode')}
+              required
+            />
 
-          </Grid>
-          <Grid item xs={12} md={6} >
             <TextField
               name="email"
               className={classes.inputForm}
-              value={formData.email}
-              onChange={handleChangeInput}
+              value={email}
               label="Endereço de e-mail"
               type="email"
               helperText="*Obrigatório"
               variant="filled"
-              disabled= {!(mode === 'create')}
-              inputRef={emailRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              disabled= {mode !== 'create'}
+              onChange={(e) => handleInput(e, 'email')}
+              required
             />
 
-            {mode === 'create' &&
+            {
+              mode === 'create' && 
               <>
                 <TextField
-                  name="emailConfirmar"
+                  name="emailConfirm"
                   className={classes.inputForm}
-                  value={formData.emailConfirmar}
-                  onChange={handleChangeInput}
+                  value={emailConfirm}
                   label="Confirmar e-mail"
                   type="email"
                   helperText="*Obrigatório"
                   variant="filled"
-                  inputRef={emailConfirmarRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  onChange={(e) => handleInput(e, 'emailConfirm')}
+                  required
                 />
 
                 <TextField
-                  name="senha"
+                  name="password"
                   autoComplete="off"
                   className={classes.inputForm}
-                  value={formData.senha}
-                  onChange={handleChangeInput}
+                  value={senha}
                   label="Criar senha"
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
-                  inputRef={senhaRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  onChange={(e) => handleInput(e, 'password')}
+                  required
                 />
 
                 <TextField
-                  name="senhaConfirmar"
+                  name="passwordConfirm"
                   autoComplete="off"
                   className={classes.inputForm}
-                  value={formData.senhaConfirmar}
-                  onChange={handleChangeInput}
+                  value={senhaConfirm}
                   label="Confirmar senha"
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
-                  inputRef={senhaConfirmarRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  onChange={(e) => handleInput(e, 'passwordConfirm')}
+                  required
                 />
               </>
             }
 
-            {handleChangeCheck && <FormControlLabel
+           <FormControlLabel
               className={classes.checkbox}
               control={
                 <Checkbox
@@ -165,17 +306,22 @@ function CadastroPF(props) {
                   color="primary"
                   size="small"
                   disabled={mode === 'view'}
-                  inputRef={emailPromocionalRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  // onKeyPress={e => nextInput(e, relacionamentosRef)}
                 />
               }
-              label="Desejo receber emails promocionais" />}
+              label="Desejo receber emails promocionais" />
           </Grid>
-          {mode === 'create' &&
-            <Grid item xs={12}>
-              <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
-            </Grid>
-          }
+            { mode === 'create' &&
+                <Grid item xs={12}>
+                  <Button 
+                    type="submit" 
+                    ref={buttonRef} 
+                    className={classes.buttonRegister}
+                  >
+                    Cadastrar
+                  </Button>
+                </Grid>
+            }
         </Grid>
       </form>
     </div>

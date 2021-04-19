@@ -121,7 +121,7 @@ function CadastroPJ(props) {
         .then((response) => {
           sendMessage('Cadastrado com sucesso');
         })
-        .catch ((err) => {
+        .catch ((error) => {
           if (error.response) {
             // Request made and server responded
             console.log(error.response.data);

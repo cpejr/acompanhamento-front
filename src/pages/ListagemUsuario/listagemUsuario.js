@@ -16,6 +16,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import ordenar from "../../services/ordenar";
 import { DataContext } from "../../context/DataContext";
 import api from "../../services/api";
+import {AuthContext} from "../../context/AuthContext";
 export default function ListagemUsuario() {
   const classes = useStyles();
 
@@ -30,16 +31,19 @@ export default function ListagemUsuario() {
     cliente: true,
   });
 
+  const { sendMessage } = useContext(AuthContext);
+
   async function getEmployees() {
-    try {
-      const response = await api.get("/users");
-      console.log("Response: ", response);
-      setEmployees([...response.data.user]);
-      setUsersListToDisplay([...response.data.user]);
-    } catch (error) {
+    api
+      .get("/user/index")
+      .then((response) => {
+        setEmployees([...response.data.user]);
+        setUsersListToDisplay([...response.data.user]);
+      })
+      .catch ((error) => {
       console.warn(error);
-      alert("Erro ao buscar funcionários");
-    }
+      sendMessage('Erro ao buscar usuários.', 'error', null)
+    })
   }
 
   useEffect(() => {

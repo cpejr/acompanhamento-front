@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {useRef, useState, useEffect, useContext} from "react";
 import {
   TextField,
   FormControlLabel,
@@ -10,6 +10,7 @@ import {
 import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
+import {AuthContext} from "../../context/AuthContext";
 
 function CadastroFuncionario(props) {
   const { 
@@ -34,6 +35,8 @@ function CadastroFuncionario(props) {
   const [senhaConfirm, setSenhaConfirm] = useState("");
   const [address, setAddress] = useState('');
   const [zipcode, setZipcode] = useState('');
+
+  const { sendMessage } = useContext(AuthContext);
 
   // seta os valores quando os dados chegarem
   useEffect(() => {
@@ -72,14 +75,32 @@ function CadastroFuncionario(props) {
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
-      try {
-        console.log("OPA", data);
-        const response = await api.post("/user", data);
-        alert(`Você foi cadastrado com sucesso.`);
-      } catch (err) {
-        alert.error("Teve um erro no cadastro, tente novamente.");
-      }
-    } else alert("Todos os campos devem estar preenchidos");
+
+      sendMessage('Realizando cadastro...', 'info', null);
+      api
+        .post("/user/create", data)
+        .then((response) => {
+          sendMessage('Cadastrado com sucesso');
+        })
+        .catch ((error) => {
+          if (error.response) {
+            // Request made and server responded
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            sendMessage('Error 501: Falha no cadastro', 'error');
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+            sendMessage('Error 501: Falha no cadastro', 'error');
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            sendMessage('Error 501: Falha no cadastro', 'error');
+          }
+          sendMessage(`Error: ${error.message}`, 'error');
+      })
+    } else sendMessage('Preencha todos os campos', 'error', null);
   }
 
   function handleInput(event, type) {

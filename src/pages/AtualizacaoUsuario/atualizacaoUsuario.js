@@ -58,34 +58,17 @@ function AtualizacaoUsuario() {
 
   // pega os dados do usuário com o id
   useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const response = await api.get(`/users/${id}`);
-  
+     api
+      .get(`/user/${id}`)
+      .then((response) => {
         setUserData(response.data.user);
         setUserDataOriginal(response.data.user);
-      } catch (error) {
+      })
+      .catch((error) => {
         console.warn(error);
         alert("Erro ao buscar funcionários");
-      }
-    };
-
-    getUserData();
+      })
   }, [id]);
-
-  // pega os dados do usuário por ID
-  // NÃO USAR dentro de useEffect, somente no meio do codigo
-  async function getUserData() {
-    try {
-      const response = await api.get(`/users/${id}`);
-
-      setUserData(response.data.user);
-      setUserDataOriginal(response.data.user);
-    } catch (error) {
-      console.warn(error);
-      alert("Erro ao buscar funcionários");
-    }
-  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -115,13 +98,11 @@ function AtualizacaoUsuario() {
           updatedFields.zipcode !== '' 
         ) {
           const response = await api.put(`/users/${id}`, updatedFields);
-          console.log(response)
 
           setOpenSnackbar(true);
           setMessageSnackbar('Usuário atualizado com sucesso!');
           setTypeSnackbar('success');
 
-          getUserData(); // atualiza com novos dados
           setUpdating(false);
         } else {
           setOpenSnackbar(true);

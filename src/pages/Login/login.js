@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiMail, FiLock, FiAlertTriangle } from "react-icons/fi"
 import {
   TextField,
@@ -13,15 +13,20 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import api from "../../services/api";
 
 import { useStyles } from './styles'
 import { Alert } from '@material-ui/lab';
+import { LoginContext } from "../../context/LoginContext";
 
 export default function Login() {
   const classes = useStyles();
-  
+  const { signIn } = useContext(LoginContext);
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
   
   const [values, setValues] = useState({
+    user: '',
     password: '',
     showPassword: false,
   });
@@ -39,7 +44,8 @@ export default function Login() {
   };
   
   const [ error, setError ] = useState("");
-  const handleSubmit = (event) => {
+
+  async function handleSubmit(event) {
     event.preventDefault();
     const email = document.getElementById("email").value;
     setError("");
@@ -51,6 +57,27 @@ export default function Login() {
       default:
         setError("Email inválido");
         break;
+    }
+
+    try {
+      const response = await api.post("/login", {
+        email: values.user,
+        password: values.password,
+      });
+      if (response.data && response.data.accessToken) {
+        const token = response.data.accessToken;
+        const user = response.data.user;
+        signIn(token, user);
+        //Aqui manda para a rota logo apos o login
+        history.push("/dashboard");
+      } else {
+        alert(`Email ou senha incorretos!`);
+      }
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      alert(`Acesso negado!`);
+      console.warn(err);
     }
   }
   
@@ -86,6 +113,8 @@ export default function Login() {
               type="email"
               id="email"
               error={!!error}
+              value={values.user}
+              onChange={handleChange('user')}
             />
             {!!error && <>
               <p className={classes.errorTextLogin}>
@@ -120,7 +149,7 @@ export default function Login() {
               <Link to="./esquecisenha" className={classes.forgotPassword}>Esqueci minha senha!</Link>
             </div>
 
-            <div>
+            <div onClick={handleSubmit}>
               <Button type="submit" className={classes.buttonLogin} component={Link} to="/dashboard">Entrar</Button>
             </div>
           </form>

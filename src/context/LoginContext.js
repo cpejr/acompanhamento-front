@@ -5,7 +5,7 @@ import api from "../services/api";
 export const LoginContext = createContext();
 
 const LoginContextProvider = (props) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [token, setToken] = useState();
   const [user, setUser] = useState();

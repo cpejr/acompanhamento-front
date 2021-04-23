@@ -23,7 +23,6 @@ export default function Login() {
   const classes = useStyles();
   const { signIn } = useContext(LoginContext);
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
   
   const [values, setValues] = useState({
     user: '',
@@ -73,9 +72,7 @@ export default function Login() {
       } else {
         alert(`Email ou senha incorretos!`);
       }
-      setLoading(false);
     } catch (err) {
-      setLoading(false);
       alert(`Acesso negado!`);
       console.warn(err);
     }

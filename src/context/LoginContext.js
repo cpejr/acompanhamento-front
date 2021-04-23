@@ -1,13 +1,12 @@
 import ClipLoader from "react-spinners/ClipLoader";
 import React, { createContext, useState, useEffect } from "react";
+import useStorage from '../utils/useStorage';
 import api from "../services/api";
 
 export const LoginContext = createContext();
 
 const LoginContextProvider = (props) => {
-  const [loading, setLoading] = useState(false);
-
-  const [token, setToken] = useState();
+  const [token, setToken] = useStorage('token');
   const [user, setUser] = useState();
 
   async function verify(token) {
@@ -23,8 +22,6 @@ const LoginContextProvider = (props) => {
         setUser(null);
         localStorage.removeItem("accessToken");
       }
-
-      setLoading(false);
     } catch (err) {
       console.warn(err);
     }
@@ -36,8 +33,6 @@ const LoginContextProvider = (props) => {
 
     if (currentToken && currentToken !== " ") {
       await verify(currentToken);
-    } else {
-      setLoading(false);
     }
     console.log("UseEffect LoginContext");
   }, []);
@@ -62,21 +57,11 @@ const LoginContextProvider = (props) => {
 
   return (
     <LoginContext.Provider
-      value={{ loading, token, user, signIn, logOut, setUser, verify }}
+      value={{ token, user, signIn, logOut, setUser, verify }}
     >
-      {!loading ? props.children : <Loading />}
+      {props.children}
     </LoginContext.Provider>
   );
 };
-
-function Loading(props) {
-  return (
-    <div className="loading" style={{width: '100vw', height: '100vh'}}>
-      <div className="loading-logo" style={{width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-        <ClipLoader size={100} color={"#123abc"} loading={true} />
-      </div>
-    </div>
-  );
-}
 
 export default LoginContextProvider;

@@ -61,25 +61,26 @@ export default function Login() {
     }
 
     var datetime =
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      " - " +
       currentdate.getDate() +
       "/" +
       (currentdate.getMonth() + 1) +
       "/" +
-      currentdate.getFullYear() +
-      " @ " +
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      ":";
+      currentdate.getFullYear();
 
     try {
       const response = await api.post("/login", {
         email: values.user,
         password: values.password,
       });
+
       if (response.data && response.data.accessToken) {
         const token = response.data.accessToken;
         const user = response.data.user;
+
         signIn(token, user);
 
         const updatedFields = {
@@ -92,6 +93,7 @@ export default function Login() {
         };
 
         const responsePut = await api.put(`/user/${user[0].id}`, updatedFields);
+        console.log("AQUI: ", user[0]);
         //Aqui manda para a rota logo apos o login
 
         history.push("/dashboard");

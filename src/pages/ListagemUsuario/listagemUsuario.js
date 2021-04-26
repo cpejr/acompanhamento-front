@@ -182,7 +182,7 @@ export default function ListagemUsuario() {
                 id: employees.id,
                 name: employees.name,
                 funcao: employees.type,
-                data: employees.updateAt,
+                data: employees.active,
               };
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}

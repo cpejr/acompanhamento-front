@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useContext} from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   TextField,
   FormControlLabel,
@@ -10,16 +10,16 @@ import {
 import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 function CadastroPJ(props) {
-  const { 
-    handleChangeCheck, 
-    handleSubmit, 
-    formData, 
+  const {
+    handleChangeCheck,
+    handleSubmit,
+    formData,
     handleChangeInput,
     mode,
-    type 
+    type,
   } = props;
 
   const classes = useStyles();
@@ -28,14 +28,14 @@ function CadastroPJ(props) {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  const [address, setAddress] = useState('');
-  const [zipcode, setZipcode] = useState('');
+  const [address, setAddress] = useState("");
+  const [zipcode, setZipcode] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
 
   const { sendMessage } = useContext(AuthContext);
-  
+
   // seta os valores quando os dados chegarem
   useEffect(() => {
     setName(formData.name);
@@ -48,39 +48,39 @@ function CadastroPJ(props) {
 
   function handleInput(event, type) {
     switch (type) {
-      case 'name':
+      case "name":
         setName(event.target.value);
         break;
-      
-      case 'cnpj':
+
+      case "cnpj":
         setCnpj(event.target.value);
         break;
 
-      case 'phonenumber':
+      case "phonenumber":
         setPhonenumber(event.target.value);
         break;
 
-      case 'address':
+      case "address":
         setAddress(event.target.value);
         break;
 
-      case 'zipcode':
+      case "zipcode":
         setZipcode(event.target.value);
         break;
 
-      case 'email':
+      case "email":
         setEmail(event.target.value);
         break;
 
-      case 'emailConfirm':
+      case "emailConfirm":
         setEmailConfirm(event.target.value);
         break;
 
-      case 'password':
+      case "password":
         setSenha(event.target.value);
         break;
 
-      case 'passwordConfirm':
+      case "passwordConfirm":
         setSenhaConfirm(event.target.value);
         break;
     }
@@ -100,7 +100,7 @@ function CadastroPJ(props) {
       password: senha,
       address: address,
       zipcode: zipcode,
-      birthdate: '00/00/0000', // gambiarra
+      birthdate: "00/00/0000", // gambiarra
     };
     if (
       data.type !== "" &&
@@ -115,31 +115,31 @@ function CadastroPJ(props) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
 
-      sendMessage('Realizando cadastro...', 'info', null);
+      sendMessage("Realizando cadastro...", "info", null);
       api
-        .post("/create", data)
+        .post("user/create", data)
         .then((response) => {
-          sendMessage('Cadastrado com sucesso');
+          sendMessage("Cadastrado com sucesso");
         })
-        .catch ((error) => {
+        .catch((error) => {
           if (error.response) {
             // Request made and server responded
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
-            sendMessage('Error 501: Falha no cadastro', 'error');
+            sendMessage("Error 501: Falha no cadastro", "error");
           } else if (error.request) {
             // The request was made but no response was received
             console.log(error.request);
-            sendMessage('Error 501: Falha no cadastro', 'error');
+            sendMessage("Error 501: Falha no cadastro", "error");
           } else {
             // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-            sendMessage('Error 501: Falha no cadastro', 'error');
+            console.log("Error", error.message);
+            sendMessage("Error 501: Falha no cadastro", "error");
           }
-          sendMessage(`Error: ${error.message}`, 'error');
-      })
-    } else sendMessage('Preencha todos os campos', 'error', null);
+          sendMessage(`Error: ${error.message}`, "error");
+        });
+    } else sendMessage("Preencha todos os campos", "error", null);
   }
 
   return (
@@ -155,8 +155,8 @@ function CadastroPJ(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              onChange={(e) => handleInput(e, 'name')}
-              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, "name")}
+              disabled={mode === "view"}
               required
             />
 
@@ -168,8 +168,8 @@ function CadastroPJ(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              onChange={(e) => handleInput(e, 'cnpj')}
-              disabled= {mode !== 'create'}
+              onChange={(e) => handleInput(e, "cnpj")}
+              disabled={mode !== "create"}
               required
             />
 
@@ -182,8 +182,8 @@ function CadastroPJ(props) {
               helperText="*Obrigatório"
               variant="filled"
               inputProps={{ maxLength: 11 }}
-              onChange={(e) => handleInput(e, 'phonenumber')}
-              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, "phonenumber")}
+              disabled={mode === "view"}
               required
             />
             <TextField
@@ -194,8 +194,8 @@ function CadastroPJ(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              onChange={(e) => handleInput(e, 'address')}
-              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, "address")}
+              disabled={mode === "view"}
               required
             />
 
@@ -208,8 +208,8 @@ function CadastroPJ(props) {
               helperText="*Obrigatório"
               variant="filled"
               inputProps={{ maxLength: 8 }}
-              onChange={(e) => handleInput(e, 'zipcode')}
-              disabled= {mode === 'view'}
+              onChange={(e) => handleInput(e, "zipcode")}
+              disabled={mode === "view"}
               required
             />
           </Grid>
@@ -222,12 +222,11 @@ function CadastroPJ(props) {
               type="email"
               helperText="*Obrigatório"
               variant="filled"
-              disabled= {mode !== 'create'}
-              onChange={(e) => handleInput(e, 'email')}
+              disabled={mode !== "create"}
+              onChange={(e) => handleInput(e, "email")}
               required
             />
-            {
-              mode === 'create' &&
+            {mode === "create" && (
               <>
                 <TextField
                   name="emailConfirmar"
@@ -267,8 +266,7 @@ function CadastroPJ(props) {
                   required
                 />
               </>
-            }
-            
+            )}
 
             <FormControlLabel
               className={classes.checkbox}
@@ -279,21 +277,24 @@ function CadastroPJ(props) {
                   onChange={handleChangeCheck}
                   color="primary"
                   size="small"
-                  disabled={mode === 'view'}
+                  disabled={mode === "view"}
                 />
               }
               label="Desejo receber emails promocionais"
             />
           </Grid>
           <Grid item xs={12}>
-          { mode === 'create' &&
-            <Grid item xs={12}>
-              <Button type="submit"
-                      ref={buttonRef} className={classes.buttonRegister}>
-                Cadastrar
-              </Button>
-            </Grid>
-          }
+            {mode === "create" && (
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  ref={buttonRef}
+                  className={classes.buttonRegister}
+                >
+                  Cadastrar
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </form>

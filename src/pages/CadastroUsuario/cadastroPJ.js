@@ -117,7 +117,7 @@ function CadastroPJ(props) {
 
       sendMessage('Realizando cadastro...', 'info', null);
       api
-        .post("/create", data)
+        .post("/user/create", data)
         .then((response) => {
           sendMessage('Cadastrado com sucesso');
         })

@@ -16,7 +16,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import ordenar from "../../services/ordenar";
 import { DataContext } from "../../context/DataContext";
 import api from "../../services/api";
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 export default function ListagemUsuario() {
   const classes = useStyles();
 
@@ -35,15 +35,15 @@ export default function ListagemUsuario() {
 
   async function getEmployees() {
     api
-      .get("/user/index")
+      .get("/user")
       .then((response) => {
         setEmployees([...response.data.user]);
         setUsersListToDisplay([...response.data.user]);
       })
-      .catch ((error) => {
-      console.warn(error);
-      sendMessage('Erro ao buscar usuários.', 'error', null)
-    })
+      .catch((error) => {
+        console.warn(error);
+        sendMessage("Erro ao buscar usuários.", "error", null);
+      });
   }
 
   useEffect(() => {
@@ -182,7 +182,7 @@ export default function ListagemUsuario() {
                 id: employees.id,
                 name: employees.name,
                 funcao: employees.type,
-                data: employees.updateAt,
+                data: employees.active,
               };
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}

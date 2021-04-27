@@ -104,6 +104,8 @@ export default function Login() {
       alert(`Acesso negado!`);
       console.warn(err);
     }
+
+    
   }
 
   return (
@@ -113,7 +115,7 @@ export default function Login() {
       <div className={classes.root}>
         <Link to="/" className={classes.logo}></Link>
 
-        <Snackbar
+        {/* <Snackbar
           autoHideDuration={null}
           open={true}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -121,7 +123,7 @@ export default function Login() {
           <Alert elevation={6} variant="filled" severity="info">
             Apenas click em Entrar
           </Alert>
-        </Snackbar>
+        </Snackbar> */}
 
         <div className={classes.loginBox}>
           {/* Título */}

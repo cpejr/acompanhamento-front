@@ -85,7 +85,7 @@ function Routes() {
                 {/* Páginas para Testes */}
                 <RoutesPrivate path="/testes" component={Testes} />
 
-                <RoutesPrivate path="/" component={Login} />
+                {/* <RoutesPrivate path="/" component={Login} /> */}
               </DataContextProvider>
             </div>
           </Fragment>

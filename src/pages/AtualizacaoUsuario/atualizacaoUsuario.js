@@ -20,6 +20,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { useStyles } from "./atualizacaoUsuarioStyle";
 import users from "../../services/people";
 import { AuthContext } from "../../context/AuthContext";
+import { LoginContext } from "../../context/LoginContext";
 import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
@@ -28,7 +29,7 @@ import { RssFeed } from "@material-ui/icons";
 
 function AtualizacaoUsuario(props) {
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(LoginContext);
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
@@ -43,31 +44,10 @@ function AtualizacaoUsuario(props) {
 
   const classes = useStyles({ updating });
 
-  // useEffect(() => {
-  //   if (id === "me") {
-  //     setUserData(user);
-  //     setUserDataOriginal(user)
-  //   } else {
-  //     const user = users.people.find(user => user.id === id);
-  //     setUserData(user);
-  //     setUserDataOriginal(user);
-  //   }
-  // }, [id, user])
-
-  // pega os dados do usuário com o id
-
   useEffect(() => {
-    if (!props.perfil) {
-      api
-        .get(`/user/${id}`)
-        .then((response) => {
-          setUserData(response.data.user);
-          setUserDataOriginal(response.data.user);
-        })
-        .catch((error) => {
-          console.warn(error);
-          alert("Erro ao buscar funcionários");
-        });
+    if (id === "me") {
+      setUserData(props.userPerfil);
+      setUserDataOriginal(props.userPerfil)
     } else {
       api
         .get(`/user/${props.userPerfil.id}`)
@@ -80,7 +60,9 @@ function AtualizacaoUsuario(props) {
           alert("Erro ao buscar funcionários");
         });
     }
-  }, [id]);
+  }, [id, props.userPerfil])
+
+  // pega os dados do usuário com o id
 
   function handleChangeInput(event) {
     const { name, value } = event.target;

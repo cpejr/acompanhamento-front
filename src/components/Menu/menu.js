@@ -32,8 +32,8 @@ import { LoginContext } from "../../context/LoginContext";
 
 export default function Menu() {
   const classes = useStyles();
-  const { user, isClient } = useContext(AuthContext);
-  const { logOut } = useContext(LoginContext);
+  const { isClient } = useContext(AuthContext);
+  const { logOut, user } = useContext(LoginContext);
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
 

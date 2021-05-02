@@ -15,6 +15,7 @@ import findError from '../../services/findError';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
+import ModalRedirect from '../../components/ModalRedirect/ModalRedirect';
 
 function CPFInput(props) {
   const { inputRef, ...other } = props;
@@ -36,6 +37,8 @@ export default function CadastroEquipamento(props) {
   });
   const [models, setModels] = React.useState([{}]);
   const [loading, setLoading] = useState(true);
+
+  const [openModal, setOpenModal] = useState(false);
 
   const { sendMessage } = useContext(AuthContext);
 
@@ -111,6 +114,7 @@ export default function CadastroEquipamento(props) {
           });
           console.log(res);
           sendMessage('Cadastrado com sucesso')
+          setOpenModal(true);
         })
         .catch(error => {
           if (error.response) {
@@ -265,11 +269,13 @@ export default function CadastroEquipamento(props) {
               inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
+            <ModalRedirect openModal={openModal} closeModal={() => setOpenModal(false)}/>
             <div>
               <Button type="submit"
                 ref={buttonSubmitRef} // neste caso o button pode ser acessado 
                 // diretamente por isso usamos ref={}
-                className={classes.buttonRegister}>Cadastrar</Button>
+                className={classes.buttonRegister}
+                >Cadastrar</Button>
             </div>
 
           </div>

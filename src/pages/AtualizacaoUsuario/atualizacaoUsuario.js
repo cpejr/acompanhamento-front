@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   CssBaseline,
   Paper,
-  TextField,
   Grid,
   Button,
   Dialog,
@@ -11,21 +10,17 @@ import {
   DialogContentText,
   DialogActions,
   Typography,
-  Snackbar,
   CircularProgress
 } from "@material-ui/core"
-import { useParams } from 'react-router';
-import MuiAlert from "@material-ui/lab/Alert";
+import { useStyles } from './atualizacaoUsuarioStyle';
 
-import { useStyles } from './atualizacaoUsuarioStyle'
-import users from '../../services/people'
 import { AuthContext } from '../../context/AuthContext';
 import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
-import { RssFeed } from '@material-ui/icons';
-
+import isValidDate from '../../services/dateValidation';
+import { useParams } from 'react-router';
 
 function AtualizacaoUsuario() {
 
@@ -36,25 +31,10 @@ function AtualizacaoUsuario() {
   const [userData, setUserData] = useState({});
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
-
-  // variaveis do snackbar
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [messageSnackbar, setMessageSnackbar] = useState('');
-  const [typeSnackbar, setTypeSnackbar] = useState('info');
   const [loading, setLoading] = useState(false);
 
   const classes = useStyles({ updating });
-
-  // useEffect(() => {
-  //   if (id === "me") {
-  //     setUserData(user);
-  //     setUserDataOriginal(user)
-  //   } else {
-  //     const user = users.people.find(user => user.id === id);
-  //     setUserData(user);
-  //     setUserDataOriginal(user);
-  //   }
-  // }, [id, user])
+  const { sendMessage } = useContext(AuthContext);
 
   // pega os dados do usuário com o id
   useEffect(() => {
@@ -70,12 +50,25 @@ function AtualizacaoUsuario() {
       })
   }, [id]);
 
+  function validateAllFields(data) {
+
+    if (
+      data.name        !== "" &&
+      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
+      data.address     !== "" &&
+      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      isValidDate(data.birthdate)
+    ) return true;
+
+    else return false;
+  }
+
   function handleChangeInput(event) {
     const { name, value } = event.target;
     setUserData({ ...userData, [name]: value });
   }
 
-  async function handleSubmit() {
+  function handleSubmit() {
 
     if (!updating) setUpdating(true)
     else {
@@ -90,33 +83,31 @@ function AtualizacaoUsuario() {
           zipcode: userData.zipcode,
         }
 
-        if ( 
-          updatedFields.name !== '' &&
-          updatedFields.birthdate !== '' &&
-          updatedFields.phonenumber !== '' &&
-          updatedFields.address !== '' &&
-          updatedFields.zipcode !== '' 
-        ) {
-          const response = await api.put(`/user/${id}`, updatedFields);
+        if (validateAllFields(updatedFields)) {
 
-          setOpenSnackbar(true);
-          setMessageSnackbar('Usuário atualizado com sucesso!');
-          setTypeSnackbar('success');
+          api
+            .put(`/user/${id}`, updatedFields)
+            .then((response) => {
+              sendMessage("Usuário atualizado com sucesso!", "success");
+            })
+            .catch((error) => {
+              console.warn(error);
+              alert("Erro ao buscar funcionários");
+            })
 
           setUpdating(false);
-        } else {
-          setOpenSnackbar(true);
-          setMessageSnackbar('Dados não permitidos! Tente novamente.');
-          setTypeSnackbar('error');
+        } else { // mensagens (snackbar) de erros
+          if      (updatedFields.zipcode.length < 8) sendMessage("CEP inválido.", "error");
+          else if (updatedFields.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
+          else if (!isValidDate(updatedFields.birthdate)) sendMessage("Data de nascimento inválida!", "error");
+    
+          else sendMessage('Campos com dados inválidos!', 'error');
         }
         
       } catch (error) {
         console.log(error);
 
-        setOpenSnackbar(true);
-        setMessageSnackbar('Falha ao atualizar usuário.');
-        setTypeSnackbar('error');
-
+        sendMessage("Falha ao atualizar usuário", "error");
         setUpdating(false);
       }
       
@@ -222,10 +213,9 @@ function AtualizacaoUsuario() {
               onClick={handleSubmit}
             >
               {
-                updating ? "Salvar" : 
-                  loading ? (
-                    <CircularProgress color="secondary" />
-                  ) : "Editar"              
+                updating ? loading ? (
+                  <CircularProgress color="primary" />
+                ) : "Editar" : "Editar"
               }
             </Button>
       
@@ -241,16 +231,6 @@ function AtualizacaoUsuario() {
 
       </div>
 
-      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={() => setOpenSnackbar(false)}>
-        <MuiAlert
-          onClose={() => setOpenSnackbar(false)}
-          elevation={6}
-          variant="filled"
-          severity={typeSnackbar}
-        >
-          {messageSnackbar}
-        </MuiAlert>
-      </Snackbar>
     </React.Fragment >
   );
 }

@@ -41,6 +41,7 @@ export default function CadastroEquipamento(props) {
   const [loading, setLoading] = useState(true);
 
   const [openModal, setOpenModal] = useState(false);
+  const [idCadastrado, setIdCadastrado] = useState();
 
   const { sendMessage } = useContext(AuthContext);
 
@@ -108,9 +109,9 @@ export default function CadastroEquipamento(props) {
         if (resposta.data && resposta.data.equipment) {
           const equipamento = resposta.data.equipment;
           const id = equipamento.id;
+          setIdCadastrado(id);
 
           sendMessage('Cadastrado com sucesso')
-          history.push(`/ae/` + id);
         };
       } catch (err) {
           sendMessage('Error 501: Falha no cadastro', 'error')
@@ -252,7 +253,7 @@ export default function CadastroEquipamento(props) {
               inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
-            <ModalRedirect openModal={openModal} closeModal={() => setOpenModal(false)}/>
+            <ModalRedirect openModal={openModal} closeModal={() => setOpenModal(false)} linkId={()=> history.push(`/ae/` + idCadastrado)}/>
             <div>
               <Button type="submit"
                 ref={buttonSubmitRef} // neste caso o button pode ser acessado 

@@ -11,22 +11,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function ModalRedirect({openModal, closeModal}) {
-  // const [open, setOpen] = React.useState(false);
-
-  // setOpen(openModal);
-  // const handleClickOpen = () => {
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+export default function ModalRedirect({openModal, closeModal, linkId}) {
 
   return (
     <div>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Slide in alert dialog
-      </Button> */}
       <Dialog
         open={openModal}
         TransitionComponent={Transition}
@@ -45,7 +33,7 @@ export default function ModalRedirect({openModal, closeModal}) {
           <Button onClick={closeModal} color="primary">
             Não
           </Button>
-          <Button color="primary">
+          <Button onClick={linkId} color="primary">
             Sim
           </Button>
         </DialogActions>

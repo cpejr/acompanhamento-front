@@ -15,6 +15,7 @@ import findError from '../../services/findError';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
+import { useHistory } from 'react-router';
 
 function CPFInput(props) {
   const { inputRef, ...other } = props;
@@ -30,6 +31,7 @@ function CPFInput(props) {
 }
 
 export default function CadastroEquipamento(props) {
+  const history = useHistory();
   const [error, setError] = React.useState({
     cpf_client: "",
     instalation_date: ""
@@ -65,7 +67,7 @@ export default function CadastroEquipamento(props) {
     setLoading(false)
   }, [sendMessage])
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
     console.debug("FormData: ", formData)
     setError({
@@ -97,39 +99,20 @@ export default function CadastroEquipamento(props) {
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null)
-      api.post('/equipment/create', data)
-        .then(res => {
-          setFormData({
-            id_model: "132",
-            id_equipment: "",
-            equipment_model: "",
-            instalation_date: format(new Date(), "yyyy-MM-dd"),
-            situation: "Ok",
-            cpf_client: "",
-            //opcionais
-            observation: "",
-          });
-          console.log(res);
+      try {
+        const resposta = await api.post('/equipment/create', data);
+
+        if (resposta.data && resposta.data.equipment) {
+          const equipamento = resposta.data.equipment;
+          const id = equipamento.id;
+
           sendMessage('Cadastrado com sucesso')
-        })
-        .catch(error => {
-          if (error.response) {
-            // Request made and server responded
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-            sendMessage('Error 501: Falha no cadastro', 'error')
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log(error.request);
-            sendMessage('Error 501: Falha no cadastro', 'error')
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-            sendMessage('Error 501: Falha no cadastro', 'error')
-          }
-          sendMessage(`Error: ${error.message}`, 'error')
-        })
+          history.push(`/ae/` + id);
+        };
+      } catch (err) {
+          sendMessage('Error 501: Falha no cadastro', 'error')
+          console.warn(err);
+      }
     }
   }
 
@@ -269,7 +252,9 @@ export default function CadastroEquipamento(props) {
               <Button type="submit"
                 ref={buttonSubmitRef} // neste caso o button pode ser acessado 
                 // diretamente por isso usamos ref={}
-                className={classes.buttonRegister}>Cadastrar</Button>
+                className={classes.buttonRegister}>
+                  Cadastrar
+              </Button>
             </div>
 
           </div>

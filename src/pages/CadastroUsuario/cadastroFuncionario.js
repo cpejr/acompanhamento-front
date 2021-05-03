@@ -11,6 +11,7 @@ import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
 import {AuthContext} from "../../context/AuthContext";
+import isValidDate from '../../services/dateValidation';
 
 function CadastroFuncionario(props) {
   const { 
@@ -36,7 +37,9 @@ function CadastroFuncionario(props) {
   const [address, setAddress] = useState('');
   const [zipcode, setZipcode] = useState('');
 
+
   const { sendMessage } = useContext(AuthContext);
+  const [existingCPF, setExistingCPF] = useState([]);
 
   // seta os valores quando os dados chegarem
   useEffect(() => {
@@ -48,6 +51,27 @@ function CadastroFuncionario(props) {
     setAddress(formData.address);
     setZipcode(formData.zipcode);
   }, [formData])
+
+    // pega os CPF que já existem ao carregar a página
+    useEffect(() => getExistingCPF(), []);
+
+    function getExistingCPF() {
+  
+      api
+        .get('/user')
+        .then(response => {
+          let auxArray = [];
+  
+          for (let i = 0; i < response.data.user.length; ++i) {
+            auxArray.push(response.data.user[i].cpf)
+          }
+          setExistingCPF(auxArray);
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+      
+    }
 
   async function handleRegister(e) {
     e.preventDefault();
@@ -63,18 +87,9 @@ function CadastroFuncionario(props) {
       address: address,
       zipcode: zipcode
     };
-    if (
-      data.type !== "" &&
-      data.name !== "" &&
-      data.cpf !== "" &&
-      data.email !== "" &&
-      data.number !== "" &&
-      data.password !== "" &&
-      data.address !== "" &&
-      data.zipcode !== ""
-    ) {
-      if (email !== emailConfirm) alert("Os emails estão diferentes.");
-      if (senha !== senhaConfirm) alert("As senhas não batem.");
+
+
+    if (validateAllFields(data)) { 
 
       sendMessage('Realizando cadastro...', 'info', null);
       api
@@ -100,24 +115,46 @@ function CadastroFuncionario(props) {
           }
           sendMessage(`Error: ${error.message}`, 'error');
       })
-    } else sendMessage('Preencha todos os campos', 'error', null);
+
+      // adiciona o novo CPF cadstrado na lista 
+      setExistingCPF([...existingCPF, data.cpf]);
+
+    } else { // mensagens (snackbar) de erros
+      if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
+      else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
+      else if (existingCPF.includes(data.cpf)) sendMessage("CPF já cadastrado!", "error");
+      else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
+      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
+        sendMessage("Email inválido!", "error");
+      else if (data.cpf.length < 11) sendMessage("CPF inválido.", "error");
+      else if (data.zipcode.length < 8) sendMessage("CEP inválido.", "error");
+      else if (data.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
+      else if (!isValidDate(data.birthdate)) sendMessage("Data de nascimento inválida!", "error");
+
+      else sendMessage('Campos com dados inválidos!', 'error');
+    };
   }
 
   function handleInput(event, type) {
+    let str = event.target.value;
+
     switch (type) {
       case 'name':
         setName(event.target.value);
         break;
       
       case 'cpf':
+        event.target.value = str.replace(/\D/g, ""); // somente numeros
         setCpf(event.target.value);
         break;
 
       case 'birthdate':
+        event.target.value = str.replace(/[^0-9/]/g, ""); // somente data
         setBirthdate(event.target.value);
         break;
 
       case 'phonenumber':
+        event.target.value = str.replace(/[^0-9() ]/g, ""); // somente telefone
         setPhonenumber(event.target.value);
         break;
 
@@ -126,6 +163,7 @@ function CadastroFuncionario(props) {
         break;
 
       case 'zipcode':
+        event.target.value = str.replace(/\D/g, ""); // somente numeros
         setZipcode(event.target.value);
         break;
 
@@ -147,6 +185,26 @@ function CadastroFuncionario(props) {
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
+  }
+
+  function validateAllFields(data) {
+
+    if (
+      data.type  !== "" &&
+      data.name  !== "" &&
+      data.cpf   !== "" && data.cpf.length === 11 &&
+      data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
+      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
+      data.password    !== "" && data.password.length >= 6 &&
+      data.address     !== "" &&
+      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      email === emailConfirm &&
+      senha === senhaConfirm &&
+      !existingCPF.includes(data.cpf) &&
+      isValidDate(data.birthdate)
+    ) return true;
+
+    else return false;
   }
 
   return (
@@ -189,10 +247,12 @@ function CadastroFuncionario(props) {
               label="Data de Nascimento"
               defaultValue="2017-05-24"
               value={birthdate}
-              helperText="(Opcional)"
+              helperText="*Obrigatório"
+              inputProps={{ maxLength: 10 }}
               variant="filled"
               onChange={(e) => handleInput(e, 'birthdate')}
               type="text"
+              required
               disabled= {mode === 'view'}
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
@@ -205,7 +265,7 @@ function CadastroFuncionario(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              inputProps={{ maxLength: 11 }}
+              inputProps={{ maxLength: 15 }}
               onChange={(e) => handleInput(e, 'phonenumber')}
               required
               disabled= {mode === 'view'}
@@ -234,6 +294,7 @@ function CadastroFuncionario(props) {
               value={zipcode}
               label="CEP"
               type="text"
+              inputProps={{ maxLength: 8 }}
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => handleInput(e, 'zipcode')}

@@ -77,7 +77,7 @@ function AtualizacaoUsuario() {
       try {
         const updatedFields = {
           name: userData.name,
-          birthdate: userData.birthdate,
+          birthdate: userData.type === 'PJ' ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
           address: userData.address,
           zipcode: userData.zipcode,
@@ -99,7 +99,7 @@ function AtualizacaoUsuario() {
         } else { // mensagens (snackbar) de erros
           if      (updatedFields.zipcode.length < 8) sendMessage("CEP inválido.", "error");
           else if (updatedFields.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
-          else if (!isValidDate(updatedFields.birthdate)) sendMessage("Data de nascimento inválida!", "error");
+          else if (!isValidDate(updatedFields.birthdate)) sendMessage("Data de nascimento inválida!", "error")
     
           else sendMessage('Campos com dados inválidos!', 'error');
         }

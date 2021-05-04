@@ -106,11 +106,8 @@ export default function CadastroEquipamento(props) {
       try {
         const resposta = await api.post('/equipment/create', data);
 
-        if (resposta.data && resposta.data.equipment) {
-          const equipamento = resposta.data.equipment;
-          const id = equipamento.id;
-          setIdCadastrado(id);
-
+        if (resposta.data && resposta.data.id_equipment) {
+          setIdCadastrado(resposta.data.id_equipment);
           sendMessage('Cadastrado com sucesso')
         };
       } catch (err) {

@@ -11,6 +11,7 @@ import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import { AuthContext } from "../../context/AuthContext";
 import isValidDate from '../../services/dateValidation';
+import MaskedInput from 'react-text-mask'
 
 function CadastroPF(props) {
  
@@ -167,6 +168,9 @@ function CadastroPF(props) {
         .post("/user/create", data)
         .then((response) => {
           sendMessage('Cadastrado com sucesso');
+
+          // adiciona o novo CPF cadstrado na lista 
+          setExistingCPF([...existingCPF, data.cpf]);
         })
         .catch ((error) => {
           if (error.response) {
@@ -184,11 +188,11 @@ function CadastroPF(props) {
             console.log('Error', error.message);
             sendMessage('Error 501: Falha no cadastro', 'error');
           }
-          sendMessage(`Error: ${error.message}`, 'error');
-      })
 
-      // adiciona o novo CPF cadstrado na lista 
-      setExistingCPF([...existingCPF, data.cpf]);
+          if (error.response.status === 400) { 
+            sendMessage(`Email já cadastrado!`, 'error');
+          } else sendMessage(`Error: ${error.message}`, 'error');
+      })
 
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
@@ -205,6 +209,7 @@ function CadastroPF(props) {
       else sendMessage('Campos com dados inválidos!', 'error');
     };
   }
+
 
   return (
     <div>

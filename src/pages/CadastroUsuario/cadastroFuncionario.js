@@ -96,6 +96,9 @@ function CadastroFuncionario(props) {
         .post("/user/create", data)
         .then((response) => {
           sendMessage('Cadastrado com sucesso');
+
+          // adiciona o novo CPF cadstrado na lista 
+          setExistingCPF([...existingCPF, data.cpf]);
         })
         .catch ((error) => {
           if (error.response) {
@@ -113,11 +116,10 @@ function CadastroFuncionario(props) {
             console.log('Error', error.message);
             sendMessage('Error 501: Falha no cadastro', 'error');
           }
-          sendMessage(`Error: ${error.message}`, 'error');
+          if (error.response.status === 400) { 
+            sendMessage(`Email já cadastrado!`, 'error');
+          } else sendMessage(`Error: ${error.message}`, 'error');
       })
-
-      // adiciona o novo CPF cadstrado na lista 
-      setExistingCPF([...existingCPF, data.cpf]);
 
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");

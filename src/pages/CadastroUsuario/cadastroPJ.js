@@ -157,6 +157,9 @@ function CadastroPJ(props) {
         .post("user/create", data)
         .then((response) => {
           sendMessage("Cadastrado com sucesso");
+
+          // adiciona o novo CNPJ cadstrado na lista 
+          setExistingCNPJ([...existingCNPJ, data.cnpj]);
         })
         .catch((error) => {
           if (error.response) {
@@ -174,11 +177,10 @@ function CadastroPJ(props) {
             console.log("Error", error.message);
             sendMessage("Error 501: Falha no cadastro", "error");
           }
-          sendMessage(`Error: ${error.message}`, "error");
+          if (error.response.status === 400) { 
+            sendMessage(`Email já cadastrado!`, 'error');
+          } else sendMessage(`Error: ${error.message}`, 'error');
         });
-
-      // adiciona o novo CNPJ cadstrado na lista 
-      setExistingCNPJ([...existingCNPJ, data.cnpj]);
 
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");

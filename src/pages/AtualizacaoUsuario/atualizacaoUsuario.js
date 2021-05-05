@@ -213,9 +213,12 @@ function AtualizacaoUsuario() {
               onClick={handleSubmit}
             >
               {
-                updating ? loading ? (
-                  <CircularProgress color="primary" />
-                ) : "Editar" : "Editar"
+                updating ? 
+                  (loading ? (
+                    <CircularProgress color="primary" />
+                  )
+                    : "Salvar")
+                  : "Editar"
               }
             </Button>
       

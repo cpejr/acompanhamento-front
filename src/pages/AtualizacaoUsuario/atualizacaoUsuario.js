@@ -29,7 +29,6 @@ import { RssFeed } from "@material-ui/icons";
 
 function AtualizacaoUsuario(props) {
   const { id } = useParams();
-  const { user } = useContext(LoginContext);
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
@@ -47,7 +46,7 @@ function AtualizacaoUsuario(props) {
   useEffect(() => {
     if (id === "me") {
       setUserData(props.userPerfil);
-      setUserDataOriginal(props.userPerfil)
+      setUserDataOriginal(props.userPerfil);
     } else {
       api
         .get(`/user/${props.userPerfil.id}`)
@@ -60,7 +59,7 @@ function AtualizacaoUsuario(props) {
           alert("Erro ao buscar funcionários");
         });
     }
-  }, [id, props.userPerfil])
+  }, [id, props.userPerfil]);
 
   // pega os dados do usuário com o id
 
@@ -177,13 +176,13 @@ function AtualizacaoUsuario(props) {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          {userData.type === "PF" || id === "me" ? (
+          {userData.type === "PF" && id === "me" ? (
             <CadastroPF
               formData={userData}
               handleChangeInput={handleChangeInput}
               mode={updating ? "edit" : "view"}
             />
-          ) : userData.type === "PJ" ? (
+          ) : userData.type === "PJ" && id === "me" ? (
             <CadastroPJ
               formData={userData}
               handleChangeInput={handleChangeInput}

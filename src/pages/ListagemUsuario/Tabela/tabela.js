@@ -13,10 +13,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { FiMoreHorizontal } from "react-icons/fi";
+import LinkMenu from "../../../components/LinkMenu";
 
 export default function StickyHeadTable(props) {
   const classes = useStyles();
-
+  const [openMenu, setOpenMenu] = React.useState("");
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -38,6 +39,7 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tableCell}>
                 Última data ativa
               </TableCell>
+              <TableCell className={classes.tableCell}>Informações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,6 +68,17 @@ export default function StickyHeadTable(props) {
                   >
                     {user.data}
                   </Link>
+                </TableCell>
+                <TableCell className={classes.lastTableCell}>
+                  <LinkMenu
+                    id={user.id}
+                    type={"user"}
+                    openMenu={openMenu}
+                    userName={user.name}
+                    setOpenMenu={setOpenMenu}
+                  >
+                    <FiMoreHorizontal size={25} color="#C4C4C4" />
+                  </LinkMenu>
                 </TableCell>
               </TableRow>
             ))}

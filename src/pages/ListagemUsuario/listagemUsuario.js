@@ -178,12 +178,25 @@ export default function ListagemUsuario() {
               "name",
               ordemAlfabetica
             ).map((employees) => {
-              return {
-                id: employees.id,
-                name: employees.name,
-                funcao: employees.type,
-                data: employees.active,
-              };
+              if(employees.type === "PJ") {
+                return {
+                  id: employees.id,
+                  name: employees.name,
+                  funcao: employees.type,
+                  data: employees.active,
+                  cnpj: employees.cnpj,
+                  type: employees.type
+                }; 
+              } else {
+                return {
+                  id: employees.id,
+                  name: employees.name,
+                  funcao: employees.type,
+                  data: employees.active,
+                  cpf: employees.cpf,
+                  type: employees.type
+                };
+              }
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica}

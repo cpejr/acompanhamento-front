@@ -21,6 +21,8 @@ import StickyHeadTable from "./Tabela";
 
 export default function ListagemEquipamento() {
   const classes = useStyles();
+  const location = useLocation();
+  const [client, setClient] = useState();
   const [filterby, setFilterby] = useState("id_equipment");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
   const [modelList, setModelList] = useState([]);
@@ -38,6 +40,13 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
+  
+  useEffect(() => {
+    if(location && location.state){
+      setClient(location.state.client);
+      setFilterby("cpf_client")
+    }
+  }, [location]);
 
   useEffect(() => {
     const url = situation
@@ -151,6 +160,7 @@ export default function ListagemEquipamento() {
               <InputBase
                 className={classes.placeholder}
                 placeholder="Procurar equipamento"
+                value={client}
                 onChange={(e) => FindEquipment(e.target.value)}
                 classes={{
                   root: classes.inputRoot,

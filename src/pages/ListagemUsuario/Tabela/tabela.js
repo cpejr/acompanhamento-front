@@ -72,7 +72,8 @@ export default function StickyHeadTable(props) {
                 <TableCell className={classes.lastTableCell}>
                   <LinkMenu
                     id={user.id}
-                    type={"user"}
+                    type={user.type}
+                    client={user.cpf || user.cnpj}
                     openMenu={openMenu}
                     userName={user.name}
                     setOpenMenu={setOpenMenu}

@@ -29,7 +29,7 @@ export const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-export default ({ children, type, id, openMenu, setOpenMenu, ...rest }) => {
+export default ({ children, type, id, client, openMenu, setOpenMenu, ...rest }) => {
   // const [openMenu, setOpenMenu] = useState(false);
   const [coordenadas, setCoordenadas] = useState({
     x: 0,
@@ -46,8 +46,13 @@ export default ({ children, type, id, openMenu, setOpenMenu, ...rest }) => {
     setOpenMenu(id);
     history.push(path);
   };
+  const handleClickMenuUser = (path) => {
+    setOpenMenu(id);
+    console.log("cliente", client);
+    history.push({pathname: path, state: {client: client}});
+  };
 
-  if (type === "user") {
+  if (type !== "equipment") {
     return (
       <div {...rest}>
         {openMenu === id && (
@@ -57,19 +62,21 @@ export default ({ children, type, id, openMenu, setOpenMenu, ...rest }) => {
                 <ListItemIcon>
                   <SearchIcon />
                 </ListItemIcon>
-                <ListItemText>Usuário</ListItemText>
+                <ListItemText>Detalhes</ListItemText>
               </ListItem>
-              <ListItem
-                button
-                onClick={() =>
-                  handleClickMenu(`/funcionamentoequipamento/${id}`)
-                }
-              >
-                <ListItemIcon>
-                  <TimelineIcon />
-                </ListItemIcon>
-                <ListItemText>Equipamento</ListItemText>
-              </ListItem>
+              {(type === 'PJ' || type === 'PF') &&
+                <ListItem
+                  button
+                  onClick={() =>
+                    handleClickMenuUser(`/listagemequipamento`)
+                  }
+                >
+                  <ListItemIcon>
+                    <TimelineIcon />
+                  </ListItemIcon>
+                  <ListItemText>Equipamento</ListItemText>
+                </ListItem>
+              }
             </List>
           </Paper>
         )}

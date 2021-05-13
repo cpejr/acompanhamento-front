@@ -58,7 +58,7 @@ export default function StickyHeadTable(props) {
                   {/* <TableCell>{equipment.equipment_model}</TableCell> */}
                   <TableCell>{equipment.cpf_client}</TableCell>
                   <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
-                    <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
+                    <LinkMenu id={equipment.id} type={"equipment"} openMenu={openMenu} setOpenMenu={setOpenMenu}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </LinkMenu>
                   </TableCell>

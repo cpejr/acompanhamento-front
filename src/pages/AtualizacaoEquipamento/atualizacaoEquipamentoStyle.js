@@ -29,6 +29,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   containerForm: {
+    display: "flex",
     padding: "50px 50px 30px",
     marginBottom: "50px",
     borderRadius: "13px",
@@ -41,6 +42,12 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       maxWidth: "100%"
     }
+  },
+  rightSection: {
+    marginLeft: "100px",
+  },
+  subtitle:{
+    fontWeight:"400",
   },
   input: {
     boxSizing: "border-box",

@@ -36,6 +36,7 @@ function AtualizacaoEquipamento() {
     instalation_date: "",
   });
   const { sendMessage } = useContext(AuthContext);
+  // const [instalationError, setInstalationError] = useState(false);
 
   useEffect(() => {
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
@@ -175,6 +176,17 @@ function AtualizacaoEquipamento() {
     }
   }
 
+  // function isPendente(){ 
+  //   if (equipment.installation_status === "pendente") {
+  //     return "{color: #43A047}";
+  //   } else if (equipment.installation_status === "concluído" || equipment.installation_status === "Concluido") {
+  //     return "{color: #EAB701}";
+  //   } else {
+  //     setInstalationError(true);
+  //     return "{color: #FE2121}";
+  //   }
+  // }
+
   const AreYouSure = () => (
     <Dialog open={deleting} onClose={() => setDeleting(false)}>
       <DialogTitle>Excluir equipamento?</DialogTitle>
@@ -297,6 +309,13 @@ function AtualizacaoEquipamento() {
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
             </div>
+          </div>
+          <div className={classes.rightSection}>
+            <h3 className={classes.subtitle}>Código para conexão com equipamento:</h3>
+            <h2>{equipment.id}</h2>
+            <h3 className={classes.subtitle}>Status de conexão com equipamento:</h3>
+            {/* o problema tá aqui! */}
+            <h2>{equipment.installation_status}</h2> 
           </div>
         </Paper>
       </div>

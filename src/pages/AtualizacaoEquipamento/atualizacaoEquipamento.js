@@ -11,17 +11,17 @@ import {
   DialogActions,
   Typography,
   Backdrop,
-  CircularProgress
-} from "@material-ui/core"
-import api from '../../services/api';
-import { AuthContext } from '../../context/AuthContext'
-import moment from 'moment';
-import { useHistory } from 'react-router-dom';
-import { parseISO, isAfter } from 'date-fns';
-import findError from '../../services/findError';
-import { useParams } from 'react-router';
-import { useStyles } from './atualizacaoEquipamentoStyle'
-import { Autocomplete } from '@material-ui/lab';
+  CircularProgress,
+} from "@material-ui/core";
+import api from "../../services/api";
+import { AuthContext } from "../../context/AuthContext";
+import moment from "moment";
+import { useHistory } from "react-router-dom";
+import { parseISO, isAfter } from "date-fns";
+import findError from "../../services/findError";
+import { useParams } from "react-router";
+import { useStyles } from "./atualizacaoEquipamentoStyle";
+import { Autocomplete } from "@material-ui/lab";
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
@@ -71,7 +71,7 @@ function AtualizacaoEquipamento() {
   const classes = useStyles({ updating });
 
   useEffect(() => {
-    console.log(equipment);
+    console.log("OPA", equipment);
   }, [equipment]);
 
   if (!equipment) {
@@ -163,30 +163,35 @@ function AtualizacaoEquipamento() {
       // excuir de verdade
       setDeleting(false);
       sendMessage("Excluindo equipamento...", "info", null);
-      api.delete(`equipment/${id}`).then((response) => {
-        sendMessage("Equipamento excluído com sucesso");
-        history.push("/listagemequipamento");
-      }).catch((err) => {
-        sendMessage(`Erro ao excluir o equipamento: ${err.message}`, "error");
-        console.log(err)
-      })
-    }
-    else { // confirmar exclusão
+      api
+        .delete(`equipment/${id}`)
+        .then((response) => {
+          sendMessage("Equipamento excluído com sucesso");
+          history.push("/listagemequipamento");
+        })
+        .catch((err) => {
+          sendMessage(`Erro ao excluir o equipamento: ${err.message}`, "error");
+          console.log(err);
+        });
+    } else {
+      // confirmar exclusão
       setDeleting(true);
     }
   }
 
-  // function isPendente(){ 
-  //   if (equipment.installation_status === "pendente") {
-  //     return "{color: #43A047}";
-  //   } else if (equipment.installation_status === "concluído" || equipment.installation_status === "Concluido") {
-  //     return "{color: #EAB701}";
-  //   } else {
-  //     setInstalationError(true);
-  //     return "{color: #FE2121}";
-  //   }
-  // }
+  function Status(state) {
+    if (state === "pendente") {
+      return <h2 style={{ color: "#EAB701" }}>Pendente</h2>;
+    }
 
+    if (state === "concluido") {
+      return <h2 style={{ color: "#43A047" }}>Concluído</h2>;
+    }
+
+    if (state === "erro") {
+      return <h2 style={{ color: "#FE2121" }}>Erro</h2>;
+    }
+  }
   const AreYouSure = () => (
     <Dialog open={deleting} onClose={() => setDeleting(false)}>
       <DialogTitle>Excluir equipamento?</DialogTitle>
@@ -311,11 +316,16 @@ function AtualizacaoEquipamento() {
             </div>
           </div>
           <div className={classes.rightSection}>
-            <h3 className={classes.subtitle}>Código para conexão com equipamento:</h3>
+            <h3 className={classes.subtitle}>
+              Código para conexão com equipamento:
+            </h3>
             <h2>{equipment.id}</h2>
-            <h3 className={classes.subtitle}>Status de conexão com equipamento:</h3>
-            {/* o problema tá aqui! */}
-            <h2>{equipment.installation_status}</h2> 
+            <h3 className={classes.subtitle}>
+              Status de conexão com equipamento:
+            </h3>
+            <div className="status">
+              {Status(equipment.installation_status)}
+            </div>
           </div>
         </Paper>
       </div>

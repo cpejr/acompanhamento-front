@@ -7,7 +7,7 @@ export const LoginContext = createContext();
 
 const LoginContextProvider = (props) => {
   const [token, setToken] = useStorage("token");
-  const [user, setUser] = useState();
+  const [user, setUser] = useStorage('user');
 
   async function verify(token) {
     try {

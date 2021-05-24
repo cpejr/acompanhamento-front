@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useStyles } from './tabelaStyle';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useStyles } from "./tabelaStyle";
 import {
   Paper,
   Table,
@@ -10,12 +10,11 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  Typography
-} from '@material-ui/core';
-import { FiMoreHorizontal } from "react-icons/fi"
+  Typography,
+} from "@material-ui/core";
+import { FiMoreHorizontal } from "react-icons/fi";
 
 export default function StickyHeadTable(props) {
-
   const classes = useStyles();
 
   return (
@@ -28,31 +27,53 @@ export default function StickyHeadTable(props) {
                 <TableSortLabel
                   active
                   direction={props.ordemAlfabetica ? "desc" : "asc"}
-                  onClick={() => props.setOrdemAlfabetica(!props.ordemAlfabetica)}
+                  onClick={() =>
+                    props.setOrdemAlfabetica(!props.ordemAlfabetica)
+                  }
                 >
                   Nome
                 </TableSortLabel>
               </TableCell>
               <TableCell className={classes.tableCell}>Função</TableCell>
-              <TableCell className={classes.tableCell}>Última data ativa</TableCell>
+              <TableCell className={classes.tableCell}>
+                Última data ativa
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.usersListToDisplay
-              .map(user => (
-                <TableRow hover tabIndex={-1} key={user.name}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.funcao}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{user.data}
-                    <Link to={`/au/${user.id}`}>
-                      <FiMoreHorizontal size={24} color="#C4C4C4" />
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              )
-              )}
-            {props.usersListToDisplay.length <= 0 ? <Typography className={classes.nullUser}>Este usuário não foi encontrado </Typography> : null}
-
+            {props.usersListToDisplay.map((user) => (
+              <TableRow hover tabIndex={-1} key={user.name}>
+                <TableCell>
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to={`/au/${user.id}`}
+                  >
+                    {user.name}{" "}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to={`/au/${user.id}`}
+                  >
+                    {user.funcao}{" "}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to={`/au/${user.id}`}
+                  >
+                    {user.data}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+            {props.usersListToDisplay.length <= 0 ? (
+              <Typography className={classes.nullUser}>
+                Este usuário não foi encontrado{" "}
+              </Typography>
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>

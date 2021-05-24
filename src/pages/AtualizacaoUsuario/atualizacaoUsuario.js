@@ -97,7 +97,7 @@ function AtualizacaoUsuario() {
           updatedFields.address !== '' &&
           updatedFields.zipcode !== '' 
         ) {
-          const response = await api.put(`/users/${id}`, updatedFields);
+          const response = await api.put(`/user/${id}`, updatedFields);
 
           setOpenSnackbar(true);
           setMessageSnackbar('Usuário atualizado com sucesso!');

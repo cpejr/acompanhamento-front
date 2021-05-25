@@ -31,7 +31,7 @@ function ShortcutsList() {
       title: "Perfil",
       to: "/au/me",
       icon: <PersonIcon />,
-      adminOnly: true,
+      adminOnly: false,
     },
     {
       title: "Cadastro de usuário",
@@ -75,24 +75,24 @@ function ShortcutsList() {
 
   function Permission(Items, isClient, hidden) {
     if (user.type === "PJ" || user.type === "PF") {
-      return (
+      return Items.filter(Item =>
+        Item.adminOnly === false
+      ).map(({ title, to, icon }) => (
         <Tooltip
-          title={Items.title}
-          key={Items.title}
+          title={title}
+          key={title}
           placement="right"
-          disableHoverListener={Items.hidden}
+          disableHoverListener={hidden}
           arrow
         >
-          <ListItem button component={Link} to={Items.to}>
-            <ListItemIcon>{Items.icon}</ListItemIcon>
-            <ListItemText>{Items.title}</ListItemText>
+          <ListItem button component={Link} to={to}>
+            <ListItemIcon>{icon}</ListItemIcon>
+            <ListItemText>{title}</ListItemText>
           </ListItem>
         </Tooltip>
-      );
+      ));
     } else {
-      return Items.filter(({ adminOnly }) =>
-        isClient ? !adminOnly : true
-      ).map(({ title, to, icon }) => (
+      return Items.map(({ title, to, icon }) => (
         <Tooltip
           title={title}
           key={title}

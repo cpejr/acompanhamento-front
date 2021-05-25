@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -18,9 +18,11 @@ import moment from "moment";
 import ordenar from "../../services/ordenar";
 import { useStyles } from "./listagemEquipamentoStyle";
 import StickyHeadTable from "./Tabela";
+import { LoginContext } from "../../context/LoginContext";
 
 export default function ListagemEquipamento() {
   const classes = useStyles();
+  const { user } = useContext(LoginContext);
   const [filterby, setFilterby] = useState("id_equipment");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
   const [modelList, setModelList] = useState([]);
@@ -38,6 +40,8 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
+  let cpf = user.cpf
+  let cpf_equipment = cpf.substr(0,3)+"."+cpf.substr(3,3)+"."+cpf.substr(6,3)+"-"+cpf.substr(9,2);
 
   useEffect(() => {
     const url = situation
@@ -179,7 +183,8 @@ export default function ListagemEquipamento() {
               ordem.by,
               ordem.alfabetica,
               ordem.by === "updateAt" ? true : false
-            ).map((equipment) => {
+            ).filter(Item => Item.cpf_client === cpf_equipment)
+            .map((equipment) => {
               var formattedDate = getRequiredDateFormat(equipment.updatedAt);
               return {
                 id: equipment.id,

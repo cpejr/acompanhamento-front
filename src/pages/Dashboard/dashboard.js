@@ -4,12 +4,15 @@ import { Typography } from '@material-ui/core';
 
 import { useStyles } from './dashboardStyles';
 import { vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
+
+import api from "../../services/api";
+
 import Graphic from './Chart';
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';
 
 export default function Dashboard() {
-  const { equipmentsList } = useContext(DataContext);
+  const [equipmentsList, setEquipmentsList] = useState();
   const { isClient } = useContext(AuthContext);
 
   const [sitNum, setSitNum] = useState({
@@ -18,7 +21,23 @@ export default function Dashboard() {
     atencao: Number
   });
 
+  useEffect(() => {
+    api
+      .get("equipment/index")
+      .then((equipment) => {
+        var equipments = equipment.data.equipment;
+        setEquipmentsList(equipments);
+      })
+      .catch((err) => {
+        console.error(
+          "Não foi possivel estabelecer conecção com o backend",
+          err
+        );
+      });
+  }, []);
+
   useEffect(() => { // define o número de bombas em cada situação
+    if (equipmentsList){
     let numOk = 0; let numAtencao = 0; let numRevisao = 0;
 
     equipmentsList.forEach(equipment => {
@@ -27,11 +46,14 @@ export default function Dashboard() {
       else if (equipment.situation === "Revisão") numRevisao++;
     });
 
+    console.log("Starts here:");
+    console.log(DataContext);
+
     setSitNum({
       ok: numOk,
       revisao: numRevisao,
       atencao: numAtencao,
-    })
+    })}
   }, [equipmentsList]);
 
   const title = isClient ? "Minhas Bombas" : "Situação das Bombas";

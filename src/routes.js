@@ -3,21 +3,26 @@ import { Route, Router, Switch, Redirect } from 'react-router-dom'
 import history from './history';
 
 import { DataContextProvider } from './context/DataContext';
+import LoginContextProvider from './context/LoginContext';
 
-import Home from './pages/Home'
+// import Home from './pages/Home'
 import Login from './pages/Login'
 import Menu from './components/Menu';
 import Dashboard from './pages/Dashboard/dashboard';
 import CadastroUsuario from './pages/CadastroUsuario';
+import CadastroModelo from './pages/CadastroModelo';
 import CadastroEquipamento from './pages/CadastroEquipamento';
 import ListagemUsuario from './pages/ListagemUsuario';
+import ListagemModelo from './pages/ListagemModelo';
 import ListagemEquipamento from './pages/ListagemEquipamento';
 import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
+import AtualizacaoEquipamento from './pages/AtualizacaoEquipamento';
+import AtualizacaoModelo from './pages/AtualizacaoModelo';
+import FuncionamentoEquipamento from './pages/FuncionamentoEquipamento';
 import Testes from './pages/Testes';
-import ListagemDashboard from './pages/ListagemDashboard';
 import EsqueciSenha from './pages/EsqueciSenha';
 import DefinicaoNovaSenha from './pages/DefinicaoNovaSenha';
-
+import RoutesPrivate from './components/Routes/Private/Private';
 
 import { useStyles } from './routesStyles';
 
@@ -26,51 +31,66 @@ function Routes() {
 
   return (
     <Router history={history}>
-      <Switch>
-        <Route component={Home} exact path='/' />
-        <Route path="/login" component={Login} />
-        <Route path="/esquecisenha" component={EsqueciSenha} />
-        <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
-        <Fragment>
-          <Menu />
-          <div className={classes.spaceContent}>
-            <DataContextProvider>
-              {/* DashBoard */}
-              <Route path="/dashboard">
-                <Dashboard />
-              </Route>
+      <LoginContextProvider>
+        <Switch>
+          <Route path="/" exact><Redirect to="/login" /></Route>
+          <Route path="/login" component={Login} />
+          <Route path="/esquecisenha" component={EsqueciSenha} />
+          <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
+          <Fragment>
+            <Menu />
+            <div className={classes.spaceContent}>
+              <DataContextProvider>
+                {/* DashBoard */}
+                <RoutesPrivate path="/dashboard" component={Dashboard} />
 
-              {/* Listagem de Usuários via Dashboard */}
-              <Route path="/listagemdashboard/:situacao" component={ListagemDashboard} />
+                {/* Listagem de Usuários via Dashboard
+                <Route path="/listagemdashboard/:situacao" component={ListagemDashboard} /> */}
 
-              {/* Cadastro de Equipamentos */}
-              <Route path="/cadastroequipamento" component={CadastroEquipamento} />
+                {/* Cadastro de Modelo */}
+                <RoutesPrivate path="/cadastromodelo" component={CadastroModelo} />
 
-              {/* Cadastro de Usuários */}
-              <Route path="/cadastrousuario" component={CadastroUsuario} />
+                {/* Cadastro de Equipamento */}
+                <RoutesPrivate path="/cadastroequipamento" component={CadastroEquipamento} />
 
-              {/* Listagem de Usuários */}
-              <Route path="/listagemusuario">
-                <ListagemUsuario />
-              </Route>
+                {/* Cadastro de Usuários */}
+                <RoutesPrivate path="/cadastrousuario" component={CadastroUsuario} />
 
-              {/* Listagem de Equipamentos */}
-              <Route path="/listagemequipamento">
-                <ListagemEquipamento />
-              </Route>
+                {/* Listagem de Usuários */}
+                <RoutesPrivate path="/listagemusuario" component={ListagemUsuario}/>
 
-              {/* Atualização de Usuários */}
-              <Route path="/au" exact><Redirect to="/" /></Route>
-              <Route path="/au/:id">
-                <AtualizacaoUsuario />
-              </Route>
+                {/* Listagem de Modelo */}
+                <RoutesPrivate path="/listagemmodelo" component={ListagemModelo}/>
 
-              {/* Páginas para Testes */}
-              <Route path="/testes" component={Testes} />
-            </DataContextProvider>
-          </div>
-        </Fragment>
-      </Switch>
+                {/* Listagem de Equipamentos */}
+                <RoutesPrivate path="/listagemequipamento" component={ListagemEquipamento}/>
+
+                {/* Atualização de Usuários */}
+                <RoutesPrivate path="/au" exact><Redirect to="/" /></RoutesPrivate>
+                <RoutesPrivate path="/au/:id" component={AtualizacaoUsuario}/>
+
+                {/* Atualização de Modelo */}
+                <RoutesPrivate path="/am" exact><Redirect to="/" /></RoutesPrivate>
+                <RoutesPrivate path="/am/:id" component={AtualizacaoModelo}/>
+
+                {/* Atualização de Equipamentos */}
+                <RoutesPrivate path="/ae" exact><Redirect to="/" /></RoutesPrivate>
+                <RoutesPrivate path="/ae/:id" component={AtualizacaoEquipamento}/>
+
+                {/* Funcionamento de Equipamentos */}
+                <RoutesPrivate path="/funcionamentoequipamento" exact><Redirect to="/" /></RoutesPrivate>
+                <RoutesPrivate path="/funcionamentoequipamento/:id" component={FuncionamentoEquipamento}/>
+
+
+                {/* Páginas para Testes */}
+                <RoutesPrivate path="/testes" component={Testes} />
+
+                {/* <RoutesPrivate path="/" component={Login} /> */}
+              </DataContextProvider>
+            </div>
+          </Fragment>
+        </Switch>
+      </LoginContextProvider>
     </Router>
   )
 }

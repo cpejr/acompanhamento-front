@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core'
-import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
 import { vermelhoPadrao, vermelhoPadraoEscuro, azulPadrao, background, textFontFamilyPadrao } from '../../StylePadrao/stylePadrao';
 
@@ -45,8 +44,16 @@ export const useStyles = makeStyles(theme => ({
       fontSize: "25px"
     }
   },
+  
+  errorTextLogin: {
+    margin: "0px",
+    color: "white",
+    fontWeight: "400",
+    lineHeight: "0",
+    marginBottom: "15px",
+  },
 
-  loginLogo: {
+  logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
     position: "absolute",
     width: "180px",
@@ -63,7 +70,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     width: "100%",
-    marginBottom: "20px",
+    marginBottom: "5px",
   },
 
   forgotPassword: {

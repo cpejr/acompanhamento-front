@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, subtitleFontSize, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, subtitleFontSize, azulPadraoClaro, azulPadraoEscuro } from '../../StylePadrao/stylePadrao';
 
 
 export const useStyles = makeStyles((theme) => ({
@@ -75,6 +75,9 @@ export const useStyles = makeStyles((theme) => ({
     width: "200px",
     [theme.breakpoints.only("xs")]: {
       width: "100%",
+    },
+    "&:hover": {
+      backgroundColor: azulPadraoEscuro,
     },
   },
 

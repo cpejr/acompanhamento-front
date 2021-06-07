@@ -24,7 +24,7 @@ export const useStyles = makeStyles({
     alignItems: "center"
   },
 
-  nullEquipament: {
+  nullModel: {
     padding: "18px",
     width: "350px",
     fontWeight: "400",

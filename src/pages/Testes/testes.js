@@ -1,11 +1,12 @@
 import React from 'react';
-import history from '../../history';
+import LinkMenu from '../../components/LinkMenu'
 
 export default function Testes() {
-  function mudarUrl() {
-    history.push('dashboard');
-  }
   return (
-    <button onClick={mudarUrl}>Vai para a dashboard</button>
-  );
+    <>
+      <LinkMenu id={132132131}>Eae menu</LinkMenu>
+      <LinkMenu id={4564213}>Tchau menu</LinkMenu>
+      <LinkMenu id={7893}>Vem menu</LinkMenu>
+    </>
+  )
 }

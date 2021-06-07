@@ -26,7 +26,8 @@ export default function EsqueciSenha() {
     setOpenMensage(false);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault(); //cancela os eventos padroes de um submit
     const email = document.getElementById("email").value;
     setError("");
     // enviei para o backend e espero uma resposta para
@@ -52,25 +53,24 @@ export default function EsqueciSenha() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.esquecisenhaLogo}></div>
+        <Link to="/" className={classes.logo}></Link>
 
-        <Snackbar autoHideDuration={6000} open={openMensage} onClose={handleCloseMensage}
+        <Snackbar autoHideDuration={4000} open={openMensage} onClose={handleCloseMensage}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <Alert elevation={6} variant="filled" severity="success">
             Código enviado para o seu email
           </Alert>
         </Snackbar>
 
-        <div className={classes.esquecisenhaForm}>
+        <form className={classes.esquecisenhaForm} onSubmit={handleSubmit} >
           <Typography className={classes.title}>Esqueci minha senha!</Typography>
+          <h4 style={{ color: "white", margin: "0" }}>Email</h4>
           <TextField className={classes.email}
             InputProps={{
               startAdornment: <InputAdornment position="start">
-                <FiMail size={24} className={classes.icon
-                } />
+                <FiMail size={24} className={classes.icon} />
               </InputAdornment>,
             }}
-            autoComplete={false}
             type="email"
             variant="outlined"
             id="email"
@@ -83,12 +83,12 @@ export default function EsqueciSenha() {
           </>}
           {firstSubmit ?
             <p className={classes.resubmitText}>
-              Não recebeu o email? <Link onClick={handleSubmit}>Enviar novamente</Link>
+              Não recebeu o email? <Button type="submit">Enviar novamente</Button>
             </p> :
-            <Button className={classes.buttonCodigo} onClick={handleSubmit}>
-              Enviar Código
+            <Button className={classes.buttonCodigo} type="submit">
+              Enviar Link de Redefinição
             </Button>}
-        </div>
+        </form>
       </div>
 
     </React.Fragment >

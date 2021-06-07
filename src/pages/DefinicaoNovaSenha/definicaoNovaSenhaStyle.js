@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core'
-import ThemeLogo from '../../assets/theme-logo.png';
 import ThemeLogoMenor from '../../assets/theme-logo-menor.png';
 import { vermelhoPadrao, vermelhoPadraoEscuro, azulPadrao, background, textFontFamilyPadrao } from '../../StylePadrao/stylePadrao';
 
@@ -44,7 +43,7 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
-  definiçaosenhaLogo: {
+  logo: {
     backgroundImage: `url(${ThemeLogoMenor})`,
     position: "absolute",
     width: "180px",
@@ -61,7 +60,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
     borderRadius: "5px",
     width: "100%",
-    marginBottom: "20px",
+    marginTop: "10px",
   },
 
   buttonDefiniçao: {
@@ -72,20 +71,24 @@ export const useStyles = makeStyles(theme => ({
     fontFamily: textFontFamilyPadrao,
     fontWeight: "500",
     fontSize: "14px",
-    lineHeight: "16px",
-    textTransform: "uppercase",
     color: "#FFFFFF",
 
     cursor: "pointer",
 
     width: "100%",
     height: "56px",
-    marginTop: "20px",
+    marginTop: "40px",
     marginBottom: "10px",
 
     "&:hover": {
       background: vermelhoPadraoEscuro,
     }
   },
+  errorText: {
+    color: "white",
+    lineHeight: "0",
+    padding: "3px",
+    marginTop:"2px",
+  }
 
 }))

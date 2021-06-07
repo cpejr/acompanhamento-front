@@ -1,4 +1,3 @@
-import ClipLoader from "react-spinners/ClipLoader";
 import React, { createContext, useState, useEffect } from "react";
 import useStorage from '../utils/useStorage';
 import api from "../services/api";
@@ -7,7 +6,7 @@ export const LoginContext = createContext();
 
 const LoginContextProvider = (props) => {
   const [token, setToken] = useStorage('token');
-  const [user, setUser] = useState();
+  const [user, setUser] = useStorage('user');
 
   async function verify(token) {
     try {

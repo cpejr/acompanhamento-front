@@ -1,30 +1,31 @@
-import React, { Fragment } from 'react';
-import { Route, Router, Switch, Redirect } from 'react-router-dom'
-import history from './history';
+import React, { Fragment } from "react";
+import { Route, Router, Switch, Redirect } from "react-router-dom";
+import history from "./history";
 
-import { DataContextProvider } from './context/DataContext';
-import LoginContextProvider from './context/LoginContext';
+import { DataContextProvider } from "./context/DataContext";
+import LoginContextProvider from "./context/LoginContext";
 
 // import Home from './pages/Home'
-import Login from './pages/Login'
-import Menu from './components/Menu';
-import Dashboard from './pages/Dashboard/dashboard';
-import CadastroUsuario from './pages/CadastroUsuario';
-import CadastroModelo from './pages/CadastroModelo';
-import CadastroEquipamento from './pages/CadastroEquipamento';
-import ListagemUsuario from './pages/ListagemUsuario';
-import ListagemModelo from './pages/ListagemModelo';
-import ListagemEquipamento from './pages/ListagemEquipamento';
-import AtualizacaoUsuario from './pages/AtualizacaoUsuario';
-import AtualizacaoEquipamento from './pages/AtualizacaoEquipamento';
-import AtualizacaoModelo from './pages/AtualizacaoModelo';
-import FuncionamentoEquipamento from './pages/FuncionamentoEquipamento';
-import Testes from './pages/Testes';
-import EsqueciSenha from './pages/EsqueciSenha';
-import DefinicaoNovaSenha from './pages/DefinicaoNovaSenha';
-import RoutesPrivate from './components/Routes/Private/Private';
+import Login from "./pages/Login";
+import Menu from "./components/Menu";
+import Dashboard from "./pages/Dashboard/dashboard";
+import CadastroUsuario from "./pages/CadastroUsuario";
+import CadastroModelo from "./pages/CadastroModelo";
+import CadastroEquipamento from "./pages/CadastroEquipamento";
+import ListagemUsuario from "./pages/ListagemUsuario";
+import ListagemModelo from "./pages/ListagemModelo";
+import ListagemEquipamento from "./pages/ListagemEquipamento";
+import AtualizacaoUsuario from "./pages/AtualizacaoUsuario";
+import AtualizacaoEquipamento from "./pages/AtualizacaoEquipamento";
+import AtualizacaoModelo from "./pages/AtualizacaoModelo";
+import FuncionamentoEquipamento from "./pages/FuncionamentoEquipamento";
+import Testes from "./pages/Testes";
+import EsqueciSenha from "./pages/EsqueciSenha";
+import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
+import RoutesPrivate from "./components/Routes/Private/Private";
+import Perfil from "./pages/Perfil/Perfil";
 
-import { useStyles } from './routesStyles';
+import { useStyles } from "./routesStyles";
 
 function Routes() {
   const classes = useStyles();
@@ -33,7 +34,9 @@ function Routes() {
     <Router history={history}>
       <LoginContextProvider>
         <Switch>
-          <Route path="/" exact><Redirect to="/login" /></Route>
+          <Route path="/" exact>
+            <Redirect to="/login" />
+          </Route>
           <Route path="/login" component={Login} />
           <Route path="/esquecisenha" component={EsqueciSenha} />
           <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
@@ -48,39 +51,70 @@ function Routes() {
                 <Route path="/listagemdashboard/:situacao" component={ListagemDashboard} /> */}
 
                 {/* Cadastro de Modelo */}
-                <RoutesPrivate path="/cadastromodelo" component={CadastroModelo} />
+                <RoutesPrivate
+                  path="/cadastromodelo"
+                  component={CadastroModelo}
+                />
 
                 {/* Cadastro de Equipamento */}
-                <RoutesPrivate path="/cadastroequipamento" component={CadastroEquipamento} />
+                <RoutesPrivate
+                  path="/cadastroequipamento"
+                  component={CadastroEquipamento}
+                />
 
                 {/* Cadastro de Usuários */}
-                <RoutesPrivate path="/cadastrousuario" component={CadastroUsuario} />
+                <RoutesPrivate
+                  path="/cadastrousuario"
+                  component={CadastroUsuario}
+                />
 
                 {/* Listagem de Usuários */}
-                <RoutesPrivate path="/listagemusuario" component={ListagemUsuario}/>
+                <RoutesPrivate
+                  path="/listagemusuario"
+                  component={ListagemUsuario}
+                />
 
                 {/* Listagem de Modelo */}
-                <RoutesPrivate path="/listagemmodelo" component={ListagemModelo}/>
+                <RoutesPrivate
+                  path="/listagemmodelo"
+                  component={ListagemModelo}
+                />
 
                 {/* Listagem de Equipamentos */}
-                <RoutesPrivate path="/listagemequipamento" component={ListagemEquipamento}/>
+                <RoutesPrivate
+                  path="/listagemequipamento"
+                  component={ListagemEquipamento}
+                />
 
                 {/* Atualização de Usuários */}
-                <RoutesPrivate path="/au" exact><Redirect to="/" /></RoutesPrivate>
-                <RoutesPrivate path="/au/:id" component={AtualizacaoUsuario}/>
+                <RoutesPrivate path="/au" exact>
+                  <Redirect to="/" />
+                </RoutesPrivate>
+                <RoutesPrivate path="/au/:id" component={Perfil} />
 
                 {/* Atualização de Modelo */}
-                <RoutesPrivate path="/am" exact><Redirect to="/" /></RoutesPrivate>
-                <RoutesPrivate path="/am/:id" component={AtualizacaoModelo}/>
+                <RoutesPrivate path="/am" exact>
+                  <Redirect to="/" />
+                </RoutesPrivate>
+                <RoutesPrivate path="/am/:id" component={AtualizacaoModelo} />
 
                 {/* Atualização de Equipamentos */}
-                <RoutesPrivate path="/ae" exact><Redirect to="/" /></RoutesPrivate>
-                <RoutesPrivate path="/ae/:id" component={AtualizacaoEquipamento}/>
+                <RoutesPrivate path="/ae" exact>
+                  <Redirect to="/" />
+                </RoutesPrivate>
+                <RoutesPrivate
+                  path="/ae/:id"
+                  component={AtualizacaoEquipamento}
+                />
 
                 {/* Funcionamento de Equipamentos */}
-                <RoutesPrivate path="/funcionamentoequipamento" exact><Redirect to="/" /></RoutesPrivate>
-                <RoutesPrivate path="/funcionamentoequipamento/:id" component={FuncionamentoEquipamento}/>
-
+                <RoutesPrivate path="/funcionamentoequipamento" exact>
+                  <Redirect to="/" />
+                </RoutesPrivate>
+                <RoutesPrivate
+                  path="/funcionamentoequipamento/:id"
+                  component={FuncionamentoEquipamento}
+                />
 
                 {/* Páginas para Testes */}
                 <RoutesPrivate path="/testes" component={Testes} />
@@ -92,7 +126,7 @@ function Routes() {
         </Switch>
       </LoginContextProvider>
     </Router>
-  )
+  );
 }
 
 export default Routes;
@@ -114,5 +148,3 @@ export default Routes;
  *    <a href="mypage"></a>
  * Este é mais rápido pois não precisará recarregar a página inteira
  */
-
-

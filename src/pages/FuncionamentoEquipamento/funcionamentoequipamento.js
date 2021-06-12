@@ -56,7 +56,7 @@ export default function FuncionamentoEquipamento() {
 
   useEffect(() => {
     // get datas of equipment
-    api.get(`data/equipament/${idDados}`).then((response) => {
+    api.get(`data/equipment/${id}`).then((response) => {
       const data = response.data.data;
       setEquipmentDataWithoutPeriod(data);
     });

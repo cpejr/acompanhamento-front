@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   CssBaseline,
   Paper,
@@ -10,45 +10,53 @@ import {
   DialogContentText,
   DialogActions,
   Typography,
-  CircularProgress
-} from "@material-ui/core"
-import { useStyles } from './atualizacaoUsuarioStyle';
+  Snackbar,
+  CircularProgress,
+} from "@material-ui/core";
+import { useParams } from "react-router";
+import MuiAlert from "@material-ui/lab/Alert";
 
-import { AuthContext } from '../../context/AuthContext';
+import { useStyles } from "./atualizacaoUsuarioStyle";
+import users from "../../services/people";
+import { AuthContext } from "../../context/AuthContext";
+import { LoginContext } from "../../context/LoginContext";
 import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from '../../services/dateValidation';
-import { useParams } from 'react-router';
+import { RssFeed } from "@material-ui/icons";
 
-function AtualizacaoUsuario() {
-
+function AtualizacaoUsuario(props) {
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
+  const { sendMessage } = useContext(AuthContext);
+
+  // variaveis do snackbar
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [messageSnackbar, setMessageSnackbar] = useState("");
+  const [typeSnackbar, setTypeSnackbar] = useState("info");
   const [loading, setLoading] = useState(false);
 
   const classes = useStyles({ updating });
-  const { sendMessage } = useContext(AuthContext);
 
   // pega os dados do usuário com o id
   useEffect(() => {
-     api
-      .get(`/user/${id}`)
-      .then((response) => {
-        setUserData(response.data.user);
-        setUserDataOriginal(response.data.user);
-      })
-      .catch((error) => {
-        console.warn(error);
-        alert("Erro ao buscar funcionários");
-      })
-  }, [id]);
+    api
+     .get(`/user/${id}`)
+     .then((response) => {
+       setUserData(response.data.user);
+       setUserDataOriginal(response.data.user);
+     })
+     .catch((error) => {
+       console.warn(error);
+       alert("Erro ao buscar funcionários");
+     })
+ }, [id]);
 
   function validateAllFields(data) {
 
@@ -68,12 +76,12 @@ function AtualizacaoUsuario() {
     setUserData({ ...userData, [name]: value });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
 
-    if (!updating) setUpdating(true)
+    if (!updating) setUpdating(true);
     else {
       setLoading(true);
-      
+
       try {
         const updatedFields = {
           name: userData.name,
@@ -110,8 +118,6 @@ function AtualizacaoUsuario() {
         sendMessage("Falha ao atualizar usuário", "error");
         setUpdating(false);
       }
-      
-      setLoading(false);
     }
   }
 
@@ -129,16 +135,12 @@ function AtualizacaoUsuario() {
     }
   }
 
-  // ---------------------------- // 
-
   if (!userData) {
     return (
       <React.Fragment>
         <CssBaseline />
         <div className={classes.root}>
-          <h1 className={classes.title}>
-            Detalhes de Usuário
-          </h1>
+          <h1 className={classes.title}>Detalhes de Usuário</h1>
           <Paper className={classes.containerForm} elevation={0}>
             <Typography variant="h5">Dados inválidos!</Typography>
           </Paper>
@@ -148,10 +150,7 @@ function AtualizacaoUsuario() {
   }
 
   const AreYouSure = () => (
-    <Dialog
-      open={deleting}
-      onClose={() => setDeleting(false)}
-    >
+    <Dialog open={deleting} onClose={() => setDeleting(false)}>
       <DialogTitle>Excluir usuário?</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -161,10 +160,10 @@ function AtualizacaoUsuario() {
       <DialogActions>
         <Button color="primary" onClick={() => setDeleting(false)}>
           Cancelar
-          </Button>
+        </Button>
         <Button color="secondary" onClick={() => handleDelete(true)}>
           Excluir
-          </Button>
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -173,7 +172,6 @@ function AtualizacaoUsuario() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-
         <h1 className={classes.title}>
           {id === "me" ? "Seu Perfil" : "Detalhes do Usuário"}
         </h1>
@@ -182,34 +180,37 @@ function AtualizacaoUsuario() {
 
         <Paper className={classes.containerForm} elevation={0}>
           { userData.type === 'PF' || id === "me"  ? 
-              <CadastroPF
+            <CadastroPF
+              formData={userData}
+              handleChangeInput={handleChangeInput}
+              mode={ updating ? 'edit' : 'view'}
+            />
+            :
+            (userData.type === 'PJ' ?
+              
+            <CadastroPJ
                 formData={userData}
                 handleChangeInput={handleChangeInput}
-                mode={ updating ? 'edit' : 'view'}
+                mode={ updating? 'edit' : 'view'}
               />
               :
-              (userData.type === 'PJ' ?
-                
-              <CadastroPJ
-                  formData={userData}
-                  handleChangeInput={handleChangeInput}
-                  mode={ updating? 'edit' : 'view'}
-                />
-                :
-                  (userData.type === "Funcionario" || userData.type === "Administrador" ?
-                      <CadastroFuncionario
-                        formData={userData}
-                        handleChangeInput={handleChangeInput}
-                        mode={ updating? 'edit' : 'view'}
-                      /> 
-                      :
-                      null
-                  )
-              )
+                (userData.type === "Funcionario" || userData.type === "Administrador" ?
+                    <CadastroFuncionario
+                      formData={userData}
+                      handleChangeInput={handleChangeInput}
+                      mode={ updating? 'edit' : 'view'}
+                    /> 
+                    :
+                    null
+                )
+            )
           }
-        
+
           <Grid className={classes.centralizar} item xs={12}>
-            <Button variant="contained" color="primary" className={classes.btn}
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.btn}
               onClick={handleSubmit}
             >
               {
@@ -221,20 +222,36 @@ function AtualizacaoUsuario() {
                   : "Editar"
               }
             </Button>
-      
-            {!(id === "me" && updating === false) &&
-              <Button variant="contained" color="secondary" className={classes.btn}
+
+            {!(id === "me" && updating === false) && (
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.btn}
                 onClick={handleDelete}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
-            }
+            )}
           </Grid>
         </Paper>
-
       </div>
 
-    </React.Fragment >
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <MuiAlert
+          onClose={() => setOpenSnackbar(false)}
+          elevation={6}
+          variant="filled"
+          severity={typeSnackbar}
+        >
+          {messageSnackbar}
+        </MuiAlert>
+      </Snackbar>
+    </React.Fragment>
   );
 }
 

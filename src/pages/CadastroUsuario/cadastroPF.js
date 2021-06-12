@@ -11,7 +11,6 @@ import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import { AuthContext } from "../../context/AuthContext";
 import isValidDate from '../../services/dateValidation';
-import MaskedInput from 'react-text-mask'
 
 function CadastroPF(props) {
  
@@ -26,7 +25,6 @@ function CadastroPF(props) {
   const classes = useStyles();
   const buttonRef = useRef(null);
   const { sendMessage } = useContext(AuthContext);
-  const [existingCPF, setExistingCPF] = useState([]);
 
   // variaveis de input
   const [name, setName] = useState("");
@@ -53,27 +51,6 @@ function CadastroPF(props) {
     setZipcode(formData.zipcode);
     
   }, [formData])
-
-  // pega os CPF que já existem ao carregar a página
-  useEffect(() => getExistingCPF(), []);
-
-  function getExistingCPF() {
-
-    api
-      .get('/user')
-      .then(response => {
-        let auxArray = [];
-
-        for (let i = 0; i < response.data.user.length; ++i) {
-          auxArray.push(response.data.user[i].cpf)
-        }
-        setExistingCPF(auxArray);
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-    
-  }
 
   function handleInput(event, type) {
     let str = event.target.value;
@@ -140,7 +117,6 @@ function CadastroPF(props) {
       data.zipcode     !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
       senha === senhaConfirm &&
-      !existingCPF.includes(data.cpf) &&
       isValidDate(data.birthdate)
     ) return true;
 
@@ -163,14 +139,14 @@ function CadastroPF(props) {
     };
 
     if (validateAllFields(data)) { 
+
       sendMessage('Realizando cadastro...', 'info', null);
+
       api
         .post("/user/create", data)
         .then((response) => {
           sendMessage('Cadastrado com sucesso');
 
-          // adiciona o novo CPF cadstrado na lista 
-          setExistingCPF([...existingCPF, data.cpf]);
         })
         .catch ((error) => {
           if (error.response) {
@@ -190,14 +166,13 @@ function CadastroPF(props) {
           }
 
           if (error.response.status === 400) { 
-            sendMessage(`Email já cadastrado!`, 'error');
-          } else sendMessage(`Error: ${error.message}`, 'error');
+            sendMessage(`Erro: ${error.response.data.notification}`, 'error');
+          } else sendMessage("Erro desconhecido ao fazer o cadastro!", 'error');
       })
 
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
-      else if (existingCPF.includes(data.cpf)) sendMessage("CPF já cadastrado!", "error");
       else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");

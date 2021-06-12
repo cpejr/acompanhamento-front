@@ -35,7 +35,6 @@ function CadastroPJ(props) {
   const [senhaConfirm, setSenhaConfirm] = useState("");
 
   const { sendMessage } = useContext(AuthContext);
-  const [existingCNPJ, setExistingCNPJ] = useState();
 
   // seta os valores quando os dados chegarem
   useEffect(() => {
@@ -46,27 +45,6 @@ function CadastroPJ(props) {
     setAddress(formData.address);
     setZipcode(formData.zipcode);
   }, [formData]);
-
-    // pega os CNPJ que já existem ao carregar a página
-    useEffect(() => getExistingCNPJ(), []);
-
-    function getExistingCNPJ() {
-  
-      api
-        .get('/user')
-        .then(response => {
-          let auxArray = [];
-  
-          for (let i = 0; i < response.data.user.length; ++i) {
-            auxArray.push(response.data.user[i].cnpj)
-          }
-          setExistingCNPJ(auxArray);
-        })
-        .catch(error => {
-          console.log(error.response);
-        });
-      
-    }
 
   function handleInput(event, type) {
     let str = event.target.value;
@@ -127,8 +105,7 @@ function CadastroPJ(props) {
       data.address     !== "" &&
       data.zipcode     !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
-      senha === senhaConfirm &&
-      !existingCNPJ.includes(data.cnpj)
+      senha === senhaConfirm 
     ) return true;
 
     else return false;
@@ -157,9 +134,6 @@ function CadastroPJ(props) {
         .post("user/create", data)
         .then((response) => {
           sendMessage("Cadastrado com sucesso");
-
-          // adiciona o novo CNPJ cadstrado na lista 
-          setExistingCNPJ([...existingCNPJ, data.cnpj]);
         })
         .catch((error) => {
           if (error.response) {
@@ -177,15 +151,15 @@ function CadastroPJ(props) {
             console.log("Error", error.message);
             sendMessage("Error 501: Falha no cadastro", "error");
           }
+
           if (error.response.status === 400) { 
-            sendMessage(`Email já cadastrado!`, 'error');
-          } else sendMessage(`Error: ${error.message}`, 'error');
+            sendMessage(`Erro: ${error.response.data.notification}`, 'error');
+          } else sendMessage("Erro desconhecido ao fazer o cadastro!", 'error');
         });
 
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
-      else if (existingCNPJ.includes(data.cnpj)) sendMessage("CNPJ já cadastrado!", "error");
       else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");

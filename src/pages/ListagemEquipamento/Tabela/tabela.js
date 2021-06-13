@@ -16,15 +16,16 @@ import { FiMoreHorizontal } from "react-icons/fi"
 import LinkMenu from '../../../components/LinkMenu'
 
 export default function StickyHeadTable(props) {
+
   const classes = useStyles();
   const { ordem, setOrdem } = props;
   const [openMenu, setOpenMenu] = React.useState("");
 
   const headerItems = [
-    { title: "Nº série", ordemBy: "id_equipment" },
-    // { title: "Modelo", ordemBy: "equipment_model" },
+    { title: "Código do Equipamento", ordemBy: "equipment_code" },
+    // { title: "Modelo", ordemBy: "id_model" },
     { title: "CPF cliente", ordemBy: "cpf_client" },
-    { title: "Última visita", ordemBy: "updatedAt" },
+    { title: "Última visita", ordemBy: "last_visit" },
   ]
 
   return (
@@ -50,21 +51,28 @@ export default function StickyHeadTable(props) {
               ))}
             </TableRow>
           </TableHead>
+
           <TableBody>
             {props.equipmentsListToDisplay
+
               .map(equipment => (
-                <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
-                  <TableCell>{equipment.id_equipment}</TableCell>
-                  {/* <TableCell>{equipment.equipment_model}</TableCell> */}
+
+                <TableRow hover tabIndex={-1} key={equipment.equipment_code}>
+                  
+                  <TableCell>{equipment.equipment_code}</TableCell>
+
                   <TableCell>{equipment.cpf_client}</TableCell>
+
                   <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
                     <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </LinkMenu>
                   </TableCell>
+
                 </TableRow>
               )
-              )}
+            )}
+
             {props.equipmentsListToDisplay.length <= 0 ? <Typography className={classes.nullEquipament}> Este equipamento não foi encontrado </Typography> : null}
           </TableBody>
         </Table>

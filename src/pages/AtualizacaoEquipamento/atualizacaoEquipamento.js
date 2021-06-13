@@ -26,6 +26,8 @@ import { Autocomplete } from '@material-ui/lab';
 function AtualizacaoEquipamento() {
   const { id } = useParams();
   const history = useHistory();
+  
+
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
   const [equipmentOriginal, setEquipmentOriginal] = useState({});
@@ -33,45 +35,57 @@ function AtualizacaoEquipamento() {
   const [loading, setLoading] = useState({ equipment: true, models: true });
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState({
-    instalation_date: "",
+    installation_date: "",
   });
   const { sendMessage } = useContext(AuthContext);
+
+  const [modelName, setModelName] = useState("");
 
   useEffect(() => {
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
       return moment(timeStamp).format(format);
     }
+
     api
       .get(`equipment/${id}`)
       .then((selected) => {
-        var date = selected.data.equipment[0].instalation_date;
-        var instalation_date = getRequiredDateFormat(date);
+        var date = selected.data.equipment[0].installation_date;
+        var installation_date = getRequiredDateFormat(date);
 
         setEquipment(selected.data.equipment[0]);
         setEquipmentOriginal(selected.data.equipment[0]);
-        setEquipment((prev) => ({ ...prev, instalation_date }));
-        setEquipmentOriginal((prev) => ({ ...prev, instalation_date }));
+        setEquipment((prev) => ({ ...prev, installation_date }));
+        setEquipmentOriginal((prev) => ({ ...prev, installation_date }));
         setLoading((prev) => ({ ...prev, equipment: false }));
       })
       .catch((err) => {
         console.error("Backend is not working properly", err);
       });
+
     api
       .get(`model/index`)
       .then((models) => {
+        console.log(models);
         setModelsList(models.data.data);
         setLoading((prev) => ({ ...prev, models: false }));
       })
       .catch((err) => {
         console.error("Backend is not working properly", err);
       });
+
   }, [id]);
 
   const classes = useStyles({ updating });
 
-  useEffect(() => {
-    console.log(equipment);
-  }, [equipment]);
+  useEffect(() =>{
+
+    if (modelsList && equipment) {
+      modelsList.find((model) => {
+        if (model.id === equipment.id_model)
+          setModelName(model.modelName);
+      })
+    }
+  }, [modelsList, equipment]);
 
   if (!equipment) {
     return (
@@ -87,55 +101,67 @@ function AtualizacaoEquipamento() {
     );
   }
 
-  function handleChangeInput(event, valueA) {
-    const { name, value } = event.target;
+  function handleChangeInput(event) {
+    let { name, value } = event.target;
+    let str = value;
+
+    if (name === "zipcode") {
+      value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
+    }
+
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
 
   function handleChangeAutocomplete(event, value) {
-    console.debug(event.target);
-    setEquipment((prev) => ({ ...prev, equipment_model: value }));
+
+    modelsList.find((model) => {
+      if (model.modelName === value) {
+        equipment.id_model = model.id;
+      }
+    })
   }
 
   function handleSubmit() {
+
     setError({
-      instalation_date: "",
+      installation_date: "",
     });
+
     if (!updating) setUpdating(true);
-    else if (Object.values(equipment).includes("")) {
-      sendMessage("Alguns campos estão vazios", "info");
-    } else if (!findError("date", equipment.instalation_date)) {
-      setError((prev) => ({ ...prev, instalation_date: "Data inválidaaaaa" }));
-      console.log(equipment.instalation_date);
-    } else if (isAfter(parseISO(equipment.instalation_date), new Date()))
-      setError((prev) => ({ ...prev, instalation_date: "Data inválida" }));
+
+    else if (!findError("date", equipment.installation_date)) {
+      setError((prev) => ({ ...prev, installation_date: "Data inválidaaaaa" }));
+      console.log(equipment.installation_date);
+
+    } else if (isAfter(parseISO(equipment.installation_date), new Date()))
+      setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
+
     else {
       console.log(equipment);
       const {
         id_model,
-        id_equipment,
-        equipment_model,
-        instalation_date,
-        maintenance_date,
-        last_collect_date,
+        equipment_code,
+        installation_date,
         situation,
-        cpf_client,
-        observation,
-        work_time,
+        initial_work,
+        address,
+        zipcode,
+        // cpf_client
       } = equipment;
+
       const data = {
         id_model,
-        id_equipment,
-        equipment_model,
-        instalation_date,
-        maintenance_date,
-        last_collect_date,
+        equipment_code,
+        installation_date,
         situation,
-        cpf_client,
-        observation,
-        work_time,
+        initial_work,
+        // cpf_client,
+        address,
+        zipcode,
       };
+
       sendMessage("Alterando dados...", "info", null);
+
       api
         .put(`equipment/${id}`, data)
         .then((response) => {
@@ -156,7 +182,7 @@ function AtualizacaoEquipamento() {
       setUpdating(false);
       setEquipment(equipmentOriginal);
       setError({
-        instalation_date: "",
+        installation_date: "",
       });
     } else if (confirmation === true) {
       // excuir de verdade
@@ -219,12 +245,12 @@ function AtualizacaoEquipamento() {
               className={classes.input}
               options={modelsList.map((model) => model.modelName)}
               onChange={handleChangeAutocomplete}
-              value={equipment.equipment_model}
+              value={modelName}
               renderInput={(params) => (
                 <TextField
-                  name="equipment_model"
+                  name="id_model"
                   {...params}
-                  value={equipment.equipment_model}
+                  value={equipment.id_model}
                   label="Modelo"
                   variant="filled"
                   disabled={!updating}
@@ -232,40 +258,44 @@ function AtualizacaoEquipamento() {
                 />
               )}
             />
+            
             <TextField
               name="cpf_client"
               className={classes.input}
               value={equipment.cpf_client}
-              label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-              variant="filled"
-              disabled //cpf não deve alterar
-              onChange={handleChangeInput}
-            />
-            <TextField
-              name="id_equipment"
-              className={classes.input}
-              value={equipment.id_equipment}
-              label="Número de série"
+              label="CPF / CNPJ" 
               variant="filled"
               disabled={!updating}
               onChange={handleChangeInput}
             />
+
             <TextField
-              name="instalation_date"
+              name="equipment_code"
               className={classes.input}
-              value={equipment.instalation_date}
+              value={equipment.equipment_code}
+              label="Código do equipamento"
+              variant="filled"
+              disabled={!updating}
+              onChange={handleChangeInput}
+            />
+
+            <TextField
+              name="installation_date"
+              className={classes.input}
+              value={equipment.installation_date}
               label="Data instalação"
               type="date"
               helperText={
-                error.instalation_date === ""
+                error.installation_date === ""
                   ? "*Obrigatório"
-                  : error.instalation_date
+                  : error.installation_date
               }
-              error={error.instalation_date !== ""}
+              error={error.installation_date !== ""}
               variant="filled"
               disabled={!updating}
               onChange={handleChangeInput}
             />
+
             <TextField
               name="observation"
               className={classes.input}
@@ -276,7 +306,33 @@ function AtualizacaoEquipamento() {
               disabled={!updating}
               onChange={handleChangeInput}
             />
-            {/* </Grid> */}
+
+            <TextField
+              name="address"
+              className={classes.input}
+              value={equipment.address}
+              onChange={handleChangeInput}
+              label="Endereço"
+              type="text"
+              helperText="(Opcional)"
+              autoComplete="off"
+              disabled={!updating}
+              variant="filled"
+            />
+
+            <TextField
+              name="zipcode"
+              className={classes.input}
+              value={equipment.zipcode}
+              onChange={handleChangeInput}
+              label="CEP"
+              type="text"
+              helperText="(Opcional)"
+              autoComplete="off"
+              disabled={!updating}
+              variant="filled"
+              inputProps={{ maxLength: 8 }}
+            />
 
             <div className={classes.centralizar}>
               <Button

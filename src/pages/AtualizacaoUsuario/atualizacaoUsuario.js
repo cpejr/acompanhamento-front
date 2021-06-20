@@ -26,9 +26,11 @@ import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import { RssFeed } from "@material-ui/icons";
+import { useHistory } from 'react-router-dom';
 
 function AtualizacaoUsuario(props) {
   const { id } = useParams();
+  const history = useHistory();
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
@@ -115,18 +117,42 @@ function AtualizacaoUsuario(props) {
     }
   }
 
-  function handleDelete(confirmation) {
+  async function handleDelete(confirmation) {
     if (updating) {
       //cancelar
       setUpdating(false);
       setUserData(userDataOriginal);
-    } else if (confirmation === true) {
-      // excuir de verdade
-      setDeleting(false);
-      alert("Excluindo usuário do banco de dados...");
     } else {
-      // confirmar exclusão
-      setDeleting(true);
+      // excuir de verdade
+      setOpenSnackbar(true);
+      setMessageSnackbar("Excluindo usuário...");
+      setTypeSnackbar("info");
+
+      try {
+        const response = await api.delete(`user/${id}`);
+
+        console.log(response);
+
+        setOpenSnackbar(true);
+        setMessageSnackbar("Usuário deletado com sucesso!");
+        setTypeSnackbar("success");
+
+        setUpdating(false);
+
+        setTimeout(() => {
+          history.push("/listagemusuario");
+        }, 1000)
+        
+      } catch (error) {
+        console.log(error);
+
+        setOpenSnackbar(true);
+        setMessageSnackbar("Falha ao deletar usuário.");
+        setTypeSnackbar("error");
+
+        setUpdating(false);
+      }
+
     }
   }
 
@@ -229,7 +255,7 @@ function AtualizacaoUsuario(props) {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={2000}
+        autoHideDuration={typeSnackbar === 'info' ? 20000 : 2000}
         onClose={() => setOpenSnackbar(false)}
       >
         <MuiAlert

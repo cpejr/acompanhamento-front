@@ -33,8 +33,8 @@ function CadastroPF(props) {
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
-  const [address, setAddress] = useState('');
-  const [zipcode, setZipcode] = useState('');
+  // const [address, setAddress] = useState('');
+  // const [zipcode, setZipcode] = useState('');
 
   const { sendMessage } = useContext(AuthContext);
   
@@ -45,8 +45,8 @@ function CadastroPF(props) {
     setBirthdate(formData.birthdate);
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
-    setAddress(formData.address);
-    setZipcode(formData.zipcode);
+    // setAddress(formData.address);
+    // setZipcode(formData.zipcode);
   }, [formData])
 
   function handleInput(event, type) {
@@ -68,13 +68,13 @@ function CadastroPF(props) {
         setPhonenumber(event.target.value);
         break;
 
-      case 'address':
-        setAddress(event.target.value);
-        break;
+      // case 'address':
+      //   setAddress(event.target.value);
+      //   break;
 
-      case 'zipcode':
-        setZipcode(event.target.value);
-        break;
+      // case 'zipcode':
+      //   setZipcode(event.target.value);
+      //   break;
 
       case 'email':
         setEmail(event.target.value);
@@ -106,9 +106,9 @@ function CadastroPF(props) {
       cpf: cpf,
       email: email,
       phonenumber: phonenumber,
-      password: senha,
-      address: address,
-      zipcode: zipcode
+      password: senha
+      // address: address
+      // zipcode: zipcode
     };
 
     if (
@@ -117,9 +117,9 @@ function CadastroPF(props) {
       data.cpf !== "" &&
       data.email !== "" &&
       data.phonenumber !== "" &&
-      data.password !== "" &&
-      data.address !== "" &&
-      data.zipcode !== "" 
+      data.password !== "" 
+      // data.address !== "" 
+      // data.zipcode !== "" 
     ) { 
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -214,7 +214,7 @@ function CadastroPF(props) {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
+            {/* <TextField
               name="address"
               className={classes.inputForm}
               value={address}
@@ -225,9 +225,9 @@ function CadastroPF(props) {
               disabled= {mode === 'view'}
               onChange={(e) => handleInput(e, 'address')}
               required
-            />
+            /> */}
 
-            <TextField
+            {/* <TextField
               name="zipcode"
               className={classes.inputForm}
               value={zipcode}
@@ -238,7 +238,7 @@ function CadastroPF(props) {
               disabled= {mode === 'view'}
               onChange={(e) => handleInput(e, 'zipcode')}
               required
-            />
+            /> */}
 
             <TextField
               name="email"

@@ -33,8 +33,8 @@ function CadastroFuncionario(props) {
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
-  const [address, setAddress] = useState('');
-  const [zipcode, setZipcode] = useState('');
+  // const [address, setAddress] = useState('');
+  // const [zipcode, setZipcode] = useState('');
 
   const { sendMessage } = useContext(AuthContext);
 
@@ -45,8 +45,8 @@ function CadastroFuncionario(props) {
     setBirthdate(formData.birthdate);
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
-    setAddress(formData.address);
-    setZipcode(formData.zipcode);
+    // setAddress(formData.address);
+    // setZipcode(formData.zipcode);
   }, [formData])
 
   async function handleRegister(e) {
@@ -59,9 +59,9 @@ function CadastroFuncionario(props) {
       cpf: cpf,
       email: email,
       phonenumber: phonenumber,
-      password: senha,
-      address: address,
-      zipcode: zipcode
+      password: senha
+      // address: address
+      // zipcode: zipcode
     };
     if (
       data.type !== "" &&
@@ -69,9 +69,9 @@ function CadastroFuncionario(props) {
       data.cpf !== "" &&
       data.email !== "" &&
       data.number !== "" &&
-      data.password !== "" &&
-      data.address !== "" &&
-      data.zipcode !== ""
+      data.password !== ""
+      // data.address !== "" 
+      // data.zipcode !== ""
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -121,13 +121,13 @@ function CadastroFuncionario(props) {
         setPhonenumber(event.target.value);
         break;
 
-      case 'address':
-        setAddress(event.target.value);
-        break;
+      // case 'address':
+      //   setAddress(event.target.value);
+      //   break;
 
-      case 'zipcode':
-        setZipcode(event.target.value);
-        break;
+      // case 'zipcode':
+      //   setZipcode(event.target.value);
+      //   break;
 
       case 'email':
         setEmail(event.target.value);
@@ -212,7 +212,7 @@ function CadastroFuncionario(props) {
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
-            <TextField
+            {/* <TextField
               name="address"
               className={classes.inputForm}
               value={address}
@@ -224,11 +224,11 @@ function CadastroFuncionario(props) {
               required
               disabled= {mode === 'view'}
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            /> */}
 
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
+            {/* <TextField
               name="zipcode"
               className={classes.inputForm}
               value={zipcode}
@@ -240,7 +240,7 @@ function CadastroFuncionario(props) {
               required
               disabled= {mode === 'view'}
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            /> */}
 
             <TextField
               name="email"

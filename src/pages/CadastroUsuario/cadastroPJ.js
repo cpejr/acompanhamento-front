@@ -28,8 +28,8 @@ function CadastroPJ(props) {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [zipcode, setZipcode] = useState("");
+  // const [address, setAddress] = useState("");
+  // const [zipcode, setZipcode] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
@@ -42,8 +42,8 @@ function CadastroPJ(props) {
     setCnpj(formData.cnpj);
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
-    setAddress(formData.address);
-    setZipcode(formData.zipcode);
+    // setAddress(formData.address);
+    // setZipcode(formData.zipcode);
   }, [formData]);
 
   function handleInput(event, type) {
@@ -60,13 +60,13 @@ function CadastroPJ(props) {
         setPhonenumber(event.target.value);
         break;
 
-      case "address":
-        setAddress(event.target.value);
-        break;
+      // case "address":
+      //   setAddress(event.target.value);
+      //   break;
 
-      case "zipcode":
-        setZipcode(event.target.value);
-        break;
+      // case "zipcode":
+      //   setZipcode(event.target.value);
+      //   break;
 
       case "email":
         setEmail(event.target.value);
@@ -98,8 +98,8 @@ function CadastroPJ(props) {
       email: email,
       phonenumber: phonenumber,
       password: senha,
-      address: address,
-      zipcode: zipcode,
+      // address: address,
+      // zipcode: zipcode,
       birthdate: "00/00/0000", // gambiarra
     };
     if (
@@ -108,9 +108,9 @@ function CadastroPJ(props) {
       data.cnpj !== "" &&
       data.email !== "" &&
       data.phonenumber !== "" &&
-      data.password !== "" &&
-      data.address !== "" &&
-      data.zipcode !== ""
+      data.password !== "" 
+      // data.address !== "" 
+      // data.zipcode !== ""
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -186,7 +186,7 @@ function CadastroPJ(props) {
               disabled={mode === "view"}
               required
             />
-            <TextField
+            {/* <TextField
               name="address"
               className={classes.inputForm}
               value={address}
@@ -197,9 +197,9 @@ function CadastroPJ(props) {
               onChange={(e) => handleInput(e, "address")}
               disabled={mode === "view"}
               required
-            />
+            /> */}
 
-            <TextField
+            {/* <TextField
               name="zipcode"
               className={classes.inputForm}
               value={zipcode}
@@ -211,7 +211,7 @@ function CadastroPJ(props) {
               onChange={(e) => handleInput(e, "zipcode")}
               disabled={mode === "view"}
               required
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField

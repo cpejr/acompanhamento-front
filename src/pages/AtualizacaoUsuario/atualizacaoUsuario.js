@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   CssBaseline,
   Paper,
-  TextField,
   Grid,
   Button,
   Dialog,
@@ -25,6 +24,7 @@ import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
+import isValidDate from '../../services/dateValidation';
 import { RssFeed } from "@material-ui/icons";
 
 function AtualizacaoUsuario(props) {
@@ -34,6 +34,7 @@ function AtualizacaoUsuario(props) {
   const [userData, setUserData] = useState({});
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
+  const { sendMessage } = useContext(AuthContext);
 
   // variaveis do snackbar
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -43,25 +44,32 @@ function AtualizacaoUsuario(props) {
 
   const classes = useStyles({ updating });
 
-  useEffect(() => {
-    if (id === "me") {
-      setUserData(props.userPerfil);
-      setUserDataOriginal(props.userPerfil);
-    } else {
-      api
-        .get(`/user/${props.userPerfil.id}`)
-        .then((response) => {
-          setUserData(response.data.user);
-          setUserDataOriginal(response.data.user);
-        })
-        .catch((error) => {
-          console.warn(error);
-          alert("Erro ao buscar funcionários");
-        });
-    }
-  }, [id, props.userPerfil]);
-
   // pega os dados do usuário com o id
+  useEffect(() => {
+    api
+     .get(`/user/${id}`)
+     .then((response) => {
+       setUserData(response.data.user);
+       setUserDataOriginal(response.data.user);
+     })
+     .catch((error) => {
+       console.warn(error);
+       alert("Erro ao buscar funcionários");
+     })
+ }, [id]);
+
+  function validateAllFields(data) {
+
+    if (
+      data.name        !== "" &&
+      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
+      data.address     !== "" &&
+      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      isValidDate(data.birthdate)
+    ) return true;
+
+    else return false;
+  }
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
@@ -69,6 +77,7 @@ function AtualizacaoUsuario(props) {
   }
 
   async function handleSubmit() {
+
     if (!updating) setUpdating(true);
     else {
       setLoading(true);
@@ -76,61 +85,55 @@ function AtualizacaoUsuario(props) {
       try {
         const updatedFields = {
           name: userData.name,
-          birthdate: userData.birthdate,
+          birthdate: userData.type === 'PJ' ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
           address: userData.address,
           zipcode: userData.zipcode,
-        };
+        }
 
-        if (
-          updatedFields.name !== "" &&
-          updatedFields.birthdate !== "" &&
-          updatedFields.phonenumber !== "" &&
-          updatedFields.address !== "" &&
-          updatedFields.zipcode !== ""
-        ) {
-          const response = await api.put(`/user/${id}`, updatedFields);
+        if (validateAllFields(updatedFields)) {
 
-          setOpenSnackbar(true);
-          setMessageSnackbar("Usuário atualizado com sucesso!");
-          setTypeSnackbar("success");
+          api
+            .put(`/user/${id}`, updatedFields)
+            .then((response) => {
+              sendMessage("Usuário atualizado com sucesso!", "success");
+            })
+            .catch((error) => {
+              console.warn(error);
+              alert("Erro ao buscar funcionários");
+            })
 
           setUpdating(false);
-        } else {
-          setOpenSnackbar(true);
-          setMessageSnackbar("Dados não permitidos! Tente novamente.");
-          setTypeSnackbar("error");
+        } else { // mensagens (snackbar) de erros
+          if      (updatedFields.zipcode.length < 8) sendMessage("CEP inválido.", "error");
+          else if (updatedFields.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
+          else if (!isValidDate(updatedFields.birthdate)) sendMessage("Data de nascimento inválida!", "error")
+    
+          else sendMessage('Campos com dados inválidos!', 'error');
         }
+        
       } catch (error) {
         console.log(error);
 
-        setOpenSnackbar(true);
-        setMessageSnackbar("Falha ao atualizar usuário.");
-        setTypeSnackbar("error");
-
+        sendMessage("Falha ao atualizar usuário", "error");
         setUpdating(false);
       }
-
-      setLoading(false);
     }
   }
 
   function handleDelete(confirmation) {
-    if (updating) {
-      //cancelar
+    if (updating) { //cancelar
       setUpdating(false);
       setUserData(userDataOriginal);
-    } else if (confirmation === true) {
-      // excuir de verdade
+    }
+    else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
-      alert("Excluindo usuário do banco de dados...");
-    } else {
-      // confirmar exclusão
+      alert("Excluindo usuário do banco de dados...")
+    }
+    else { // confirmar exclusão
       setDeleting(true);
     }
   }
-
-  // ---------------------------- //
 
   if (!userData) {
     return (
@@ -176,26 +179,32 @@ function AtualizacaoUsuario(props) {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          {userData.type === "PF" && id === "me" ? (
+          { userData.type === 'PF' || id === "me"  ? 
             <CadastroPF
               formData={userData}
               handleChangeInput={handleChangeInput}
-              mode={updating ? "edit" : "view"}
+              mode={ updating ? 'edit' : 'view'}
             />
-          ) : userData.type === "PJ" && id === "me" ? (
+            :
+            (userData.type === 'PJ' ?
+              
             <CadastroPJ
-              formData={userData}
-              handleChangeInput={handleChangeInput}
-              mode={updating ? "edit" : "view"}
-            />
-          ) : userData.type === "Funcionario" ||
-            userData.type === "Administrador" ? (
-            <CadastroFuncionario
-              formData={userData}
-              handleChangeInput={handleChangeInput}
-              mode={updating ? "edit" : "view"}
-            />
-          ) : null}
+                formData={userData}
+                handleChangeInput={handleChangeInput}
+                mode={ updating? 'edit' : 'view'}
+              />
+              :
+                (userData.type === "Funcionario" || userData.type === "Administrador" ?
+                    <CadastroFuncionario
+                      formData={userData}
+                      handleChangeInput={handleChangeInput}
+                      mode={ updating? 'edit' : 'view'}
+                    /> 
+                    :
+                    null
+                )
+            )
+          }
 
           <Grid className={classes.centralizar} item xs={12}>
             <Button
@@ -204,13 +213,14 @@ function AtualizacaoUsuario(props) {
               className={classes.btn}
               onClick={handleSubmit}
             >
-              {updating ? (
-                "Salvar"
-              ) : loading ? (
-                <CircularProgress color="secondary" />
-              ) : (
-                "Editar"
-              )}
+              {
+                updating ? 
+                  (loading ? (
+                    <CircularProgress color="primary" />
+                  )
+                    : "Salvar")
+                  : "Editar"
+              }
             </Button>
 
             {!(id === "me" && updating === false) && (

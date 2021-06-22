@@ -47,16 +47,20 @@ function CadastroPJ(props) {
   }, [formData]);
 
   function handleInput(event, type) {
+    let str = event.target.value;
+
     switch (type) {
       case "name":
         setName(event.target.value);
         break;
 
       case "cnpj":
+        event.target.value = str.replace(/\D/g, ""); // somente numeros
         setCnpj(event.target.value);
         break;
 
       case "phonenumber":
+        event.target.value = str.replace(/[^0-9() ]/g, ""); // somente telefone
         setPhonenumber(event.target.value);
         break;
 
@@ -65,6 +69,7 @@ function CadastroPJ(props) {
         break;
 
       case "zipcode":
+        event.target.value = str.replace(/\D/g, ""); // somente numeros
         setZipcode(event.target.value);
         break;
 
@@ -88,6 +93,24 @@ function CadastroPJ(props) {
     handleChangeInput(event); // retorna para a AtualizaUsuario
   }
 
+  function validateAllFields(data) {
+
+    if (
+      data.type  !== "" &&
+      data.name  !== "" &&
+      data.cnpj   !== "" && data.cnpj.length === 14 &&
+      data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
+      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
+      data.password    !== "" && data.password.length >= 6 &&
+      data.address     !== "" &&
+      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      email === emailConfirm &&
+      senha === senhaConfirm 
+    ) return true;
+
+    else return false;
+  }
+
   async function handleRegister(e) {
     e.preventDefault();
 
@@ -100,20 +123,11 @@ function CadastroPJ(props) {
       password: senha,
       address: address,
       zipcode: zipcode,
-      birthdate: "00/00/0000", // gambiarra
+      birthdate: "01/01/1901", // gambiarra: back exige data de nascimento como obrigatorio
     };
-    if (
-      data.type !== "" &&
-      data.name !== "" &&
-      data.cnpj !== "" &&
-      data.email !== "" &&
-      data.phonenumber !== "" &&
-      data.password !== "" &&
-      data.address !== "" &&
-      data.zipcode !== ""
-    ) {
-      if (email !== emailConfirm) alert("Os emails estão diferentes.");
-      if (senha !== senhaConfirm) alert("As senhas não batem.");
+
+
+    if (validateAllFields(data)) { 
 
       sendMessage("Realizando cadastro...", "info", null);
       api
@@ -137,9 +151,24 @@ function CadastroPJ(props) {
             console.log("Error", error.message);
             sendMessage("Error 501: Falha no cadastro", "error");
           }
-          sendMessage(`Error: ${error.message}`, "error");
+
+          if (error.response.status === 400) { 
+            sendMessage(`Erro: ${error.response.data.notification}`, 'error');
+          } else sendMessage("Erro desconhecido ao fazer o cadastro!", 'error');
         });
-    } else sendMessage("Preencha todos os campos", "error", null);
+
+    } else { // mensagens (snackbar) de erros
+      if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
+      else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
+      else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
+      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
+        sendMessage("Email inválido!", "error");
+      else if (data.cnpj.length < 14) sendMessage("CNPJ inválido.", "error");
+      else if (data.zipcode.length < 8) sendMessage("CEP inválido.", "error");
+      else if (data.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
+
+      else sendMessage('Campos com dados inválidos!', 'error');
+    };
   }
 
   return (
@@ -168,6 +197,7 @@ function CadastroPJ(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
+              inputProps={{ maxLength: 14 }}
               onChange={(e) => handleInput(e, "cnpj")}
               disabled={mode !== "create"}
               required
@@ -181,7 +211,7 @@ function CadastroPJ(props) {
               type="text"
               helperText="*Obrigatório"
               variant="filled"
-              inputProps={{ maxLength: 11 }}
+              inputProps={{ maxLength: 15 }}
               onChange={(e) => handleInput(e, "phonenumber")}
               disabled={mode === "view"}
               required

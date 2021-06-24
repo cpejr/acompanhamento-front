@@ -18,24 +18,11 @@ import { AuthContext } from '../../context/AuthContext'
 import { useHistory } from 'react-router';
 import ModalRedirect from '../../components/ModalRedirect/ModalRedirect';
 
-function CPFInput(props) {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={(ref) => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
-    />
-  );
-}
-
 export default function CadastroEquipamento(props) {
   const history = useHistory();
   const [error, setError] = React.useState({
     cpf_client: "",
-    instalation_date: ""
+    installation_date: ""
   });
   const [models, setModels] = React.useState([{}]);
   const [loading, setLoading] = useState(true);
@@ -48,17 +35,18 @@ export default function CadastroEquipamento(props) {
   // Mecanismo do Form
   const [formData, setFormData] = useState({
     id_model: "",
-    id_equipment: "",
-    equipment_model: "",
-    instalation_date: format(new Date(), "yyyy-MM-dd"),
+    equipment_code: "",
+    installation_date: format(new Date(), "yyyy-MM-dd"),
     situation: "Ok",
     cpf_client: "",
-    //opcionais
     observation: "",
+    address: "",
+    zipcode: "",
   });
 
   //pegar modelos
   React.useEffect(() => {
+
     api.get('model/index')
       .then(model => {
         const models = model.data.data;
@@ -68,46 +56,44 @@ export default function CadastroEquipamento(props) {
         console.log(error);
         sendMessage(`Error 504: ${error.message}`, 'error')
       });
+
     setLoading(false)
   }, [sendMessage])
 
   async function handleSubmit(event) {
-    event.preventDefault()
-    console.debug("FormData: ", formData)
+
+    event.preventDefault();
+
     setError({
       cpf_client: "",
-      instalation_date: ""
+      installation_date: ""
     })
 
-    // coloque os opcionais por ultimo e para cada um adione um pop()
-    let formDataWithoutNotRequired = Object.values(formData);
-    // formDataWithoutNotRequired.pop()
-    if (formDataWithoutNotRequired.includes("")) {
-      sendMessage('Alguns campos estão vazios', 'info')
-    }
-    else if (!findError("cpf/cnpj", formData.cpf_client))
-      setError(prev => ({ ...prev, cpf_client: "CPF/CNPJ inválido!" }))
-    else if (isAfter(parseISO(formData.instalation_date), new Date()))
-      setError(prev => ({ ...prev, instalation_date: "Data inválida!" }))
+    if (isAfter(parseISO(formData.installation_date), new Date()))
+      setError(prev => ({ ...prev, installation_date: "Data inválida!" }))
     else {
+
       const data = {
         id_model: formData.id_model,
-        id_equipment: formData.id_equipment,
-        equipment_model: formData.equipment_model,
-        instalation_date: parseISO(formData.instalation_date),
+        equipment_code: formData.equipment_code,
+        installation_date: formData.installation_date,
+        initial_work: formData.installation_date,
         situation: formData.situation,
-        cpf_client: formData.cpf_client,
-        observation: formData.observation
+        // cpf_client: formData.cpf_client,
+        address: formData.address,
+        zipcode: formData.zipcode,
       }
-      console.debug("Data: ", data)
+      console.log("Data: ", data);
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null)
       try {
         const resposta = await api.post('/equipment/create', data);
 
-        if (resposta.data && resposta.data.id_equipment) {
-          setIdCadastrado(resposta.data.id_equipment);
+        console.log(resposta);
+
+        if (resposta.data && resposta.data.id) {
+          setIdCadastrado(resposta.data.id);
           sendMessage('Cadastrado com sucesso')
         };
       } catch (err) {
@@ -119,13 +105,24 @@ export default function CadastroEquipamento(props) {
   }
 
   function handleChangeInput(event, valueA) {
-    const { name, value } = event.target;
-    if (valueA) {// from autocomplete
+
+    let { name, value } = event.target;
+    let str = value;
+
+    if (valueA) { // from autocomplete
+
       setFormData(prev => ({ ...prev, equipment_model: valueA }));
       const selectedModel = models.find(model => model.modelName === valueA);
       setFormData(prev => ({ ...prev, id_model: selectedModel.id }))
-    } else
+
+    } else {
+
+      if (name === "zipcode") {
+        value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
+      }
       setFormData({ ...formData, [name]: value });
+    }
+      
   }
 
   // Referencias (próximo a declaração de um ponteiro nulo)
@@ -134,14 +131,18 @@ export default function CadastroEquipamento(props) {
   const instalationDateRef = useRef(null);
   const cpfClientRef = useRef(null);
   const observationRef = useRef(null);
+  const addressRef = useRef(null);
+  const zipcodeRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
   const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
     { name: "equipment_model", ref: idEquipmentRef },
-    { name: "id_equipment", ref: instalationDateRef },
-    { name: "instalation_date", ref: cpfClientRef },
+    { name: "equipment_code", ref: instalationDateRef },
+    { name: "installation_date", ref: cpfClientRef },
     { name: "cpf_client", ref: observationRef },
-    { name: "observation", ref: buttonSubmitRef }
+    { name: "observation", ref: addressRef },
+    { name: "address", ref: zipcodeRef },
+    { name: "zipCode", ref: buttonSubmitRef }
   ];
 
   const classes = useStyles();
@@ -190,11 +191,11 @@ export default function CadastroEquipamento(props) {
             />
 
             <TextField
-              name="id_equipment"
+              name="equipment_code"
               className={classes.inputs}
-              value={formData.id_equipment}
+              value={formData.equipment_code}
               onChange={handleChangeInput}
-              label="Número de série"
+              label="Código do Equipamento"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
@@ -205,14 +206,14 @@ export default function CadastroEquipamento(props) {
             />
 
             <TextField
-              name="instalation_date"
+              name="installation_date"
               className={classes.inputs}
-              value={formData.instalation_date}
+              value={formData.installation_date}
               onChange={handleChangeInput}
               label="Data de Instalação"
               type="date"
-              helperText={error.instalation_date === "" ? "*Obrigatório" : error.instalation_date}
-              error={error.instalation_date !== ""}
+              helperText={error.installation_date === "" ? "*Obrigatório" : error.installation_date}
+              error={error.installation_date !== ""}
               variant="filled"
               autoComplete="off"
               inputRef={instalationDateRef}
@@ -226,11 +227,7 @@ export default function CadastroEquipamento(props) {
               onChange={handleChangeInput}
               label="CPF/CNPJ do cliente"
               type="text"
-              InputProps={{
-                inputComponent: CPFInput
-              }}
-              required
-              helperText={error.cpf_client === "" ? "*Obrigatório" : error.cpf_client}
+              helperText={error.cpf_client === "" ? "(Opcional)" : error.cpf_client}
               error={error.cpf_client !== ""}
               variant="filled"
               inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
@@ -243,11 +240,37 @@ export default function CadastroEquipamento(props) {
               onChange={handleChangeInput}
               label="Observações"
               type="text"
-              helperText="*Obrigatório"
-              required
+              helperText="(Opcional)"
               autoComplete="off"
               variant="filled"
               inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+            />
+
+            <TextField
+              name="address"
+              className={classes.inputs}
+              value={formData.address}
+              onChange={handleChangeInput}
+              label="Endereço"
+              type="text"
+              helperText="(Opcional)"
+              autoComplete="off"
+              variant="filled"
+              inputRef={addressRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+            />
+
+            <TextField
+              name="zipcode"
+              className={classes.inputs}
+              value={formData.zipcode}
+              onChange={handleChangeInput}
+              label="CEP"
+              type="text"
+              helperText="(Opcional)"
+              autoComplete="off"
+              variant="filled"
+              inputProps={{ maxLength: 8 }}
+              inputRef={zipcodeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
             <ModalRedirect openModal={openModal} closeModal={() => setOpenModal(false)} linkId={()=> history.push(`/ae/` + idCadastrado)}/>

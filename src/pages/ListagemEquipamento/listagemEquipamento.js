@@ -20,16 +20,20 @@ import { useStyles } from "./listagemEquipamentoStyle";
 import StickyHeadTable from "./Tabela";
 
 export default function ListagemEquipamento() {
+
   const classes = useStyles();
-  const [filterby, setFilterby] = useState("id_equipment");
+
+  const [filterby, setFilterby] = useState("equipment_code");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
   const [modelList, setModelList] = useState([]);
+
   const [loading, setLoading] = useState({
     model: true,
     equipments: true,
     changeNameModel: true,
     setDisplay: true,
   });
+
   const [ordem, setOrdem] = useState({
     alfabetica: false,
     by: "last_collect_date",
@@ -40,9 +44,11 @@ export default function ListagemEquipamento() {
   const situation = query.get("situation");
 
   useEffect(() => {
+
     const url = situation
       ? `equipment/find_situation/${situation}`
       : "equipment/index";
+
     api
       .get(url)
       .then((equipment) => {
@@ -53,7 +59,7 @@ export default function ListagemEquipamento() {
       })
       .catch((err) => {
         console.error(
-          "Não foi possivel estabelecer conecção com o backend",
+          "Não foi possivel estabelecer conexão com o backend",
           err
         );
       });
@@ -66,33 +72,52 @@ export default function ListagemEquipamento() {
       })
       .catch((err) => {
         console.error(
-          "Não foi possivel estabelecer conecção com o backend",
+          "Não foi possivel estabelecer conexão com o backend",
           err
         );
       });
+
   }, [situation]);
 
   useEffect(() => {
+
     setEquipmentsOriginal((velhosEquip) => {
+
       return velhosEquip.map((equipment) => {
         if (modelList[0].id) {
-          equipment.equipment_model = modelList.find(
+
+          // equipment.equipment_model = modelList.find(
+          //   (model) => model.id === equipment.id_model
+          // ).modelName;
+
+          const selected = modelList.find(
             (model) => model.id === equipment.id_model
-          ).modelName;
+          );
+
+          if (selected) {
+            equipment.equipment_model = selected.modelName;
+          }
+
         }
+
         return equipment;
       });
     });
+
     setLoading((prev) => ({ ...prev, changeNameModel: false }));
   }, [modelList]);
 
   useEffect(() => {
+
     setEquipmentsListToDisplay(equipmentsOriginal);
     setLoading((prev) => ({ ...prev, setDisplay: false }));
+
   }, [equipmentsOriginal]);
 
   function FindEquipment(searchEquipment) {
+
     if (searchEquipment.length > 0) {
+
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
 
@@ -102,6 +127,7 @@ export default function ListagemEquipamento() {
           equipmentsListToDisplay.push(item);
         }
       });
+
       setEquipmentsListToDisplay(equipmentsListToDisplay);
     } else {
       setEquipmentsListToDisplay(equipmentsOriginal);
@@ -166,9 +192,9 @@ export default function ListagemEquipamento() {
               onChange={(e) => setFilterby(e.target.value)}
               variant="outlined"
             >
-              <MenuItem value="cpf_client">Cliente</MenuItem>
-              <MenuItem value="equipment_model">Modelo</MenuItem>
-              <MenuItem value="id_equipment">Nº série</MenuItem>
+              {/* <MenuItem value="cpf_client">Cliente</MenuItem> */}
+              <MenuItem value="id_model">Modelo</MenuItem>
+              <MenuItem value="equipment_code">Código do Equipamento</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -183,9 +209,9 @@ export default function ListagemEquipamento() {
               var formattedDate = getRequiredDateFormat(equipment.updatedAt);
               return {
                 id: equipment.id,
-                id_equipment: equipment.id_equipment,
-                equipment_model: equipment.equipment_model,
-                cpf_client: equipment.cpf_client,
+                equipment_code: equipment.equipment_code,
+                id_model: equipment.id_model,
+                cpf_client: "", // inicialmente fica vazia
                 updatedAt: formattedDate,
               };
             })}

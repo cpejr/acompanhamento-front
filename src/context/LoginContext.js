@@ -5,8 +5,9 @@ import api from "../services/api";
 export const LoginContext = createContext();
 
 const LoginContextProvider = (props) => {
-  const [token, setToken] = useStorage('token');
-  const [user, setUser] = useStorage('user');
+
+  const [token, setToken, removeToken] = useStorage('token');
+  const [user, setUser, removeUser] = useStorage('user');
 
   async function verify(token) {
     try {
@@ -26,14 +27,17 @@ const LoginContextProvider = (props) => {
     }
   }
 
-  useEffect(async () => {
+  useEffect(() => {
 
-    const currentToken = localStorage.getItem("accessToken");
+    async function verifyToken() {
+      const currentToken = localStorage.getItem("accessToken");
 
-    if (currentToken && currentToken !== " ") {
-      await verify(currentToken);
+      if (currentToken && currentToken !== " ") {
+        await verify(currentToken);
+      }
     }
-    console.log("UseEffect LoginContext");
+
+    verifyToken();
   }, []);
 
   function signIn(token, user) {

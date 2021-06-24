@@ -22,6 +22,7 @@ import { LoginContext } from "../../context/LoginContext";
 var currentdate = new Date();
 
 export default function Login() {
+
   const classes = useStyles();
   const { signIn } = useContext(LoginContext);
   const history = useHistory();
@@ -72,10 +73,13 @@ export default function Login() {
       currentdate.getFullYear();
 
     try {
+      console.log(values);
+
       const response = await api.post("/login", {
         email: values.user,
         password: values.password,
       });
+      console.log(response);
 
       if (response.data && response.data.accessToken) {
         const token = response.data.accessToken;
@@ -96,10 +100,14 @@ export default function Login() {
         console.log("AQUI: ", user[0]);
         //Aqui manda para a rota logo apos o login
 
-        history.push("/dashboard");
+      console.log("aqui");
+
+      history.push("/dashboard");
+      
       } else {
         alert(`Email ou senha incorretos!`);
       }
+
     } catch (err) {
       alert(`Acesso negado!`);
       console.warn(err);

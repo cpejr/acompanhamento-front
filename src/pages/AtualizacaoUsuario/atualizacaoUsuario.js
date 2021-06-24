@@ -29,7 +29,8 @@ import { RssFeed } from "@material-ui/icons";
 import { useHistory } from 'react-router-dom';
 
 function AtualizacaoUsuario(props) {
-  const { id } = useParams();
+
+  let { id } = useParams();
   const history = useHistory();
 
   const [updating, setUpdating] = useState(false);
@@ -48,16 +49,23 @@ function AtualizacaoUsuario(props) {
 
   // pega os dados do usuário com o id
   useEffect(() => {
-    api
-     .get(`/user/${id}`)
-     .then((response) => {
-       setUserData(response.data.user);
-       setUserDataOriginal(response.data.user);
-     })
-     .catch((error) => {
-       console.warn(error);
-       alert("Erro ao buscar funcionários");
-     })
+    if (id === "me") { // clicou no botão de perfil
+      setUserData(props.userPerfil);
+      setUserDataOriginal(props.userPerfil);
+
+      id = props.userPerfil.id;
+    } else {
+      api
+      .get(`/user/${id}`)
+      .then((response) => {
+        setUserData(response.data.user);
+        setUserDataOriginal(response.data.user);
+      })
+      .catch((error) => {
+        console.warn(error);
+        alert("Erro ao buscar funcionários");
+      })
+    }
  }, [id]);
 
   function validateAllFields(data) {

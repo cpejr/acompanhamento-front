@@ -73,8 +73,6 @@ function AtualizacaoUsuario(props) {
     if (
       data.name        !== "" &&
       data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.address     !== "" &&
-      data.zipcode     !== "" && data.zipcode.length >= 8 &&
       isValidDate(data.birthdate)
     ) return true;
 
@@ -97,11 +95,13 @@ function AtualizacaoUsuario(props) {
           name: userData.name,
           birthdate: userData.type === 'PJ' ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
-          address: userData.address,
-          zipcode: userData.zipcode,
         }
 
         if (validateAllFields(updatedFields)) {
+          // Para o id vindo da rota da pag de perfil:
+          if (id === "me") {
+            id = props.userPerfil.id;
+          }
 
           api
             .put(`/user/${id}`, updatedFields)
@@ -114,6 +114,7 @@ function AtualizacaoUsuario(props) {
             })
 
           setUpdating(false);
+          setLoading(false);
         } else { // mensagens (snackbar) de erros
           if      (updatedFields.zipcode.length < 8) sendMessage("CEP inválido.", "error");
           else if (updatedFields.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");

@@ -42,10 +42,10 @@ export default function Menu() {
   const handleToggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-  const handleClickMenu = (path) => {
+  const handleLogout = () => {
     logOut();
     setOpenMenu(false);
-    history.push(path);
+    history.push("/login");
   }
 
   // Drawer
@@ -83,11 +83,14 @@ export default function Menu() {
             className={classes.menuProfile}
           >
             <List>
-              <ListItem button onClick={() => handleClickMenu('/au/me')}>
+              <ListItem button onClick={() => {
+                  history.push('/au/me');
+                  setOpenMenu(false);
+                }}>
                 <ListItemIcon><PersonIcon /></ListItemIcon>
                 <ListItemText>Perfil</ListItemText>
               </ListItem>
-              <ListItem button onClick={() => handleClickMenu('/login')}>
+              <ListItem button onClick={() => handleLogout()}>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText>Sair</ListItemText>
               </ListItem>

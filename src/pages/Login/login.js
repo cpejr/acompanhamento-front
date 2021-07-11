@@ -86,11 +86,10 @@ export default function Login() {
         password: values.password,
       });
 
-      if (response.data && response.data.accessToken) {
-        const token = response.data.accessToken;
+      if (response.data.user) {
         const user = response.data.user;
 
-        signIn(token, user);
+        signIn(user);
 
         // atualiza a última data ativa
         await api.put(`/user/${user[0].id}`, { active: formattedDateAndTime });

@@ -24,7 +24,7 @@ export default function CadastroEquipamento(props) {
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
   const { getUser } = useContext(LoginContext); 
-  let user = getUser();
+
 
   const [error, setError] = React.useState({
     cpf_client: "",
@@ -35,6 +35,8 @@ export default function CadastroEquipamento(props) {
 
   const [openModal, setOpenModal] = useState(false);
   const [idCadastrado, setIdCadastrado] = useState();
+
+  const [user, setUser] = useState();
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
@@ -61,7 +63,13 @@ export default function CadastroEquipamento(props) {
         sendMessage(`Error 504: ${error.message}`, 'error')
       });
 
-    setLoading(false)
+    setLoading(false);
+
+    async function getUserFromSession() {
+      setUser(await getUser());
+    }
+
+    getUserFromSession();
   }, [])
 
   async function handleSubmit(event) {

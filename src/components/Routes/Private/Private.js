@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'; 
-import {Redirect, Route} from 'react-router-dom'; 
-import {LoginContext} from '../../../context/LoginContext'; 
+import { Redirect, Route } from 'react-router-dom'; 
+import { LoginContext } from '../../../context/LoginContext'; 
  
 const RoutesPrivate = ({ component: Component, ...rest}) => { 
-    const { getToken } = useContext(LoginContext); 
+    const { getUserId } = useContext(LoginContext); 
  
     return ( 
         <Route 
             {...rest} 
-            render={() => getToken() 
+            render={() => getUserId() 
                 ? <Component {...rest} /> 
                 : <Redirect to="/login" /> 
             } 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import history from '../../history'
 import clsx from 'clsx';
@@ -34,10 +34,20 @@ export default function Menu() {
   const classes = useStyles();
   const { isClient } = useContext(AuthContext);
   const { logOut, getUser } = useContext(LoginContext);
+
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [user, setUser] = useState();
 
-  const user = getUser();
+  useEffect(() => {
+    async function getUserFromSession() {
+      const user = await getUser();
+
+      setUser(user);
+    }
+
+    getUserFromSession();
+  }, [])
 
   // MenuProfile
   const [openMenu, setOpenMenu] = React.useState(false);
@@ -79,7 +89,7 @@ export default function Menu() {
             className={classes.link}
             onClick={handleToggleMenu}
           >
-            {user ? user.name.split(' ')[0] : "Carregando..."}
+            {user ? user.name.split(' ')[0] : " "}
           </Button>
           {openMenu && <Paper
             className={classes.menuProfile}

@@ -1,35 +1,32 @@
 import React, { createContext } from "react";
+import api from "../services/api";
 
 export const LoginContext = createContext();
 export const LoginContextProvider = (props) => {
 
-  function signIn(token, user) {
-    const existsToken = localStorage.getItem("accessToken");
-
-    if (existsToken) {
-      localStorage.removeItem("accessToken");
-    }
-
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("user", JSON.stringify(user[0]));
+  function signIn(user) {
+    localStorage.setItem("userId", user[0].id);
   }
 
   function logOut() {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
   }
 
-  function getUser() {
-    return JSON.parse(localStorage.getItem("user"));
+  async function getUser() {
+    const userId = localStorage.getItem("userId");
+
+    const response = await api.get(`/user/${userId}`);
+
+    return response.data.user;
   }
 
-  function getToken() {
-    return localStorage.getItem("accessToken")
+  function getUserId() {
+    return localStorage.getItem("userId");
   }
 
   return (
     <LoginContext.Provider
-      value={{ signIn, logOut, getUser, getToken }}
+      value={{ signIn, logOut, getUser, getUserId }}
     >
       {props.children}
     </LoginContext.Provider>

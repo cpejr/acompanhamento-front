@@ -1,44 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
-import useStorage from '../utils/useStorage';
-import api from "../services/api";
+import React, { createContext } from "react";
 
 export const LoginContext = createContext();
-
-const LoginContextProvider = (props) => {
-
-  const [token, setToken, removeToken] = useStorage('token');
-  const [user, setUser, removeUser] = useStorage('user');
-
-  async function verify(token) {
-    try {
-      const response = await api.get("/verify");
-      const data = response.data;
-
-      if (data.verified) {
-        setToken(token);
-        setUser(data.user[0]);
-      } else {
-        setToken(null);
-        setUser(null);
-        localStorage.removeItem("accessToken");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-
-  useEffect(() => {
-
-    async function verifyToken() {
-      const currentToken = localStorage.getItem("accessToken");
-
-      if (currentToken && currentToken !== " ") {
-        await verify(currentToken);
-      }
-    }
-
-    verifyToken();
-  }, []);
+export const LoginContextProvider = (props) => {
 
   function signIn(token, user) {
     const existsToken = localStorage.getItem("accessToken");
@@ -48,23 +11,27 @@ const LoginContextProvider = (props) => {
     }
 
     localStorage.setItem("accessToken", token);
-    setUser(user[0]);
-    setToken(token);
+    localStorage.setItem("user", JSON.stringify(user[0]));
   }
 
   function logOut() {
     localStorage.removeItem("accessToken");
-    setUser(null);
-    setToken(null);
+    localStorage.removeItem("user");
+  }
+
+  function getUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
+
+  function getToken() {
+    return localStorage.getItem("accessToken")
   }
 
   return (
     <LoginContext.Provider
-      value={{ token, user, signIn, logOut, setUser, verify }}
+      value={{ signIn, logOut, getUser, getToken }}
     >
       {props.children}
     </LoginContext.Provider>
   );
 };
-
-export default LoginContextProvider;

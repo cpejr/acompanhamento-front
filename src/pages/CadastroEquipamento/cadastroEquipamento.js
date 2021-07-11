@@ -23,7 +23,8 @@ export default function CadastroEquipamento(props) {
 
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
-  let user = useContext(LoginContext); 
+  const { getUser } = useContext(LoginContext); 
+  let user = getUser();
 
   const [error, setError] = React.useState({
     cpf_client: "",
@@ -96,7 +97,9 @@ export default function CadastroEquipamento(props) {
 
         console.log(resposta);
 
-        let arrayEquipments = user.user.id_equipments;
+        console.log(user);
+
+        let arrayEquipments = user.id_equipments;
 
         if (arrayEquipments) {
           arrayEquipments.push(resposta.data.id);
@@ -105,8 +108,8 @@ export default function CadastroEquipamento(props) {
         }
 
         // atualiza o vetor de id_equipments
-        await api.put(`/user/${user.user.id}`, { id_equipments: arrayEquipments })
-        user.user.id_equipments = arrayEquipments;
+        await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments })
+        user.id_equipments = arrayEquipments;
 
         if (resposta.data && resposta.data.id) {
           setIdCadastrado(resposta.data.id);

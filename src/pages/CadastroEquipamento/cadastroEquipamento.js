@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import {
   CssBaseline,
   Typography,
@@ -17,9 +17,15 @@ import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
 import { useHistory } from 'react-router';
 import ModalRedirect from '../../components/ModalRedirect/ModalRedirect';
+import { LoginContext } from '../../context/LoginContext';
 
 export default function CadastroEquipamento(props) {
+
   const history = useHistory();
+  const { sendMessage } = useContext(AuthContext);
+  const { getUser } = useContext(LoginContext); 
+
+
   const [error, setError] = React.useState({
     cpf_client: "",
     installation_date: ""
@@ -30,7 +36,7 @@ export default function CadastroEquipamento(props) {
   const [openModal, setOpenModal] = useState(false);
   const [idCadastrado, setIdCadastrado] = useState();
 
-  const { sendMessage } = useContext(AuthContext);
+  const [user, setUser] = useState();
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
@@ -57,8 +63,14 @@ export default function CadastroEquipamento(props) {
         sendMessage(`Error 504: ${error.message}`, 'error')
       });
 
-    setLoading(false)
-  }, [sendMessage])
+    setLoading(false);
+
+    async function getUserFromSession() {
+      setUser(await getUser());
+    }
+
+    getUserFromSession();
+  }, [])
 
   async function handleSubmit(event) {
 
@@ -86,11 +98,26 @@ export default function CadastroEquipamento(props) {
       console.log("Data: ", data);
 
       //enviar para o backend
-      sendMessage('Realizando cadastro...', 'info', null)
+      sendMessage('Realizando cadastro...', 'info', null);
+      
       try {
         const resposta = await api.post('/equipment/create', data);
 
         console.log(resposta);
+
+        console.log(user);
+
+        let arrayEquipments = user.id_equipments;
+
+        if (arrayEquipments) {
+          arrayEquipments.push(resposta.data.id);
+        } else {
+          arrayEquipments = [ resposta.data.id ];
+        }
+
+        // atualiza o vetor de id_equipments
+        await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments })
+        user.id_equipments = arrayEquipments;
 
         if (resposta.data && resposta.data.id) {
           setIdCadastrado(resposta.data.id);

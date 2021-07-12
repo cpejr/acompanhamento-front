@@ -1,66 +1,34 @@
-import React, { createContext, useState, useEffect } from "react";
-import useStorage from '../utils/useStorage';
+import React, { createContext } from "react";
 import api from "../services/api";
 
 export const LoginContext = createContext();
+export const LoginContextProvider = (props) => {
 
-const LoginContextProvider = (props) => {
-  const [token, setToken] = useStorage('token');
-  const [user, setUser] = useStorage('user');
-
-  async function verify(token) {
-    try {
-      const response = await api.get("/verify");
-      const data = response.data;
-
-      if (data.verified) {
-        setToken(token);
-        setUser(data.user[0]);
-      } else {
-        setToken(null);
-        setUser(null);
-        localStorage.removeItem("accessToken");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-
-  useEffect(async () => {
-
-    const currentToken = localStorage.getItem("accessToken");
-
-    if (currentToken && currentToken !== " ") {
-      await verify(currentToken);
-    }
-    console.log("UseEffect LoginContext");
-  }, []);
-
-  function signIn(token, user) {
-    const existsToken = localStorage.getItem("accessToken");
-
-    if (existsToken) {
-      localStorage.removeItem("accessToken");
-    }
-
-    localStorage.setItem("accessToken", token);
-    setUser(user[0]);
-    setToken(token);
+  function signIn(user) {
+    localStorage.setItem("userId", user[0].id);
   }
 
   function logOut() {
-    localStorage.removeItem("accessToken");
-    setUser(null);
-    setToken(null);
+    localStorage.removeItem("userId");
+  }
+
+  async function getUser() {
+    const userId = localStorage.getItem("userId");
+
+    const response = await api.get(`/user/${userId}`);
+
+    return response.data.user;
+  }
+
+  function getUserId() {
+    return localStorage.getItem("userId");
   }
 
   return (
     <LoginContext.Provider
-      value={{ token, user, signIn, logOut, setUser, verify }}
+      value={{ signIn, logOut, getUser, getUserId }}
     >
       {props.children}
     </LoginContext.Provider>
   );
 };
-
-export default LoginContextProvider;

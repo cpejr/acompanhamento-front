@@ -3,7 +3,7 @@ import { Route, Router, Switch, Redirect } from "react-router-dom";
 import history from "./history";
 
 import { DataContextProvider } from "./context/DataContext";
-import LoginContextProvider from "./context/LoginContext";
+import { LoginContextProvider } from "./context/LoginContext";
 
 // import Home from './pages/Home'
 import Login from "./pages/Login";

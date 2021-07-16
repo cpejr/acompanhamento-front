@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import history from '../../history'
 import clsx from 'clsx';
@@ -33,19 +33,31 @@ import { LoginContext } from "../../context/LoginContext";
 export default function Menu() {
   const classes = useStyles();
   const { isClient } = useContext(AuthContext);
-  const { logOut, user } = useContext(LoginContext);
+  const { logOut, getUser } = useContext(LoginContext);
+
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function getUserFromSession() {
+      const user = await getUser();
+
+      setUser(user);
+    }
+
+    getUserFromSession();
+  }, [])
 
   // MenuProfile
   const [openMenu, setOpenMenu] = React.useState(false);
   const handleToggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-  const handleClickMenu = (path) => {
+  const handleLogout = () => {
     logOut();
     setOpenMenu(false);
-    history.push(path);
+    history.push("/login");
   }
 
   // Drawer
@@ -77,17 +89,20 @@ export default function Menu() {
             className={classes.link}
             onClick={handleToggleMenu}
           >
-            {user.name.split(' ')[0]}
+            {user ? user.name.split(' ')[0] : " "}
           </Button>
           {openMenu && <Paper
             className={classes.menuProfile}
           >
             <List>
-              <ListItem button onClick={() => handleClickMenu('/au/me')}>
+              <ListItem button onClick={() => {
+                  history.push('/au/me');
+                  setOpenMenu(false);
+                }}>
                 <ListItemIcon><PersonIcon /></ListItemIcon>
                 <ListItemText>Perfil</ListItemText>
               </ListItem>
-              <ListItem button onClick={() => handleClickMenu('/login')}>
+              <ListItem button onClick={() => handleLogout()}>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText>Sair</ListItemText>
               </ListItem>

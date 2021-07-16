@@ -26,7 +26,7 @@ export default function ({ equipment }) {
       setDataToTable([
         { name: "Nº de Sêrie", value: equipment.id_equipment },
         { name: "Modelo do equipamento", value: equipment.equipment_model },
-        { name: "Data de Instalação", value: format(parseISO(equipment.instalation_date), "PPP", { locale: ptBR }) },
+        // { name: "Data de Instalação", value: format(parseISO(equipment.instalation_date), "PPP", { locale: ptBR }) },
         { name: "Última Atualização", value: format(parseISO(equipment.updatedAt), "PPP", { locale: ptBR }) },
         { name: "Observações", value: equipment.observation },
       ])

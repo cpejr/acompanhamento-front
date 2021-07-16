@@ -7,7 +7,6 @@ import {
   Typography,
   OutlinedInput,
   Button,
-  Snackbar,
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -16,21 +15,99 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import api from "../../services/api";
 
 import { useStyles } from "./styles";
-import { Alert } from "@material-ui/lab";
 import { LoginContext } from "../../context/LoginContext";
+import { AuthContext } from "../../context/AuthContext";
 
-var currentdate = new Date();
+const currentdate = new Date();
 
 export default function Login() {
+
   const classes = useStyles();
-  const { signIn } = useContext(LoginContext);
   const history = useHistory();
+  const { signIn } = useContext(LoginContext);
+  const { sendMessage } = useContext(AuthContext);
+  const [error, setError] = useState("");
 
   const [values, setValues] = useState({
     user: "",
     password: "",
     showPassword: false,
   });
+
+  const isValidEmailAndPassword = () => {
+
+    setError("");
+    const email = values.user;
+    const password = values.password;
+
+    if (
+      email === "" || 
+      !email.includes("@") || 
+      !email.includes(".com")
+    ) {
+      setError("Email inválido!");
+      return false;
+    }
+
+    if (password.length < 6) {
+      return false;
+    }
+    
+    return true;
+  }
+
+  async function handleSubmit(event) {
+
+    event.preventDefault();
+
+    // proteção e validação do front
+    if (!isValidEmailAndPassword()) {
+      sendMessage("Dados inválidos!", "error", 2000);
+      return;
+    };
+
+    var formattedDateAndTime =
+      currentdate.getHours() +
+      ":" +
+      currentdate.getMinutes() +
+      " - " +
+      currentdate.getDate() +
+      "/" +
+      (currentdate.getMonth() + 1) +
+      "/" +
+      currentdate.getFullYear();
+
+    try {
+
+      sendMessage("Realizando login...", "info", null);
+
+      const response = await api.post("/login", {
+        email: values.user,
+        password: values.password,
+      });
+
+      if (response.data.user) {
+        const user = response.data.user;
+
+        signIn(user);
+
+        // atualiza a última data ativa
+        await api.put(`/user/${user[0].id}`, { active: formattedDateAndTime });
+
+        sendMessage("Login efetuado com sucesso!", "success", 1000);
+        setTimeout(() => {
+          history.push("/dashboard");
+        }, 1000)
+        
+      } else {
+        sendMessage("Email ou senha incorretos!", "error", 2000);
+      }
+
+    } catch (err) {
+      sendMessage("Acesso negado!", "error", 2000);
+      console.warn(err);
+    }
+  }
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -44,93 +121,16 @@ export default function Login() {
     event.preventDefault();
   };
 
-  const [error, setError] = useState("");
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    setError("");
-
-    switch (email) {
-      case "":
-        setError("Insira seu email");
-        break;
-      default:
-        setError("Email inválido");
-        break;
-    }
-
-    var datetime =
-      currentdate.getHours() +
-      ":" +
-      currentdate.getMinutes() +
-      " - " +
-      currentdate.getDate() +
-      "/" +
-      (currentdate.getMonth() + 1) +
-      "/" +
-      currentdate.getFullYear();
-
-    try {
-      const response = await api.post("/login", {
-        email: values.user,
-        password: values.password,
-      });
-
-      if (response.data && response.data.accessToken) {
-        const token = response.data.accessToken;
-        const user = response.data.user;
-
-        signIn(token, user);
-
-        const updatedFields = {
-          name: user[0].name,
-          birthdate: user[0].birthdate,
-          phonenumber: user[0].phonenumber,
-          address: user[0].address,
-          zipcode: user[0].zipcode,
-          active: datetime,
-        };
-
-        const responsePut = await api.put(`/user/${user[0].id}`, updatedFields);
-        console.log("AQUI: ", user[0]);
-        //Aqui manda para a rota logo apos o login
-
-        history.push("/dashboard");
-      } else {
-        alert(`Email ou senha incorretos!`);
-      }
-    } catch (err) {
-      alert(`Acesso negado!`);
-      console.warn(err);
-    }
-
-    
-  }
-
   return (
     <React.Fragment>
       <CssBaseline />{" "}
-      {/* Reseta todo estilo padrão do navegador (margens e padding) */}
       <div className={classes.root}>
         <Link to="/" className={classes.logo}></Link>
 
-        {/* <Snackbar
-          autoHideDuration={null}
-          open={true}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert elevation={6} variant="filled" severity="info">
-            Apenas click em Entrar
-          </Alert>
-        </Snackbar> */}
-
         <div className={classes.loginBox}>
-          {/* Título */}
           <Typography className={classes.loginTxt}>Login</Typography>
 
           <form className={classes.loginForm} onSubmit={handleSubmit}>
-            {/* Email */}
             <h5 style={{ color: "white", margin: "0" }}>Email</h5>
             <TextField
               className={classes.input}
@@ -156,7 +156,6 @@ export default function Login() {
               </>
             )}
 
-            {/* Senha */}
             <h5 style={{ color: "white", margin: "0" }}>Senha</h5>
             <OutlinedInput
               className={classes.input}
@@ -192,8 +191,6 @@ export default function Login() {
               <Button
                 type="submit"
                 className={classes.buttonLogin}
-                component={Link}
-                to="/dashboard"
               >
                 Entrar
               </Button>

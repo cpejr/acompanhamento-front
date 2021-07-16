@@ -26,9 +26,12 @@ import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from '../../services/dateValidation';
 import { RssFeed } from "@material-ui/icons";
+import { useHistory } from 'react-router-dom';
 
 function AtualizacaoUsuario(props) {
-  const { id } = useParams();
+
+  let { id } = useParams();
+  const history = useHistory();
 
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
@@ -46,16 +49,23 @@ function AtualizacaoUsuario(props) {
 
   // pega os dados do usuário com o id
   useEffect(() => {
-    api
-     .get(`/user/${id}`)
-     .then((response) => {
-       setUserData(response.data.user);
-       setUserDataOriginal(response.data.user);
-     })
-     .catch((error) => {
-       console.warn(error);
-       alert("Erro ao buscar funcionários");
-     })
+    if (id === "me") { // clicou no botão de perfil
+      setUserData(props.userPerfil);
+      setUserDataOriginal(props.userPerfil);
+
+      id = props.userPerfil.id;
+    } else {
+      api
+      .get(`/user/${id}`)
+      .then((response) => {
+        setUserData(response.data.user);
+        setUserDataOriginal(response.data.user);
+      })
+      .catch((error) => {
+        console.warn(error);
+        alert("Erro ao buscar funcionários");
+      })
+    }
  }, [id]);
 
   function validateAllFields(data) {
@@ -63,8 +73,6 @@ function AtualizacaoUsuario(props) {
     if (
       data.name        !== "" &&
       data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.address     !== "" &&
-      data.zipcode     !== "" && data.zipcode.length >= 8 &&
       isValidDate(data.birthdate)
     ) return true;
 
@@ -87,11 +95,13 @@ function AtualizacaoUsuario(props) {
           name: userData.name,
           birthdate: userData.type === 'PJ' ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
-          address: userData.address,
-          zipcode: userData.zipcode,
         }
 
         if (validateAllFields(updatedFields)) {
+          // Para o id vindo da rota da pag de perfil:
+          if (id === "me") {
+            id = props.userPerfil.id;
+          }
 
           api
             .put(`/user/${id}`, updatedFields)
@@ -104,6 +114,7 @@ function AtualizacaoUsuario(props) {
             })
 
           setUpdating(false);
+          setLoading(false);
         } else { // mensagens (snackbar) de erros
           if      (updatedFields.zipcode.length < 8) sendMessage("CEP inválido.", "error");
           else if (updatedFields.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
@@ -121,17 +132,42 @@ function AtualizacaoUsuario(props) {
     }
   }
 
-  function handleDelete(confirmation) {
-    if (updating) { //cancelar
+  async function handleDelete(confirmation) {
+    if (updating) {
+      //cancelar
       setUpdating(false);
       setUserData(userDataOriginal);
-    }
-    else if (confirmation === true) { // excuir de verdade
-      setDeleting(false);
-      alert("Excluindo usuário do banco de dados...")
-    }
-    else { // confirmar exclusão
-      setDeleting(true);
+    } else {
+      // excuir de verdade
+      setOpenSnackbar(true);
+      setMessageSnackbar("Excluindo usuário...");
+      setTypeSnackbar("info");
+
+      try {
+        const response = await api.delete(`user/${id}`);
+
+        console.log(response);
+
+        setOpenSnackbar(true);
+        setMessageSnackbar("Usuário deletado com sucesso!");
+        setTypeSnackbar("success");
+
+        setUpdating(false);
+
+        setTimeout(() => {
+          history.push("/listagemusuario");
+        }, 1000)
+        
+      } catch (error) {
+        console.log(error);
+
+        setOpenSnackbar(true);
+        setMessageSnackbar("Falha ao deletar usuário.");
+        setTypeSnackbar("error");
+
+        setUpdating(false);
+      }
+
     }
   }
 
@@ -239,7 +275,7 @@ function AtualizacaoUsuario(props) {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={2000}
+        autoHideDuration={typeSnackbar === 'info' ? 20000 : 2000}
         onClose={() => setOpenSnackbar(false)}
       >
         <MuiAlert

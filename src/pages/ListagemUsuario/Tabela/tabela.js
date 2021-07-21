@@ -12,6 +12,7 @@ import {
   TableSortLabel,
   Typography,
 } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { FiMoreHorizontal } from "react-icons/fi";
 
 export default function StickyHeadTable(props) {
@@ -60,12 +61,13 @@ export default function StickyHeadTable(props) {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Link
+                  <Link 
                     style={{ textDecoration: "none", color: "black" }}
                     to={`/au/${user.id}`}
                   >
                     {user.data}
                   </Link>
+                  <Button variant="outlined" className={classes.ButtonData} onClick={()=>{}}> O que serei? </Button>
                 </TableCell>
               </TableRow>
             ))}

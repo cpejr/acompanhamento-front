@@ -27,4 +27,8 @@ export const useStyles = makeStyles({
     fontSize: "16px",
     textAlign: "left",
   },
+  ButtonData: {
+    display: "flex",
+    alignItems: "center",
+  }
 });

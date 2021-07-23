@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import api from '../../services/api';
 import { FiMail, FiAlertTriangle } from "react-icons/fi"
 import {
   TextField,
@@ -18,6 +19,8 @@ export default function EsqueciSenha() {
   const [error, setError] = React.useState("");
   const [firstSubmit, setFirstSubmit] = React.useState(false);
   const [openMensage, setOpenMensage] = React.useState(false);
+  const [openMessageError, setOpenMessageError] = React.useState(false);
+  
 
   const handleCloseMensage = (event, reason) => {
     if (reason === 'clickaway') {
@@ -26,27 +29,38 @@ export default function EsqueciSenha() {
     setOpenMensage(false);
   }
 
-  const handleSubmit = (event) => {
+  const handleCloseMessageError = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenMessageError(false);
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault(); //cancela os eventos padroes de um submit
     const email = document.getElementById("email").value;
-    setError("");
-    // enviei para o backend e espero uma resposta para
-    // se conseguir enviar codigo:
-    if (email === "email@teste.com") {
-      setOpenMensage(true);
-      setFirstSubmit(true);
+
+    if(!email){
+      return setError("Insira seu email");
     }
 
+    if(!email.toString().toLowerCase().includes("@")){
+      return setError("Insira um email válido");
+    }
+
+
+    await api.post('/reset' ,{email})
+      .then(response=>{
+        setOpenMensage(true);
+        setFirstSubmit(true);
+      })
+      .catch((error)=>{
+        setOpenMessageError(true);
+      })
+    // enviei para o backend e espero uma resposta para
+    // se conseguir enviar codigo:
     // se não conseguir enviar codigo:
-    else
-      switch (email) {
-        case "":
-          setError("Insira seu email");
-          break;
-        default:
-          setError("Email inválido");
-          break;
-      }
+      
   }
 
   return (
@@ -59,6 +73,13 @@ export default function EsqueciSenha() {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <Alert elevation={6} variant="filled" severity="success">
             Código enviado para o seu email
+          </Alert>
+        </Snackbar>
+
+        <Snackbar autoHideDuration={4000} open={openMessageError} onClose={handleCloseMessageError}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+          <Alert elevation={6} variant="filled" severity="error">
+            Erro ao enviar email
           </Alert>
         </Snackbar>
 

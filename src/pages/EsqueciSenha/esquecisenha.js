@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import api from '../../services/api';
 import { FiMail, FiAlertTriangle } from "react-icons/fi"
 import {
@@ -12,15 +12,17 @@ import {
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab'
 import { useStyles } from './esquecisenhastyle'
+import { AuthContext } from "../../context/AuthContext";
 
 export default function EsqueciSenha() {
   const classes = useStyles();
+  const history = useHistory();
+  const { sendMessage } = useContext(AuthContext);
 
   const [error, setError] = React.useState("");
   const [firstSubmit, setFirstSubmit] = React.useState(false);
   const [openMensage, setOpenMensage] = React.useState(false);
   const [openMessageError, setOpenMessageError] = React.useState(false);
-  
 
   const handleCloseMensage = (event, reason) => {
     if (reason === 'clickaway') {
@@ -37,29 +39,30 @@ export default function EsqueciSenha() {
   }
 
   const handleSubmit = async (event) => {
+
     event.preventDefault(); //cancela os eventos padroes de um submit
     const email = document.getElementById("email").value;
 
-    if(!email){
+    if (!email) {
       return setError("Insira seu email");
     }
 
-    if(!email.toString().toLowerCase().includes("@")){
+    if (!email.toString().toLowerCase().includes("@")) {
       return setError("Insira um email válido");
     }
 
-
-    await api.post('/reset' ,{email})
-      .then(response=>{
-        setOpenMensage(true);
-        setFirstSubmit(true);
+    await api.post('/reset', { email: email })
+      .then(response => {
+        console.log(response);
+        sendMessage("Código enviado para o seu email", "success")
       })
       .catch((error)=>{
-        setOpenMessageError(true);
+        console.log(error);
+        sendMessage(
+          "Erro ao enviar email: certifique-se que o email já é cadastrado no sistema.",
+          "error"
+        );
       })
-    // enviei para o backend e espero uma resposta para
-    // se conseguir enviar codigo:
-    // se não conseguir enviar codigo:
       
   }
 
@@ -68,20 +71,6 @@ export default function EsqueciSenha() {
       <CssBaseline />
       <div className={classes.root}>
         <Link to="/" className={classes.logo}></Link>
-
-        <Snackbar autoHideDuration={4000} open={openMensage} onClose={handleCloseMensage}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-          <Alert elevation={6} variant="filled" severity="success">
-            Código enviado para o seu email
-          </Alert>
-        </Snackbar>
-
-        <Snackbar autoHideDuration={4000} open={openMessageError} onClose={handleCloseMessageError}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-          <Alert elevation={6} variant="filled" severity="error">
-            Erro ao enviar email
-          </Alert>
-        </Snackbar>
 
         <form className={classes.esquecisenhaForm} onSubmit={handleSubmit} >
           <Typography className={classes.title}>Esqueci minha senha!</Typography>

@@ -28,7 +28,19 @@ export const useStyles = makeStyles({
     textAlign: "left",
   },
   ButtonData: {
-    display: "flex",
     alignItems: "center",
+    marginLeft: "40px",
+    padding: "0 20px",
+    border: "1px solid", azulPadraoClaro,
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+      border: "none",
+    }
   }
 });

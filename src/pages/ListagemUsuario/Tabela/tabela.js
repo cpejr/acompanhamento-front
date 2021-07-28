@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./tabelaStyle";
 import {
   Paper,
-  Table,
+  Table, 
+  Button,
   TableBody,
   TableCell,
   TableContainer,
@@ -12,11 +13,17 @@ import {
   TableSortLabel,
   Typography,
 } from "@material-ui/core";
-import { Button } from "@material-ui/core";
-import { FiMoreHorizontal } from "react-icons/fi";
 
-export default function StickyHeadTable(props) {
+export default function StickyHeadTable({
+  ordemAlfabetica,
+  usersListToDisplay,
+  setOrdemAlfabetica
+}) {
   const classes = useStyles();
+
+  useEffect(()=>{
+    console.log(usersListToDisplay);
+  },[usersListToDisplay])
 
   return (
     <Paper className={classes.root}>
@@ -27,9 +34,9 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active
-                  direction={props.ordemAlfabetica ? "desc" : "asc"}
+                  direction={ordemAlfabetica ? "desc" : "asc"}
                   onClick={() =>
-                    props.setOrdemAlfabetica(!props.ordemAlfabetica)
+                    setOrdemAlfabetica(!ordemAlfabetica)
                   }
                 >
                   Nome
@@ -39,39 +46,31 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tableCell}>
                 Última data ativa
               </TableCell>
+              <TableCell className={classes.tableCell}>
+                O que serei
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.usersListToDisplay.map((user) => (
-              <TableRow hover tabIndex={-1} key={user.name}>
+            {usersListToDisplay.map((user) => (
+              <TableRow hover key={user.id}>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
                     {user.name}{" "}
-                  </Link>
                 </TableCell>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
                     {user.funcao}{" "}
-                  </Link>
                 </TableCell>
                 <TableCell>
-                  <Link 
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
-                    {user.data}
-                  </Link>
-                  <Button variant="outlined" className={classes.ButtonData} onClick={()=>{}}> O que serei? </Button>
+                    {user.data}{" "}
+                </TableCell>
+                <TableCell>
+                <Button component={Link}
+                to={`/au/${user.id}`}
+                className={classes.ButtonData}> O que serei? </Button>
                 </TableCell>
               </TableRow>
             ))}
-            {props.usersListToDisplay.length <= 0 ? (
+            {usersListToDisplay.length <= 0 ? (
               <Typography className={classes.nullUser}>
                 Este usuário não foi encontrado{" "}
               </Typography>

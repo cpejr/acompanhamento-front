@@ -8,6 +8,9 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  MenuItem,
+  FormControl,
+  Select,
 } from "@material-ui/core";
 
 import { useStyles } from "./listagemUsuarioStyle";
@@ -24,6 +27,8 @@ export default function ListagemUsuario() {
 
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
   const [employees, setEmployees] = useState([]);
+  const [filterByOptions, setFilterByOptions] = useState("nameEmail");
+  const [messagePlaceholder, setMessagePlaceholder] = useState("Procurar usuário por nome ou e-mail");
   const [usersListToDisplay, setUsersListToDisplay] = useState([]);
   const [filterThisUsers, setFilterThisUsers] = useState({
     administrador: true,
@@ -50,66 +55,67 @@ export default function ListagemUsuario() {
     getEmployees();
   }, []);
 
-  function FindPeoplebyName(searchPerson) {
-    //Seta para vazio
-    setUsersListToDisplay([]);
-
-    const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
-    employees.forEach((employee) => {
-      if (
-        employee.name.toLowerCase().match(filteredPeople) ||
-        employee.type.toLowerCase().match(filteredPeople)
-      ) {
-        //Adiciona funcionario filtrado ao array
-        setUsersListToDisplay((usersListToDisplay) => [
-          ...usersListToDisplay,
-          employee,
-        ]);
-        // funcionario.push(employee);
-        // setEmployees(funcionario);
-      }
-    });
-
-    // Se nao tiver nada no Input de busca, cooca todos
-    if (filteredPeople === "") {
-      setUsersListToDisplay([...employees]);
+// Mensagem do placeholder de acordo com a caixa de seleção
+  function messageDisplay(e){
+    setFilterByOptions(e.target.value);
+    if(e.target.value === "nameEmail"){
+      setMessagePlaceholder("Procurar usuário por nome ou e-mail");
+    }else if(e.target.value === "funcao"){
+      setMessagePlaceholder("Procurar usuário por função");
     }
   }
 
-  // function FindPeoplebyName(searchPerson) {
-  //   if (searchPerson.length > 0) {
-  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
 
-  //     employees.filter((item) => {
-  //       const probable = item.name.toLowerCase().match(filteredPeople);
-  //       if (probable) {
-  //         usersListToDisplay.push(item);
-  //         console.log("UserList: ", usersListToDisplay);
-  //       }
-  //     });
-  //     setUsersListToDisplay(usersListToDisplay);
-  //   } else {
-  //     setUsersListToDisplay(employees);
-  //   }
-  // }
+  function handleSearchChange(search){
+    const searchByName = findPeoplebyName(search);
+    const searchByEmail = findPeoplebyEmail(search);
+    const searchByFuncao = findPeoplebyFuncao(search);
+    const finalResult = getUnique([...searchByName, ...searchByEmail, ...searchByFuncao]);
 
-  // function FindPeoplebyEmail(searchPerson) {
-  //   if (searchPerson.length > 0) {
-  //     const usersListToDisplay = [];
-  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
+    setUsersListToDisplay(finalResult);
+  }
+ 
+  function findPeoplebyName(name){
+    const filteredUsers = 
+    employees.filter((employee)=> {
+      if(employee.name){
+        return employee.name.toString().toLowerCase().includes(name.toString().toLowerCase())
+      }
+    })
+    return filteredUsers;
+  }
 
-  //     usersList.forEach((item) => {
-  //       const probable = item.email.toLowerCase().match(filteredPeople);
-  //       if (probable) {
-  //         usersListToDisplay.push(item);
-  //       }
-  //     });
-  //     setUsersListToDisplay(usersListToDisplay);
-  //   } else {
-  //     setUsersListToDisplay(usersList);
-  //   }
-  // }
+  function findPeoplebyEmail(email){
+    const filteredUsers = 
+    employees.filter((employee)=> {
+      if(employee.email){
+        return employee.email.toString().toLowerCase().includes(email.toString().toLowerCase())
+      }
+    })
+    return filteredUsers;
+  }
 
+  function findPeoplebyFuncao(funcao){
+    const filterFuncao = 
+    employees.filter((employee)=> {
+      if(employee.funcao){
+        return employee.funcao.toString().toLowerCase().includes(funcao.toString().toLowerCase())
+      }
+    })
+    return filterFuncao;
+  }
+
+
+  function getUnique(arr){
+    let final = [];
+    arr.forEach((elem)=>{
+      if(final.includes(elem)) return;
+      final.push(elem);
+    })
+    return final;
+  }
+
+  
   const filterByUsers = (props) => {
     let users = props;
 
@@ -155,9 +161,9 @@ export default function ListagemUsuario() {
           <div className={classes.searchInput}>
             <InputBase
               className={classes.placeholder}
-              placeholder="Procurar usuário por nome ou email"
+              placeholder={messagePlaceholder}
               onChange={(e) => {
-                FindPeoplebyName(e.target.value);
+                handleSearchChange(e.target.value);
                 // var arroba = "@";
                 // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
                 // else FindPeoplebyName(e.target.value);
@@ -169,7 +175,19 @@ export default function ListagemUsuario() {
             />
           </div>
         </div>
-        <div className={classes.searchFilter}></div>
+
+        {/* Renderiza a tabela de usuários em ordem alfabética/ ou inverso da ordem alfabética */}
+         <FormControl className={classes.filter}>
+            <Select
+              className={classes.selectItens}
+              value={filterByOptions}
+              onChange={(e) => messageDisplay(e)}
+              variant="outlined"
+            >
+              <MenuItem value="nameEmail">Nome</MenuItem>
+              <MenuItem value="funcao">Função</MenuItem>
+            </Select>
+          </FormControl>
 
         <div className={classes.table}>
           <StickyHeadTable
@@ -187,7 +205,7 @@ export default function ListagemUsuario() {
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica}
-          />
+          /> 
         </div>
       </div>
     </React.Fragment>

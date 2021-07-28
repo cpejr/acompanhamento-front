@@ -19,6 +19,7 @@ import StickyHeadTable from "./Tabela";
 
 export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
+  const [placeHolder, setPlaceHolder] = useState("Procurar modelo");
   const [ordem, setOrdem] = useState({ alfabetica: true, by: "modelName" });
   const [modelsOriginal, setModelsOriginal] = useState();
   const [loading, setLoading] = useState(true);
@@ -57,6 +58,18 @@ export default function ListagemModelo() {
       setModelsListToDisplay(modelsOriginal);
     }
   }
+  
+  function messageDisplay(e){
+    setFilterby(e.target.value);
+    if(e.target.value === "modelName"){
+      setPlaceHolder("Procurar modelo");
+    }else if(e.target.value === "type"){
+      setPlaceHolder("Procurar tipo");
+    }else{
+      setPlaceHolder("Procurar fabricante");
+    }
+  }
+  
 
   const classes = useStyles();
 
@@ -93,7 +106,7 @@ export default function ListagemModelo() {
             <div className={classes.searchInput}>
               <InputBase
                 className={classes.placeholder}
-                placeholder="Procurar modelo"
+                placeholder={placeHolder}
                 onChange={(e) => FindModel(e.target.value)}
                 classes={{
                   root: classes.inputRoot,
@@ -106,7 +119,7 @@ export default function ListagemModelo() {
             <Select
               className={classes.selectItens}
               value={filterby}
-              onChange={(e) => setFilterby(e.target.value)}
+              onChange={(e) => messageDisplay(e)}
               // displayEmpty={true}
               // native={false}
               variant="outlined"

@@ -17,6 +17,21 @@ export const useStyles = makeStyles({
     fontWeight: "500",
     fontSize: "16px"
   },
+  buttonAdd:{
+    marginLeft: "40px",
+    padding: "0 20px",
+    border: "1px solid", azulPadraoClaro,
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+      border: "none",
+    }
+  },
 
   lastTableCell: {
     display: "flex",

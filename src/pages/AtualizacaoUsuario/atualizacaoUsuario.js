@@ -27,6 +27,7 @@ import api from "../../services/api";
 import isValidDate from '../../services/dateValidation';
 import { RssFeed } from "@material-ui/icons";
 import { useHistory } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function AtualizacaoUsuario(props) {
 
@@ -241,7 +242,17 @@ function AtualizacaoUsuario(props) {
                 )
             )
           }
-
+            <did>
+            <Button
+            component={Link}
+            // to={`/ae/${ user.id_equipments ? user.id_equipments[0] : " "}`}
+            to='/listagemequipamento'
+            // to={`/listagemequipamento?situation=${user.id}`}
+            className={classes.buttonAdd}
+          >
+            Acessar equipamentos
+          </Button>
+            </did>
           <Grid className={classes.centralizar} item xs={12}>
             <Button
               variant="contained"

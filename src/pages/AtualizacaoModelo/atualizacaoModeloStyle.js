@@ -19,7 +19,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: "30px",
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,

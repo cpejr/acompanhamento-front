@@ -8,6 +8,21 @@ export const useStyles = makeStyles({
   container: {
     maxHeight: 550,
   },
+  buttonAdd:{
+    marginLeft: "40px",
+    padding: "0 20px",
+    border: "1px solid", azulPadraoClaro,
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+      border: "none",
+    }
+  },
   tableCell: {
     minWidth: "170px",
     position: "sticky",

@@ -100,7 +100,7 @@ function CadastroPJ(props) {
       data.cnpj   !== "" && data.cnpj.length === 14 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
       data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.password    !== "" && data.password.length >= 6 &&
+      data.password    !== "" && data.password.length >= 8 &&
       data.address     !== "" &&
       data.zipcode     !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
@@ -134,8 +134,14 @@ function CadastroPJ(props) {
       // data.address !== "" 
       // data.zipcode !== ""
     ) {
-      if (email !== emailConfirm) alert("Os emails estão diferentes.");
-      if (senha !== senhaConfirm) alert("As senhas não batem.");
+      if (email !== emailConfirm){
+      alert("Os emails estão diferentes.");
+      return;
+      }
+      if (senha !== senhaConfirm){
+      alert("As senhas não batem.");
+      return;
+      }
 
       sendMessage("Realizando cadastro...", "info", null);
       api
@@ -168,7 +174,7 @@ function CadastroPJ(props) {
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
-      else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
+      else if (data.password.length < 8) sendMessage("Senha deve ter no mínimo 8 caracteres!", "error");
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");
       else if (data.cnpj.length < 14) sendMessage("CNPJ inválido.", "error");
@@ -183,7 +189,7 @@ function CadastroPJ(props) {
     <div>
       <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={10} md={10}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -251,7 +257,7 @@ function CadastroPJ(props) {
               required
             /> */}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={10} md={10}>
             <TextField
               name="email"
               className={classes.inputForm}
@@ -287,6 +293,7 @@ function CadastroPJ(props) {
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
+                  inputProps={{ minLength: 8 }}
                   onChange={(e) => setSenha(e.target.value)}
                   required
                 />
@@ -300,28 +307,15 @@ function CadastroPJ(props) {
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
+                  inputProps={{ minLength: 8 }}
                   onChange={(e) => setSenhaConfirm(e.target.value)}
                   required
                 />
               </>
             )}
-
-            <FormControlLabel
-              className={classes.checkbox}
-              control={
-                <Checkbox
-                  name="emailPromocional"
-                  checked={formData.emailPromocional}
-                  onChange={handleChangeCheck}
-                  color="primary"
-                  size="small"
-                  disabled={mode === "view"}
-                />
-              }
-              label="Desejo receber emails promocionais"
-            />
+            
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={10}>
             {mode === "create" && (
               <Grid item xs={12}>
                 <Button

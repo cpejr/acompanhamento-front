@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core"
-import { titlesFontFamilyPadrao, titleFontSize, vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, titleFontSize, vermelhoPadrao, azulPadrao, verde, azulPadraoClaro } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -7,15 +7,31 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     width: "100%",
     minHeight: "100vh",
-
     padding: "30px 60px 0",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5%",
     },
   },
+
+  buttonAdd:{
+    marginLeft: "38%",
+    padding: "0 45px",
+    border: "1px solid", azulPadraoClaro,
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+    [theme.breakpoints.only("xs")]: {
+        marginLeft:"1%",    
+     },
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+      border: "none",
+    }
+  },
+
   title: {
     marginBottom: "30px",
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
@@ -33,6 +49,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   grid: {
     padding: "0 40px",
+
     [theme.breakpoints.only("xs")]: {
       padding: "0",
     },
@@ -50,7 +67,6 @@ export const useStyles = makeStyles((theme) => ({
     margin: "30px 40px 0",
     width: "150px",
     height: "50px",
-
     borderRadius: "2px",
     "&:first-child": {
       background: props => props.updating ? verde : azulPadrao,

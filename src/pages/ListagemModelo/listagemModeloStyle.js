@@ -6,6 +6,8 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     width: "90%",
+    marginLeft:"7%",
+    marginRight:"30%",
     padding: "50px 0 66px 50px",
     paddingTop: "50px",
     paddingRight: "0px",
@@ -14,8 +16,16 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 30px",
       width: "100%",
+
     },
   },
+  allsearch:{
+    // marginLeft:"28%",
+     display: "flex",
+     flexDirection: "column",
+     // marginLeft:"5%",
+     marginRight:"14%",
+   },
 
   header: {
     display: "flex",
@@ -94,7 +104,8 @@ export const useStyles = makeStyles(theme => ({
   },
 
   table: {
-    marginTop: "30px"
+    marginTop: "30px",
+    marginRight: "14%",
   },
 
   searchplusfilter: {

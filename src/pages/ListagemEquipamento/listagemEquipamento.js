@@ -42,7 +42,8 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
-
+  const userId = query.get("id");
+  useEffect(()=>{console.log(equipmentsListToDisplay)},[equipmentsListToDisplay])
   useEffect(() => {
 
     const url = situation
@@ -115,6 +116,16 @@ export default function ListagemEquipamento() {
   }, [equipmentsOriginal]);
 
   function FindEquipment(searchEquipment) {
+      
+    // if(userId){
+    //   equipmentsOriginal.forEach((item)=> {
+        
+    //   })
+    // }
+
+
+
+
 
     if (searchEquipment.length > 0) {
 
@@ -152,7 +163,7 @@ export default function ListagemEquipamento() {
       </React.Fragment>
     );
   }
-
+  
   return (
     <React.Fragment>
       <div className={classes.root}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useStyles } from './tabelaStyle';
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -21,7 +22,8 @@ export default function StickyHeadTable(props) {
   const headerItems = [
     { title: "Modelo", ordemBy: "modelName" },
     { title: "Tipo", ordemBy: "type" },
-    { title: "Fabricante", ordemBy: "manufacturer" }
+    { title: "Fabricante", ordemBy: "manufacturer" },
+    
   ]
 
   return (
@@ -55,8 +57,14 @@ export default function StickyHeadTable(props) {
                   <TableCell>{model.type}</TableCell>
                   <TableCell className={classes.lastTableCell}>{model.manufacturer}
                     <Link to={`/am/${model.id}`}>
-                      <FiMoreHorizontal size={24} color="#C4C4C4" />
                     </Link>
+                    <Button
+                      component={Link}
+                      to={`/am/${model.id}`}
+                      className={classes.buttonAdd}
+                      >
+                      Dados
+                    </Button>
                   </TableCell>
                 </TableRow>
               )

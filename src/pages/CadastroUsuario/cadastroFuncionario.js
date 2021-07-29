@@ -71,13 +71,18 @@ function CadastroFuncionario(props) {
       data.cpf !== "" &&
       data.email !== "" &&
       data.number !== "" &&
-      data.password !== ""
+      data.password !== "" 
       // data.address !== "" 
       // data.zipcode !== ""
     ) {
-      if (email !== emailConfirm) alert("Os emails estão diferentes.");
-      if (senha !== senhaConfirm) alert("As senhas não batem.");
-
+      if (email !== emailConfirm){
+        alert("Os emails estão diferentes.");
+        return;
+      }
+      if (senha !== senhaConfirm){
+        alert("As senhas não batem.");
+        return;
+      }
       sendMessage('Realizando cadastro...', 'info', null);
       api
         .post("/user/create", data)
@@ -109,7 +114,7 @@ function CadastroFuncionario(props) {
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
-      else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
+      else if (data.password.length < 8) sendMessage("Senha deve ter no mínimo 8 caracteres!", "error");
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");
       else if (data.cpf.length < 11) sendMessage("CPF inválido.", "error");
@@ -180,7 +185,7 @@ function CadastroFuncionario(props) {
       data.cpf   !== "" && data.cpf.length === 11 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
       data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.password    !== "" && data.password.length >= 6 &&
+      data.password    !== "" && data.password.length >= 8 &&
       data.address     !== "" &&
       data.zipcode     !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
@@ -192,10 +197,11 @@ function CadastroFuncionario(props) {
   }
 
   return (
-    <div>
+    <div className={classes.formulario}>
       <form onSubmit={(e) => handleRegister(e)}>
+        <div>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={10} md={10}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -271,7 +277,7 @@ function CadastroFuncionario(props) {
             /> */}
 
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={10} md={10}>
             {/* <TextField
               name="zipcode"
               className={classes.inputForm}
@@ -324,6 +330,7 @@ function CadastroFuncionario(props) {
                     type="password"
                     helperText="*Obrigatório"
                     variant="filled"
+                    inputProps={{ minLength: 8 }}
                     onChange={(e) => handleInput(e, 'password')}
                     required
                   />
@@ -337,6 +344,7 @@ function CadastroFuncionario(props) {
                     type="password"
                     helperText="*Obrigatório"
                     variant="filled"
+                    inputProps={{ minLength: 8 }}
                     onChange={(e) => handleInput(e, 'passwordConfirm')}
                     required
                   />
@@ -361,21 +369,7 @@ function CadastroFuncionario(props) {
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
             /> */}
 
-            <FormControlLabel
-              className={classes.checkbox}
-              control={
-                <Checkbox
-                  name="emailPromocional"
-                  checked={formData.emailPromocional}
-                  onChange={handleChangeCheck}
-                  color="primary"
-                  size="small"
-                  disabled={mode === 'view'}
-                  // onKeyPress={e => nextInput(e, relacionamentosRef)}
-                />
-              }
-              label="Desejo receber emails promocionais"
-            />
+           
           </Grid>
           {mode === 'create' &&
             <Grid item xs={12}>
@@ -383,6 +377,7 @@ function CadastroFuncionario(props) {
             </Grid>
           }
         </Grid>
+        </div>
       </form>
     </div>
   );

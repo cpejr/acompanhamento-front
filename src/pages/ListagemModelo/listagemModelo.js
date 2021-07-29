@@ -36,7 +36,7 @@ export default function ListagemModelo() {
       })
       .catch((err) => {
         console.error(
-          "Não foi possivel estabelecer conecção com o backend",
+          "Não foi possivel estabelecer conexão com o backend",
           err
         );
       });

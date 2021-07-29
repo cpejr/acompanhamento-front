@@ -98,8 +98,8 @@ export default function ListagemUsuario() {
   function findPeoplebyFuncao(funcao){
     const filterFuncao = 
     employees.filter((employee)=> {
-      if(employee.funcao){
-        return employee.funcao.toString().toLowerCase().includes(funcao.toString().toLowerCase())
+      if(employee.type){
+        return employee.type.toString().toLowerCase().includes(funcao.toString().toLowerCase())
       }
     })
     return filterFuncao;

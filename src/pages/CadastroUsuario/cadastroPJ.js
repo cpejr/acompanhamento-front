@@ -189,7 +189,7 @@ function CadastroPJ(props) {
     <div>
       <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={10} md={10}>
+          <Grid item xs={12}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -230,34 +230,6 @@ function CadastroPJ(props) {
               disabled={mode === "view"}
               required
             />
-            {/* <TextField
-              name="address"
-              className={classes.inputForm}
-              value={address}
-              label="Endereço"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => handleInput(e, "address")}
-              disabled={mode === "view"}
-              required
-            /> */}
-
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              onChange={(e) => handleInput(e, "zipcode")}
-              disabled={mode === "view"}
-              required
-            /> */}
-          </Grid>
-          <Grid item xs={10} md={10}>
             <TextField
               name="email"
               className={classes.inputForm}
@@ -313,9 +285,36 @@ function CadastroPJ(props) {
                 />
               </>
             )}
-            
+        
+            {/* <TextField
+              name="address"
+              className={classes.inputForm}
+              value={address}
+              label="Endereço"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              onChange={(e) => handleInput(e, "address")}
+              disabled={mode === "view"}
+              required
+            /> */}
+
+            {/* <TextField
+              name="zipcode"
+              className={classes.inputForm}
+              value={zipcode}
+              label="CEP"
+              type="text"
+              helperText="*Obrigatório"
+              variant="filled"
+              inputProps={{ maxLength: 8 }}
+              onChange={(e) => handleInput(e, "zipcode")}
+              disabled={mode === "view"}
+              required
+            /> */}
           </Grid>
-          <Grid item xs={10}>
+          
+          <Grid item xs={12}>
             {mode === "create" && (
               <Grid item xs={12}>
                 <Button

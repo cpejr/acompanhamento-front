@@ -49,7 +49,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   grid: {
     padding: "0 40px",
-
     [theme.breakpoints.only("xs")]: {
       padding: "0",
     },

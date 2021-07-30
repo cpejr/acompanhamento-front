@@ -42,7 +42,7 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
-  const userId = query.get("id");
+  const userId = query.get("userid");
   useEffect(()=>{console.log(equipmentsListToDisplay)},[equipmentsListToDisplay])
   useEffect(() => {
 
@@ -115,6 +115,28 @@ export default function ListagemEquipamento() {
 
   }, [equipmentsOriginal]);
 
+  useEffect (()=>{
+    async function getEquipmentsByUser(){
+      if(userId){
+      await api.get(`/user/${userId}`).then((response)=>{
+        const idEquipments = response.data.user.id_equipments;
+        let auxVector = [];
+        if(idEquipments){
+          equipmentsOriginal.forEach((equipment)=>{
+            if(idEquipments.includes(equipment.id)){
+              auxVector.push(equipment);
+            }
+          })
+        }
+        setEquipmentsListToDisplay(auxVector);
+      })
+      }
+    }
+    getEquipmentsByUser();
+
+  },
+  [equipmentsOriginal]
+   )
   function FindEquipment(searchEquipment) {
       
     // if(userId){

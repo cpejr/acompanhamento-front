@@ -201,7 +201,7 @@ function CadastroFuncionario(props) {
       <form onSubmit={(e) => handleRegister(e)}>
         <div>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={10} md={10}>
+          <Grid item xs={12}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -276,23 +276,6 @@ function CadastroFuncionario(props) {
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
             /> */}
 
-          </Grid>
-          <Grid item xs={10} md={10}>
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              inputProps={{ maxLength: 8 }}
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => handleInput(e, 'zipcode')}
-              required
-              disabled= {mode === 'view'}
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
-
             <TextField
               name="email"
               className={classes.inputForm}
@@ -352,24 +335,6 @@ function CadastroFuncionario(props) {
               ) 
                 
             }
-            
-
-            {/* <TextField
-              name="situacao"
-              autoComplete="off"
-              className={classes.inputForm}
-              value={formData.senhaConfirmar}
-              label="Situação"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => setSituacao(e.target.value)}
-              disabled= {mode === 'view'}
-              required
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
-
-           
           </Grid>
           {mode === 'create' &&
             <Grid item xs={12}>

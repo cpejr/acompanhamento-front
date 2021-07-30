@@ -206,7 +206,7 @@ function CadastroPF(props) {
     <div>
       <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={10} md={10}>
+          <Grid item xs={12}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -261,35 +261,6 @@ function CadastroPF(props) {
               required
               disabled= {mode === 'view'}
             />
-          </Grid>
-          <Grid item xs={10} md={10}>
-            {/* <TextField
-              name="address"
-              className={classes.inputForm}
-              value={address}
-              label="Endereço"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'address')}
-              required
-            /> */}
-
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'zipcode')}
-              required
-            /> */}
-
             <TextField
               name="email"
               className={classes.inputForm}
@@ -349,6 +320,7 @@ function CadastroPF(props) {
             }
 
           </Grid>
+    
             { mode === 'create' &&
                 <Grid item xs={12}>
                   <Button 

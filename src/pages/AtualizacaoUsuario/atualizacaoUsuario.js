@@ -179,7 +179,7 @@ function AtualizacaoUsuario(props) {
         <div className={classes.root}>
           <h1 className={classes.title}>Detalhes de Usuário</h1>
           <Paper className={classes.containerForm} elevation={0}>
-            <Typography variant="h5">Dados inválidos!</Typography>
+            <Typography variant="h5"> Dados inválidos!</Typography>
           </Paper>
         </div>
       </React.Fragment>
@@ -242,17 +242,15 @@ function AtualizacaoUsuario(props) {
                 )
             )
           }
-            <did>
+            <div>
             <Button
             component={Link}
-            // to={`/ae/${ user.id_equipments ? user.id_equipments[0] : " "}`}
-            to='/listagemequipamento'
-            // to={`/listagemequipamento?situation=${user.id}`}
+            to={`/listagemequipamento?userid=${props.userPerfil.id}`}
             className={classes.buttonAdd}
           >
             Acessar equipamentos
           </Button>
-            </did>
+            </div>
           <Grid className={classes.centralizar} item xs={12}>
             <Button
               variant="contained"

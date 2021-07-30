@@ -74,8 +74,7 @@ export default function StickyHeadTable(props) {
                 <TableCell>
                   <Button
             component={Link}
-             to={`/listagemequipamento?id=${user.id}`}
-            // to={`/ae/${ user.id_equipments ? user.id_equipments[0] : " "}`}
+            to={`/listagemequipamento?userid=${user.id}`}
             className={classes.buttonAdd}
           >
             Acessar 

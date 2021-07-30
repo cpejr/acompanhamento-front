@@ -33,8 +33,6 @@ export const useStyles = makeStyles((theme) => ({
   formContainer: {
     padding: "50px 60px",
     borderRadius: "13px",
-    // display:"flex",
-    // justifyContent:"center",
     [theme.breakpoints.only("xs")]: {
       padding: "10%",
     },
@@ -43,7 +41,6 @@ export const useStyles = makeStyles((theme) => ({
   inputType: {
     width: "250px",
     marginBottom: "30px",
-    marginLeft:"11%",
     flexDirection:"colunm",
     [theme.breakpoints.only("xs")]: {
       width: "100%",
@@ -66,7 +63,6 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "500",
     fontSize: subtitleFontSize,
     textAlign: "left",
-    marginLeft:"15%",
     [theme.breakpoints.only("xs")]: {
       marginLeft:"1%",
     },
@@ -74,14 +70,10 @@ export const useStyles = makeStyles((theme) => ({
 
   inputForm: {
    width: "100%",
-   marginBottom: "20px",
+  //  marginBottom: "20px",
    display:"flex",
    flexDirection:"column",
    justifyContent:"center",
-   marginLeft:"15%",
-   [theme.breakpoints.only("xs")]: {
-    marginLeft:"1%",
-  },
    },
 
   buttonRegister: {

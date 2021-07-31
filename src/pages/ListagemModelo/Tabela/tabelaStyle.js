@@ -18,9 +18,6 @@ export const useStyles = makeStyles({
     fontSize: "16px"
   },
   buttonAdd:{
-    marginLeft: "40px",
-    padding: "0 20px",
-    border: "1px solid", azulPadraoClaro,
 
     fontWeight: "500",
     fontSize: "13px",
@@ -29,7 +26,6 @@ export const useStyles = makeStyles({
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
-      border: "none",
     }
   },
 

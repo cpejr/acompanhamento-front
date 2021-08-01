@@ -306,20 +306,6 @@ function CadastroPJ(props) {
               </>
             )}
 
-            <FormControlLabel
-              className={classes.checkbox}
-              control={
-                <Checkbox
-                  name="emailPromocional"
-                  checked={formData.emailPromocional}
-                  onChange={handleChangeCheck}
-                  color="primary"
-                  size="small"
-                  disabled={mode === "view"}
-                />
-              }
-              label="Desejo receber emails promocionais"
-            />
           </Grid>
           <Grid item xs={12}>
             {mode === "create" && (

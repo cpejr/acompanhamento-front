@@ -98,11 +98,8 @@ function AtualizacaoUsuario(props) {
           if (id === "me") {
             id = props.userPerfil.id;
           }
-          console.log("aqui");
           api
-            .put(`/user/updatedPassword`, updatedField, {
-              params: { uid: props.userPerfil.firebaseUid },
-            })
+            .put(`/user/updatedPassword/${props.userPerfil.firebaseUid}`, updatedField)
             .then((response) => {
               sendMessage("Senha atualizada com sucesso!", "success");
             })

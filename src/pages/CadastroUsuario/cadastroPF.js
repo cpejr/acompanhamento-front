@@ -286,34 +286,33 @@ function CadastroPF(props) {
               required
             /> */}
 
-            <TextField
-              name="email"
-              className={classes.inputForm}
-              value={email}
-              label="Endereço de e-mail"
-              type="email"
-              helperText="*Obrigatório"
-              variant="filled"
-              disabled={mode === "view" || mode === "updatepassword"}
-              onChange={(e) => handleInput(e, "email")}
-              required
-            />
-            <TextField
-              name="emailConfirm"
-              className={classes.inputForm}
-              value={emailConfirm}
-              label="Confirmar e-mail"
-              type="email"
-              helperText="*Obrigatório"
-              variant="filled"
-              disabled={mode === "view" || mode === "updatepassword"}
-              onChange={(e) => handleInput(e, "emailConfirm")}
-              required
-            />
-
             {mode === "create" ||
               (mode === "updatepassword" && (
                 <>
+                  <TextField
+                    name="email"
+                    className={classes.inputForm}
+                    value={email}
+                    label="Endereço de e-mail"
+                    type="email"
+                    helperText="*Obrigatório"
+                    variant="filled"
+                    disabled={mode === "view" || mode === "updatepassword"}
+                    onChange={(e) => handleInput(e, "email")}
+                    required
+                  />
+                  <TextField
+                    name="emailConfirm"
+                    className={classes.inputForm}
+                    value={emailConfirm}
+                    label="Confirmar e-mail"
+                    type="email"
+                    helperText="*Obrigatório"
+                    variant="filled"
+                    disabled={mode === "view" || mode === "updatepassword"}
+                    onChange={(e) => handleInput(e, "emailConfirm")}
+                    required
+                  />
                   <TextField
                     name="password"
                     autoComplete="off"

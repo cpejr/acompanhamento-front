@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./tabelaStyle";
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -16,6 +17,7 @@ import { FiMoreHorizontal } from "react-icons/fi";
 
 export default function StickyHeadTable(props) {
   const classes = useStyles();
+  console.log(props.usersListToDisplay);
 
   return (
     <Paper className={classes.root}>
@@ -38,6 +40,9 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tableCell}>
                 Última data ativa
               </TableCell>
+              <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
+                Acesso ao Equipamento
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -54,7 +59,6 @@ export default function StickyHeadTable(props) {
                 <TableCell>
                   <Link
                     style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
                   >
                     {user.funcao}{" "}
                   </Link>
@@ -62,11 +66,23 @@ export default function StickyHeadTable(props) {
                 <TableCell>
                   <Link
                     style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
                   >
                     {user.data}
                   </Link>
                 </TableCell>
+
+                <TableCell className={classes.lastTableCell} >
+                  <Button
+                    component={Link}
+                    to={`/listagemequipamento?userid=${user.id}`}
+                    variant="outlined"
+                    disableElevation
+                    className={classes.buttonAdd}
+                  >
+                    Acessar
+                  </Button>
+                </TableCell>
+
               </TableRow>
             ))}
             {props.usersListToDisplay.length <= 0 ? (

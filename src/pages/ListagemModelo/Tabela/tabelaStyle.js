@@ -17,10 +17,21 @@ export const useStyles = makeStyles({
     fontWeight: "500",
     fontSize: "16px"
   },
+  buttonAdd:{
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+    }
+  },
 
   lastTableCell: {
     display: "flex",
-    justifyContent: "space-between",
+    flexDirection: "row",
     alignItems: "center"
   },
 

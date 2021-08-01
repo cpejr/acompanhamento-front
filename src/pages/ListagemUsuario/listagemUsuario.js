@@ -70,7 +70,7 @@ export default function ListagemUsuario() {
       }
     });
 
-    // Se nao tiver nada no Input de busca, cooca todos
+    // Se nao tiver nada no Input de busca, coloca todos
     if (filteredPeople === "") {
       setUsersListToDisplay([...employees]);
     }
@@ -135,7 +135,8 @@ export default function ListagemUsuario() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.header}>
+       <div className={classes.allsearch}>
+          <div className={classes.header}>
           <Typography variant="h3" className={classes.title}>
             Usuários
           </Typography>
@@ -147,7 +148,7 @@ export default function ListagemUsuario() {
             Adicionar Novo
           </Button>
         </div>
-
+        
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
@@ -169,8 +170,9 @@ export default function ListagemUsuario() {
             />
           </div>
         </div>
+        
         <div className={classes.searchFilter}></div>
-
+        </div>
         <div className={classes.table}>
           <StickyHeadTable
             usersListToDisplay={ordenar(
@@ -183,6 +185,7 @@ export default function ListagemUsuario() {
                 name: employees.name,
                 funcao: employees.type,
                 data: employees.active,
+                id_equipments: employees.id_equipments,
               };
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}

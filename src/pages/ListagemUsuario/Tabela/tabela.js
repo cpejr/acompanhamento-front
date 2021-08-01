@@ -13,6 +13,7 @@ import {
   TableSortLabel,
   Typography,
 } from "@material-ui/core";
+import "./tabela.css"
 
 export default function StickyHeadTable({
   ordemAlfabetica,
@@ -21,14 +22,10 @@ export default function StickyHeadTable({
 }) {
   const classes = useStyles();
 
-  useEffect(()=>{
-    console.log(usersListToDisplay);
-  },[usersListToDisplay])
-
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" id="table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}>
@@ -80,8 +77,19 @@ export default function StickyHeadTable({
                     disableElevation
                     className={classes.buttonAdd}
                   >
-                    Acessar
+                    Equipamentos
                   </Button>
+
+                  <Button 
+                    component={Link}
+                    to={`/au/${user.id}`}
+                    variant="outlined"
+                    disableElevation
+                    className={classes.buttonUser}
+                  >
+                    Dados
+                  </Button>
+
                 </TableCell>
 
               </TableRow>

@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { azulPadraoClaro } from '../../../StylePadrao/stylePadrao';
+import { azulPadraoClaro, verde } from '../../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles({
   root: {
@@ -10,6 +10,17 @@ export const useStyles = makeStyles({
   },
   buttonAdd:{
 
+    fontWeight: "500",
+    fontSize: "13px",
+    color: verde,
+    marginRight: "4px",
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: verde,
+    }
+  },
+  buttonUser: {
     fontWeight: "500",
     fontSize: "13px",
     color: azulPadraoClaro,

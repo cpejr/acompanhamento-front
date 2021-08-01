@@ -70,11 +70,18 @@ export default function ListagemUsuario() {
     const searchByName = findPeoplebyName(search);
     const searchByEmail = findPeoplebyEmail(search);
     const searchByFuncao = findPeoplebyFuncao(search);
-    const finalResult = getUnique([...searchByName, ...searchByEmail, ...searchByFuncao]);
+    let finalResult;
+
+    if (filterByOptions === "nameEmail") {
+      finalResult = getUnique([...searchByName, ...searchByEmail])
+    }
+    if (filterByOptions === "funcao") {
+      finalResult = getUnique([...searchByFuncao])
+    }
 
     setUsersListToDisplay(finalResult);
   }
- 
+
   function findPeoplebyName(name){
     const filteredUsers = 
     employees.filter((employee)=> {
@@ -109,7 +116,7 @@ export default function ListagemUsuario() {
   function getUnique(arr){
     let final = [];
     arr.forEach((elem)=>{
-      if(final.includes(elem)) return;
+      if (final.includes(elem)) return;
       final.push(elem);
     })
     return final;

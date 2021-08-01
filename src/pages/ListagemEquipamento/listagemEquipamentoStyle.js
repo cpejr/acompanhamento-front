@@ -37,7 +37,7 @@ export const useStyles = makeStyles(theme => ({
     padding: "0 20px",
     border: "1px solid", azulPadraoClaro,
     fontFamily: titlesFontFamilyPadrao,
-    fontWeight: "500",
+    fontWeight: "200",
     fontSize: "13px",
     textAlign: "center",
     color: azulPadraoClaro,

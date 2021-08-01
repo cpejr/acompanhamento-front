@@ -8,17 +8,29 @@ export const useStyles = makeStyles({
   container: {
     maxHeight: 550,
   },
+  buttonAdd:{
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+    }
+  },
   tableCell: {
     minWidth: "170px",
     position: "sticky",
     backgroundColor: azulPadraoClaro,
     fontWeight: "500",
-    fontSize: "16px"
+    fontSize: "16px",
   },
   lastTableCell: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   nullUser: {
     padding: "18px",

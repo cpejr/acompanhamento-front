@@ -27,6 +27,7 @@ import api from "../../services/api";
 import isValidDate from '../../services/dateValidation';
 import { RssFeed } from "@material-ui/icons";
 import { useHistory } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function AtualizacaoUsuario(props) {
 
@@ -178,7 +179,7 @@ function AtualizacaoUsuario(props) {
         <div className={classes.root}>
           <h1 className={classes.title}>Detalhes de Usuário</h1>
           <Paper className={classes.containerForm} elevation={0}>
-            <Typography variant="h5">Dados inválidos!</Typography>
+            <Typography variant="h5"> Dados inválidos!</Typography>
           </Paper>
         </div>
       </React.Fragment>
@@ -241,7 +242,17 @@ function AtualizacaoUsuario(props) {
                 )
             )
           }
-
+          <div className={classes.buttonContainer} >
+            <Button
+              component={Link}
+              to={`/listagemequipamento?userid=${props.userPerfil.id}`}
+              variant="outlined"
+              disableElevation
+              className={classes.buttonAdd}
+            >
+              Acessar equipamentos
+            </Button>
+          </div>
           <Grid className={classes.centralizar} item xs={12}>
             <Button
               variant="contained"

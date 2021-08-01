@@ -86,35 +86,37 @@ export default function ListagemModelo() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
-            Modelos
-          </Typography>
-          <Button
-            component={Link}
-            to="/cadastromodelo"
-            className={classes.buttonAdd}
-          >
-            Adicionar Novo
-          </Button>
-        </div>
-        <div className={classes.searchplusfilter}>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <div className={classes.searchInput}>
-              <InputBase
-                className={classes.placeholder}
-                placeholder={placeHolder}
-                onChange={(e) => FindModel(e.target.value)}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.input,
-                }}
-              />
-            </div>
+        <div className={classes.allsearch}>
+          <div className={classes.header}>
+            <Typography variant="h3" className={classes.title}>
+              Modelos
+            </Typography>
+            <Button
+              component={Link}
+              to="/cadastromodelo"
+              className={classes.buttonAdd}
+            >
+              Adicionar Novo
+            </Button>
           </div>
+          <div className={classes.searchplusfilter}>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <div className={classes.searchInput}>
+                <InputBase
+                  className={classes.placeholder}
+                  placeholder="Procurar modelo"
+                  onChange={(e) => FindModel(e.target.value)}
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.input,
+                  }}
+                />
+              </div>
+            </div>
+        </div>
           <FormControl className={classes.filter}>
             <Select
               className={classes.selectItens}
@@ -130,6 +132,7 @@ export default function ListagemModelo() {
             </Select>
           </FormControl>
         </div>
+        
         <div className={classes.table}>
           <StickyHeadTable
             modelsListToDisplay={ordenar(

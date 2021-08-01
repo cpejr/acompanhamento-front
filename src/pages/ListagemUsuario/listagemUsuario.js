@@ -141,7 +141,8 @@ export default function ListagemUsuario() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.header}>
+       <div className={classes.allsearch}>
+          <div className={classes.header}>
           <Typography variant="h3" className={classes.title}>
             Usuários
           </Typography>
@@ -152,8 +153,9 @@ export default function ListagemUsuario() {
           >
             Adicionar Novo
           </Button>
+          </div>
         </div>
-
+        
         <div className={classes.search}>
           <div className={classes.searchIcon}>
             <SearchIcon />
@@ -201,6 +203,7 @@ export default function ListagemUsuario() {
                 name: employees.name,
                 funcao: employees.type,
                 data: employees.active,
+                id_equipments: employees.id_equipments,
               };
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}

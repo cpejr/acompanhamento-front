@@ -9,9 +9,6 @@ export const useStyles = makeStyles({
     maxHeight: 550,
   },
   buttonAdd:{
-    marginLeft: "40px",
-    padding: "0 20px",
-    border: "1px solid", azulPadraoClaro,
 
     fontWeight: "500",
     fontSize: "13px",
@@ -20,7 +17,6 @@ export const useStyles = makeStyles({
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
-      border: "none",
     }
   },
   tableCell: {
@@ -28,12 +24,13 @@ export const useStyles = makeStyles({
     position: "sticky",
     backgroundColor: azulPadraoClaro,
     fontWeight: "500",
-    fontSize: "16px"
+    fontSize: "16px",
   },
   lastTableCell: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   nullUser: {
     padding: "18px",

@@ -75,14 +75,16 @@ function CadastroFuncionario(props) {
       // data.address !== "" 
       // data.zipcode !== ""
     ) {
+
       if (email !== emailConfirm){
-        alert("Os emails estão diferentes.");
+        sendMessage("Os emails estão diferentes.", "error")
         return;
       }
       if (senha !== senhaConfirm){
-        alert("As senhas não batem.");
-        return;
+        sendMessage("As senhas não batem.", "error");
+        return ; 
       }
+
       sendMessage('Realizando cadastro...', 'info', null);
       api
         .post("/user/create", data)
@@ -336,11 +338,17 @@ function CadastroFuncionario(props) {
                 
             }
           </Grid>
-          {mode === 'create' &&
-            <Grid item xs={12}>
-              <Button type="submit" ref={buttonRef} className={classes.buttonRegister}>Cadastrar</Button>
-            </Grid>
-          }
+          {mode === "create" && (
+            <div className={classes.buttonContainer}>
+              <Button
+                type="submit"
+                ref={buttonRef}
+                className={classes.buttonRegister}
+              >
+                Cadastrar
+              </Button>
+            </div>
+          )}
         </Grid>
         </div>
       </form>

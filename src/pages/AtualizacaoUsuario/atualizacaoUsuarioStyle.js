@@ -14,20 +14,22 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   buttonAdd:{
-    marginLeft: "38%",
-    padding: "0 45px",
-    border: "1px solid", azulPadraoClaro,
+
     fontWeight: "500",
     fontSize: "13px",
     color: azulPadraoClaro,
-    [theme.breakpoints.only("xs")]: {
-        marginLeft:"1%",    
-     },
+
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
-      border: "none",
     }
+  },
+
+  buttonContainer: {
+    marginTop: "16px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
 
   title: {

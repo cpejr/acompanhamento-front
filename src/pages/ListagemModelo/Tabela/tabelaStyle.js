@@ -31,7 +31,7 @@ export const useStyles = makeStyles({
 
   lastTableCell: {
     display: "flex",
-    justifyContent: "space-between",
+    flexDirection: "row",
     alignItems: "center"
   },
 

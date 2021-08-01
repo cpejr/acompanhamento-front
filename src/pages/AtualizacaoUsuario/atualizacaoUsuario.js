@@ -242,15 +242,17 @@ function AtualizacaoUsuario(props) {
                 )
             )
           }
-            <div>
+          <div className={classes.buttonContainer} >
             <Button
-            component={Link}
-            to={`/listagemequipamento?userid=${props.userPerfil.id}`}
-            className={classes.buttonAdd}
-          >
-            Acessar equipamentos
-          </Button>
-            </div>
+              component={Link}
+              to={`/listagemequipamento?userid=${props.userPerfil.id}`}
+              variant="outlined"
+              disableElevation
+              className={classes.buttonAdd}
+            >
+              Acessar equipamentos
+            </Button>
+          </div>
           <Grid className={classes.centralizar} item xs={12}>
             <Button
               variant="contained"

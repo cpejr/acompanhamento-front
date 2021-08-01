@@ -84,17 +84,18 @@ export const useStyles = makeStyles((theme) => ({
     fontFamily: textFontFamilyPadrao,
     fontSize: "14px",
     color: "#FFFFFF",
-    marginLeft:"50%",
     cursor: "pointer",
 
-    width: "200px",
-    [theme.breakpoints.only("xs")]: {
-      width: "100%",
-      marginLeft:"1%",
-    },
     "&:hover": {
       backgroundColor: azulPadraoEscuro,
     },
+  },
+  buttonContainer: {
+    width: "100vw",
+    marginTop: "16px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
 
   checkbox: {

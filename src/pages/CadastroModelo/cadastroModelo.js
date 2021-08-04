@@ -43,9 +43,14 @@ export default function CadastroModelo(props) {
     type: '',
     manufacturer: '',
     releaseYear: '',
-    temperatureLimit: '',
-    currentLimit: '',
-    voltageLimit: ''
+    min_temp: '',
+    max_temp: '',
+    min_current: '',
+    max_current: '',
+    min_voltage: '',
+    max_voltage: '',
+    min_vibra: '',
+    max_vibra: '',
   });
   const [error, setError] = useState({
     releaseYear: '',
@@ -77,9 +82,14 @@ export default function CadastroModelo(props) {
         type: formData.type,
         manufacturer: formData.manufacturer,
         releaseYear: formData.releaseYear,
-        temperatureLimit: formData.temperatureLimit,
-        currentLimit: formData.currentLimit,
-        voltageLimit: formData.voltageLimit
+        min_temp: formData.min_temp,
+        max_temp: formData.max_temp,
+        min_current: formData.min_current,
+        max_current: formData.max_current,
+        min_voltage: formData.min_voltage,
+        max_voltage: formData.max_voltage,
+        min_vibra: formData.min_vibra,
+        max_vibra: formData.max_vibra,
       }
 
       //enviar para o backend
@@ -91,9 +101,14 @@ export default function CadastroModelo(props) {
             type: '',
             manufacturer: '',
             releaseYear: '',
-            temperatureLimit: '',
-            currentLimit: '',
-            voltageLimit: ''
+            min_temp: '',
+            max_temp: '',
+            min_current: '',
+            max_current: '',
+            min_voltage: '',
+            max_voltage: '',
+            min_vibra: '',
+            max_vibra: ''
           });
           console.log(res);
           setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
@@ -132,19 +147,36 @@ export default function CadastroModelo(props) {
   const typeRef = useRef(null);
   const manufacturerRef = useRef(null);
   const releaseYearRef = useRef(null);
-  const temperatureLimitRef = useRef(null);
-  const currentLimitRef = useRef(null);
-  const voltageLimitRef = useRef(null);
+  const min_temp = useRef(null);
+  const max_temp = useRef(null);
+  const min_current = useRef(null);
+  const max_current = useRef(null);
+  const min_voltage = useRef(null);
+  const max_voltage = useRef(null);
+  const min_vibra = useRef(null);
+  const max_vibra = useRef(null);
+  // const temperatureLimitRef = useRef(null);
+  // const currentLimitRef = useRef(null);
+  // const voltageLimitRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
   const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
     { name: "modelName", ref: typeRef },
     { name: "type", ref: manufacturerRef },
     { name: "manufacturer", ref: releaseYearRef },
-    { name: "releaseYear", ref: temperatureLimitRef },
-    { name: "temperatureLimit", ref: currentLimitRef },
-    { name: "currentLimit", ref: voltageLimitRef },
-    { name: "voltageLimit", ref: buttonSubmitRef },
+    { name: "releaseYear", ref: min_temp },
+    { name: "min_temp", ref: max_temp },
+    { name: "max_temp", ref: min_current },
+    { name: "min_current", ref: max_current },
+    { name: "max_current", ref: min_voltage },
+    { name: "min_voltage", ref: max_voltage },
+    { name: "max_voltage", ref: min_vibra },
+    { name: "min_vibra", ref: max_vibra },
+    { name: "max_vibra", ref: buttonSubmitRef },
+    // { name: "releaseYear", ref: temperatureLimitRef },
+    // { name: "temperatureLimit", ref: currentLimitRef },
+    // { name: "currentLimit", ref: voltageLimitRef },
+    // { name: "voltageLimit", ref: buttonSubmitRef },
   ];
 
   return (
@@ -230,6 +262,102 @@ export default function CadastroModelo(props) {
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
               </Grid>
               <Grid item xs={12} md={6}>
+                {/* <TextField
+                  name="min_temp"
+                  className={classes.inputs}
+                  value={formData.min_temp}
+                  onChange={handleChangeInput}
+                  label="Limite minimo de temperatura"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                <TextField
+                  name="max_temp"
+                  className={classes.inputs}
+                  value={formData.max_temp}
+                  onChange={handleChangeInput}
+                  label="Limite maximo de temperatura"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                <TextField
+                  name="min_current"
+                  className={classes.inputs}
+                  value={formData.min_current}
+                  onChange={handleChangeInput}
+                  label="Limite minimo de corrente"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                <TextField
+                  name="max_current"
+                  className={classes.inputs}
+                  value={formData.max_current}
+                  onChange={handleChangeInput}
+                  label="Limite maximo de corrente"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                <TextField
+                  name="min_voltage"
+                  className={classes.inputs}
+                  value={formData.min_voltage}
+                  onChange={handleChangeInput}
+                  label="Limite minimo de tensão"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                <TextField
+                  name="max_voltage"
+                  className={classes.inputs}
+                  value={formData.max_voltage}
+                  onChange={handleChangeInput}
+                  label="Limite maximo de tensão"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> 
+                <TextField
+                  name="min_vibra"
+                  className={classes.inputs}
+                  value={formData.min_vibra}
+                  onChange={handleChangeInput}
+                  label="Limite minimo de vibração"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> 
+                <TextField
+                  name="max_vibra"
+                  className={classes.inputs}
+                  value={formData.max_vibra}
+                  onChange={handleChangeInput}
+                  label="Limite maximo de vibração"
+                  type="number"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  autoComplete="off"
+                  inputRef={temperatureLimitRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
                 <TextField
                   name="temperatureLimit"
                   className={classes.inputs}

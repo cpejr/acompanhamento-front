@@ -106,18 +106,28 @@ function AtualizacaoModelo() {
         type,
         manufacturer,
         releaseYear,
-        temperatureLimit,
-        currentLimit,
-        voltageLimit,
+        min_temp,
+        max_temp,
+        min_current,
+        max_current,
+        min_voltage,
+        max_voltage,
+        min_vibra,
+        max_vibra,
       } = model;
       const data = {
         modelName,
         type,
         manufacturer,
         releaseYear,
-        temperatureLimit,
-        currentLimit,
-        voltageLimit,
+        min_temp,
+        max_temp,
+        min_current,
+        max_current,
+        min_voltage,
+        max_voltage,
+        min_vibra,
+        max_vibra,
       }
       sendMessage("Alterando dados...", "info", null);
       api.put(`model/${id}`, data)
@@ -131,6 +141,17 @@ function AtualizacaoModelo() {
         })
       setUpdating(false)
 
+    }
+  }
+
+  //Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
+  function DeleteVerification() {
+    const response = await api.get("/equipment/index");
+    if (response.data.find((x)=> {if(x.id_model === id) return true})) { //se achar algo nao pode excluir
+      alert("Não foi possível excluir modelo, ele possui equipamentos vinculados");
+    }
+    else {//Caso nao tenha nenhuma bomba ligada ao modelo, pode excluir
+      handleDelete(true);
     }
   }
 
@@ -167,7 +188,7 @@ function AtualizacaoModelo() {
         <Button color="primary" onClick={() => setDeleting(false)}>
           Cancelar
           </Button>
-        <Button color="secondary" onClick={() => handleDelete(true)}>
+        <Button color="secondary" onClick={() => DeleteVerification()} disabled="false">
           Excluir
           </Button>
       </DialogActions>
@@ -275,11 +296,11 @@ function AtualizacaoModelo() {
             </Grid>
             <Grid item xs={12} md={6} className={classes.grid}>
               <TextField
-                name="temperatureLimit"
+                name="min_temp"
                 className={classes.input}
-                value={model.temperatureLimit}
+                value={model.min_temp}
                 onChange={handleChangeInput}
-                label="Limite temperatura"
+                label="Limite minimo de temperatura"
                 type="number"
                 helperText="*Obrigatório"
                 variant="filled"
@@ -287,11 +308,11 @@ function AtualizacaoModelo() {
                 disabled={!updating}
               />
               <TextField
-                name="currentLimit"
+                name="max_temp"
                 className={classes.input}
-                value={model.currentLimit}
+                value={model.max_temp}
                 onChange={handleChangeInput}
-                label="Limite corrente"
+                label="Limite maximo de temperatura"
                 type="number"
                 helperText="*Obrigatório"
                 variant="filled"
@@ -299,11 +320,71 @@ function AtualizacaoModelo() {
                 disabled={!updating}
               />
               <TextField
-                name="voltageLimit"
+                name="min_current"
                 className={classes.input}
-                value={model.voltageLimit}
+                value={model.min_current}
                 onChange={handleChangeInput}
-                label="Limite tensão"
+                label="Limite minimo de corrente"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+              />
+              <TextField
+                name="max_current"
+                className={classes.input}
+                value={model.max_current}
+                onChange={handleChangeInput}
+                label="Limite maximo de corrente"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+              />
+              <TextField
+                name="min_voltage"
+                className={classes.input}
+                value={model.min_voltage}
+                onChange={handleChangeInput}
+                label="Limite minimo de tensão"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+              />
+              <TextField
+                name="max_voltage"
+                className={classes.input}
+                value={model.max_voltage}
+                onChange={handleChangeInput}
+                label="Limite maximo de tensão"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+              />
+              <TextField
+                name="min_vibra"
+                className={classes.input}
+                value={model.min_vibra}
+                onChange={handleChangeInput}
+                label="Limite minimo de vibração"
+                type="number"
+                helperText="*Obrigatório"
+                variant="filled"
+                autoComplete="off"
+                disabled={!updating}
+              />
+              <TextField
+                name="max_vibra"
+                className={classes.input}
+                value={model.max_vibra}
+                onChange={handleChangeInput}
+                label="Limite maximo de vibração"
                 type="number"
                 helperText="*Obrigatório"
                 variant="filled"
@@ -333,3 +414,12 @@ function AtualizacaoModelo() {
 }
 
 export default AtualizacaoModelo;
+
+
+
+
+// array=[1,2,3,4,5];
+
+// const numero = array.find((x)=> {
+//   if (x===3) return x
+// })

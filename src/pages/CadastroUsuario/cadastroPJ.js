@@ -306,7 +306,7 @@ function CadastroPJ(props) {
               </>
             )}
 
-            <FormControlLabel
+            {/* <FormControlLabel
               className={classes.checkbox}
               control={
                 <Checkbox
@@ -319,7 +319,7 @@ function CadastroPJ(props) {
                 />
               }
               label="Desejo receber emails promocionais"
-            />
+            /> */}
           </Grid>
           <Grid item xs={12}>
             {mode === "create" && (

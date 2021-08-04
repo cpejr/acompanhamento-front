@@ -361,7 +361,7 @@ function CadastroFuncionario(props) {
               // onKeyPress={e => nextInput(e, relacionamentosRef)}
             /> */}
 
-            <FormControlLabel
+            {/* <FormControlLabel
               className={classes.checkbox}
               control={
                 <Checkbox
@@ -375,7 +375,7 @@ function CadastroFuncionario(props) {
                 />
               }
               label="Desejo receber emails promocionais"
-            />
+            /> */}
           </Grid>
           {mode === 'create' &&
             <Grid item xs={12}>

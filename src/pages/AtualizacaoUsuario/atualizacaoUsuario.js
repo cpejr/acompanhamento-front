@@ -72,7 +72,8 @@ function AtualizacaoUsuario(props) {
 
     if (
       data.name        !== "" &&
-      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
+      data.phonenumber !== "" && 
+      data.phonenumber.length >= 8 && 
       isValidDate(data.birthdate)
     ) return true;
 

@@ -291,55 +291,55 @@ function CadastroPF(props) {
               type="email"
               helperText="*Obrigatório"
               variant="filled"
-              disabled= {mode !== 'create'}
+              disabled= {mode === 'view'}
               onChange={(e) => handleInput(e, 'email')}
               required
             />
+            <>
+              <TextField
+                name="emailConfirm"
+                className={classes.inputForm}
+                value={emailConfirm}
+                label="Confirmar e-mail"
+                type="email"
+                helperText="*Obrigatório"
+                variant="filled"
+                disabled= {mode === 'view'}
+                onChange={(e) => handleInput(e, 'emailConfirm')}
+                required
+              />
+              
+              <TextField
+                name="password"
+                autoComplete="off"
+                className={classes.inputForm}
+                value={senha}
+                label="Criar senha"
+                type="password"
+                helperText="*Obrigatório"
+                variant="filled"
+                disabled= {mode === 'view'}
+                onChange={(e) => handleInput(e, 'password')}
+                required
+              />
 
-            {
-              mode === 'create' && 
-              <>
-                <TextField
-                  name="emailConfirm"
-                  className={classes.inputForm}
-                  value={emailConfirm}
-                  label="Confirmar e-mail"
-                  type="email"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  onChange={(e) => handleInput(e, 'emailConfirm')}
-                  required
-                />
-
-                <TextField
-                  name="password"
-                  autoComplete="off"
-                  className={classes.inputForm}
-                  value={senha}
-                  label="Criar senha"
-                  type="password"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  onChange={(e) => handleInput(e, 'password')}
-                  required
-                />
-
-                <TextField
-                  name="passwordConfirm"
-                  autoComplete="off"
-                  className={classes.inputForm}
-                  value={senhaConfirm}
-                  label="Confirmar senha"
-                  type="password"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  onChange={(e) => handleInput(e, 'passwordConfirm')}
-                  required
-                />
+              <TextField
+                name="passwordConfirm"
+                autoComplete="off"
+                className={classes.inputForm}
+                value={senhaConfirm}
+                label="Confirmar senha"
+                type="password"
+                helperText="*Obrigatório"
+                variant="filled"
+                disabled= {mode === 'view'}
+                onChange={(e) => handleInput(e, 'passwordConfirm')}
+                required
+              />
               </>
-            }
+            
 
-           <FormControlLabel
+           {/* <FormControlLabel
               className={classes.checkbox}
               control={
                 <Checkbox
@@ -351,7 +351,7 @@ function CadastroPF(props) {
                   disabled={mode === 'view'}
                 />
               }
-              label="Desejo receber emails promocionais" />
+              label="Desejo receber emails promocionais" /> */}
           </Grid>
             { mode === 'create' &&
                 <Grid item xs={12}>

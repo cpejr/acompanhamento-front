@@ -147,14 +147,14 @@ export default function CadastroModelo(props) {
   const typeRef = useRef(null);
   const manufacturerRef = useRef(null);
   const releaseYearRef = useRef(null);
-  const min_temp = useRef(null);
-  const max_temp = useRef(null);
-  const min_current = useRef(null);
-  const max_current = useRef(null);
-  const min_voltage = useRef(null);
-  const max_voltage = useRef(null);
-  const min_vibra = useRef(null);
-  const max_vibra = useRef(null);
+  const min_tempRef = useRef(null);
+  const max_tempRef = useRef(null);
+  const min_currentRef = useRef(null);
+  const max_currentRef = useRef(null);
+  const min_voltageRef = useRef(null);
+  const max_voltageRef = useRef(null);
+  const min_vibraRef = useRef(null);
+  const max_vibraRef = useRef(null);
   // const temperatureLimitRef = useRef(null);
   // const currentLimitRef = useRef(null);
   // const voltageLimitRef = useRef(null);
@@ -164,14 +164,14 @@ export default function CadastroModelo(props) {
     { name: "modelName", ref: typeRef },
     { name: "type", ref: manufacturerRef },
     { name: "manufacturer", ref: releaseYearRef },
-    { name: "releaseYear", ref: min_temp },
-    { name: "min_temp", ref: max_temp },
-    { name: "max_temp", ref: min_current },
-    { name: "min_current", ref: max_current },
-    { name: "max_current", ref: min_voltage },
-    { name: "min_voltage", ref: max_voltage },
-    { name: "max_voltage", ref: min_vibra },
-    { name: "min_vibra", ref: max_vibra },
+    { name: "releaseYear", ref: min_tempRef },
+    { name: "min_temp", ref: max_tempRef },
+    { name: "max_temp", ref: min_currentRef },
+    { name: "min_current", ref: max_currentRef },
+    { name: "max_current", ref: min_voltageRef },
+    { name: "min_voltage", ref: max_voltageRef },
+    { name: "max_voltage", ref: min_vibraRef },
+    { name: "min_vibra", ref: max_vibraRef },
     { name: "max_vibra", ref: buttonSubmitRef },
     // { name: "releaseYear", ref: temperatureLimitRef },
     // { name: "temperatureLimit", ref: currentLimitRef },
@@ -262,7 +262,7 @@ export default function CadastroModelo(props) {
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
               </Grid>
               <Grid item xs={12} md={6}>
-                {/* <TextField
+                <TextField
                   name="min_temp"
                   className={classes.inputs}
                   value={formData.min_temp}
@@ -272,7 +272,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={min_tempRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
                 <TextField
                   name="max_temp"
@@ -284,7 +284,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={max_tempRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
                 <TextField
                   name="min_current"
@@ -296,7 +296,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={min_currentRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
                 <TextField
                   name="max_current"
@@ -308,7 +308,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={max_currentRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
                 <TextField
                   name="min_voltage"
@@ -320,7 +320,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={min_voltageRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
                 <TextField
                   name="max_voltage"
@@ -332,7 +332,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={max_voltageRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} /> 
                 <TextField
                   name="min_vibra"
@@ -344,7 +344,7 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
+                  inputRef={min_vibraRef}
                   onKeyPress={e => nextInput(e, relacionamentosRef)} /> 
                 <TextField
                   name="max_vibra"
@@ -356,9 +356,9 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  inputRef={temperatureLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
-                <TextField
+                  inputRef={max_vibraRef}
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                {/* <TextField
                   name="temperatureLimit"
                   className={classes.inputs}
                   value={formData.temperatureLimit}
@@ -393,7 +393,7 @@ export default function CadastroModelo(props) {
                   variant="filled"
                   autoComplete="off"
                   inputRef={voltageLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
               </Grid>
             </Grid>
             <Button type="submit"

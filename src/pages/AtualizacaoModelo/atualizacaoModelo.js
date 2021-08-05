@@ -145,9 +145,10 @@ function AtualizacaoModelo() {
   }
 
   //Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
-  function DeleteVerification() {
+  async function DeleteVerification() {
     const response = await api.get("/equipment/index");
-    if (response.data.find((x)=> {if(x.id_model === id) return true})) { //se achar algo nao pode excluir
+    console.log(response);
+    if (response.data.equipment.find((x)=> {if(x.id_model === id) return true})) { //se achar algo nao pode excluir
       alert("Não foi possível excluir modelo, ele possui equipamentos vinculados");
     }
     else {//Caso nao tenha nenhuma bomba ligada ao modelo, pode excluir
@@ -188,7 +189,7 @@ function AtualizacaoModelo() {
         <Button color="primary" onClick={() => setDeleting(false)}>
           Cancelar
           </Button>
-        <Button color="secondary" onClick={() => DeleteVerification()} disabled="false">
+        <Button color="secondary" onClick={() => DeleteVerification()} disabled={false}>
           Excluir
           </Button>
       </DialogActions>

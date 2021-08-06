@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./tabelaStyle";
 import {
+  Button,
   Paper,
-  Table,
+  Table, 
   TableBody,
   TableCell,
   TableContainer,
@@ -12,23 +13,27 @@ import {
   TableSortLabel,
   Typography,
 } from "@material-ui/core";
-import { FiMoreHorizontal } from "react-icons/fi";
+import "./tabela.css"
 
-export default function StickyHeadTable(props) {
+export default function StickyHeadTable({
+  ordemAlfabetica,
+  usersListToDisplay,
+  setOrdemAlfabetica
+}) {
   const classes = useStyles();
 
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="sticky table" id="table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active
-                  direction={props.ordemAlfabetica ? "desc" : "asc"}
+                  direction={ordemAlfabetica ? "desc" : "asc"}
                   onClick={() =>
-                    props.setOrdemAlfabetica(!props.ordemAlfabetica)
+                    setOrdemAlfabetica(!ordemAlfabetica)
                   }
                 >
                   Nome
@@ -38,23 +43,20 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tableCell}>
                 Última data ativa
               </TableCell>
+              <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
+                Ações
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.usersListToDisplay.map((user) => (
-              <TableRow hover tabIndex={-1} key={user.name}>
+            {usersListToDisplay.map((user) => (
+              <TableRow hover key={user.id}>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
                     {user.name}{" "}
-                  </Link>
                 </TableCell>
                 <TableCell>
                   <Link
                     style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
                   >
                     {user.funcao}{" "}
                   </Link>
@@ -62,14 +64,37 @@ export default function StickyHeadTable(props) {
                 <TableCell>
                   <Link
                     style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
                   >
                     {user.data}
                   </Link>
                 </TableCell>
+
+                <TableCell className={classes.lastTableCell} >
+                  <Button
+                    component={Link}
+                    to={`/listagemequipamento?userid=${user.id}`}
+                    variant="outlined"
+                    disableElevation
+                    className={classes.buttonAdd}
+                  >
+                    Equipamentos
+                  </Button>
+
+                  <Button 
+                    component={Link}
+                    to={`/au/${user.id}`}
+                    variant="outlined"
+                    disableElevation
+                    className={classes.buttonUser}
+                  >
+                    Dados
+                  </Button>
+
+                </TableCell>
+
               </TableRow>
             ))}
-            {props.usersListToDisplay.length <= 0 ? (
+            {usersListToDisplay.length <= 0 ? (
               <Typography className={classes.nullUser}>
                 Este usuário não foi encontrado{" "}
               </Typography>

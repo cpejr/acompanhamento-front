@@ -110,7 +110,7 @@ function CadastroPF(props) {
       data.cpf   !== "" && data.cpf.length === 11 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
       data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.password    !== "" && data.password.length >= 6 &&
+      data.password    !== "" && data.password.length >= 8 &&
       data.address     !== "" &&
       data.zipcode     !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
@@ -146,8 +146,16 @@ function CadastroPF(props) {
       // data.address !== "" 
       // data.zipcode !== "" 
     ) { 
-      if (email !== emailConfirm) alert("Os emails estão diferentes.");
-      if (senha !== senhaConfirm) alert("As senhas não batem.");
+
+      if (email !== emailConfirm){
+        sendMessage("Os emails estão diferentes.", "error")
+        return;
+      }
+      if (senha !== senhaConfirm){
+        sendMessage("As senhas não batem.", "error");
+        return ; 
+      }
+    
 
       sendMessage('Realizando cadastro...', 'info', null);
 
@@ -182,7 +190,7 @@ function CadastroPF(props) {
     } else { // mensagens (snackbar) de erros
       if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
-      else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
+      else if (data.password.length < 8) sendMessage("Senha deve ter no mínimo 8 caracteres!", "error");
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");
       else if (data.cpf.length < 11) sendMessage("CPF inválido.", "error");
@@ -199,7 +207,7 @@ function CadastroPF(props) {
     <div>
       <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -254,35 +262,6 @@ function CadastroPF(props) {
               required
               disabled= {mode === 'view'}
             />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            {/* <TextField
-              name="address"
-              className={classes.inputForm}
-              value={address}
-              label="Endereço"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'address')}
-              required
-            /> */}
-
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'zipcode')}
-              required
-            /> */}
-
             <TextField
               name="email"
               className={classes.inputForm}
@@ -295,75 +274,65 @@ function CadastroPF(props) {
               onChange={(e) => handleInput(e, 'email')}
               required
             />
-            <>
-              <TextField
-                name="emailConfirm"
-                className={classes.inputForm}
-                value={emailConfirm}
-                label="Confirmar e-mail"
-                type="email"
-                helperText="*Obrigatório"
-                variant="filled"
-                disabled= {mode === 'view'}
-                onChange={(e) => handleInput(e, 'emailConfirm')}
-                required
-              />
-              
-              <TextField
-                name="password"
-                autoComplete="off"
-                className={classes.inputForm}
-                value={senha}
-                label="Criar senha"
-                type="password"
-                helperText="*Obrigatório"
-                variant="filled"
-                disabled= {mode === 'view'}
-                onChange={(e) => handleInput(e, 'password')}
-                required
-              />
 
-              <TextField
-                name="passwordConfirm"
-                autoComplete="off"
-                className={classes.inputForm}
-                value={senhaConfirm}
-                label="Confirmar senha"
-                type="password"
-                helperText="*Obrigatório"
-                variant="filled"
-                disabled= {mode === 'view'}
-                onChange={(e) => handleInput(e, 'passwordConfirm')}
-                required
-              />
+            {
+              mode === 'create' && 
+              <>
+                <TextField
+                  name="emailConfirm"
+                  className={classes.inputForm}
+                  value={emailConfirm}
+                  label="Confirmar e-mail"
+                  type="email"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  onChange={(e) => handleInput(e, 'emailConfirm')}
+                  required
+                />
+
+                <TextField
+                  name="password"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={senha}
+                  label="Criar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  inputProps={{ minLength: 8 }}
+                  onChange={(e) => handleInput(e, 'password')}
+                  required
+                />
+
+                <TextField
+                  name="passwordConfirm"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={senhaConfirm}
+                  label="Confirmar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  inputProps={{ minLength: 8 }}
+                  onChange={(e) => handleInput(e, 'passwordConfirm')}
+                  required
+                />
               </>
             
 
-           {/* <FormControlLabel
-              className={classes.checkbox}
-              control={
-                <Checkbox
-                  name="emailPromocional"
-                  checked={formData.emailPromocional}
-                  onChange={handleChangeCheck}
-                  color="primary"
-                  size="small"
-                  disabled={mode === 'view'}
-                />
-              }
-              label="Desejo receber emails promocionais" /> */}
           </Grid>
-            { mode === 'create' &&
-                <Grid item xs={12}>
-                  <Button 
-                    type="submit" 
-                    ref={buttonRef} 
-                    className={classes.buttonRegister}
-                  >
-                    Cadastrar
-                  </Button>
-                </Grid>
-            }
+    
+          {mode === "create" && (
+            <div className={classes.buttonContainer}>
+              <Button
+                type="submit"
+                ref={buttonRef}
+                className={classes.buttonRegister}
+              >
+                Cadastrar
+              </Button>
+            </div>
+          )}
         </Grid>
       </form>
     </div>

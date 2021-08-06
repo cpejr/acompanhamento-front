@@ -297,7 +297,7 @@ function CadastroPF(props) {
                     type="email"
                     helperText="*Obrigatório"
                     variant="filled"
-                    disabled={mode === "view" || mode === "updatepassword"}
+                    disabled={mode === "view"}
                     onChange={(e) => handleInput(e, "email")}
                     required
                   />
@@ -309,7 +309,7 @@ function CadastroPF(props) {
                     type="email"
                     helperText="*Obrigatório"
                     variant="filled"
-                    disabled={mode === "view" || mode === "updatepassword"}
+                    disabled={mode === "view"}
                     onChange={(e) => handleInput(e, "emailConfirm")}
                     required
                   />

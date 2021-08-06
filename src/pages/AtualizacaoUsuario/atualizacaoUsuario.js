@@ -44,6 +44,7 @@ function AtualizacaoUsuario(props) {
   const [messageSnackbar, setMessageSnackbar] = useState("");
   const [typeSnackbar, setTypeSnackbar] = useState("info");
   const [loading, setLoading] = useState(false);
+  const [isPerfil, setIsPerfil] = useState(false);
 
   const classes = useStyles({ updating });
 
@@ -51,6 +52,7 @@ function AtualizacaoUsuario(props) {
   useEffect(() => {
     if (id === "me") {
       // clicou no botão de perfil
+      setIsPerfil(true);
       setUserData(props.userPerfil);
       setUserDataOriginal(props.userPerfil);
 
@@ -88,8 +90,9 @@ function AtualizacaoUsuario(props) {
   async function handleSubmit() {
     if (updatingPassword) {
       try {
-        const updatedField = {
+        const updatedFields = {
           password: userData.password,
+          email: userData.email,
         };
 
         // if (validateAllFields(updatedField)) {
@@ -99,19 +102,19 @@ function AtualizacaoUsuario(props) {
             id = props.userPerfil.id;
           }
           api
-            .put(`/user/updatedPassword/${props.userPerfil.firebaseUid}`, updatedField)
+            .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields)
             .then((response) => {
-              sendMessage("Senha atualizada com sucesso!", "success");
+              sendMessage("Senha e email atualizados com sucesso!", "success");
             })
             .catch((error) => {
               console.warn(error);
-              sendMessage("Erro ao atualizar senha", "error");
+              sendMessage("Erro ao atualizar senha e/ou email", "error");
             });
         }
       } catch (error) {
         console.log(error);
 
-        sendMessage("Falha ao atualizar senha", "error");
+        sendMessage("Falha ao atualizar senha e/ou email", "error");
         setUpdating(false);
       }
 
@@ -298,12 +301,14 @@ function AtualizacaoUsuario(props) {
               )}
             </Button>
 
+            
             {!(id === "me" && updating === true) && (
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.btn}
                 onClick={handlePasswordChange}
+                disabled={! isPerfil}
               >
                 {updating ? (
                   loading ? (
@@ -312,7 +317,7 @@ function AtualizacaoUsuario(props) {
                     "Salvar"
                   )
                 ) : (
-                  "Atualizar senha"
+                  "Atualizar email e senha"
                 )}
               </Button>
             )}

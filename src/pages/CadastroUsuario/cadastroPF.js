@@ -318,7 +318,7 @@ function CadastroPF(props) {
                   required
                 />
               </>
-            
+            }
 
           </Grid>
     

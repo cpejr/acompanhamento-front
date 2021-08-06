@@ -75,6 +75,7 @@ export default function CadastroModelo(props) {
 
     if (Object.values(formData).includes("")) {
       setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
+      console.log(formData, 'erro');
     }
     else if (!findError("year", formData.releaseYear))
       setError(prev => ({ ...prev, releaseYear: "Ano inválido" }))
@@ -157,9 +158,6 @@ export default function CadastroModelo(props) {
   const max_voltageRef = useRef(null);
   const min_vibraRef = useRef(null);
   const max_vibraRef = useRef(null);
-  // const temperatureLimitRef = useRef(null);
-  // const currentLimitRef = useRef(null);
-  // const voltageLimitRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
   const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
@@ -175,10 +173,6 @@ export default function CadastroModelo(props) {
     { name: "max_voltage", ref: min_vibraRef },
     { name: "min_vibra", ref: max_vibraRef },
     { name: "max_vibra", ref: buttonSubmitRef },
-    // { name: "releaseYear", ref: temperatureLimitRef },
-    // { name: "temperatureLimit", ref: currentLimitRef },
-    // { name: "currentLimit", ref: voltageLimitRef },
-    // { name: "voltageLimit", ref: buttonSubmitRef },
   ];
 
   // Aqui temos as funcoes para as faixas de valores
@@ -186,11 +180,23 @@ export default function CadastroModelo(props) {
   const [valTemp, setValTemp]=useState([0,100]);
   const [valCurrent, setValCurrent]=useState([0,100]);
   const [valVolt, setValVolt]=useState([0,100]);
-  const [valVibra, setValVibra]=useState([0,100]);
-  const updateRangeTemp=(e,data)=>{ setValTemp(data) };
-  const updateRangeCurrent=(e,data)=>{ setValCurrent(data) };
-  const updateRangeVolt=(e,data)=>{ setValVolt(data) };
-  const updateRangeVibra=(e,data)=>{ setValVibra(data) };
+  const [valVibra, setValVibra]=useState([0,10000]);
+  const updateRangeTemp=(e,data)=>{ 
+    setValTemp(data) 
+    setFormData({ ...formData, min_temp: data[0], max_temp: data[1] })
+  };
+  const updateRangeCurrent=(e,data)=>{ 
+    setValCurrent(data) 
+    setFormData({ ...formData, min_current: data[0], max_current: data[1] })
+  };
+  const updateRangeVolt=(e,data)=>{ 
+    setValVolt(data) 
+    setFormData({ ...formData, min_voltage: data[0], max_voltage: data[1] })
+  };
+  const updateRangeVibra=(e,data)=>{ 
+    setValVibra(data); 
+    setFormData({ ...formData, min_vibra: data[0], max_vibra: data[1] })
+  };
   const marcadoresTemp = [
     {
       value: 0,
@@ -245,23 +251,22 @@ export default function CadastroModelo(props) {
       label: '100V',
     },
   ];
-  //Aqui vemos que os marcadores podem se sobrepor, entao tomar cuidado
   const marcadoresVibra = [
     {
       value: 0,
       label: '0rpm',
     },
     {
-      value: 50,
-      label: '50rpm',
+      value: 2000,
+      label: '2krpm',
     },
     {
-      value: 86,
-      label: '86rpm',
+      value: 6000,
+      label: '6krpm',
     },
     {
-      value: 100,
-      label: '100rpm',
+      value: 10000,
+      label: '10krpm',
     },
   ];
   return (
@@ -352,6 +357,7 @@ export default function CadastroModelo(props) {
                     Limites de Temperatura
                   </Typography>
                   <Slider
+                  step={10}
                   value={valTemp}
                   onChange={updateRangeTemp}
                   marks={marcadoresTemp}
@@ -367,7 +373,7 @@ export default function CadastroModelo(props) {
                   valueLabelDisplay="auto"
                   />
                   <Typography id="range-slider-Volt" gutterBottom>
-                    Limites de Voltagem
+                    Limites de Tensão
                   </Typography>
                   <Slider
                   value={valVolt}
@@ -380,143 +386,13 @@ export default function CadastroModelo(props) {
                   </Typography>
                   <Slider
                   value={valVibra}
+                  max={10000}
+                  step={500}
                   onChange={updateRangeVibra}
                   marks={marcadoresVibra}
                   valueLabelDisplay="auto"
                   />
                 </div>
-                {/* <TextField
-                  name="min_temp"
-                  className={classes.inputs}
-                  value={formData.min_temp}
-                  onChange={handleChangeInput}
-                  label="Limite minimo de temperatura"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={min_tempRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="max_temp"
-                  className={classes.inputs}
-                  value={formData.max_temp}
-                  onChange={handleChangeInput}
-                  label="Limite maximo de temperatura"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={max_tempRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
-                {/* <TextField
-                  name="min_current"
-                  className={classes.inputs}
-                  value={formData.min_current}
-                  onChange={handleChangeInput}
-                  label="Limite minimo de corrente"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={min_currentRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="max_current"
-                  className={classes.inputs}
-                  value={formData.max_current}
-                  onChange={handleChangeInput}
-                  label="Limite maximo de corrente"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={max_currentRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="min_voltage"
-                  className={classes.inputs}
-                  value={formData.min_voltage}
-                  onChange={handleChangeInput}
-                  label="Limite minimo de tensão"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={min_voltageRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="max_voltage"
-                  className={classes.inputs}
-                  value={formData.max_voltage}
-                  onChange={handleChangeInput}
-                  label="Limite maximo de tensão"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={max_voltageRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> 
-                <TextField
-                  name="min_vibra"
-                  className={classes.inputs}
-                  value={formData.min_vibra}
-                  onChange={handleChangeInput}
-                  label="Limite minimo de vibração"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={min_vibraRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> 
-                <TextField
-                  name="max_vibra"
-                  className={classes.inputs}
-                  value={formData.max_vibra}
-                  onChange={handleChangeInput}
-                  label="Limite maximo de vibração"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={max_vibraRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
-                {/* <TextField
-                  name="temperatureLimit"
-                  className={classes.inputs}
-                  value={formData.temperatureLimit}
-                  onChange={handleChangeInput}
-                  label="Limite temperatura"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={temperatureLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="currentLimit"
-                  className={classes.inputs}
-                  value={formData.currentLimit}
-                  onChange={handleChangeInput}
-                  label="Limite corrente"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={currentLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="voltageLimit"
-                  className={classes.inputs}
-                  value={formData.voltageLimit}
-                  onChange={handleChangeInput}
-                  label="Limite tensão"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={voltageLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
               </Grid>
             </Grid>
             <Button type="submit"

@@ -60,7 +60,7 @@ function AtualizacaoModelo() {
   const [valVibra, setValVibra]=useState([]);
 
   const { sendMessage } = useContext(AuthContext);
-
+  useEffect(()=> console.log(model),[model])
   useEffect(() => {
     (async () => {
       await api.get(`model/${id}`)
@@ -85,19 +85,23 @@ function AtualizacaoModelo() {
     })();
   }, [id])
 
-  //esse console é pra ver o que tem no model e aparentemente ele nao setando os valores iniciais no update
-  console.log(model);
-
   // Aqui temos as funcoes para as faixas de valores
-  // O Slider ele sempre vai de 0 até 100, mas tem como mudar a escala, quando definir os limites colocamos as escalas
-  // const [valTemp, setValTemp]=useState([model.min_temp, model.max_temp]);
-  // const [valCurrent, setValCurrent]=useState([model.min_current, model.max_current]);
-  // const [valVolt, setValVolt]=useState([model.min_voltage, model.max_voltage]);
-  // const [valVibra, setValVibra]=useState([model.min_vibra, model.max_vibra]);
-  const updateRangeTemp=(e,data)=>{ setValTemp(data) };
-  const updateRangeCurrent=(e,data)=>{ setValCurrent(data) };
-  const updateRangeVolt=(e,data)=>{ setValVolt(data) };
-  const updateRangeVibra=(e,data)=>{ setValVibra(data) };
+  const updateRangeTemp=(e,data)=>{ 
+    setValTemp(data) 
+    setModel({ ...model, min_temp: data[0], max_temp: data[1] })
+  };
+  const updateRangeCurrent=(e,data)=>{ 
+    setValCurrent(data) 
+    setModel({ ...model, min_current: data[0], max_current: data[1] })
+  };
+  const updateRangeVolt=(e,data)=>{ 
+    setValVolt(data) 
+    setModel({ ...model, min_voltage: data[0], max_voltage: data[1] })
+  };
+  const updateRangeVibra=(e,data)=>{ 
+    setValVibra(data) 
+    setModel({ ...model, min_vibra: data[0], max_vibra: data[1] })
+  };
   const marcadoresTemp = [
     {
       value: 0,
@@ -152,23 +156,22 @@ function AtualizacaoModelo() {
       label: '100V',
     },
   ];
-  //Aqui vemos que os marcadores podem se sobrepor, entao tomar cuidado
   const marcadoresVibra = [
     {
       value: 0,
       label: '0rpm',
     },
     {
-      value: 50,
-      label: '50rpm',
+      value: 2000,
+      label: '2krpm',
     },
     {
-      value: 86,
-      label: '86rpm',
+      value: 6000,
+      label: '6krpm',
     },
     {
-      value: 100,
-      label: '100rpm',
+      value: 10000,
+      label: '10krpm',
     },
   ];
 
@@ -208,7 +211,7 @@ function AtualizacaoModelo() {
     else if (isAfter(parseISO(model.releaseYear), new Date()))
       setError(prev => ({ ...prev, releaseYear: "Ano inválido!" }))
     else {
-      console.log(model)
+      // console.log(model, 'model que vai pro back!!')
       const {
         modelName,
         type,
@@ -242,6 +245,7 @@ function AtualizacaoModelo() {
         .then(response => {
           sendMessage("Dados alterados");
           setModelOriginal(data);
+          console.log(data, 'Dados depois de alterar');
         })
         .catch(err => {
           console.log(err);
@@ -443,109 +447,15 @@ function AtualizacaoModelo() {
                   Limites de Vibração
                 </Typography>
                 <Slider
-                value={valVibra}
-                onChange={updateRangeVibra}
-                marks={marcadoresVibra}
-                valueLabelDisplay="auto"
-                disabled={!updating}
+                  value={valVibra}
+                  max={10000}
+                  step={500}
+                  onChange={updateRangeVibra}
+                  marks={marcadoresVibra}
+                  valueLabelDisplay="auto"
+                  disabled={!updating}
                 />
               </div>
-              {/* <TextField
-                name="min_temp"
-                className={classes.input}
-                value={model.min_temp}
-                onChange={handleChangeInput}
-                label="Limite minimo de temperatura"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="max_temp"
-                className={classes.input}
-                value={model.max_temp}
-                onChange={handleChangeInput}
-                label="Limite maximo de temperatura"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="min_current"
-                className={classes.input}
-                value={model.min_current}
-                onChange={handleChangeInput}
-                label="Limite minimo de corrente"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="max_current"
-                className={classes.input}
-                value={model.max_current}
-                onChange={handleChangeInput}
-                label="Limite maximo de corrente"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="min_voltage"
-                className={classes.input}
-                value={model.min_voltage}
-                onChange={handleChangeInput}
-                label="Limite minimo de tensão"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="max_voltage"
-                className={classes.input}
-                value={model.max_voltage}
-                onChange={handleChangeInput}
-                label="Limite maximo de tensão"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="min_vibra"
-                className={classes.input}
-                value={model.min_vibra}
-                onChange={handleChangeInput}
-                label="Limite minimo de vibração"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="max_vibra"
-                className={classes.input}
-                value={model.max_vibra}
-                onChange={handleChangeInput}
-                label="Limite maximo de vibração"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              /> */}
             </Grid>
             <Grid className={classes.centralizar} item xs={12}>
               <Button variant="contained" color="primary" className={classes.btn}
@@ -569,12 +479,3 @@ function AtualizacaoModelo() {
 }
 
 export default AtualizacaoModelo;
-
-
-
-
-// array=[1,2,3,4,5];
-
-// const numero = array.find((x)=> {
-//   if (x===3) return x
-// })

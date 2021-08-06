@@ -18,6 +18,8 @@ import findError from '../../services/findError';
 import { useStyles } from './cadastroModeloStyle';
 import nextInput from '../../services/nextInput';
 
+import Slider from '@material-ui/core/Slider';
+
 function YearInput(props) {
   const { inputRef, ...other } = props;
   return (
@@ -179,6 +181,89 @@ export default function CadastroModelo(props) {
     // { name: "voltageLimit", ref: buttonSubmitRef },
   ];
 
+  // Aqui temos as funcoes para as faixas de valores
+  // O Slider ele sempre vai de 0 até 100, mas tem como mudar a escala, quando definir os limites colocamos as escalas
+  const [valTemp, setValTemp]=useState([0,100]);
+  const [valCurrent, setValCurrent]=useState([0,100]);
+  const [valVolt, setValVolt]=useState([0,100]);
+  const [valVibra, setValVibra]=useState([0,100]);
+  const updateRangeTemp=(e,data)=>{ setValTemp(data) };
+  const updateRangeCurrent=(e,data)=>{ setValCurrent(data) };
+  const updateRangeVolt=(e,data)=>{ setValVolt(data) };
+  const updateRangeVibra=(e,data)=>{ setValVibra(data) };
+  const marcadoresTemp = [
+    {
+      value: 0,
+      label: '0°C',
+    },
+    {
+      value: 20,
+      label: '20°C',
+    },
+    {
+      value: 37,
+      label: '37°C',
+    },
+    {
+      value: 100,
+      label: '100°C',
+    },
+  ];
+  const marcadoresCurrent = [
+    {
+      value: 0,
+      label: '0A',
+    },
+    {
+      value: 30,
+      label: '30A',
+    },
+    {
+      value: 60,
+      label: '60A',
+    },
+    {
+      value: 100,
+      label: '100A',
+    },
+  ];
+  const marcadoresVolt = [
+    {
+      value: 0,
+      label: '0V',
+    },
+    {
+      value: 40,
+      label: '40V',
+    },
+    {
+      value: 76,
+      label: '76V',
+    },
+    {
+      value: 100,
+      label: '100V',
+    },
+  ];
+  //Aqui vemos que os marcadores podem se sobrepor, entao tomar cuidado
+  const marcadoresVibra = [
+    {
+      value: 0,
+      label: '0rpm',
+    },
+    {
+      value: 50,
+      label: '50rpm',
+    },
+    {
+      value: 86,
+      label: '86rpm',
+    },
+    {
+      value: 100,
+      label: '100rpm',
+    },
+  ];
   return (
     <React.Fragment>
       <CssBaseline />
@@ -262,7 +347,45 @@ export default function CadastroModelo(props) {
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
+                <div style={{width:300,margin:30}}>
+                  <Typography id="range-slider-Temp" gutterBottom>
+                    Limites de Temperatura
+                  </Typography>
+                  <Slider
+                  value={valTemp}
+                  onChange={updateRangeTemp}
+                  marks={marcadoresTemp}
+                  valueLabelDisplay="auto"
+                  />
+                  <Typography id="range-slider-Current" gutterBottom>
+                    Limites de Corrente
+                  </Typography>
+                  <Slider
+                  value={valCurrent}
+                  onChange={updateRangeCurrent}
+                  marks={marcadoresCurrent}
+                  valueLabelDisplay="auto"
+                  />
+                  <Typography id="range-slider-Volt" gutterBottom>
+                    Limites de Voltagem
+                  </Typography>
+                  <Slider
+                  value={valVolt}
+                  onChange={updateRangeVolt}
+                  marks={marcadoresVolt}
+                  valueLabelDisplay="auto"
+                  />
+                  <Typography id="range-slider-Vibra" gutterBottom>
+                    Limites de Vibração
+                  </Typography>
+                  <Slider
+                  value={valVibra}
+                  onChange={updateRangeVibra}
+                  marks={marcadoresVibra}
+                  valueLabelDisplay="auto"
+                  />
+                </div>
+                {/* <TextField
                   name="min_temp"
                   className={classes.inputs}
                   value={formData.min_temp}
@@ -285,8 +408,8 @@ export default function CadastroModelo(props) {
                   variant="filled"
                   autoComplete="off"
                   inputRef={max_tempRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
+                {/* <TextField
                   name="min_current"
                   className={classes.inputs}
                   value={formData.min_current}
@@ -357,7 +480,7 @@ export default function CadastroModelo(props) {
                   variant="filled"
                   autoComplete="off"
                   inputRef={max_vibraRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                  onKeyPress={e => nextInput(e, relacionamentosRef)} /> */}
                 {/* <TextField
                   name="temperatureLimit"
                   className={classes.inputs}

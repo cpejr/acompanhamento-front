@@ -23,7 +23,7 @@ function AuthContextProvider({ children }) {
   });
 
   useEffect(() => {
-    api.get(`/client/${id}`)
+    api.get(`/cliente/${id}`)
       .then(data => setUser(data.data.client))
       .catch(err => console.error("Liga o backend ai mano", err));
     setLoading(false);

@@ -7,7 +7,6 @@ export const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     width: "100%",
     minHeight: "100vh",
-
     padding: "30px 60px 0",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5%",
@@ -17,9 +16,20 @@ export const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
-  title: {
-    marginBottom: "30px",
+  buttonAdd:{
+    fontWeight: "500",
+    fontSize: "13px",
+    color: verde,
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: verde,
+    }
+  },
 
+  title: {
+    display:"flex",
+    justifyContent:"center",
+    marginBottom: "30px",
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
@@ -30,16 +40,16 @@ export const useStyles = makeStyles((theme) => ({
   },
   containerForm: {
     padding: "50px 50px 30px",
-    marginBottom: "50px",
     borderRadius: "13px",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5%",
     },
   },
+
   leftSection: {
-    maxWidth: "350px",
+    padding:"0 40px",
     [theme.breakpoints.only("xs")]: {
-      maxWidth: "100%"
+      padding:"0"
     }
   },
   input: {

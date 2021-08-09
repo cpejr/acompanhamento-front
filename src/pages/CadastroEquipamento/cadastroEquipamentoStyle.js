@@ -7,10 +7,8 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-
     width: "100%",
     padding: "50px 60px 60px 50px",
-
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 30px",
       width: "100%",
@@ -18,13 +16,13 @@ export const useStyles = makeStyles(theme => ({
   },
 
   title: {
+    display:"flex",
+    justifyContent:"center",
     width: "100%",
     marginBottom: "30px",
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
-
     display: "flex",
     alignItems: "center",
     textAlign: isMobile ? "center" : "",
@@ -53,22 +51,27 @@ export const useStyles = makeStyles(theme => ({
   },
 
   containerForm: {
-    padding: "40px 60px",
-
-    display: "flex",
-    flexDirection: "column",
-
-    maxWidth: "500px",
+    // padding: "40px 60px",
+    // display: "flex",
+    // flexDirection: "column",
+    // maxWidth: "500px",
+    padding: "50px 50px 30px",
+    borderRadius: "13px",
     [theme.breakpoints.only("xs")]: {
-      padding: "10% 5%",
-      width: "100%",
-      alignItems: "center"
+      // padding: "10% 5%",
+      // width: "100%",
+      // alignItems: "center"
+      padding: "30px 5%",
     },
   },
 
   inputs: {
+    // width: "300%",
+    // minWidth:"100%",
+    // marginBottom: "20px",
+    boxSizing: "border-box",
     width: "100%",
-    marginBottom: "20px",
+    marginBottom: "30px",
   },
 
 

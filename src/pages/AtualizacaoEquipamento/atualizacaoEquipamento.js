@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   CssBaseline,
+  Link,
   Paper,
   TextField,
   Button,
@@ -240,26 +241,27 @@ function AtualizacaoEquipamento() {
 
         <Paper className={classes.containerForm} elevation={0}>
           <div className={classes.leftSection}>
-            <Autocomplete
+            <TextField
               freeSolo
               className={classes.input}
               options={modelsList.map((model) => model.modelName)}
               onChange={handleChangeAutocomplete}
+              label="Modelo"
+              variant="filled"
+              disabled={!updating}
               value={modelName}
               renderInput={(params) => (
                 <TextField
                   name="id_model"
                   {...params}
                   value={equipment.id_model}
-                  label="Modelo"
-                  variant="filled"
                   disabled={!updating}
                   autoComplete="off"
                 />
               )}
             />
             
-            <TextField
+            {/* <TextField
               name="cpf_client"
               className={classes.input}
               value={equipment.cpf_client}
@@ -267,7 +269,7 @@ function AtualizacaoEquipamento() {
               variant="filled"
               disabled={!updating}
               onChange={handleChangeInput}
-            />
+            /> */}
 
             <TextField
               name="equipment_code"
@@ -276,7 +278,7 @@ function AtualizacaoEquipamento() {
               label="Código do equipamento"
               variant="filled"
               disabled={!updating}
-              onChange={handleChangeInput}
+              // onChange={handleChangeInput}
             />
 
             <TextField
@@ -333,25 +335,37 @@ function AtualizacaoEquipamento() {
               variant="filled"
               inputProps={{ maxLength: 8 }}
             />
-
-            <div className={classes.centralizar}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.btn}
-                onClick={handleSubmit}
+            <div className={classes.buttonContainer} >
+              <div className={classes.centralizar}>
+                <Button
+              component={Link}
+              // to={`/au/${userId}`}
+              className={classes.buttonAdd}
+              variant="outlined"
               >
-                {updating ? "Salvar" : "Editar"}
+              Proprietário do equipamento
               </Button>
+              </div>
 
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.btn}
-                onClick={handleDelete}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
+              <div className={classes.centralizar}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.btn}
+                  onClick={handleSubmit}
+                >
+                  {updating ? "Salvar" : "Editar"}
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.btn}
+                  onClick={handleDelete}
+                >
+                  {updating ? "Cancelar" : "Excluir"}
+                </Button>
+              </div>
             </div>
           </div>
         </Paper>

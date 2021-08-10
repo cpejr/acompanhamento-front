@@ -247,7 +247,7 @@ export default function CadastroEquipamento(props) {
               onKeyPress={e => nextInput(e, relacionamentosRef)}
             />
 
-            <TextField
+            {/* <TextField
               name="cpf_client"
               className={classes.inputs}
               value={formData.cpf_client}
@@ -258,7 +258,7 @@ export default function CadastroEquipamento(props) {
               error={error.cpf_client !== ""}
               variant="filled"
               inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            /> */}
 
             <TextField
               name="observation"

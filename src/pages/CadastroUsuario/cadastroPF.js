@@ -270,7 +270,7 @@ function CadastroPF(props) {
               type="email"
               helperText="*Obrigatório"
               variant="filled"
-              disabled= {mode !== 'create'}
+              disabled= {mode === 'view'}
               onChange={(e) => handleInput(e, 'email')}
               required
             />

@@ -22,6 +22,7 @@ import FuncionamentoEquipamento from "./pages/FuncionamentoEquipamento";
 import Testes from "./pages/Testes";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
+import ErroDePermissao from "./pages/ErroDePermissao";
 import RoutesPrivate from "./components/Routes/Private/Private";
 import Perfil from "./pages/Perfil/Perfil";
 
@@ -40,6 +41,7 @@ function Routes() {
           <Route path="/login" component={Login} />
           <Route path="/esquecisenha" component={EsqueciSenha} />
           <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
+          <Route path="/erroPermissao" component={ErroDePermissao} />
           <Fragment>
             <Menu />
             <div className={classes.spaceContent}>

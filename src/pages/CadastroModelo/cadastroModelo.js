@@ -18,6 +18,8 @@ import findError from '../../services/findError';
 import { useStyles } from './cadastroModeloStyle';
 import nextInput from '../../services/nextInput';
 
+import Slider from '@material-ui/core/Slider';
+
 function YearInput(props) {
   const { inputRef, ...other } = props;
   return (
@@ -43,9 +45,14 @@ export default function CadastroModelo(props) {
     type: '',
     manufacturer: '',
     releaseYear: '',
-    temperatureLimit: '',
-    currentLimit: '',
-    voltageLimit: ''
+    min_temp: '',
+    max_temp: '',
+    min_current: '',
+    max_current: '',
+    min_voltage: '',
+    max_voltage: '',
+    min_vibra: '',
+    max_vibra: '',
   });
   const [error, setError] = useState({
     releaseYear: '',
@@ -68,6 +75,7 @@ export default function CadastroModelo(props) {
 
     if (Object.values(formData).includes("")) {
       setOpenMensage(({ open: true, message: 'Alguns campos estão vazios', type: 'info', time: 5000 }));
+      console.log(formData, 'erro');
     }
     else if (!findError("year", formData.releaseYear))
       setError(prev => ({ ...prev, releaseYear: "Ano inválido" }))
@@ -77,9 +85,14 @@ export default function CadastroModelo(props) {
         type: formData.type,
         manufacturer: formData.manufacturer,
         releaseYear: formData.releaseYear,
-        temperatureLimit: formData.temperatureLimit,
-        currentLimit: formData.currentLimit,
-        voltageLimit: formData.voltageLimit
+        min_temp: formData.min_temp,
+        max_temp: formData.max_temp,
+        min_current: formData.min_current,
+        max_current: formData.max_current,
+        min_voltage: formData.min_voltage,
+        max_voltage: formData.max_voltage,
+        min_vibra: formData.min_vibra,
+        max_vibra: formData.max_vibra,
       }
 
       //enviar para o backend
@@ -91,9 +104,14 @@ export default function CadastroModelo(props) {
             type: '',
             manufacturer: '',
             releaseYear: '',
-            temperatureLimit: '',
-            currentLimit: '',
-            voltageLimit: ''
+            min_temp: '',
+            max_temp: '',
+            min_current: '',
+            max_current: '',
+            min_voltage: '',
+            max_voltage: '',
+            min_vibra: '',
+            max_vibra: ''
           });
           console.log(res);
           setOpenMensage(({ open: true, message: 'Cadastrado com sucesso', type: 'success', time: 5000 }));
@@ -132,21 +150,125 @@ export default function CadastroModelo(props) {
   const typeRef = useRef(null);
   const manufacturerRef = useRef(null);
   const releaseYearRef = useRef(null);
-  const temperatureLimitRef = useRef(null);
-  const currentLimitRef = useRef(null);
-  const voltageLimitRef = useRef(null);
+  const min_tempRef = useRef(null);
+  const max_tempRef = useRef(null);
+  const min_currentRef = useRef(null);
+  const max_currentRef = useRef(null);
+  const min_voltageRef = useRef(null);
+  const max_voltageRef = useRef(null);
+  const min_vibraRef = useRef(null);
+  const max_vibraRef = useRef(null);
   const buttonSubmitRef = useRef(null);
 
   const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
     { name: "modelName", ref: typeRef },
     { name: "type", ref: manufacturerRef },
     { name: "manufacturer", ref: releaseYearRef },
-    { name: "releaseYear", ref: temperatureLimitRef },
-    { name: "temperatureLimit", ref: currentLimitRef },
-    { name: "currentLimit", ref: voltageLimitRef },
-    { name: "voltageLimit", ref: buttonSubmitRef },
+    { name: "releaseYear", ref: min_tempRef },
+    { name: "min_temp", ref: max_tempRef },
+    { name: "max_temp", ref: min_currentRef },
+    { name: "min_current", ref: max_currentRef },
+    { name: "max_current", ref: min_voltageRef },
+    { name: "min_voltage", ref: max_voltageRef },
+    { name: "max_voltage", ref: min_vibraRef },
+    { name: "min_vibra", ref: max_vibraRef },
+    { name: "max_vibra", ref: buttonSubmitRef },
   ];
 
+  // Aqui temos as funcoes para as faixas de valores
+  // O Slider ele sempre vai de 0 até 100, mas tem como mudar a escala, quando definir os limites colocamos as escalas
+  const [valTemp, setValTemp]=useState([0,100]);
+  const [valCurrent, setValCurrent]=useState([0,100]);
+  const [valVolt, setValVolt]=useState([0,100]);
+  const [valVibra, setValVibra]=useState([0,10000]);
+  const updateRangeTemp=(e,data)=>{ 
+    setValTemp(data) 
+    setFormData({ ...formData, min_temp: data[0], max_temp: data[1] })
+  };
+  const updateRangeCurrent=(e,data)=>{ 
+    setValCurrent(data) 
+    setFormData({ ...formData, min_current: data[0], max_current: data[1] })
+  };
+  const updateRangeVolt=(e,data)=>{ 
+    setValVolt(data) 
+    setFormData({ ...formData, min_voltage: data[0], max_voltage: data[1] })
+  };
+  const updateRangeVibra=(e,data)=>{ 
+    setValVibra(data); 
+    setFormData({ ...formData, min_vibra: data[0], max_vibra: data[1] })
+  };
+  const marcadoresTemp = [
+    {
+      value: 0,
+      label: '0°C',
+    },
+    {
+      value: 20,
+      label: '20°C',
+    },
+    {
+      value: 37,
+      label: '37°C',
+    },
+    {
+      value: 100,
+      label: '100°C',
+    },
+  ];
+  const marcadoresCurrent = [
+    {
+      value: 0,
+      label: '0A',
+    },
+    {
+      value: 30,
+      label: '30A',
+    },
+    {
+      value: 60,
+      label: '60A',
+    },
+    {
+      value: 100,
+      label: '100A',
+    },
+  ];
+  const marcadoresVolt = [
+    {
+      value: 0,
+      label: '0V',
+    },
+    {
+      value: 40,
+      label: '40V',
+    },
+    {
+      value: 76,
+      label: '76V',
+    },
+    {
+      value: 100,
+      label: '100V',
+    },
+  ];
+  const marcadoresVibra = [
+    {
+      value: 0,
+      label: '0rpm',
+    },
+    {
+      value: 2000,
+      label: '2krpm',
+    },
+    {
+      value: 6000,
+      label: '6krpm',
+    },
+    {
+      value: 10000,
+      label: '10krpm',
+    },
+  ];
   return (
     <React.Fragment>
       <CssBaseline />
@@ -230,42 +352,47 @@ export default function CadastroModelo(props) {
                   onKeyPress={e => nextInput(e, relacionamentosRef)} />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  name="temperatureLimit"
-                  className={classes.inputs}
-                  value={formData.temperatureLimit}
-                  onChange={handleChangeInput}
-                  label="Limite temperatura"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={temperatureLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="currentLimit"
-                  className={classes.inputs}
-                  value={formData.currentLimit}
-                  onChange={handleChangeInput}
-                  label="Limite corrente"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={currentLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
-                <TextField
-                  name="voltageLimit"
-                  className={classes.inputs}
-                  value={formData.voltageLimit}
-                  onChange={handleChangeInput}
-                  label="Limite tensão"
-                  type="number"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  autoComplete="off"
-                  inputRef={voltageLimitRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)} />
+                <div style={{width:300,margin:30}}>
+                  <Typography id="range-slider-Temp" gutterBottom>
+                    Limites de Temperatura
+                  </Typography>
+                  <Slider
+                  step={10}
+                  value={valTemp}
+                  onChange={updateRangeTemp}
+                  marks={marcadoresTemp}
+                  valueLabelDisplay="auto"
+                  />
+                  <Typography id="range-slider-Current" gutterBottom>
+                    Limites de Corrente
+                  </Typography>
+                  <Slider
+                  value={valCurrent}
+                  onChange={updateRangeCurrent}
+                  marks={marcadoresCurrent}
+                  valueLabelDisplay="auto"
+                  />
+                  <Typography id="range-slider-Volt" gutterBottom>
+                    Limites de Tensão
+                  </Typography>
+                  <Slider
+                  value={valVolt}
+                  onChange={updateRangeVolt}
+                  marks={marcadoresVolt}
+                  valueLabelDisplay="auto"
+                  />
+                  <Typography id="range-slider-Vibra" gutterBottom>
+                    Limites de Vibração
+                  </Typography>
+                  <Slider
+                  value={valVibra}
+                  max={10000}
+                  step={500}
+                  onChange={updateRangeVibra}
+                  marks={marcadoresVibra}
+                  valueLabelDisplay="auto"
+                  />
+                </div>
               </Grid>
             </Grid>
             <Button type="submit"

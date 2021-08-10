@@ -40,7 +40,8 @@ function AuthContextProvider({ children }) {
     setOpenMensage(prev => ({ ...prev, open: true, message, type, time }));
   }
 
-  const isClient = user.role === "Cliente";
+  // const isClient = user.role === "Cliente";
+  const isClient = false;
 
   if (loading) {
     return (

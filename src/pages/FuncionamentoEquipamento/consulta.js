@@ -5,7 +5,7 @@ api.verbo('rota').then(resposta =>
   // codigo para manipular dados (resposta.data.model)
   // get ->  guarda em state !!!usem dentro de useEffect!!!!
   // geralmente o axios vai ficar dentro de uma handleSubmit 
-).catch(err => console(err))
+).catch(err => console(err));
 
 // rota: rota (não precisa do começo)
 // verbo: get post put delete

@@ -15,7 +15,7 @@ import {
   CircularProgress
 } from "@material-ui/core"
 import api from '../../services/api';
-
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
@@ -42,6 +42,8 @@ function YearInput(props) {
 
 function AtualizacaoModelo() {
   const { id } = useParams();
+  const history = useHistory();
+
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
   const [modelOriginal, setModelOriginal] = useState({});
@@ -261,14 +263,15 @@ function AtualizacaoModelo() {
     const response = await api.get("/equipment/index");
     console.log(response);
     if (response.data.equipment.find((x)=> {if(x.id_model === id) return true})) { //se achar algo nao pode excluir
-      alert("Não foi possível excluir modelo, ele possui equipamentos vinculados");
+      sendMessage("Não foi possível excluir modelo, ele possui equipamentos vinculados.", "error");
+      setDeleting(false);
     }
     else {//Caso nao tenha nenhuma bomba ligada ao modelo, pode excluir
       handleDelete(true);
     }
   }
 
-  function handleDelete(confirmation) {
+  async function handleDelete(confirmation) {
     if (updating) { //cancelar
       setUpdating(false);
       setModel(modelOriginal);
@@ -282,7 +285,17 @@ function AtualizacaoModelo() {
     }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
-      alert("Excluindo modelo do banco de dados...")
+      await api.delete(`model/${id}`).then((response) => {
+
+        sendMessage("Modelo excluído com sucesso", "success");
+        setTimeout(() => {
+          history.push("/listagemmodelo");
+        }, 1000)
+        
+      }).catch((err) => {
+        sendMessage(`Erro ao excluir o modelo: ${err.message}`, "error");
+        console.log(err)
+      })
     }
     else { // confirmar exclusão
       setDeleting(true);
@@ -295,19 +308,14 @@ function AtualizacaoModelo() {
       onClose={() => setDeleting(false)}
     >
       <DialogTitle>Excluir modelo?</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Você tem certeza que deseja excluir este modelo? Equipamento que fazem
-          uso deste modelo podem ser afetados!
-        </DialogContentText>
-      </DialogContent>
+   
       <DialogActions>
         <Button color="primary" onClick={() => setDeleting(false)}>
           Cancelar
           </Button>
-        <Button color="secondary" onClick={() => DeleteVerification()} disabled={false}>
+        <Button color="secondary" onClick={() => DeleteVerification()} >
           Excluir
-          </Button>
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -351,25 +359,6 @@ function AtualizacaoModelo() {
               />
             </Grid>
             <Grid item xs={12} md={6} className={classes.grid}>
-              {/* <Autocomplete
-                value={model.type}
-                freeSolo
-                className={classes.input}
-                options={["Motor", "Bomba hidráulica"]}
-                onChange={handleChangeInput}
-                disabled={!updating}
-                renderInput={params => (
-                  <TextField
-                    name="type"
-                    {...params}
-                    label="Tipo de equipamento"
-                    type="text"
-                    helperText="*Obrigatório"
-                    variant="filled"
-                    autoComplete="off"
-                  />
-                )}
-              /> */}
               <TextField
                 value={model.type}
                 className={classes.input}

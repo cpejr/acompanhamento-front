@@ -95,16 +95,16 @@ function CadastroPJ(props) {
   function validateAllFields(data) {
 
     if (
-      data.type  !== "" &&
-      data.name  !== "" &&
-      data.cnpj   !== "" && data.cnpj.length === 14 &&
+      data.type !== "" &&
+      data.name !== "" &&
+      data.cnpj !== "" && data.cnpj.length === 14 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
-      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.password    !== "" && data.password.length >= 6 &&
-      data.address     !== "" &&
-      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      data.phonenumber !== "" && data.phonenumber.length >= 8 &&
+      data.password !== "" && data.password.length >= 6 &&
+      data.address !== "" &&
+      data.zipcode !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
-      senha === senhaConfirm 
+      senha === senhaConfirm
     ) return true;
 
     else return false;
@@ -130,7 +130,7 @@ function CadastroPJ(props) {
       data.cnpj !== "" &&
       data.email !== "" &&
       data.phonenumber !== "" &&
-      data.password !== "" 
+      data.password !== ""
       // data.address !== "" 
       // data.zipcode !== ""
     ) {
@@ -160,16 +160,16 @@ function CadastroPJ(props) {
             sendMessage("Error 501: Falha no cadastro", "error");
           }
 
-          if (error.response.status === 400) { 
+          if (error.response.status === 400) {
             sendMessage(`Erro: ${error.response.data.notification}`, 'error');
           } else sendMessage("Erro desconhecido ao fazer o cadastro!", 'error');
         });
 
     } else { // mensagens (snackbar) de erros
-      if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
+      if (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
       else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
-      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
+      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com"))
         sendMessage("Email inválido!", "error");
       else if (data.cnpj.length < 14) sendMessage("CNPJ inválido.", "error");
       else if (data.zipcode.length < 8) sendMessage("CEP inválido.", "error");
@@ -224,88 +224,64 @@ function CadastroPJ(props) {
               disabled={mode === "view"}
               required
             />
-            {/* <TextField
-              name="address"
-              className={classes.inputForm}
-              value={address}
-              label="Endereço"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => handleInput(e, "address")}
-              disabled={mode === "view"}
-              required
-            /> */}
-
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              onChange={(e) => handleInput(e, "zipcode")}
-              disabled={mode === "view"}
-              required
-            /> */}
           </Grid>
+
           <Grid item xs={12} md={6}>
-            <TextField
-              name="email"
-              className={classes.inputForm}
-              value={formData.email}
-              label="Endereço de e-mail"
-              type="email"
-              helperText="*Obrigatório"
-              variant="filled"
-              disabled={mode !== "create"}
-              onChange={(e) => handleInput(e, "email")}
-              required
-            />
-            {mode === "create" && (
+            {(mode === "create" || mode === "updatepassword") && (
               <>
                 <TextField
-                  name="emailConfirmar"
+                  name="email"
                   className={classes.inputForm}
-                  value={formData.emailConfirmar}
+                  value={email}
+                  label="Endereço de e-mail"
+                  type="email"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "email")}
+                  required
+                />
+                <TextField
+                  name="emailConfirm"
+                  className={classes.inputForm}
+                  value={emailConfirm}
                   label="Confirmar e-mail"
                   type="email"
                   helperText="*Obrigatório"
                   variant="filled"
-                  onChange={(e) => setEmailConfirm(e.target.value)}
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "emailConfirm")}
                   required
                 />
-
                 <TextField
-                  name="senha"
+                  name="password"
                   autoComplete="off"
                   className={classes.inputForm}
-                  value={formData.senha}
+                  value={senha}
                   label="Criar senha"
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
-                  onChange={(e) => setSenha(e.target.value)}
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "password")}
                   required
                 />
 
                 <TextField
-                  name="senhaConfirmar"
+                  name="passwordConfirm"
                   autoComplete="off"
                   className={classes.inputForm}
-                  value={formData.senhaConfirmar}
+                  value={senhaConfirm}
                   label="Confirmar senha"
                   type="password"
                   helperText="*Obrigatório"
                   variant="filled"
-                  onChange={(e) => setSenhaConfirm(e.target.value)}
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "passwordConfirm")}
                   required
                 />
               </>
             )}
-
           </Grid>
           <Grid item xs={12}>
             {mode === "create" && (

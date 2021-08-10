@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect, useContext} from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   TextField,
   FormControlLabel,
@@ -10,17 +10,17 @@ import {
 import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import nextInput from "../../services/nextInput";
-import {AuthContext} from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import isValidDate from '../../services/dateValidation';
 
 function CadastroFuncionario(props) {
-  const { 
-    formData, 
-    handleChangeCheck, 
-    handleChangeInput, 
-    handleSubmit, 
+  const {
+    formData,
+    handleChangeCheck,
+    handleChangeInput,
+    handleSubmit,
     mode,
-    type 
+    type
   } = props;
 
   const classes = useStyles();
@@ -84,7 +84,7 @@ function CadastroFuncionario(props) {
         .then((response) => {
           sendMessage('Cadastrado com sucesso');
         })
-        .catch ((error) => {
+        .catch((error) => {
           if (error.response) {
             // Request made and server responded
             console.log(error.response.data);
@@ -101,16 +101,16 @@ function CadastroFuncionario(props) {
             sendMessage('Error 501: Falha no cadastro', 'error');
           }
 
-          if (error.response.status === 400) { 
+          if (error.response.status === 400) {
             sendMessage(`Erro: ${error.response.data.notification}`, 'error');
           } else sendMessage("Erro desconhecido ao fazer o cadastro!", 'error');
-      })
+        })
 
     } else { // mensagens (snackbar) de erros
-      if      (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
+      if (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
       else if (data.password.length < 6) sendMessage("Senha deve ter no mínimo 6 caracteres!", "error");
-      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
+      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com"))
         sendMessage("Email inválido!", "error");
       else if (data.cpf.length < 11) sendMessage("CPF inválido.", "error");
       else if (data.zipcode.length < 8) sendMessage("CEP inválido.", "error");
@@ -128,7 +128,7 @@ function CadastroFuncionario(props) {
       case 'name':
         setName(event.target.value);
         break;
-      
+
       case 'cpf':
         event.target.value = str.replace(/\D/g, ""); // somente numeros
         setCpf(event.target.value);
@@ -157,16 +157,16 @@ function CadastroFuncionario(props) {
         break;
 
       case 'emailConfirm':
-      setEmailConfirm(event.target.value);
-      break;
+        setEmailConfirm(event.target.value);
+        break;
 
-    case 'password':
-      setSenha(event.target.value);
-      break;
+      case 'password':
+        setSenha(event.target.value);
+        break;
 
-    case 'passwordConfirm':
-      setSenhaConfirm(event.target.value);
-      break;
+      case 'passwordConfirm':
+        setSenhaConfirm(event.target.value);
+        break;
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
@@ -175,14 +175,14 @@ function CadastroFuncionario(props) {
   function validateAllFields(data) {
 
     if (
-      data.type  !== "" &&
-      data.name  !== "" &&
-      data.cpf   !== "" && data.cpf.length === 11 &&
+      data.type !== "" &&
+      data.name !== "" &&
+      data.cpf !== "" && data.cpf.length === 11 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
-      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.password    !== "" && data.password.length >= 6 &&
-      data.address     !== "" &&
-      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      data.phonenumber !== "" && data.phonenumber.length >= 8 &&
+      data.password !== "" && data.password.length >= 6 &&
+      data.address !== "" &&
+      data.zipcode !== "" && data.zipcode.length >= 8 &&
       email === emailConfirm &&
       senha === senhaConfirm &&
       isValidDate(data.birthdate)
@@ -206,8 +206,7 @@ function CadastroFuncionario(props) {
               variant="filled"
               onChange={(e) => handleInput(e, 'name')}
               required
-              disabled= {mode === 'view'}
-              // inputRef={nomeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              disabled={mode === 'view'}
             />
 
             <TextField
@@ -221,8 +220,7 @@ function CadastroFuncionario(props) {
               variant="filled"
               onChange={(e) => handleInput(e, 'cpf')}
               required
-              disabled= {!(mode === 'create')}
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
+              disabled={!(mode === 'create')}
             />
 
             <TextField
@@ -237,8 +235,7 @@ function CadastroFuncionario(props) {
               onChange={(e) => handleInput(e, 'birthdate')}
               type="text"
               required
-              disabled= {mode === 'view'}
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
+              disabled={mode === 'view'}
             />
 
             <TextField
@@ -252,115 +249,66 @@ function CadastroFuncionario(props) {
               inputProps={{ maxLength: 15 }}
               onChange={(e) => handleInput(e, 'phonenumber')}
               required
-              disabled= {mode === 'view'}
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
+              disabled={mode === 'view'}
             />
-
-            {/* <TextField
-              name="address"
-              className={classes.inputForm}
-              value={address}
-              label="Endereço"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => handleInput(e, 'address')}
-              required
-              disabled= {mode === 'view'}
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
-
           </Grid>
+          
           <Grid item xs={12} md={6}>
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              inputProps={{ maxLength: 8 }}
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => handleInput(e, 'zipcode')}
-              required
-              disabled= {mode === 'view'}
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
+            {(mode === "create" || mode === "updatepassword") && (
+              <>
+                <TextField
+                  name="email"
+                  className={classes.inputForm}
+                  value={email}
+                  label="Endereço de e-mail"
+                  type="email"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "email")}
+                  required
+                />
+                <TextField
+                  name="emailConfirm"
+                  className={classes.inputForm}
+                  value={emailConfirm}
+                  label="Confirmar e-mail"
+                  type="email"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "emailConfirm")}
+                  required
+                />
+                <TextField
+                  name="password"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={senha}
+                  label="Criar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "password")}
+                  required
+                />
 
-            <TextField
-              name="email"
-              className={classes.inputForm}
-              value={formData.email}
-              label="Endereço de e-mail"
-              type="email"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => handleInput(e, 'email')}
-              required
-              disabled= {mode !== 'create'}
-            />
-
-            {
-              mode === 'create' && (
-                <>
-                  <TextField
-                    name="emailConfirmar"
-                    className={classes.inputForm}
-                    value={emailConfirm}
-                    label="Confirmar e-mail"
-                    type="email"
-                    helperText="*Obrigatório"
-                    variant="filled"
-                    onChange={(e) => handleInput(e, 'emailConfirm')}
-                    required
-                  />
-
-                  <TextField
-                    name="password"
-                    autoComplete="off"
-                    className={classes.inputForm}
-                    value={senha}
-                    label="Criar senha"
-                    type="password"
-                    helperText="*Obrigatório"
-                    variant="filled"
-                    onChange={(e) => handleInput(e, 'password')}
-                    required
-                  />
-
-                  <TextField
-                    name="passowordConfirm"
-                    autoComplete="off"
-                    className={classes.inputForm}
-                    value={senhaConfirm}
-                    label="Confirmar senha"
-                    type="password"
-                    helperText="*Obrigatório"
-                    variant="filled"
-                    onChange={(e) => handleInput(e, 'passwordConfirm')}
-                    required
-                  />
-                </>
-              ) 
-                
-            }
-            
-
-            {/* <TextField
-              name="situacao"
-              autoComplete="off"
-              className={classes.inputForm}
-              value={formData.senhaConfirmar}
-              label="Situação"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              onChange={(e) => setSituacao(e.target.value)}
-              disabled= {mode === 'view'}
-              required
-              // onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
-
+                <TextField
+                  name="passwordConfirm"
+                  autoComplete="off"
+                  className={classes.inputForm}
+                  value={senhaConfirm}
+                  label="Confirmar senha"
+                  type="password"
+                  helperText="*Obrigatório"
+                  variant="filled"
+                  disabled={mode === "view"}
+                  onChange={(e) => handleInput(e, "passwordConfirm")}
+                  required
+                />
+              </>
+            )}
           </Grid>
           {mode === 'create' &&
             <Grid item xs={12}>

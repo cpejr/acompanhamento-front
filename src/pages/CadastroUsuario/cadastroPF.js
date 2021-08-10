@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
   Grid,
   TextField,
   useMediaQuery,
@@ -13,7 +11,7 @@ import { AuthContext } from "../../context/AuthContext";
 import isValidDate from "../../services/dateValidation";
 
 function CadastroPF(props) {
-  const { formData, handleChangeCheck, handleChangeInput, mode, type } = props;
+  const { formData, handleChangeInput, mode, type } = props;
 
   const classes = useStyles();
   const buttonRef = useRef(null);
@@ -28,8 +26,6 @@ function CadastroPF(props) {
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
-  // const [address, setAddress] = useState('');
-  // const [zipcode, setZipcode] = useState('');
 
   // salva os valores quando os dados chegarem
   // usado em caso de edição
@@ -39,8 +35,6 @@ function CadastroPF(props) {
     setBirthdate(formData.birthdate);
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
-    // setAddress(formData.address);
-    // setZipcode(formData.zipcode);
   }, [formData]);
 
   function handleInput(event, type) {
@@ -66,14 +60,6 @@ function CadastroPF(props) {
         setPhonenumber(event.target.value);
         break;
 
-      // case 'address':
-      //   setAddress(event.target.value);
-      //   break;
-
-      // case 'zipcode':
-      //   setZipcode(event.target.value);
-      //   break;
-
       case "email":
         setEmail(event.target.value);
         break;
@@ -89,6 +75,9 @@ function CadastroPF(props) {
       case "passwordConfirm":
         setSenhaConfirm(event.target.value);
         break;
+
+      default:
+        return;
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
@@ -106,10 +95,7 @@ function CadastroPF(props) {
       data.phonenumber !== "" &&
       data.phonenumber.length >= 8 &&
       data.password !== "" &&
-      data.password.length >= 6 &&
-      data.address !== "" &&
-      data.zipcode !== "" &&
-      data.zipcode.length >= 8 &&
+      data.password.length >= 8 &&
       email === emailConfirm &&
       senha === senhaConfirm &&
       isValidDate(data.birthdate)
@@ -129,8 +115,6 @@ function CadastroPF(props) {
       email: email,
       phonenumber: phonenumber,
       password: senha,
-      // address: address
-      // zipcode: zipcode
     };
 
     if (
@@ -140,8 +124,6 @@ function CadastroPF(props) {
       data.email !== "" &&
       data.phonenumber !== "" &&
       data.password !== ""
-      // data.address !== ""
-      // data.zipcode !== ""
     ) {
       if (email !== emailConfirm) alert("Os emails estão diferentes.");
       if (senha !== senhaConfirm) alert("As senhas não batem.");
@@ -259,35 +241,7 @@ function CadastroPF(props) {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            {/* <TextField
-              name="address"
-              className={classes.inputForm}
-              value={address}
-              label="Endereço"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'address')}
-              required
-            /> */}
-
-            {/* <TextField
-              name="zipcode"
-              className={classes.inputForm}
-              value={zipcode}
-              label="CEP"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              disabled= {mode === 'view'}
-              onChange={(e) => handleInput(e, 'zipcode')}
-              required
-            /> */}
-
-            {mode === "create" ||
-              (mode === "updatepassword" && (
+            { (mode === "create" || mode === "updatepassword") && (
                 <>
                   <TextField
                     name="email"
@@ -341,7 +295,7 @@ function CadastroPF(props) {
                     required
                   />
                 </>
-              ))}
+              )}
           </Grid>
 
           {mode === "create" && (

@@ -24,13 +24,12 @@ import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
-import isValidDate from '../../services/dateValidation';
+import isValidDate from "../../services/dateValidation";
 import { RssFeed } from "@material-ui/icons";
 import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
 function AtualizacaoUsuario(props) {
-
   let { id } = useParams();
   const history = useHistory();
 
@@ -39,45 +38,46 @@ function AtualizacaoUsuario(props) {
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
   const { sendMessage } = useContext(AuthContext);
+  const [updatingPassword, setUpdatingPassword] = useState(false);
 
   // variaveis do snackbar
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [messageSnackbar, setMessageSnackbar] = useState("");
   const [typeSnackbar, setTypeSnackbar] = useState("info");
   const [loading, setLoading] = useState(false);
+  const [isPerfil, setIsPerfil] = useState(false);
 
   const classes = useStyles({ updating });
 
   // pega os dados do usuário com o id
   useEffect(() => {
-    if (id === "me") { // clicou no botão de perfil
+    if (id === "me") {
+      // clicou no botão de perfil
+      setIsPerfil(true);
       setUserData(props.userPerfil);
       setUserDataOriginal(props.userPerfil);
 
       id = props.userPerfil.id;
     } else {
       api
-      .get(`/user/${id}`)
-      .then((response) => {
-        setUserData(response.data.user);
-        setUserDataOriginal(response.data.user);
-      })
-      .catch((error) => {
-        console.warn(error);
-        alert("Erro ao buscar funcionários");
-      })
+        .get(`/user/${id}`)
+        .then((response) => {
+          setUserData(response.data.user);
+          setUserDataOriginal(response.data.user);
+        })
+        .catch((error) => {
+          console.warn(error);
+          alert("Erro ao buscar funcionários");
+        });
     }
- }, [id]);
+  }, [id]);
 
   function validateAllFields(data) {
-
     if (
-      data.name        !== "" &&
-      data.phonenumber !== "" && 
-      data.phonenumber.length >= 8 && 
-      isValidDate(data.birthdate)
-    ) return true;
-
+      data.name !== "" &&
+      data.phonenumber !== ""
+    )
+      return true;
     else return false;
   }
 
@@ -87,7 +87,38 @@ function AtualizacaoUsuario(props) {
   }
 
   async function handleSubmit() {
+    if (updatingPassword) {
+      try {
+        const updatedFields = {
+          password: userData.password,
+          email: userData.email,
+        };
 
+        // if (validateAllFields(updatedField)) {
+        if (true) {
+          // Para o id vindo da rota da pag de perfil:
+          if (id === "me") {
+            id = props.userPerfil.id;
+          }
+          api
+            .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields)
+            .then((response) => {
+              sendMessage("Senha e email atualizados com sucesso!", "success");
+            })
+            .catch((error) => {
+              console.warn(error);
+              sendMessage("Erro ao atualizar senha e/ou email", "error");
+            });
+        }
+      } catch (error) {
+        console.log(error);
+
+        sendMessage("Falha ao atualizar senha e/ou email", "error");
+        setUpdating(false);
+      }
+
+      return;
+    }
     if (!updating) setUpdating(true);
     else {
       setLoading(true);
@@ -95,9 +126,10 @@ function AtualizacaoUsuario(props) {
       try {
         const updatedFields = {
           name: userData.name,
-          birthdate: userData.type === 'PJ' ? "01/01/1901" : userData.birthdate,
+          birthdate: userData.type === "PJ" ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
-        }
+          password: userData.password,
+        };
 
         if (validateAllFields(updatedFields)) {
           // Para o id vindo da rota da pag de perfil:
@@ -113,18 +145,20 @@ function AtualizacaoUsuario(props) {
             .catch((error) => {
               console.warn(error);
               alert("Erro ao buscar funcionários");
-            })
+            });
 
           setUpdating(false);
           setLoading(false);
-        } else { // mensagens (snackbar) de erros
-          if      (updatedFields.zipcode.length < 8) sendMessage("CEP inválido.", "error");
-          else if (updatedFields.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
-          else if (!isValidDate(updatedFields.birthdate)) sendMessage("Data de nascimento inválida!", "error")
-    
-          else sendMessage('Campos com dados inválidos!', 'error');
+        } else {
+          // mensagens (snackbar) de erros
+          if (updatedFields.zipcode.length < 8)
+            sendMessage("CEP inválido.", "error");
+          else if (updatedFields.phonenumber.length < 8)
+            sendMessage("Telefone inválido.", "error");
+          else if (!isValidDate(updatedFields.birthdate))
+            sendMessage("Data de nascimento inválida!", "error");
+          else sendMessage("Campos com dados inválidos!", "error");
         }
-        
       } catch (error) {
         console.log(error);
 
@@ -134,7 +168,17 @@ function AtualizacaoUsuario(props) {
     }
   }
 
+  async function handlePasswordChange() {
+    setUpdatingPassword(true);
+    setUpdating(true);
+
+    setLoading(false);
+  }
+
   async function handleDelete(confirmation) {
+    if (updatingPassword) {
+      setUpdatingPassword(false);
+    }
     if (updating) {
       //cancelar
       setUpdating(false);
@@ -158,8 +202,7 @@ function AtualizacaoUsuario(props) {
 
         setTimeout(() => {
           history.push("/listagemusuario");
-        }, 1000)
-        
+        }, 1000);
       } catch (error) {
         console.log(error);
 
@@ -169,7 +212,6 @@ function AtualizacaoUsuario(props) {
 
         setUpdating(false);
       }
-
     }
   }
 
@@ -217,20 +259,20 @@ function AtualizacaoUsuario(props) {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          { userData.type === 'PF' || id === "me"  ? 
+          {userData.type === "PF" || id === "me" ? (
             <CadastroPF
               formData={userData}
               handleChangeInput={handleChangeInput}
-              mode={ updating ? 'edit' : 'view'}
+              mode={
+                updatingPassword ? "updatepassword" : updating ? "edit" : "view"
+              }
             />
-            :
-            (userData.type === 'PJ' ?
-              
+          ) : userData.type === "PJ" ? (
             <CadastroPJ
                 formData={userData}
                 handleChangeInput={handleChangeInput}
                 mode={ updating? 'edit' : 'view'}
-              />
+              /> )
               :
                 (userData.type === "Funcionario" || userData.type === "Administrador" ?
                     <CadastroFuncionario
@@ -241,7 +283,7 @@ function AtualizacaoUsuario(props) {
                     :
                     null
                 )
-            )
+            
           }
           <div className={classes.buttonContainer} >
             <Button
@@ -261,15 +303,37 @@ function AtualizacaoUsuario(props) {
               className={classes.btn}
               onClick={handleSubmit}
             >
-              {
-                updating ? 
-                  (loading ? (
-                    <CircularProgress color="primary" />
-                  )
-                    : "Salvar")
-                  : "Editar"
-              }
+              {updating ? (
+                loading ? (
+                  <CircularProgress color="primary" />
+                ) : (
+                  "Salvar"
+                )
+              ) : (
+                "Editar"
+              )}
             </Button>
+
+            
+            {!(id === "me" && updating === true) && (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+                onClick={handlePasswordChange}
+                disabled={! isPerfil}
+              >
+                {updating ? (
+                  loading ? (
+                    <CircularProgress color="primary" />
+                  ) : (
+                    "Salvar"
+                  )
+                ) : (
+                  "Atualizar email e senha"
+                )}
+              </Button>
+            )}
 
             {!(id === "me" && updating === false) && (
               <Button
@@ -287,7 +351,7 @@ function AtualizacaoUsuario(props) {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={typeSnackbar === 'info' ? 20000 : 2000}
+        autoHideDuration={typeSnackbar === "info" ? 20000 : 2000}
         onClose={() => setOpenSnackbar(false)}
       >
         <MuiAlert

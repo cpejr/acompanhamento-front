@@ -15,49 +15,53 @@ import {
 } from "@material-ui/core";
 import { useParams } from "react-router";
 import MuiAlert from "@material-ui/lab/Alert";
-
 import { useStyles } from "./atualizacaoUsuarioStyle";
-import users from "../../services/people";
 import { AuthContext } from "../../context/AuthContext";
-import { LoginContext } from "../../context/LoginContext";
 import CadastroPF from "../CadastroUsuario/cadastroPF";
 import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from "../../services/dateValidation";
-import { RssFeed } from "@material-ui/icons";
-import { useHistory } from 'react-router-dom';
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 function AtualizacaoUsuario(props) {
+
   let { id } = useParams();
   const history = useHistory();
+  const { sendMessage } = useContext(AuthContext);
 
+  // states
   const [updating, setUpdating] = useState(false);
   const [userData, setUserData] = useState({});
   const [userDataOriginal, setUserDataOriginal] = useState({});
   const [deleting, setDeleting] = useState(false);
-  const { sendMessage } = useContext(AuthContext);
   const [updatingPassword, setUpdatingPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isPerfil, setIsPerfil] = useState(false);
 
   // variaveis do snackbar
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [messageSnackbar, setMessageSnackbar] = useState("");
   const [typeSnackbar, setTypeSnackbar] = useState("info");
-  const [loading, setLoading] = useState(false);
-  const [isPerfil, setIsPerfil] = useState(false);
 
   const classes = useStyles({ updating });
 
   // pega os dados do usuário com o id
   useEffect(() => {
+
     if (id === "me") {
       // clicou no botão de perfil
       setIsPerfil(true);
-      setUserData(props.userPerfil);
-      setUserDataOriginal(props.userPerfil);
+      setUserData({ 
+        ...props.userPerfil, 
+        emailConfirm: props.userPerfil.email 
+      });
 
-      id = props.userPerfil.id;
+      setUserDataOriginal({
+        ...props.userPerfil, 
+        emailConfirm: props.userPerfil.email
+      })
+
     } else {
       api
         .get(`/user/${id}`)
@@ -67,18 +71,41 @@ function AtualizacaoUsuario(props) {
         })
         .catch((error) => {
           console.warn(error);
-          alert("Erro ao buscar funcionários");
+          sendMessage("Erro ao atualizar email e senha", "error");
         });
     }
   }, [id]);
 
   function validateAllFields(data) {
+
     if (
       data.name !== "" &&
-      data.phonenumber !== ""
-    )
+      data.phonenumber !== "" &&
+      data.birthdate !== "" &&
+      data.phonenumber.length >= 8 &&
+      isValidDate(data.birthdate)
+    ) {
       return true;
-    else return false;
+    } else return false;
+  }
+
+  function validateEmailAndPassword(data) {
+
+    if (!data.password || !data.email) {
+      return false;
+    }
+
+    if (
+      data.email !== "" &&
+      data.email.includes("@") &&
+      data.email.includes(".com") &&
+      data.password !== "" &&
+      data.password.length >= 8 &&
+      data.email === data.emailConfirm &&
+      data.password === data.passwordConfirm
+    ) {
+      return true;
+    } else return false;
   }
 
   function handleChangeInput(event) {
@@ -87,20 +114,33 @@ function AtualizacaoUsuario(props) {
   }
 
   async function handleSubmit() {
+
     if (updatingPassword) {
       try {
+
         const updatedFields = {
           password: userData.password,
+          passwordConfirm: userData.passwordConfirm,
           email: userData.email,
+          emailConfirm: userData.emailConfirm,
         };
 
-        // if (validateAllFields(updatedField)) {
-        if (true) {
-          // Para o id vindo da rota da pag de perfil:
-          if (id === "me") {
-            id = props.userPerfil.id;
-          }
-          api
+        const updatedEmail = {
+          email: userData.email
+        }
+
+        if (validateEmailAndPassword(updatedFields)) {
+
+          await api
+            .put(`/user/${props.userPerfil.id}`, updatedEmail)
+            .then((response) => {
+            })
+            .catch((error) => {
+              console.warn(error);
+              sendMessage("Erro ao salvar novo email no banco de dados!", "error");
+            });
+          
+          await api
             .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields)
             .then((response) => {
               sendMessage("Senha e email atualizados com sucesso!", "success");
@@ -109,7 +149,25 @@ function AtualizacaoUsuario(props) {
               console.warn(error);
               sendMessage("Erro ao atualizar senha e/ou email", "error");
             });
-        }
+
+        } else {
+
+            const passwordSize = updatedFields.password 
+              ? updatedFields.password.length
+              : 0;
+
+            if (updatedFields.email === "" && !updatedFields.email.includes("@") && !updatedFields.email.includes(".com")) 
+              sendMessage("Email inválido.", "error");
+            else if (passwordSize < 8) 
+              sendMessage("Senha deve conter no mínimo 8 caracteres.", "error");
+            else if (updatedFields.emailConfirm !== updatedFields.email) 
+              sendMessage("Os emails estão diferentes!", "error");
+            else if (updatedFields.passwordConfirm !== updatedFields.password) 
+              sendMessage("As senhas estão diferentes!", "error");
+            else sendMessage("Dados inválidos!", "error");
+
+            setLoading(false);
+          }
       } catch (error) {
         console.log(error);
 
@@ -119,6 +177,7 @@ function AtualizacaoUsuario(props) {
 
       return;
     }
+
     if (!updating) setUpdating(true);
     else {
       setLoading(true);
@@ -132,8 +191,8 @@ function AtualizacaoUsuario(props) {
         };
 
         if (validateAllFields(updatedFields)) {
-          // Para o id vindo da rota da pag de perfil:
-          if (id === "me") {
+
+          if (isPerfil) {
             id = props.userPerfil.id;
           }
 
@@ -144,20 +203,23 @@ function AtualizacaoUsuario(props) {
             })
             .catch((error) => {
               console.warn(error);
-              alert("Erro ao buscar funcionários");
+              sendMessage("Erro ao atualizar usuário!", "error");
             });
 
           setUpdating(false);
           setLoading(false);
         } else {
+
           // mensagens (snackbar) de erros
-          if (updatedFields.zipcode.length < 8)
-            sendMessage("CEP inválido.", "error");
-          else if (updatedFields.phonenumber.length < 8)
+          if (updatedFields.phonenumber.length < 8)
             sendMessage("Telefone inválido.", "error");
           else if (!isValidDate(updatedFields.birthdate))
             sendMessage("Data de nascimento inválida!", "error");
+          else if (updatedFields.name === "") 
+            sendMessage("Nome inválido!", "error");
           else sendMessage("Campos com dados inválidos!", "error");
+
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -191,8 +253,6 @@ function AtualizacaoUsuario(props) {
 
       try {
         const response = await api.delete(`user/${id}`);
-
-        console.log(response);
 
         setOpenSnackbar(true);
         setMessageSnackbar("Usuário deletado com sucesso!");
@@ -315,13 +375,13 @@ function AtualizacaoUsuario(props) {
             </Button>
 
             
-            {!(id === "me" && updating === true) && (
+            {isPerfil && !updating && (
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.btn}
                 onClick={handlePasswordChange}
-                disabled={! isPerfil}
+                disabled={!isPerfil}
               >
                 {updating ? (
                   loading ? (

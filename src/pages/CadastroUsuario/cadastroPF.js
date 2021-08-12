@@ -35,6 +35,8 @@ function CadastroPF(props) {
     setBirthdate(formData.birthdate);
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
+    setEmailConfirm(formData.emailConfirm);
+    setSenhaConfirm(formData.passwordConfirm)
   }, [formData]);
 
   function handleInput(event, type) {

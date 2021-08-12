@@ -49,14 +49,6 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
 
-  Subform: {
-    maxWidth: "800px",
-    [theme.breakpoints.only("xs")]: {
-     
-    },
-
-  },
-
   titleType: {
     marginBottom: "20px",
     fontFamily: titlesFontFamilyPadrao,

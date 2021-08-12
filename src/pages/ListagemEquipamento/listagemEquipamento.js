@@ -43,8 +43,7 @@ export default function ListagemEquipamento() {
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
   const userId = query.get("userid");
-  const idEquipments = query.get("id_equipments");
-  useEffect(()=>{console.log(equipmentsListToDisplay)},[equipmentsListToDisplay])
+  
   useEffect(() => {
 
     const url = situation

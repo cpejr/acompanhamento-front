@@ -19,18 +19,11 @@ export default function CadastroUsuario() {
   const classes = useStyles();
 
   const [formType, setFormType] = useState("");
-  const [formData, setFormData] = useState({
-    emailPromocional: true,
-  });
+  const [formData, setFormData] = useState({});
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-  }
-
-  function handleChangeCheck(event) {
-    const { checked } = event.target;
-    setFormData({ ...formData, emailPromocional: checked });
   }
 
   return (
@@ -71,7 +64,6 @@ export default function CadastroUsuario() {
                   Dados da Empresa
                 </Typography>
                 <CadastroPJ
-                  handleChangeCheck={handleChangeCheck}
                   handleChangeInput={handleChangeInput}
                   formData={formData}
                   type="PJ"
@@ -86,7 +78,6 @@ export default function CadastroUsuario() {
                   Dados Pessoais
                 </Typography>
                 <CadastroPF
-                  handleChangeCheck={handleChangeCheck}
                   handleChangeInput={handleChangeInput}
                   formData={formData}
                   type={"PF"}
@@ -101,7 +92,6 @@ export default function CadastroUsuario() {
                   Dados Pessoais
                 </Typography>
                 <CadastroFuncionario
-                  handleChangeCheck={handleChangeCheck}
                   handleChangeInput={handleChangeInput}
                   formData={formData}
                   type={"Funcionario"}

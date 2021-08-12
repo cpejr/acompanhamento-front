@@ -1,21 +1,16 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   TextField,
-  FormControlLabel,
-  Checkbox,
   Grid,
   Button,
   useMediaQuery,
 } from "@material-ui/core";
 import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
-import nextInput from "../../services/nextInput";
 import { AuthContext } from "../../context/AuthContext";
 
 function CadastroPJ(props) {
   const {
-    handleChangeCheck,
-    handleSubmit,
     formData,
     handleChangeInput,
     mode,
@@ -24,26 +19,27 @@ function CadastroPJ(props) {
 
   const classes = useStyles();
   const buttonRef = useRef(null);
+  const { sendMessage } = useContext(AuthContext);
+
+  // states
   const [name, setName] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [zipcode, setZipcode] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
 
-  const { sendMessage } = useContext(AuthContext);
-
   // seta os valores quando os dados chegarem
   useEffect(() => {
-    setName(formData.name);
-    setCnpj(formData.cnpj);
-    setEmail(formData.email);
-    setPhonenumber(formData.phonenumber);
-    // setAddress(formData.address);
-    // setZipcode(formData.zipcode);
+    if (formData) {
+      setName(formData.name);
+      setCnpj(formData.cnpj);
+      setEmail(formData.email);
+      setPhonenumber(formData.phonenumber);
+      setEmailConfirm(formData.emailConfirm);
+    }
+    
   }, [formData]);
 
   function handleInput(event, type) {
@@ -64,14 +60,6 @@ function CadastroPJ(props) {
         setPhonenumber(event.target.value);
         break;
 
-      // case "address":
-      //   setAddress(event.target.value);
-      //   break;
-
-      // case "zipcode":
-      //   setZipcode(event.target.value);
-      //   break;
-
       case "email":
         setEmail(event.target.value);
         break;
@@ -87,6 +75,9 @@ function CadastroPJ(props) {
       case "passwordConfirm":
         setSenhaConfirm(event.target.value);
         break;
+
+      default:
+        break;
     }
 
     handleChangeInput(event); // retorna para a AtualizaUsuario
@@ -94,15 +85,21 @@ function CadastroPJ(props) {
 
   function validateAllFields(data) {
 
+    const passwordSize = data.password
+      ? data.password.length
+      : 0;
+
+    const phonenumberSize = data.phonenumber
+      ? data.phonenumber.length
+      : 0;
+
     if (
       data.type !== "" &&
       data.name !== "" &&
       data.cnpj !== "" && data.cnpj.length === 14 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
-      data.phonenumber !== "" && data.phonenumber.length >= 8 && 
-      data.password    !== "" && data.password.length >= 8 &&
-      data.address     !== "" &&
-      data.zipcode     !== "" && data.zipcode.length >= 8 &&
+      data.phonenumber !== "" && passwordSize >= 8 && 
+      data.password    !== "" && phonenumberSize >= 8 &&
       email === emailConfirm &&
       senha === senhaConfirm
     ) return true;
@@ -120,31 +117,23 @@ function CadastroPJ(props) {
       email: email,
       phonenumber: phonenumber,
       password: senha,
-      // address: address,
-      // zipcode: zipcode,
       birthdate: "00/00/0000", // gambiarra
     };
-    if (
-      data.type !== "" &&
-      data.name !== "" &&
-      data.cnpj !== "" &&
-      data.email !== "" &&
-      data.phonenumber !== "" &&
-      data.password !== ""
-      // data.address !== "" 
-      // data.zipcode !== ""
-    ) {
-      if (email !== emailConfirm){
+
+    if (validateAllFields(data)) {
+
+      if (email !== emailConfirm) {
         sendMessage("Os emails estão diferentes.", "error")
         return;
       }
-      if (senha !== senhaConfirm){
+      if (senha !== senhaConfirm) {
         sendMessage("As senhas não batem.", "error");
         return ; 
       }
 
       sendMessage("Realizando cadastro...", "info", null);
-      api
+      
+      await api
         .post("user/create", data)
         .then((response) => {
           sendMessage("Cadastrado com sucesso");
@@ -172,13 +161,13 @@ function CadastroPJ(props) {
         });
 
     } else { // mensagens (snackbar) de erros
+
       if (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
       else if (data.password.length < 8) sendMessage("Senha deve ter no mínimo 8 caracteres!", "error");
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");
       else if (data.cnpj.length < 14) sendMessage("CNPJ inválido.", "error");
-      else if (data.zipcode.length < 8) sendMessage("CEP inválido.", "error");
       else if (data.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
 
       else sendMessage('Campos com dados inválidos!', 'error');
@@ -189,7 +178,7 @@ function CadastroPJ(props) {
     <div>
       <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <TextField
               name="name"
               className={classes.inputForm}
@@ -289,19 +278,6 @@ function CadastroPJ(props) {
                   required
                 />
               </>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            {mode === "create" && (
-              <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  ref={buttonRef}
-                  className={classes.buttonRegister}
-                >
-                  Cadastrar
-                </Button>
-              </Grid>
             )}
           </Grid>
           

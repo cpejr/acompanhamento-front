@@ -22,6 +22,10 @@ export const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: "16px"
     }
   },
 
@@ -84,5 +88,29 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: "10px"
       },
     },
+  },
+  btnPassword: {
+    margin: "30px 40px 0",
+    width: "150px",
+    height: "50px",
+    borderRadius: "2px",
+    "&:first-child": {
+      background: props => props.updating ? verde : azulPadrao,
+    },
+    "&:last-child": {
+      background: vermelhoPadrao
+    },
+    [theme.breakpoints.only("xs")]: {
+      margin: "0",
+      "&:first-child": {
+        marginRight: "10px"
+      },
+      "&:last-child": {
+        marginLeft: "10px"
+      },
+    },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "10px"
+    }
   }
 }));

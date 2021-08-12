@@ -319,7 +319,7 @@ function AtualizacaoUsuario(props) {
         <AreYouSure />
 
         <Paper className={classes.containerForm} elevation={0}>
-          {userData.type === "PF" || id === "me" ? (
+          {userData.type === "PF" ? (
             <CadastroPF
               formData={userData}
               handleChangeInput={handleChangeInput}
@@ -331,20 +331,25 @@ function AtualizacaoUsuario(props) {
             <CadastroPJ
                 formData={userData}
                 handleChangeInput={handleChangeInput}
-                mode={ updating? 'edit' : 'view'}
+                mode={
+                  updatingPassword ? "updatepassword" : updating ? "edit" : "view"
+                }
               /> )
               :
                 (userData.type === "Funcionario" || userData.type === "Administrador" ?
                     <CadastroFuncionario
                       formData={userData}
                       handleChangeInput={handleChangeInput}
-                      mode={ updating? 'edit' : 'view'}
+                      mode={
+                        updatingPassword ? "updatepassword" : updating ? "edit" : "view"
+                      }
                     /> 
                     :
                     null
                 )
             
           }
+
           <div className={classes.buttonContainer} >
             <Button
               component={Link}
@@ -356,6 +361,7 @@ function AtualizacaoUsuario(props) {
               Acessar equipamentos
             </Button>
           </div>
+          
           <Grid className={classes.centralizar} item xs={12}>
             <Button
               variant="contained"
@@ -379,7 +385,7 @@ function AtualizacaoUsuario(props) {
               <Button
                 variant="contained"
                 color="primary"
-                className={classes.btn}
+                className={classes.btnPassword}
                 onClick={handlePasswordChange}
                 disabled={!isPerfil}
               >

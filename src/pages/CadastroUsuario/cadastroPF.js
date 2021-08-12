@@ -11,6 +11,7 @@ import { AuthContext } from "../../context/AuthContext";
 import isValidDate from "../../services/dateValidation";
 
 function CadastroPF(props) {
+
   const { formData, handleChangeInput, mode, type } = props;
 
   const classes = useStyles();
@@ -30,13 +31,15 @@ function CadastroPF(props) {
   // salva os valores quando os dados chegarem
   // usado em caso de edição
   useEffect(() => {
-    setName(formData.name);
-    setCpf(formData.cpf);
-    setBirthdate(formData.birthdate);
-    setEmail(formData.email);
-    setPhonenumber(formData.phonenumber);
-    setEmailConfirm(formData.emailConfirm);
-    setSenhaConfirm(formData.passwordConfirm)
+
+    if (formData) {
+      setName(formData.name);
+      setCpf(formData.cpf);
+      setBirthdate(formData.birthdate);
+      setEmail(formData.email);
+      setPhonenumber(formData.phonenumber);
+      setEmailConfirm(formData.emailConfirm);
+    }
   }, [formData]);
 
   function handleInput(event, type) {
@@ -86,6 +89,11 @@ function CadastroPF(props) {
   }
 
   function validateAllFields(data) {
+
+    if (!data.cpf || !data.phonenumber || !data.password) {
+      return false;
+    }
+
     if (
       data.type !== "" &&
       data.name !== "" &&
@@ -119,16 +127,7 @@ function CadastroPF(props) {
       password: senha,
     };
 
-    if (
-      data.type !== "" &&
-      data.name !== "" &&
-      data.cpf !== "" &&
-      data.email !== "" &&
-      data.phonenumber !== "" &&
-      data.password !== "" 
-      // data.address !== "" 
-      // data.zipcode !== "" 
-    ) { 
+    if (validateAllFields(data)) { 
 
       if (email !== emailConfirm){
         sendMessage("Os emails estão diferentes.", "error")
@@ -138,7 +137,6 @@ function CadastroPF(props) {
         sendMessage("As senhas não batem.", "error");
         return ; 
       }
-    
 
       sendMessage("Realizando cadastro...", "info", null);
 
@@ -176,7 +174,6 @@ function CadastroPF(props) {
       else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
         sendMessage("Email inválido!", "error");
       else if (data.cpf.length < 11) sendMessage("CPF inválido.", "error");
-      else if (data.zipcode.length < 8) sendMessage("CEP inválido.", "error");
       else if (data.phonenumber.length < 8)
         sendMessage("Telefone inválido.", "error");
       else if (!isValidDate(data.birthdate))
@@ -189,7 +186,7 @@ function CadastroPF(props) {
     <div>
       <form onSubmit={(e) => handleRegister(e)}>
         <Grid container spacing={useMediaQuery("(min-width:960px)") ? 5 : 0}>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6} >
             <TextField
               name="name"
               className={classes.inputForm}
@@ -245,7 +242,7 @@ function CadastroPF(props) {
               disabled={mode === "view" || mode === "updatepassword"}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} > 
             { (mode === "create" || mode === "updatepassword") && (
                 <>
                   <TextField
@@ -304,7 +301,7 @@ function CadastroPF(props) {
           </Grid>
 
           {mode === "create" && (
-            <Grid item xs={12}>
+            <div className={classes.buttonContainer}>
               <Button
                 type="submit"
                 ref={buttonRef}
@@ -312,7 +309,7 @@ function CadastroPF(props) {
               >
                 Cadastrar
               </Button>
-            </Grid>
+          </div>
           )}
         </Grid>
       </form>

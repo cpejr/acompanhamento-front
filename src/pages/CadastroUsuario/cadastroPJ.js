@@ -244,7 +244,7 @@ function CadastroPJ(props) {
               value={formData.corporate_name}
               label="Nome Corporativo"
               type="corporate_name"
-              helperText="*Obrigatório"
+              helperText="Opcional"
               variant="filled"
               disabled={mode !== "create"}
               onChange={(e) => handleInput(e, "corporate_name")}
@@ -256,7 +256,7 @@ function CadastroPJ(props) {
             value={formData.state_registration}
             label="Estado de Registro"
             type="state_registration"
-            helperText="*Obrigatório"
+            helperText="Opcional"
             variant="filled"
             disabled={mode !== "create"}
             onChange={(e) => handleInput(e, "state_registration")}

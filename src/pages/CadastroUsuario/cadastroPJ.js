@@ -28,8 +28,8 @@ function CadastroPJ(props) {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [zipcode, setZipcode] = useState("");
+  const [corporate_name, setCorporateName] = useState("");
+  const [state_registration, setStateRegistration] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
@@ -42,8 +42,8 @@ function CadastroPJ(props) {
     setCnpj(formData.cnpj);
     setEmail(formData.email);
     setPhonenumber(formData.phonenumber);
-    // setAddress(formData.address);
-    // setZipcode(formData.zipcode);
+    setCorporateName(formData.corporate_name);
+    setStateRegistration(formData.state_registration);
   }, [formData]);
 
   function handleInput(event, type) {
@@ -62,6 +62,14 @@ function CadastroPJ(props) {
       case "phonenumber":
         event.target.value = str.replace(/[^0-9() ]/g, ""); // somente telefone
         setPhonenumber(event.target.value);
+        break;
+
+        case "corporate_name":
+        setCorporateName(event.target.value);
+        break;
+
+        case "state_registration":
+        setStateRegistration(event.target.value);
         break;
 
       // case "address":
@@ -120,8 +128,8 @@ function CadastroPJ(props) {
       email: email,
       phonenumber: phonenumber,
       password: senha,
-      // address: address,
-      // zipcode: zipcode,
+      corporate_name: corporate_name,
+      state_registration: state_registration,
       birthdate: "00/00/0000", // gambiarra
     };
     if (
@@ -231,6 +239,30 @@ function CadastroPJ(props) {
               required
             />
             <TextField
+              name="corporate_name"
+              className={classes.inputForm}
+              value={formData.corporate_name}
+              label="Nome Corporativo"
+              type="corporate_name"
+              helperText="*Obrigatório"
+              variant="filled"
+              disabled={mode !== "create"}
+              onChange={(e) => handleInput(e, "corporate_name")}
+              optional
+            />
+            <TextField
+            name="state_registration"
+            className={classes.inputForm}
+            value={formData.state_registration}
+            label="Estado de Registro"
+            type="state_registration"
+            helperText="*Obrigatório"
+            variant="filled"
+            disabled={mode !== "create"}
+            onChange={(e) => handleInput(e, "state_registration")}
+            optional
+          />
+            <TextField
               name="email"
               className={classes.inputForm}
               value={formData.email}
@@ -242,6 +274,7 @@ function CadastroPJ(props) {
               onChange={(e) => handleInput(e, "email")}
               required
             />
+            
             {mode === "create" && (
               <>
                 <TextField

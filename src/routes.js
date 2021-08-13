@@ -24,6 +24,7 @@ import EsqueciSenha from "./pages/EsqueciSenha";
 import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
 import RoutesPrivate from "./components/Routes/Private/Private";
 import Perfil from "./pages/Perfil/Perfil";
+import UnAuthorized from "./pages/unAuthorized";
 
 import { useStyles } from "./routesStyles";
 
@@ -40,6 +41,13 @@ function Routes() {
           <Route path="/login" component={Login} />
           <Route path="/esquecisenha" component={EsqueciSenha} />
           <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
+
+          {/* Acesso não autorizado */}
+          <RoutesPrivate
+           path="/unAuthorized"
+           component={UnAuthorized}
+          />
+
           <Fragment>
             <Menu />
             <div className={classes.spaceContent}>
@@ -120,6 +128,7 @@ function Routes() {
                 <RoutesPrivate path="/testes" component={Testes} />
 
                 {/* <RoutesPrivate path="/" component={Login} /> */}
+
               </DataContextProvider>
             </div>
           </Fragment>

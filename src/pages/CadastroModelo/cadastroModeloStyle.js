@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core'
-import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadraoEscuro } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadraoEscuro, azulPadrao, vermelhoPadrao } from '../../StylePadrao/stylePadrao';
 
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
 
@@ -53,15 +53,16 @@ export const useStyles = makeStyles(theme => ({
       padding: "10%",
     },
   },
-  form: {
-    maxWidth: "800px"
-  },
 
   inputs: {
     width: "100%",
     marginBottom: "20px",
   },
 
+  slider: {
+    color: azulPadrao,
+    width: "70%"
+  },
 
   buttonRegister: {
     border: "1px solid rgba(0, 0, 0, 0.12)",
@@ -90,5 +91,12 @@ export const useStyles = makeStyles(theme => ({
     "&:hover": {
       backgroundColor: azulPadraoEscuro,
     },
+  },
+
+  buttonContainer: {
+    marginTop: "16px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
 }))

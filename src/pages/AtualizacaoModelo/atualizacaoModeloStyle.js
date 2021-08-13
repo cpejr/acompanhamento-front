@@ -46,6 +46,14 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginBottom: "30px",
   },
+  slider: {
+    color: azulPadrao,
+    width: "70%"
+  },
+  inputs: {
+    width: "100%",
+    marginBottom: "20px",
+  },
   centralizar: {
     display: "flex",
     justifyContent: "center",

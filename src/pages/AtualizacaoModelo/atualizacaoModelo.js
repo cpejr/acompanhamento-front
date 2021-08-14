@@ -10,7 +10,8 @@ import {
   DialogActions,
   Typography,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  useMediaQuery
 } from "@material-ui/core"
 import api from '../../services/api';
 import { useHistory } from 'react-router-dom';
@@ -76,6 +77,7 @@ function AtualizacaoModelo() {
   const { id } = useParams();
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
+  const isMobile = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
@@ -299,15 +301,15 @@ function AtualizacaoModelo() {
       <CssBaseline />
       <div className={classes.root}>
 
-        <h1 className={classes.title}>
+        <Typography variant="h3" className={classes.title}>
           Detalhes do Modelo
-        </h1>
+        </Typography>
 
         <AreYouSure />
 
-        <Paper className={classes.containerForm} elevation={0}>
+        <Paper className={classes.formContainer} elevation={0}>
           <Grid container>
-            <Grid item xs={12} md={6} className={classes.grid}>
+            <Grid item xs={12} md={6} spacing={isMobile ? 5 : 0}>
               <TextField
                 name="modelName"
                 className={classes.input}

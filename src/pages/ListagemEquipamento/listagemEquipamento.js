@@ -214,6 +214,7 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
+        
         <div className={classes.searchplusfilter}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -244,6 +245,7 @@ export default function ListagemEquipamento() {
             </Select>
           </FormControl>
         </div>
+
         <div className={classes.table}>
           <StickyHeadTable
             equipmentsListToDisplay={ordenar(

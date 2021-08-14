@@ -1,9 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { azulPadraoClaro } from '../../../StylePadrao/stylePadrao';
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: '90%',
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
 
   container: {
@@ -31,4 +34,4 @@ export const useStyles = makeStyles({
     fontSize: "16px",
     textAlign: "left",
   },
-});
+}));

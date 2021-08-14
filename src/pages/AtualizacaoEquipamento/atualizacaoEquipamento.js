@@ -10,9 +10,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Grid,
   Typography,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  useMediaQuery
 } from "@material-ui/core"
 import api from '../../services/api';
 import { AuthContext } from '../../context/AuthContext'
@@ -22,12 +24,11 @@ import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
-import { Autocomplete } from '@material-ui/lab';
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
   const history = useHistory();
-  
+  const isMobile = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
@@ -78,7 +79,7 @@ function AtualizacaoEquipamento() {
 
   const classes = useStyles({ updating });
 
-  useEffect(() =>{
+  useEffect(() => {
 
     if (modelsList && equipment) {
       modelsList.find((model) => {
@@ -94,7 +95,7 @@ function AtualizacaoEquipamento() {
         <CssBaseline />
         <div className={classes.root}>
           <h1 className={classes.title}>Detalhes do Equipamento</h1>
-          <Paper className={classes.containerForm} elevation={0}>
+          <Paper className={classes.fromContainer} elevation={0}>
             <Typography variant="h5">Dados inválidos!</Typography>
           </Paper>
         </div>
@@ -235,139 +236,135 @@ function AtualizacaoEquipamento() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <h1 className={classes.title}>Detalhes do Equipamento</h1>
+        <Typography variant="h3" className={classes.title}>
+          Detalhes do equipamento
+        </Typography>
 
         <AreYouSure />
 
-        <Paper className={classes.containerForm} elevation={0}>
-          <div className={classes.leftSection}>
-            <TextField
-              freeSolo
-              className={classes.input}
-              options={modelsList.map((model) => model.modelName)}
-              onChange={handleChangeAutocomplete}
-              label="Modelo"
-              variant="filled"
-              disabled={!updating}
-              value={modelName}
-              renderInput={(params) => (
-                <TextField
-                  name="id_model"
-                  {...params}
-                  value={equipment.id_model}
-                  disabled={!updating}
-                  autoComplete="off"
-                />
-              )}
-            />
-            
-            {/* <TextField
-              name="cpf_client"
-              className={classes.input}
-              value={equipment.cpf_client}
-              label="CPF / CNPJ" 
-              variant="filled"
-              disabled={!updating}
-              onChange={handleChangeInput}
-            /> */}
+        <Paper className={classes.formContainer} elevation={0}>
+          <Grid container spacing={isMobile ? 5 : 0} >
+            <Grid item xs={12} md={6}>
 
-            <TextField
-              name="equipment_code"
-              className={classes.input}
-              value={equipment.equipment_code}
-              label="Código do equipamento"
-              variant="filled"
-              disabled={!updating}
-              // onChange={handleChangeInput}
-            />
+              <TextField
+                freeSolo
+                className={classes.input}
+                options={modelsList.map((model) => model.modelName)}
+                onChange={handleChangeAutocomplete}
+                label="Modelo"
+                variant="filled"
+                disabled={!updating}
+                value={modelName}
+                renderInput={(params) => (
+                  <TextField
+                    name="id_model"
+                    {...params}
+                    value={equipment.id_model}
+                    disabled={!updating}
+                    autoComplete="off"
+                  />
+                )}
+                helperText="*Obrigatório"
+              />
 
-            <TextField
-              name="installation_date"
-              className={classes.input}
-              value={equipment.installation_date}
-              label="Data instalação"
-              type="date"
-              helperText={
-                error.installation_date === ""
-                  ? "*Obrigatório"
-                  : error.installation_date
-              }
-              error={error.installation_date !== ""}
-              variant="filled"
-              disabled={!updating}
-              onChange={handleChangeInput}
-            />
+              <TextField
+                name="equipment_code"
+                className={classes.input}
+                value={equipment.equipment_code}
+                label="Código do equipamento"
+                variant="filled"
+                disabled={!updating}
+                helperText="*Obrigatório"
+              />
 
-            <TextField
-              name="observation"
-              className={classes.input}
-              value={equipment.observation}
-              label="Observações"
-              type="text"
-              variant="filled"
-              disabled={!updating}
-              onChange={handleChangeInput}
-            />
+              <TextField
+                name="installation_date"
+                className={classes.input}
+                value={equipment.installation_date}
+                label="Data instalação"
+                type="date"
+                helperText={
+                  error.installation_date === ""
+                    ? "*Obrigatório"
+                    : error.installation_date
+                }
+                error={error.installation_date !== ""}
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+              />
 
-            <TextField
-              name="address"
-              className={classes.input}
-              value={equipment.address}
-              onChange={handleChangeInput}
-              label="Endereço"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              disabled={!updating}
-              variant="filled"
-            />
+            </Grid>
 
-            <TextField
-              name="zipcode"
-              className={classes.input}
-              value={equipment.zipcode}
-              onChange={handleChangeInput}
-              label="CEP"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              disabled={!updating}
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-            />
-            <div className={classes.buttonContainer} >
-              <div className={classes.centralizar}>
-                <Button
-              component={Link}
-              // to={`/au/${userId}`}
-              className={classes.buttonAdd}
-              variant="outlined"
+            <Grid item xs={12} md={6}>
+
+              <TextField
+                name="observation"
+                className={classes.input}
+                value={equipment.observation}
+                label="Observações"
+                type="text"
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+                helperText="(Opcional)"
+              />
+
+              <TextField
+                name="address"
+                className={classes.input}
+                value={equipment.address}
+                onChange={handleChangeInput}
+                label="Endereço"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                disabled={!updating}
+                variant="filled"
+              />
+
+              <TextField
+                name="zipcode"
+                className={classes.input}
+                value={equipment.zipcode}
+                onChange={handleChangeInput}
+                label="CEP"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                disabled={!updating}
+                variant="filled"
+                inputProps={{ maxLength: 8 }}
+              />
+            </Grid>
+
+            <div className={classes.buttonContainer}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+                onClick={handleSubmit}
               >
-              Proprietário do equipamento
+                {updating ? "Salvar" : "Editar"}
               </Button>
-              </div>
 
-              <div className={classes.centralizar}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.btn}
-                  onClick={handleSubmit}
-                >
-                  {updating ? "Salvar" : "Editar"}
-                </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.btn}
+                onClick={handleDelete}
+              >
+                {updating ? "Cancelar" : "Excluir"}
+              </Button>
 
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  className={classes.btn}
-                  onClick={handleDelete}
-                >
-                  {updating ? "Cancelar" : "Excluir"}
-                </Button>
-              </div>
+              <Button
+                className={classes.btn}
+                variant="contained"
+              >
+                Proprietário do equipamento
+              </Button>
             </div>
-          </div>
+          </Grid>
         </Paper>
       </div>
     </React.Fragment>

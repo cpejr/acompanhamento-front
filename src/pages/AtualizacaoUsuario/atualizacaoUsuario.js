@@ -312,13 +312,14 @@ function AtualizacaoUsuario(props) {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <h1 className={classes.title}>
+
+        <Typography variant="h3" className={classes.title}>
           {id === "me" ? "Seu Perfil" : "Detalhes do Usuário"}
-        </h1>
+        </Typography>
 
         <AreYouSure />
 
-        <Paper className={classes.containerForm} elevation={0}>
+        <Paper className={classes.formContainer} elevation={0}>
           {userData.type === "PF" ? (
             <CadastroPF
               formData={userData}
@@ -349,20 +350,8 @@ function AtualizacaoUsuario(props) {
                 )
             
           }
-
-          <div className={classes.buttonContainer} >
-            <Button
-              component={Link}
-              to={`/listagemequipamento?userid=${props.userPerfil.id}`}
-              variant="outlined"
-              disableElevation
-              className={classes.buttonAdd}
-            >
-              Acessar equipamentos
-            </Button>
-          </div>
           
-          <Grid className={classes.centralizar} item xs={12}>
+          <div className={classes.buttonContainer}>
             <Button
               variant="contained"
               color="primary"
@@ -411,7 +400,17 @@ function AtualizacaoUsuario(props) {
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
             )}
-          </Grid>
+
+            <Button
+              variant="outlined"
+              disableElevation
+              className={classes.btn}
+              onClick={() => history.push(`/listagemequipamento?userid=${props.userPerfil.id}`)}
+            >
+              Acessar equipamentos
+            </Button>
+
+          </div>
         </Paper>
       </div>
 

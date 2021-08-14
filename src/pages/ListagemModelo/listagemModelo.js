@@ -116,8 +116,7 @@ export default function ListagemModelo() {
                 />
               </div>
             </div>
-        </div>
-          <FormControl className={classes.filter}>
+            <FormControl className={classes.filter}>
             <Select
               className={classes.selectItens}
               value={filterby}
@@ -131,6 +130,8 @@ export default function ListagemModelo() {
               <MenuItem value="manufacturer">Fabricante</MenuItem>
             </Select>
           </FormControl>
+        </div>
+          
         </div>
         
         <div className={classes.table}>

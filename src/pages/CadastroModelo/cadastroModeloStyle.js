@@ -4,15 +4,21 @@ import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadrao
 const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
 
 export const useStyles = makeStyles(theme => ({
+
   root: {
     display: "flex",
     flexDirection: "column",
-
     width: "100%",
-    padding: "50px 60px 60px 50px",
-
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "32px 8px",
+    },
+  },
+  formContainer: {
+    padding: "48px",
+    borderRadius: "13px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
 
@@ -23,11 +29,12 @@ export const useStyles = makeStyles(theme => ({
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
-
-    display: "flex",
-    alignItems: "center",
-    textAlign: isMobile ? "center" : "",
+    textAlign: "left",
     color: "#000000",
+
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center"
+    }
   },
 
   titleTab: {
@@ -46,17 +53,10 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#FFFFFF",
   },
 
-  formContainer: {
-    padding: "40px 60px",
-    borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "10%",
-    },
-  },
 
   inputs: {
     width: "100%",
-    marginBottom: "20px",
+    marginBottom: "16px",
   },
 
   slider: {

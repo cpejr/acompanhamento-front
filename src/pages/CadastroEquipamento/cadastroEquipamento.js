@@ -4,8 +4,11 @@ import {
   Typography,
   TextField,
   Button,
+  Grid,
   CircularProgress,
-  Backdrop
+  Backdrop,
+  Paper,
+  useMediaQuery,
 } from "@material-ui/core"
 import { Autocomplete } from '@material-ui/lab'
 import MaskedInput from 'react-text-mask'
@@ -23,8 +26,8 @@ export default function CadastroEquipamento(props) {
 
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
-  const { getUser } = useContext(LoginContext); 
-
+  const { getUser } = useContext(LoginContext);
+  const isMobile = useMediaQuery("(min-width:960px)");
 
   const [error, setError] = React.useState({
     cpf_client: "",
@@ -70,6 +73,7 @@ export default function CadastroEquipamento(props) {
     }
 
     getUserFromSession();
+    
   }, [])
 
   async function handleSubmit(event) {
@@ -99,7 +103,7 @@ export default function CadastroEquipamento(props) {
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null);
-      
+
       try {
         const resposta = await api.post('/equipment/create', data);
 
@@ -112,7 +116,7 @@ export default function CadastroEquipamento(props) {
         if (arrayEquipments) {
           arrayEquipments.push(resposta.data.id);
         } else {
-          arrayEquipments = [ resposta.data.id ];
+          arrayEquipments = [resposta.data.id];
         }
 
         // atualiza o vetor de id_equipments
@@ -124,10 +128,10 @@ export default function CadastroEquipamento(props) {
           sendMessage('Cadastrado com sucesso')
         };
       } catch (err) {
-          sendMessage('Error 501: Falha no cadastro', 'error')
-          console.warn(err);
+        sendMessage('Error 501: Falha no cadastro', 'error')
+        console.warn(err);
       }
-          setOpenModal(true);
+      setOpenModal(true);
     }
   }
 
@@ -149,7 +153,7 @@ export default function CadastroEquipamento(props) {
       }
       setFormData({ ...formData, [name]: value });
     }
-      
+
   }
 
   // Referencias (próximo a declaração de um ponteiro nulo)
@@ -192,127 +196,131 @@ export default function CadastroEquipamento(props) {
           Cadastro de um novo equipamento
         </Typography>
 
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <Paper className={classes.formContainer} elevation={0}>
 
-          <div className={classes.containerForm}>
-            <Autocomplete
-              className={classes.inputs}
-              options={models.map(model => model.modelName)}
-              onChange={handleChangeInput}
-              // value={formData.equipment_model}
-              renderInput={params => (
-                <TextField
-                  name="equipment_model"
-                  {...params}
-                  label="Modelo do equipamento"
-                  type="text"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  required
-                  autoComplete="off"
-                  autoFocus
-                  inputRef={equipmentModelRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)}
-                />
-              )}
-            />
+          <Grid container spacing={isMobile ? 5 : 0} >
+            <Grid item xs={12} md={6} className={classes.grid}>
 
-            <TextField
-              name="equipment_code"
-              className={classes.inputs}
-              value={formData.equipment_code}
-              onChange={handleChangeInput}
-              label="Código do Equipamento"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              required
-              autoComplete="off"
-              inputRef={idEquipmentRef} // atribui um elemento a ref criada
-              onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
-            />
+              <Autocomplete
+                className={classes.inputs}
+                options={models.map(model => model.modelName)}
+                onChange={handleChangeInput}
+                // value={formData.equipment_model}
+                renderInput={params => (
+                  <TextField
+                    name="equipment_model"
+                    {...params}
+                    label="Modelo do equipamento"
+                    type="text"
+                    helperText="*Obrigatório"
+                    variant="filled"
+                    required
+                    autoComplete="off"
+                    autoFocus
+                    inputRef={equipmentModelRef}
+                    onKeyPress={e => nextInput(e, relacionamentosRef)}
+                  />
+                )}
+              />
 
-            <TextField
-              name="installation_date"
-              className={classes.inputs}
-              value={formData.installation_date}
-              onChange={handleChangeInput}
-              label="Data de Instalação"
-              type="date"
-              helperText={error.installation_date === "" ? "*Obrigatório" : error.installation_date}
-              error={error.installation_date !== ""}
-              variant="filled"
-              autoComplete="off"
-              inputRef={instalationDateRef}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+              <TextField
+                name="equipment_code"
+                className={classes.inputs}
+                value={formData.equipment_code}
+                onChange={handleChangeInput}
+                label="Código do Equipamento"
+                type="text"
+                helperText="*Obrigatório"
+                variant="filled"
+                required
+                autoComplete="off"
+                inputRef={idEquipmentRef} // atribui um elemento a ref criada
+                onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
+              />
 
-            {/* <TextField
-              name="cpf_client"
-              className={classes.inputs}
-              value={formData.cpf_client}
-              onChange={handleChangeInput}
-              label="CPF/CNPJ do cliente"
-              type="text"
-              helperText={error.cpf_client === "" ? "(Opcional)" : error.cpf_client}
-              error={error.cpf_client !== ""}
-              variant="filled"
-              inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
+              <TextField
+                name="installation_date"
+                className={classes.inputs}
+                value={formData.installation_date}
+                onChange={handleChangeInput}
+                label="Data de Instalação"
+                type="date"
+                helperText={error.installation_date === "" ? "*Obrigatório" : error.installation_date}
+                error={error.installation_date !== ""}
+                variant="filled"
+                autoComplete="off"
+                inputRef={instalationDateRef}
+                onKeyPress={e => nextInput(e, relacionamentosRef)}
+              />
 
-            <TextField
-              name="observation"
-              className={classes.inputs}
-              value={formData.observation}
-              onChange={handleChangeInput}
-              label="Observações"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              variant="filled"
-              inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            </Grid>
 
-            <TextField
-              name="address"
-              className={classes.inputs}
-              value={formData.address}
-              onChange={handleChangeInput}
-              label="Endereço"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              variant="filled"
-              inputRef={addressRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            <Grid item xs={12} md={6}>
 
-            <TextField
-              name="zipcode"
-              className={classes.inputs}
-              value={formData.zipcode}
-              onChange={handleChangeInput}
-              label="CEP"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              inputRef={zipcodeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+              <TextField
+                name="observation"
+                className={classes.inputs}
+                value={formData.observation}
+                onChange={handleChangeInput}
+                label="Observações"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                variant="filled"
+                inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              />
 
-            <ModalRedirect openModal={openModal} closeModal={() => setOpenModal(false)} linkId={()=> history.push(`/ae/` + idCadastrado)}/>
-            <div>
-              <Button type="submit"
-                ref={buttonSubmitRef} // neste caso o button pode ser acessado 
-                // diretamente por isso usamos ref={}
-                className={classes.buttonRegister}>
-                  Cadastrar
-              </Button>
-            </div>
+              <TextField
+                name="address"
+                className={classes.inputs}
+                value={formData.address}
+                onChange={handleChangeInput}
+                label="Endereço"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                variant="filled"
+                inputRef={addressRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              />
 
+              <TextField
+                name="zipcode"
+                className={classes.inputs}
+                value={formData.zipcode}
+                onChange={handleChangeInput}
+                label="CEP"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                variant="filled"
+                inputProps={{ maxLength: 8 }}
+                inputRef={zipcodeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
+              />
+
+            </Grid>
+
+          </Grid>
+
+
+          <div className={classes.buttonContainer}  >
+            <Button
+              variant="container"
+              color="primary"
+              className={classes.buttonRegister}
+              onClick={handleSubmit}
+            >
+              Cadastrar
+            </Button>
           </div>
 
-        </form>
+          <ModalRedirect
+            openModal={openModal}
+            closeModal={() => setOpenModal(false)}
+            linkId={() => history.push(`/ae/` + idCadastrado)}
+          />
+
+        </Paper>
+
       </div>
 
     </React.Fragment>

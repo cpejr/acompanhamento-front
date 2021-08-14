@@ -6,17 +6,23 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    minHeight: "100vh",
-    padding: "30px 60px 0",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+      padding: "32px 8px",
+    },
+  },
+  formContainer: {
+    padding: "48px",
+    borderRadius: "13px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
-  buttonAdd:{
+  buttonAdd: {
     fontWeight: "500",
     fontSize: "13px",
     color: verde,
@@ -27,8 +33,6 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   title: {
-    display:"flex",
-    justifyContent:"center",
     marginBottom: "30px",
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
@@ -38,28 +42,21 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
-  containerForm: {
-    padding: "50px 50px 30px",
-    borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
-    },
-  },
 
-  leftSection: {
-    padding:"0 40px",
-    [theme.breakpoints.only("xs")]: {
-      padding:"0"
-    }
-  },
   input: {
     boxSizing: "border-box",
     width: "100%",
-    marginBottom: "30px",
+    marginBottom: "16px",
   },
-  centralizar: {
+  buttonContainer: {
+    width: "100vw",
     display: "flex",
+    flexDirection: "row",
     justifyContent: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   },
   btn: {
     margin: "30px 10px 0",
@@ -67,20 +64,22 @@ export const useStyles = makeStyles((theme) => ({
     height: "50px",
 
     borderRadius: "2px",
+    color: "white",
     "&:first-child": {
       background: props => props.updating ? verde : azulPadrao,
     },
     "&:last-child": {
-      background: vermelhoPadrao
+      background: vermelhoPadrao,
+      fontSize: "12px"
     },
     [theme.breakpoints.only("xs")]: {
       margin: "0",
-      "&:first-child": {
-        marginRight: "10px"
-      },
-      "&:last-child": {
-        marginLeft: "10px"
-      },
+      marginBottom: "16px"
     },
+
+    btnOwner: {
+      color: verde,
+      maxHeight: "50px",
+    }
   }
 }));

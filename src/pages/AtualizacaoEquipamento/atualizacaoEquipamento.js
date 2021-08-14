@@ -14,7 +14,12 @@ import {
   Typography,
   Backdrop,
   CircularProgress,
-  useMediaQuery
+  useMediaQuery,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+  MenuItem
 } from "@material-ui/core"
 import api from '../../services/api';
 import { AuthContext } from '../../context/AuthContext'
@@ -42,6 +47,7 @@ function AtualizacaoEquipamento() {
   const { sendMessage } = useContext(AuthContext);
 
   const [modelName, setModelName] = useState("");
+  const [modelId, setModelId] = useState("");
 
   useEffect(() => {
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
@@ -52,6 +58,7 @@ function AtualizacaoEquipamento() {
       .get(`equipment/${id}`)
       .then((selected) => {
         var date = selected.data.equipment[0].installation_date;
+        console.log(selected.data.equipment);
         var installation_date = getRequiredDateFormat(date);
 
         setEquipment(selected.data.equipment[0]);
@@ -83,11 +90,32 @@ function AtualizacaoEquipamento() {
 
     if (modelsList && equipment) {
       modelsList.find((model) => {
-        if (model.id === equipment.id_model)
+        if (model.id === equipment.id_model) {
           setModelName(model.modelName);
+          setModelId(model.id)
+        }
       })
     }
   }, [modelsList, equipment]);
+
+  function validateAllFields(data) {
+
+    if (
+      !data.id_model ||
+      !data.equipment_code ||
+      !data.installation_date
+      ) {
+      sendMessage("Há campos vazios!", "error");
+      return false;
+    }
+
+    if (data.zipcode !== "" && data.zipcode.length < 8) {
+      sendMessage("CEP inválido!", "error");
+      return false;
+    }
+
+    return true;
+  }
 
   if (!equipment) {
     return (
@@ -114,11 +142,12 @@ function AtualizacaoEquipamento() {
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleChangeAutocomplete(event, value) {
+  function handleChangeSelect(event, value) {
 
     modelsList.find((model) => {
-      if (model.modelName === value) {
+      if (model.id === event.target.value) {
         equipment.id_model = model.id;
+        setModelId(model.id)
       }
     })
   }
@@ -129,38 +158,36 @@ function AtualizacaoEquipamento() {
       installation_date: "",
     });
 
+    const {
+      id_model = modelId,
+      equipment_code,
+      installation_date,
+      situation,
+      initial_work,
+      address,
+      zipcode,
+    } = equipment;
+
+    const data = {
+      id_model,
+      equipment_code,
+      installation_date,
+      situation,
+      initial_work,
+      address,
+      zipcode,
+    };
+
     if (!updating) setUpdating(true);
 
     else if (!findError("date", equipment.installation_date)) {
-      setError((prev) => ({ ...prev, installation_date: "Data inválidaaaaa" }));
+      setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
       console.log(equipment.installation_date);
 
     } else if (isAfter(parseISO(equipment.installation_date), new Date()))
       setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
 
-    else {
-      console.log(equipment);
-      const {
-        id_model,
-        equipment_code,
-        installation_date,
-        situation,
-        initial_work,
-        address,
-        zipcode,
-        // cpf_client
-      } = equipment;
-
-      const data = {
-        id_model,
-        equipment_code,
-        installation_date,
-        situation,
-        initial_work,
-        // cpf_client,
-        address,
-        zipcode,
-      };
+    else if (validateAllFields(data)) {
 
       sendMessage("Alterando dados...", "info", null);
 
@@ -183,6 +210,7 @@ function AtualizacaoEquipamento() {
       //cancelar
       setUpdating(false);
       setEquipment(equipmentOriginal);
+      setModelId(equipmentOriginal.id_model)
       setError({
         installation_date: "",
       });
@@ -246,26 +274,22 @@ function AtualizacaoEquipamento() {
           <Grid container spacing={isMobile ? 5 : 0} >
             <Grid item xs={12} md={6}>
 
-              <TextField
-                freeSolo
-                className={classes.input}
-                options={modelsList.map((model) => model.modelName)}
-                onChange={handleChangeAutocomplete}
-                label="Modelo"
-                variant="filled"
-                disabled={!updating}
-                value={modelName}
-                renderInput={(params) => (
-                  <TextField
-                    name="id_model"
-                    {...params}
-                    value={equipment.id_model}
-                    disabled={!updating}
-                    autoComplete="off"
-                  />
-                )}
-                helperText="*Obrigatório"
-              />
+              <FormControl variant="filled" className={classes.inputType}>
+                <InputLabel>Modelo do Equipamento</InputLabel>
+                <Select
+                  labelId="tipo"
+                  onChange={handleChangeSelect}
+                  value={modelId}
+                  disabled={!updating}
+                >
+                  {modelsList.map((model) => {
+                    return (
+                      <MenuItem value={model.id}>{model.modelName}</MenuItem>
+                    )
+                  })}
+                </Select>
+                <FormHelperText style={{ marginBottom: "16px" }}>*Obrigatório</FormHelperText>
+              </FormControl>
 
               <TextField
                 name="equipment_code"
@@ -273,7 +297,7 @@ function AtualizacaoEquipamento() {
                 value={equipment.equipment_code}
                 label="Código do equipamento"
                 variant="filled"
-                disabled={!updating}
+                disabled={true}
                 helperText="*Obrigatório"
               />
 

@@ -35,6 +35,11 @@ export const useStyles = makeStyles(theme => ({
     },
   },
 
+  inputType: {
+    width: "100%",
+    flexDirection: "colunm",
+  },
+
   titleTab: {
     color: azulPadraoClaro,
     fontFamily: textFontFamilyPadrao,

@@ -9,6 +9,11 @@ import {
   Backdrop,
   Paper,
   useMediaQuery,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+  MenuItem
 } from "@material-ui/core"
 import { Autocomplete } from '@material-ui/lab'
 import MaskedInput from 'react-text-mask'
@@ -53,7 +58,7 @@ export default function CadastroEquipamento(props) {
     zipcode: "",
   });
 
-  //pegar modelos
+  // pegar modelos
   React.useEffect(() => {
 
     api.get('model/index')
@@ -73,8 +78,27 @@ export default function CadastroEquipamento(props) {
     }
 
     getUserFromSession();
-    
+
   }, [])
+
+  function validateAllFields(data) {
+
+    if (
+      !data.id_model ||
+      !data.equipment_code ||
+      !data.installation_date
+      ) {
+      sendMessage("Há campos vazios!", "error");
+      return false;
+    }
+
+    if (data.zipcode !== "" && data.zipcode.length < 8) {
+      sendMessage("CEP inválido!", "error");
+      return false;
+    }
+
+    return true;
+  }
 
   async function handleSubmit(event) {
 
@@ -87,7 +111,8 @@ export default function CadastroEquipamento(props) {
 
     if (isAfter(parseISO(formData.installation_date), new Date()))
       setError(prev => ({ ...prev, installation_date: "Data inválida!" }))
-    else {
+
+    else if (validateAllFields(formData)) {
 
       const data = {
         id_model: formData.id_model,
@@ -95,21 +120,16 @@ export default function CadastroEquipamento(props) {
         installation_date: formData.installation_date,
         initial_work: formData.installation_date,
         situation: formData.situation,
-        // cpf_client: formData.cpf_client,
         address: formData.address,
         zipcode: formData.zipcode,
+        observation: formData.observation
       }
-      console.log("Data: ", data);
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null);
 
       try {
         const resposta = await api.post('/equipment/create', data);
-
-        console.log(resposta);
-
-        console.log(user);
 
         let arrayEquipments = user.id_equipments;
 
@@ -135,17 +155,15 @@ export default function CadastroEquipamento(props) {
     }
   }
 
-  function handleChangeInput(event, valueA) {
+  function handleChangeInput(event, fromFormControl = false) {
 
     let { name, value } = event.target;
     let str = value;
 
-    if (valueA) { // from autocomplete
+    if (fromFormControl) { // vem do seletor de modelos
 
-      setFormData(prev => ({ ...prev, equipment_model: valueA }));
-      const selectedModel = models.find(model => model.modelName === valueA);
-      setFormData(prev => ({ ...prev, id_model: selectedModel.id }))
-
+      const selectedModel = models.find(model => model.id === value);
+      setFormData({ ...formData, id_model: selectedModel.id });
     } else {
 
       if (name === "zipcode") {
@@ -201,27 +219,21 @@ export default function CadastroEquipamento(props) {
           <Grid container spacing={isMobile ? 5 : 0} >
             <Grid item xs={12} md={6} className={classes.grid}>
 
-              <Autocomplete
-                className={classes.inputs}
-                options={models.map(model => model.modelName)}
-                onChange={handleChangeInput}
-                // value={formData.equipment_model}
-                renderInput={params => (
-                  <TextField
-                    name="equipment_model"
-                    {...params}
-                    label="Modelo do equipamento"
-                    type="text"
-                    helperText="*Obrigatório"
-                    variant="filled"
-                    required
-                    autoComplete="off"
-                    autoFocus
-                    inputRef={equipmentModelRef}
-                    onKeyPress={e => nextInput(e, relacionamentosRef)}
-                  />
-                )}
-              />
+              <FormControl variant="filled" className={classes.inputType}>
+                <InputLabel>Modelo do Equipamento</InputLabel>
+                <Select
+                  labelId="tipo"
+                  onChange={(e) => handleChangeInput(e, true)}
+                  inputRef={equipmentModelRef}
+                >
+                  {models.map((model) => {
+                    return (
+                      <MenuItem value={model.id}>{model.modelName}</MenuItem>
+                    )
+                  })}
+                </Select>
+                <FormHelperText style={{ marginBottom: "16px" }}  >Label + placeholder</FormHelperText>
+              </FormControl>
 
               <TextField
                 name="equipment_code"

@@ -48,6 +48,10 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginBottom: "16px",
   },
+  inputType: {
+    width: "100%",
+    flexDirection: "colunm",
+  },
   buttonContainer: {
     width: "100vw",
     display: "flex",

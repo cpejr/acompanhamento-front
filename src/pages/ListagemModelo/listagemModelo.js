@@ -19,7 +19,6 @@ import StickyHeadTable from "./Tabela";
 
 export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
-  const [placeHolder, setPlaceHolder] = useState("Procurar modelo");
   const [ordem, setOrdem] = useState({ alfabetica: true, by: "modelName" });
   const [modelsOriginal, setModelsOriginal] = useState();
   const [loading, setLoading] = useState(true);
@@ -61,15 +60,7 @@ export default function ListagemModelo() {
   
   function messageDisplay(e){
     setFilterby(e.target.value);
-    if(e.target.value === "modelName"){
-      setPlaceHolder("Procurar modelo");
-    }else if(e.target.value === "type"){
-      setPlaceHolder("Procurar tipo");
-    }else{
-      setPlaceHolder("Procurar fabricante");
-    }
   }
-  
 
   const classes = useStyles();
 

@@ -212,7 +212,6 @@ function CadastroFuncionario(props) {
               name="birthdate"
               className={classes.inputForm}
               label="Data de Nascimento"
-              defaultValue="2017-05-24"
               value={birthdate}
               helperText="*Obrigatório"
               inputProps={{ maxLength: 10 }}

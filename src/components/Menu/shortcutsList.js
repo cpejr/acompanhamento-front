@@ -14,7 +14,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import DonutLargeIcon from '@material-ui/icons/DonutLarge';
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import PostAddIcon from '@material-ui/icons/PostAdd';
-import TimelineIcon from '@material-ui/icons/Timeline';
 
 const Items = [
   {

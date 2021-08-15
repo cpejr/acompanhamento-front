@@ -58,7 +58,6 @@ export default function Home() {
             Ir para Dashboard
           </Button>
         </Link>
-        {/* <ButtonPadrao text="O texto" /> */}
       </div>
     </React.Fragment>
   );

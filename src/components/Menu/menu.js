@@ -47,7 +47,7 @@ export default function Menu() {
     }
 
     getUserFromSession();
-  }, [])
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // MenuProfile
   const [openMenu, setOpenMenu] = React.useState(false);

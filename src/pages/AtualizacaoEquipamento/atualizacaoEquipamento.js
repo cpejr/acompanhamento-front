@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   CssBaseline,
-  Link,
   Paper,
   TextField,
   Button,
@@ -46,7 +45,6 @@ function AtualizacaoEquipamento() {
   });
   const { sendMessage } = useContext(AuthContext);
 
-  const [modelName, setModelName] = useState("");
   const [modelId, setModelId] = useState("");
 
   useEffect(() => {
@@ -68,7 +66,7 @@ function AtualizacaoEquipamento() {
         setLoading((prev) => ({ ...prev, equipment: false }));
       })
       .catch((err) => {
-        console.error("Backend is not working properly", err);
+        console.error("Erro ao buscar equipamento.", err);
       });
 
     api
@@ -79,7 +77,7 @@ function AtualizacaoEquipamento() {
         setLoading((prev) => ({ ...prev, models: false }));
       })
       .catch((err) => {
-        console.error("Backend is not working properly", err);
+        console.error("Erro ao buscar modelos.", err);
       });
 
   }, [id]);
@@ -91,9 +89,9 @@ function AtualizacaoEquipamento() {
     if (modelsList && equipment) {
       modelsList.find((model) => {
         if (model.id === equipment.id_model) {
-          setModelName(model.modelName);
-          setModelId(model.id)
-        }
+          setModelId(model.id);
+          return true;
+        } else return false;
       })
     }
   }, [modelsList, equipment]);
@@ -147,8 +145,9 @@ function AtualizacaoEquipamento() {
     modelsList.find((model) => {
       if (model.id === event.target.value) {
         equipment.id_model = model.id;
-        setModelId(model.id)
-      }
+        setModelId(model.id);
+        return true;
+      } else return false;
     })
   }
 

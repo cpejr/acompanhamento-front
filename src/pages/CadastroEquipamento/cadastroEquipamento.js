@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import {
   CssBaseline,
   Typography,
@@ -15,11 +15,8 @@ import {
   FormHelperText,
   MenuItem
 } from "@material-ui/core"
-import { Autocomplete } from '@material-ui/lab'
-import MaskedInput from 'react-text-mask'
 import { useStyles } from './cadastroEquipamentoStyle';
 import nextInput from '../../services/nextInput';
-import findError from '../../services/findError';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
@@ -79,7 +76,7 @@ export default function CadastroEquipamento(props) {
 
     getUserFromSession();
 
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function validateAllFields(data) {
 

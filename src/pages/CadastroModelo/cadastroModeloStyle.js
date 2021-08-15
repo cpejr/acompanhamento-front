@@ -1,7 +1,5 @@
 import { makeStyles } from '@material-ui/core'
-import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadraoEscuro, azulPadrao, vermelhoPadrao } from '../../StylePadrao/stylePadrao';
-
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
+import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadraoEscuro, azulPadrao } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
 

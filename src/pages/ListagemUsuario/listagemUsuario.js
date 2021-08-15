@@ -6,8 +6,6 @@ import {
   InputBase,
   CssBaseline,
   Button,
-  FormControlLabel,
-  Checkbox,
   MenuItem,
   FormControl,
   Select,
@@ -17,24 +15,16 @@ import { useStyles } from "./listagemUsuarioStyle";
 import StickyHeadTable from "./Tabela";
 import SearchIcon from "@material-ui/icons/Search";
 import ordenar from "../../services/ordenar";
-import { DataContext } from "../../context/DataContext";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
 export default function ListagemUsuario() {
   const classes = useStyles();
-
-  const { clientsList } = useContext(DataContext);
 
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [filterByOptions, setFilterByOptions] = useState("nameEmail");
   const [messagePlaceholder, setMessagePlaceholder] = useState("Procurar usuário por nome ou e-mail");
   const [usersListToDisplay, setUsersListToDisplay] = useState([]);
-  const [filterThisUsers, setFilterThisUsers] = useState({
-    administrador: true,
-    funcionario: true,
-    cliente: true,
-  });
 
   const { sendMessage } = useContext(AuthContext);
 
@@ -53,7 +43,7 @@ export default function ListagemUsuario() {
 
   useEffect(() => {
     getEmployees();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Mensagem do placeholder de acordo com a caixa de seleção
   function messageDisplay(e) {
@@ -85,9 +75,10 @@ export default function ListagemUsuario() {
   function findPeoplebyName(name) {
     const filteredUsers =
       employees.filter((employee) => {
+
         if (employee.name) {
           return employee.name.toString().toLowerCase().includes(name.toString().toLowerCase())
-        }
+        } else return false;
       })
     return filteredUsers;
   }
@@ -97,7 +88,7 @@ export default function ListagemUsuario() {
       employees.filter((employee) => {
         if (employee.email) {
           return employee.email.toString().toLowerCase().includes(email.toString().toLowerCase())
-        }
+        } else return false;
       })
     return filteredUsers;
   }
@@ -107,7 +98,7 @@ export default function ListagemUsuario() {
       employees.filter((employee) => {
         if (employee.type) {
           return employee.type.toString().toLowerCase().includes(funcao.toString().toLowerCase())
-        }
+        } else return false;
       })
     return filterFuncao;
   }
@@ -121,28 +112,6 @@ export default function ListagemUsuario() {
     })
     return final;
   }
-
-
-  const filterByUsers = (props) => {
-    let users = props;
-
-    //Remove ou não administrador
-    if (!filterThisUsers.administrador) {
-      users = users.filter((user) => user.funcao !== "Administrador");
-    }
-
-    //Remove ou não funcionário
-    if (!filterThisUsers.funcionario) {
-      users = users.filter((user) => user.funcao !== "Funcionário");
-    }
-
-    //Remove ou não cliente
-    if (!filterThisUsers.cliente) {
-      users = users.filter((user) => user.funcao !== "Cliente");
-    }
-
-    return users;
-  };
 
   return (
     <React.Fragment>
@@ -201,7 +170,7 @@ export default function ListagemUsuario() {
         <div className={classes.table}>
           <StickyHeadTable
             usersListToDisplay={ordenar(
-              filterByUsers(usersListToDisplay),
+              usersListToDisplay,
               "name",
               ordemAlfabetica
             ).map((employees) => {

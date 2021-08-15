@@ -108,6 +108,21 @@ export default function CadastroModelo(props) {
 
     event.preventDefault();
 
+    const data = {
+      modelName: formData.modelName,
+      type: formData.type,
+      manufacturer: formData.manufacturer,
+      releaseYear: formData.releaseYear,
+      min_temp: formData.min_temp ? formData.min_temp : valTemp[0],
+      max_temp: formData.max_temp ? formData.max_temp : valTemp[1],
+      min_current: formData.min_current ? formData.min_current : valCurrent[0],
+      max_current: formData.max_current ? formData.max_current : valCurrent[1],
+      min_voltage: formData.min_voltage ? formData.min_voltage : valVolt[0],
+      max_voltage: formData.max_voltage ? formData.max_voltage : valVolt[1],
+      min_vibra: formData.min_vibra ? formData.min_vibra : valVibra[0],
+      max_vibra: formData.max_vibra ? formData.max_vibra : valVibra[1]
+    }
+
     // const temperature = document.getElementById("temperatureSlider");
     // console.log(temperature.getElementsByTagName("input")[0].value);
 
@@ -115,28 +130,14 @@ export default function CadastroModelo(props) {
       releaseYear: "",
     })
 
-    if (Object.values(formData).includes("")) {
+    if (Object.values(data).includes("")) {
       sendMessage("Alguns campos estão vazios!", "error");
     }
 
-    else if (!findError("year", formData.releaseYear))
+    else if (!findError("year", data.releaseYear))
       setError(prev => ({ ...prev, releaseYear: "Ano inválido" }))
 
     else {
-      const data = {
-        modelName: formData.modelName,
-        type: formData.type,
-        manufacturer: formData.manufacturer,
-        releaseYear: formData.releaseYear,
-        min_temp: formData.min_temp ? formData.min_temp : valTemp[0],
-        max_temp: formData.max_temp ? formData.max_temp : valTemp[1],
-        min_current: formData.min_current ? formData.min_current : valCurrent[0],
-        max_current: formData.max_current ? formData.max_current : valCurrent[1],
-        min_voltage: formData.min_voltage ? formData.min_voltage : valVolt[0],
-        max_voltage: formData.max_voltage ? formData.max_voltage : valVolt[1],
-        min_vibra: formData.min_vibra ? formData.min_vibra : valVibra[0],
-        max_vibra: formData.max_vibra ? formData.max_vibra : valVibra[1]
-      }
 
       // enviar para o backend
       sendMessage("Realizando cadastro...", "info", null);

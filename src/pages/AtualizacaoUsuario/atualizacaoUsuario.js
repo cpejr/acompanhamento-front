@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   CssBaseline,
   Paper,
-  Grid,
   Button,
   Dialog,
   DialogTitle,
@@ -22,7 +21,7 @@ import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from "../../services/dateValidation";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function AtualizacaoUsuario(props) {
 
@@ -74,7 +73,7 @@ function AtualizacaoUsuario(props) {
           sendMessage("Erro ao atualizar email e senha", "error");
         });
     }
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function validateAllFields(data) {
 
@@ -252,7 +251,7 @@ function AtualizacaoUsuario(props) {
       setTypeSnackbar("info");
 
       try {
-        const response = await api.delete(`user/${id}`);
+        await api.delete(`user/${id}`);
 
         setOpenSnackbar(true);
         setMessageSnackbar("Usuário deletado com sucesso!");

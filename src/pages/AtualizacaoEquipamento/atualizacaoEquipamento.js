@@ -48,20 +48,20 @@ function AtualizacaoEquipamento() {
   const [modelId, setModelId] = useState("");
 
   useEffect(() => {
+
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
       return moment(timeStamp).format(format);
     }
 
     api
       .get(`equipment/${id}`)
-      .then((selected) => {
-        var date = selected.data.equipment[0].installation_date;
-        var installation_date = getRequiredDateFormat(date);
+      .then((response) => {
+        const date = response.data.equipment[0].installation_date;
+        const installation_date = getRequiredDateFormat(date);
+        const equipment = response.data.equipment[0];
 
-        setEquipment(selected.data.equipment[0]);
-        setEquipmentOriginal(selected.data.equipment[0]);
-        setEquipment((prev) => ({ ...prev, installation_date }));
-        setEquipmentOriginal((prev) => ({ ...prev, installation_date }));
+        setEquipment({ ...equipment, installation_date: installation_date });
+        setEquipmentOriginal({ ...equipment, installation_date: installation_date });
         setLoading((prev) => ({ ...prev, equipment: false }));
       })
       .catch((err) => {
@@ -128,6 +128,7 @@ function AtualizacaoEquipamento() {
   }
 
   function handleChangeInput(event) {
+
     let { name, value } = event.target;
     let str = value;
 
@@ -155,24 +156,14 @@ function AtualizacaoEquipamento() {
       installation_date: "",
     });
 
-    const {
-      id_model = modelId,
-      equipment_code,
-      installation_date,
-      situation,
-      initial_work,
-      address,
-      zipcode,
-    } = equipment;
-
     const data = {
-      id_model,
-      equipment_code,
-      installation_date,
-      situation,
-      initial_work,
-      address,
-      zipcode,
+      id_model: modelId,
+      equipment_code: equipment.equipment_code,
+      installation_date: equipment.installation_date,
+      situation: equipment.situation,
+      initial_work: equipment.initial_work,
+      address: equipment.address,
+      zipcode: equipment.zipcode,
     };
 
     if (!updating) setUpdating(true);
@@ -203,6 +194,7 @@ function AtualizacaoEquipamento() {
 
   function handleDelete(confirmation) {
     if (updating) {
+
       //cancelar
       setUpdating(false);
       setEquipment(equipmentOriginal);
@@ -211,6 +203,7 @@ function AtualizacaoEquipamento() {
         installation_date: "",
       });
     } else if (confirmation === true) {
+
       // excuir de verdade
       setDeleting(false);
       sendMessage("Excluindo equipamento...", "info", null);
@@ -370,7 +363,6 @@ function AtualizacaoEquipamento() {
 
               <Button
                 variant="contained"
-                color="secondary"
                 className={classes.btn}
                 onClick={handleDelete}
               >

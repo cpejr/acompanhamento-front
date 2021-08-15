@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   CssBaseline,
   Typography,
@@ -16,7 +16,6 @@ import {
   MenuItem
 } from "@material-ui/core"
 import { useStyles } from './cadastroEquipamentoStyle';
-import nextInput from '../../services/nextInput';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
@@ -171,26 +170,6 @@ export default function CadastroEquipamento(props) {
 
   }
 
-  // Referencias (próximo a declaração de um ponteiro nulo)
-  const equipmentModelRef = useRef(null);
-  const idEquipmentRef = useRef(null);
-  const instalationDateRef = useRef(null);
-  const cpfClientRef = useRef(null);
-  const observationRef = useRef(null);
-  const addressRef = useRef(null);
-  const zipcodeRef = useRef(null);
-  const buttonSubmitRef = useRef(null);
-
-  const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
-    { name: "equipment_model", ref: idEquipmentRef },
-    { name: "equipment_code", ref: instalationDateRef },
-    { name: "installation_date", ref: cpfClientRef },
-    { name: "cpf_client", ref: observationRef },
-    { name: "observation", ref: addressRef },
-    { name: "address", ref: zipcodeRef },
-    { name: "zipCode", ref: buttonSubmitRef }
-  ];
-
   const classes = useStyles();
 
   if (loading) {
@@ -221,7 +200,7 @@ export default function CadastroEquipamento(props) {
                 <Select
                   labelId="tipo"
                   onChange={(e) => handleChangeInput(e, true)}
-                  inputRef={equipmentModelRef}
+                  value={formData.id_model}
                 >
                   {models.map((model, index) => {
                     return (
@@ -229,7 +208,7 @@ export default function CadastroEquipamento(props) {
                     )
                   })}
                 </Select>
-                <FormHelperText style={{ marginBottom: "16px" }}  >Label + placeholder</FormHelperText>
+                <FormHelperText style={{ marginBottom: "16px" }}>*Obrigatório</FormHelperText>
               </FormControl>
 
               <TextField
@@ -243,8 +222,6 @@ export default function CadastroEquipamento(props) {
                 variant="filled"
                 required
                 autoComplete="off"
-                inputRef={idEquipmentRef} // atribui um elemento a ref criada
-                onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
               />
 
               <TextField
@@ -258,8 +235,6 @@ export default function CadastroEquipamento(props) {
                 error={error.installation_date !== ""}
                 variant="filled"
                 autoComplete="off"
-                inputRef={instalationDateRef}
-                onKeyPress={e => nextInput(e, relacionamentosRef)}
               />
 
             </Grid>
@@ -276,7 +251,6 @@ export default function CadastroEquipamento(props) {
                 helperText="(Opcional)"
                 autoComplete="off"
                 variant="filled"
-                inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
               />
 
               <TextField
@@ -289,7 +263,6 @@ export default function CadastroEquipamento(props) {
                 helperText="(Opcional)"
                 autoComplete="off"
                 variant="filled"
-                inputRef={addressRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
               />
 
               <TextField
@@ -303,7 +276,6 @@ export default function CadastroEquipamento(props) {
                 autoComplete="off"
                 variant="filled"
                 inputProps={{ maxLength: 8 }}
-                inputRef={zipcodeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
               />
 
             </Grid>

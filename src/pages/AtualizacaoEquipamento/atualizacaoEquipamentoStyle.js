@@ -72,8 +72,11 @@ export const useStyles = makeStyles((theme) => ({
     "&:first-child": {
       background: props => props.updating ? verde : azulPadrao,
     },
-    "&:last-child": {
+    "&:nth-child(2n)": {
       background: vermelhoPadrao,
+    },
+    "&:last-child": {
+      background: verde,
       fontSize: "12px"
     },
     [theme.breakpoints.only("xs")]: {

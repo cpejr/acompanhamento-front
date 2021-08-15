@@ -223,9 +223,9 @@ export default function CadastroEquipamento(props) {
                   onChange={(e) => handleChangeInput(e, true)}
                   inputRef={equipmentModelRef}
                 >
-                  {models.map((model) => {
+                  {models.map((model, index) => {
                     return (
-                      <MenuItem value={model.id}>{model.modelName}</MenuItem>
+                      <MenuItem key={index} value={model.id}>{model.modelName}</MenuItem>
                     )
                   })}
                 </Select>
@@ -313,7 +313,7 @@ export default function CadastroEquipamento(props) {
 
           <div className={classes.buttonContainer}  >
             <Button
-              variant="container"
+              variant="contained"
               color="primary"
               className={classes.buttonRegister}
               onClick={handleSubmit}

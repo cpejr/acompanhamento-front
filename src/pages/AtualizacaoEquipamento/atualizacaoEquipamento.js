@@ -56,7 +56,6 @@ function AtualizacaoEquipamento() {
       .get(`equipment/${id}`)
       .then((selected) => {
         var date = selected.data.equipment[0].installation_date;
-        console.log(selected.data.equipment);
         var installation_date = getRequiredDateFormat(date);
 
         setEquipment(selected.data.equipment[0]);
@@ -72,7 +71,6 @@ function AtualizacaoEquipamento() {
     api
       .get(`model/index`)
       .then((models) => {
-        console.log(models);
         setModelsList(models.data.data);
         setLoading((prev) => ({ ...prev, models: false }));
       })
@@ -181,7 +179,6 @@ function AtualizacaoEquipamento() {
 
     else if (!findError("date", equipment.installation_date)) {
       setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
-      console.log(equipment.installation_date);
 
     } else if (isAfter(parseISO(equipment.installation_date), new Date()))
       setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
@@ -281,9 +278,9 @@ function AtualizacaoEquipamento() {
                   value={modelId}
                   disabled={!updating}
                 >
-                  {modelsList.map((model) => {
+                  {modelsList.map((model, index) => {
                     return (
-                      <MenuItem value={model.id}>{model.modelName}</MenuItem>
+                      <MenuItem key={index} value={model.id}>{model.modelName}</MenuItem>
                     )
                   })}
                 </Select>

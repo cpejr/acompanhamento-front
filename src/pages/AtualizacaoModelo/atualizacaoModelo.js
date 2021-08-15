@@ -308,8 +308,8 @@ function AtualizacaoModelo() {
         <AreYouSure />
 
         <Paper className={classes.formContainer} elevation={0}>
-          <Grid container>
-            <Grid item xs={12} md={6} spacing={isMobile ? 5 : 0}>
+          <Grid container spacing={isMobile ? 5 : 0}>
+            <Grid item xs={12} md={6}>
               <TextField
                 name="modelName"
                 className={classes.input}

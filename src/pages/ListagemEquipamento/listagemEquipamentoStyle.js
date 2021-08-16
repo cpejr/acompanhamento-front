@@ -5,8 +5,7 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    width: "90%",
-    padding: "50px 0 80px 50px",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 80px",
       width: "100%",

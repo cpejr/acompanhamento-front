@@ -43,8 +43,7 @@ export default function ListagemEquipamento() {
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
   const userId = query.get("userid");
-  const idEquipments = query.get("id_equipments");
-  useEffect(()=>{console.log(equipmentsListToDisplay)},[equipmentsListToDisplay])
+  
   useEffect(() => {
 
     const url = situation
@@ -88,10 +87,6 @@ export default function ListagemEquipamento() {
       return velhosEquip.map((equipment) => {
         if (modelList[0].id) {
 
-          // equipment.equipment_model = modelList.find(
-          //   (model) => model.id === equipment.id_model
-          // ).modelName;
-
           const selected = modelList.find(
             (model) => model.id === equipment.id_model
           );
@@ -111,58 +106,38 @@ export default function ListagemEquipamento() {
 
   useEffect(() => {
 
+    async function getEquipmentsByUser(){
+
+      if (userId) {
+      await api
+        .get(`/user/${userId}`)
+        .then((response) => {
+          const idEquipments = response.data.user.id_equipments;
+
+          let auxVector = [];
+          if (idEquipments) {
+            equipmentsOriginal.forEach((equipment) => {
+              if (idEquipments.includes(equipment.id)) {
+                auxVector.push(equipment);
+              }
+            })
+          }
+          setEquipmentsListToDisplay(auxVector);
+        })
+        .catch((error => {
+          console.error("Erro ao buscar usuário", error);
+        }))
+      }
+    }
+
+    getEquipmentsByUser();
     setEquipmentsListToDisplay(equipmentsOriginal);
     setLoading((prev) => ({ ...prev, setDisplay: false }));
 
-  }, [equipmentsOriginal]);
+  }, [equipmentsOriginal]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect (()=>{
-    async function getEquipmentsByUser(){
-      if(userId){
-      await api.get(`/user/${userId}`).then((response)=>{
-        const idEquipments = response.data.user.id_equipments;
-        let auxVector = [];
-        if(idEquipments){
-          equipmentsOriginal.forEach((equipment)=>{
-            if(idEquipments.includes(equipment.id)){
-              auxVector.push(equipment);
-            }
-          })
-        }
-        setEquipmentsListToDisplay(auxVector);
-      })
-      }
-    }
-    getEquipmentsByUser();
-
-  },
-  [equipmentsOriginal]
-   )
-  //  useEffect (()=>{
-  //   async function getUserByEquipment(){
-  //     if(idEquipments){
-  //     await api.get(`/equipment/${idEquipments}`).then((response)=>{
-  //       const userId = response.data.user.id;
-  //     })
-  //     }
-  //   }
-  //   getUserByEquipment();
-
-  // },
-  // []
-  //  )
   function FindEquipment(searchEquipment) {
       
-    // if(userId){
-    //   equipmentsOriginal.forEach((item)=> {
-        
-    //   })
-    // }
-
-
-
-
-
     if (searchEquipment.length > 0) {
 
       const equipmentsListToDisplay = [];
@@ -215,6 +190,7 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
+        
         <div className={classes.searchplusfilter}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -245,6 +221,7 @@ export default function ListagemEquipamento() {
             </Select>
           </FormControl>
         </div>
+
         <div className={classes.table}>
           <StickyHeadTable
             equipmentsListToDisplay={ordenar(

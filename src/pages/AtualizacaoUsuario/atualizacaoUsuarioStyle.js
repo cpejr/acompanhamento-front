@@ -6,10 +6,9 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    minHeight: "100vh",
-    padding: "30px 60px 0",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+      padding: "32px 8px",
     },
   },
 
@@ -22,6 +21,10 @@ export const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: "#fff",
       backgroundColor: azulPadraoClaro,
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: "16px"
     }
   },
 
@@ -29,7 +32,11 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "16px",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   },
 
   title: {
@@ -42,11 +49,11 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
-  containerForm: {
-    padding: "50px 50px 30px",
+  formContainer: {
+    padding: "48px",
     borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
   grid: {
@@ -60,11 +67,24 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginBottom: "30px",
   },
-  centralizar: {
-    display: "flex",
-    justifyContent: "center",
-  },
   btn: {
+    margin: "30px 40px 0",
+    width: "150px",
+    height: "50px",
+    borderRadius: "2px",
+    color: "white",
+    "&:first-child": {
+      background: props => props.updating ? verde : azulPadrao,
+    },
+    "&:last-child": {
+      background: vermelhoPadrao
+    },
+    [theme.breakpoints.only("xs")]: {
+      margin: "0",
+      marginBottom: "16px"
+    },
+  },
+  btnPassword: {
     margin: "30px 40px 0",
     width: "150px",
     height: "50px",
@@ -84,5 +104,9 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: "10px"
       },
     },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "10px",
+      marginBottom: "16px"
+    }
   }
 }));

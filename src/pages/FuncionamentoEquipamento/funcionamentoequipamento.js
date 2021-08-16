@@ -25,7 +25,6 @@ import { isAfter } from "date-fns/esm";
 
 export default function FuncionamentoEquipamento() {
   const { id } = useParams();
-  const idDados = "bd23d030-0414-11eb-a5d4-d9a33cd11de3";
 
   const [equipmentData, setEquipmentData] = useState([]);
   const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState(

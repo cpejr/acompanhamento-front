@@ -7,10 +7,9 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    // padding: "50px 60px 60px 50px",
-    padding: "30px 5% 30px",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "32px 8px",
     },
   },
 
@@ -19,22 +18,17 @@ export const useStyles = makeStyles((theme) => ({
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
-    textAlign: "center",
+    textAlign: "left",
     [theme.breakpoints.only("xs")]: {
       textAlign: "center",
     },
   },
 
-  // formulario:{
-  //   display: "flex",
-  //   flexDirection: "column",
-  // }, 
-
   formContainer: {
-    padding: "50px 60px",
+    padding: "48px",
     borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "10%",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
 
@@ -47,14 +41,6 @@ export const useStyles = makeStyles((theme) => ({
       marginLeft:"1%",
       
     },
-  },
-
-  Subform: {
-    maxWidth: "800px",
-    [theme.breakpoints.only("xs")]: {
-     
-    },
-
   },
 
   titleType: {
@@ -70,7 +56,7 @@ export const useStyles = makeStyles((theme) => ({
 
   inputForm: {
    width: "100%",
-  //  marginBottom: "20px",
+   marginBottom: "16px",
    display:"flex",
    flexDirection:"column",
    justifyContent:"center",

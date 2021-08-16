@@ -28,5 +28,6 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only("xs")]: {
       width: "100%",
     },
+    cursor: "pointer"
   },
 }));

@@ -5,27 +5,17 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    marginLeft:"5%",
-    marginRight:"25%",
-    width: "90%",
-    padding: "50px 0 66px 50px",
-    paddingTop: "50px",
-    paddingRight: "0px",
-    paddingBottom: "66px",
-    paddingLeft: "50px",
-
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "30px 5% 80px",
       width: "100%",
     },
   },
 
+
   allsearch:{
-   // marginLeft:"28%",
     display: "flex",
     flexDirection: "column",
-    // marginLeft:"5%",
-    marginRight:"8%",
   },
 
   header: {
@@ -36,6 +26,14 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.only("xs")]: {
       justifyContent: "space-between",
     },
+  },
+
+  searchplusfilter: {
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column"
+    }
   },
 
   title: {
@@ -147,9 +145,6 @@ export const useStyles = makeStyles(theme => ({
 
   table: {
     marginTop: "30px",
-   marginRight: "8%",
-    // display: "flex",
-    // justifyContent:"center",
   },  
     
 }))

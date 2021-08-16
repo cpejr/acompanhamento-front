@@ -26,6 +26,8 @@ function CadastroPJ(props) {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [phonenumber, setPhonenumber] = useState("");
+  const [corporate_name, setCorporateName] = useState("");
+  const [state_registration, setStateRegistration] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirm, setSenhaConfirm] = useState("");
@@ -38,8 +40,10 @@ function CadastroPJ(props) {
       setEmail(formData.email);
       setPhonenumber(formData.phonenumber);
       setEmailConfirm(formData.emailConfirm);
+      setCorporateName(formData.corporate_name);
+      setStateRegistration(formData.state_registration);
     }
-    
+
   }, [formData]);
 
   function handleInput(event, type) {
@@ -58,6 +62,14 @@ function CadastroPJ(props) {
       case "phonenumber":
         event.target.value = str.replace(/[^0-9() ]/g, ""); // somente telefone
         setPhonenumber(event.target.value);
+        break;
+
+      case "corporate_name":
+        setCorporateName(event.target.value);
+        break;
+
+      case "state_registration":
+        setStateRegistration(event.target.value);
         break;
 
       case "email":
@@ -98,8 +110,8 @@ function CadastroPJ(props) {
       data.name !== "" &&
       data.cnpj !== "" && data.cnpj.length === 14 &&
       data.email !== "" && data.email.includes("@") && data.email.includes(".com") &&
-      data.phonenumber !== "" && passwordSize >= 8 && 
-      data.password    !== "" && phonenumberSize >= 8 &&
+      data.phonenumber !== "" && passwordSize >= 8 &&
+      data.password !== "" && phonenumberSize >= 8 &&
       email === emailConfirm &&
       senha === senhaConfirm
     ) return true;
@@ -117,6 +129,8 @@ function CadastroPJ(props) {
       email: email,
       phonenumber: phonenumber,
       password: senha,
+      corporate_name: corporate_name,
+      state_registration: state_registration,
       birthdate: "00/00/0000", // gambiarra
     };
 
@@ -128,11 +142,11 @@ function CadastroPJ(props) {
       }
       if (senha !== senhaConfirm) {
         sendMessage("As senhas não batem.", "error");
-        return ; 
+        return;
       }
 
       sendMessage("Realizando cadastro...", "info", null);
-      
+
       await api
         .post("user/create", data)
         .then((response) => {
@@ -165,7 +179,7 @@ function CadastroPJ(props) {
       if (email !== emailConfirm) sendMessage("Os emails estão diferentes.", "error");
       else if (senha !== senhaConfirm) sendMessage("As senhas estão diferentes.", "error");
       else if (data.password.length < 8) sendMessage("Senha deve ter no mínimo 8 caracteres!", "error");
-      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com")) 
+      else if (data.email === "" || !data.email.includes("@") || !data.email.includes(".com"))
         sendMessage("Email inválido!", "error");
       else if (data.cnpj.length < 14) sendMessage("CNPJ inválido.", "error");
       else if (data.phonenumber.length < 8) sendMessage("Telefone inválido.", "error");
@@ -183,12 +197,12 @@ function CadastroPJ(props) {
               name="name"
               className={classes.inputForm}
               value={name}
-              label="Nome Completo"
+              label="Nome da Empresa"
               type="text"
               helperText="*Obrigatório"
               variant="filled"
               onChange={(e) => handleInput(e, "name")}
-              disabled={mode === "view"}
+              disabled={mode === "view" || mode === "updatepassword"}
               required
             />
 
@@ -216,9 +230,36 @@ function CadastroPJ(props) {
               variant="filled"
               inputProps={{ maxLength: 15 }}
               onChange={(e) => handleInput(e, "phonenumber")}
-              disabled={mode === "view"}
+              disabled={mode === "view" || mode === "updatepassword"}
               required
             />
+            
+            <TextField
+              name="corporate_name"
+              className={classes.inputForm}
+              value={formData.corporate_name}
+              label="Nome Corporativo"
+              type="corporate_name"
+              helperText="Opcional"
+              variant="filled"
+              disabled={mode === "view" || mode === "updatepassword"}
+              onChange={(e) => handleInput(e, "corporate_name")}
+              optional
+            />
+
+            <TextField
+              name="state_registration"
+              className={classes.inputForm}
+              value={formData.state_registration}
+              label="Estado de Registro"
+              type="state_registration"
+              helperText="Opcional"
+              variant="filled"
+              disabled={mode === "view" || mode === "updatepassword"}
+              onChange={(e) => handleInput(e, "state_registration")}
+              optional
+            />
+
           </Grid>
 
           <Grid item xs={12} md={6}>
@@ -236,6 +277,7 @@ function CadastroPJ(props) {
                   onChange={(e) => handleInput(e, "email")}
                   required
                 />
+
                 <TextField
                   name="emailConfirm"
                   className={classes.inputForm}
@@ -248,6 +290,7 @@ function CadastroPJ(props) {
                   onChange={(e) => handleInput(e, "emailConfirm")}
                   required
                 />
+                
                 <TextField
                   name="password"
                   autoComplete="off"
@@ -280,7 +323,7 @@ function CadastroPJ(props) {
               </>
             )}
           </Grid>
-          
+
           {mode === "create" && (
             <div className={classes.buttonContainer}>
               <Button

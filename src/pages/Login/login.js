@@ -27,7 +27,6 @@ export default function Login() {
   const { signIn } = useContext(LoginContext);
   const { sendMessage } = useContext(AuthContext);
   const [error, setError] = useState("");
-
   const [values, setValues] = useState({
     user: "",
     password: "",
@@ -86,10 +85,14 @@ export default function Login() {
         password: values.password,
       });
 
-      if (response.data.user) {
-        const user = response.data.user;
+      // console.log(response.data);
 
-        signIn(user);
+
+      if (response.data.accessToken) {
+        const user = response.data.user;
+        const token = response.data.accessToken;
+
+        signIn(token);
 
         // atualiza a última data ativa
         await api.put(`/user/${user[0].id}`, { active: formattedDateAndTime });

@@ -11,7 +11,7 @@ export default class LottieControl extends React.Component {
  
   render() {
     const defaultOptions = {
-      loop: true,
+      loop: false,
       autoplay: true, 
       animationData: animationData,
       rendererSettings: {

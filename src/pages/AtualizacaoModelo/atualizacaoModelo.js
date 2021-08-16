@@ -21,11 +21,9 @@ import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
-
-import MaskedInput from 'react-text-mask';
-
+import MaskedInput from 'react-text-mask'
 import Slider from '@material-ui/core/Slider';
-
+import { LoginContext } from '../../context/LoginContext';
 
 function YearInput(props) {
   const { inputRef, ...other } = props;
@@ -43,6 +41,9 @@ function YearInput(props) {
 function AtualizacaoModelo() {
   const { id } = useParams();
   const history = useHistory();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken()
+
 
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
@@ -65,7 +66,7 @@ function AtualizacaoModelo() {
   useEffect(()=> console.log(model),[model])
   useEffect(() => {
     (async () => {
-      await api.get(`model/${id}`)
+      await api.get(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((selected) => {
           const response = selected.data.model
           setModel(selected.data.model)
@@ -85,7 +86,7 @@ function AtualizacaoModelo() {
         });
       setLoading(false)
     })();
-  }, [id])
+  }, [accessToken, id])
 
   // Aqui temos as funcoes para as faixas de valores
   const updateRangeTemp=(e,data)=>{ 
@@ -243,7 +244,7 @@ function AtualizacaoModelo() {
         max_vibra,
       }
       sendMessage("Alterando dados...", "info", null);
-      api.put(`model/${id}`, data)
+      api.put(`model/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then(response => {
           sendMessage("Dados alterados");
           setModelOriginal(data);
@@ -260,9 +261,9 @@ function AtualizacaoModelo() {
 
   //Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
   async function DeleteVerification() {
-    const response = await api.get("/equipment/index");
+    const response = await api.get("/equipment/index", {headers: {authorization: `Bearer ${accessToken}`}});
     console.log(response);
-    if (response.data.equipment.find((x)=> {if(x.id_model === id) return true})) { //se achar algo nao pode excluir
+    if (response.data.equipment.find((x)=> {if(x.id_model === id) return true; return false})) { //se achar algo nao pode excluir
       sendMessage("Não foi possível excluir modelo, ele possui equipamentos vinculados.", "error");
       setDeleting(false);
     }
@@ -285,7 +286,7 @@ function AtualizacaoModelo() {
     }
     else if (confirmation === true) { // excuir de verdade
       setDeleting(false);
-      await api.delete(`model/${id}`).then((response) => {
+      await api.delete(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
 
         sendMessage("Modelo excluído com sucesso", "success");
         setTimeout(() => {

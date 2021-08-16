@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router";
 import api from "../../services/api";
 import {
@@ -22,10 +22,13 @@ import ChartTable from "./chartTable";
 import Table from "./table";
 import Chart from "./chart";
 import { isAfter } from "date-fns/esm";
+import { LoginContext } from '../../context/LoginContext';
 
 export default function FuncionamentoEquipamento() {
   const { id } = useParams();
   const idDados = "bd23d030-0414-11eb-a5d4-d9a33cd11de3";
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
   const [equipmentData, setEquipmentData] = useState([]);
   const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState(
@@ -62,15 +65,15 @@ export default function FuncionamentoEquipamento() {
     });
 
     // get equipment
-    api.get(`equipment/${id}`).then((response) => {
+    api.get(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
       setEquipment(response.data.equipment[0]);
     });
-  }, [id]);
+  }, [accessToken, id]);
 
   useEffect(() => {
     // get datas of equipment
     api
-      .get(`model/${equipment.id_model}`)
+      .get(`model/${equipment.id_model}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
         const current = response.data.model.currentLimit;
         const voltage = response.data.model.voltageLimit;
@@ -85,7 +88,7 @@ export default function FuncionamentoEquipamento() {
       .catch((err) => console.error(err));
 
     setLoading(false);
-  }, [equipment]);
+  }, [accessToken, equipment]);
 
   useEffect(() => {
     if (equipmentDataWithoutPeriod[0]) {

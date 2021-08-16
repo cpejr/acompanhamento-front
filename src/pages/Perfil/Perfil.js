@@ -6,14 +6,17 @@ function Perfil() {
 
   const { getUser } = useContext(LoginContext);
   const [user, setUser] = useState();
+  
 
   useEffect(() => {
     async function getUserFromSession() {
       setUser(await getUser());
+      const aux = getUser();
+      console.log(aux, "perfil");
     }
   
     getUserFromSession();
-  }, [])
+  }, [getUser])
 
   return (
     <div>

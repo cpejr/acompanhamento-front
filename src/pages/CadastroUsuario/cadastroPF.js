@@ -9,6 +9,7 @@ import api from "../../services/api";
 import { useStyles } from "./cadastroUsuarioStyle";
 import { AuthContext } from "../../context/AuthContext";
 import isValidDate from "../../services/dateValidation";
+import { LoginContext } from '../../context/LoginContext';
 
 function CadastroPF(props) {
 
@@ -17,6 +18,8 @@ function CadastroPF(props) {
   const classes = useStyles();
   const buttonRef = useRef(null);
   const { sendMessage } = useContext(AuthContext);
+  const { getToken } = useContext(LoginContext);
+	const accessToken = getToken();
 
   // variaveis de input
   const [name, setName] = useState("");
@@ -141,7 +144,7 @@ function CadastroPF(props) {
       sendMessage("Realizando cadastro...", "info", null);
 
       api
-        .post("/user/create", data)
+        .post("/user/create", data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           sendMessage("Cadastrado com sucesso");
         })

@@ -20,11 +20,11 @@ import ordenar from "../../services/ordenar";
 import { DataContext } from "../../context/DataContext";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
+import { LoginContext } from '../../context/LoginContext';
+
 export default function ListagemUsuario() {
   const classes = useStyles();
-
   const { clientsList } = useContext(DataContext);
-
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [filterByOptions, setFilterByOptions] = useState("nameEmail");
@@ -34,13 +34,14 @@ export default function ListagemUsuario() {
     administrador: true,
     funcionario: true,
     cliente: true,
-  });
-
+  });  
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
   const { sendMessage } = useContext(AuthContext);
 
   async function getEmployees() {
     api
-      .get("/user")
+      .get("/user", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
         setEmployees([...response.data.user]);
         setUsersListToDisplay([...response.data.user]);
@@ -53,7 +54,7 @@ export default function ListagemUsuario() {
 
   useEffect(() => {
     getEmployees();
-  }, []);
+  }, [getEmployees]);
 
 // Mensagem do placeholder de acordo com a caixa de seleção
   function messageDisplay(e){

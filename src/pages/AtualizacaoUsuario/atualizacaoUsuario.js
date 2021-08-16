@@ -23,12 +23,15 @@ import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from "../../services/dateValidation";
 import { useHistory, Link } from "react-router-dom";
+import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoUsuario(props) {
 
   let { id } = useParams();
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
   // states
   const [updating, setUpdating] = useState(false);
@@ -64,7 +67,7 @@ function AtualizacaoUsuario(props) {
 
     } else {
       api
-        .get(`/user/${id}`)
+        .get(`/user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           setUserData(response.data.user);
           setUserDataOriginal(response.data.user);
@@ -74,7 +77,7 @@ function AtualizacaoUsuario(props) {
           sendMessage("Erro ao atualizar email e senha", "error");
         });
     }
-  }, [id]);
+  }, [accessToken, id, props.userPerfil, sendMessage]);
 
   function validateAllFields(data) {
 
@@ -132,7 +135,7 @@ function AtualizacaoUsuario(props) {
         if (validateEmailAndPassword(updatedFields)) {
 
           await api
-            .put(`/user/${props.userPerfil.id}`, updatedEmail)
+            .put(`/user/${props.userPerfil.id}`, updatedEmail, {headers: {authorization: `Bearer ${accessToken}`}})
             .then((response) => {
             })
             .catch((error) => {
@@ -197,7 +200,7 @@ function AtualizacaoUsuario(props) {
           }
 
           api
-            .put(`/user/${id}`, updatedFields)
+            .put(`/user/${id}`, updatedFields, {headers: {authorization: `Bearer ${accessToken}`}})
             .then((response) => {
               sendMessage("Usuário atualizado com sucesso!", "success");
             })
@@ -252,7 +255,7 @@ function AtualizacaoUsuario(props) {
       setTypeSnackbar("info");
 
       try {
-        const response = await api.delete(`user/${id}`);
+        const response = await api.delete(`user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}});
 
         setOpenSnackbar(true);
         setMessageSnackbar("Usuário deletado com sucesso!");

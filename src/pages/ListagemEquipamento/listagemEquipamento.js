@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -18,10 +18,13 @@ import moment from "moment";
 import ordenar from "../../services/ordenar";
 import { useStyles } from "./listagemEquipamentoStyle";
 import StickyHeadTable from "./Tabela";
+import { LoginContext } from '../../context/LoginContext';
 
 export default function ListagemEquipamento() {
 
   const classes = useStyles();
+  const { getToken } = useContext(LoginContext);
+	const accessToken = getToken();
 
   const [filterby, setFilterby] = useState("equipment_code");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
@@ -51,7 +54,7 @@ export default function ListagemEquipamento() {
       : "equipment/index";
 
     api
-      .get(url)
+      .get(url, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((equipment) => {
         var equipments = equipment.data.equipment;
         setEquipmentsOriginal(equipments);
@@ -66,7 +69,7 @@ export default function ListagemEquipamento() {
       });
 
     api
-      .get(`/model/index`)
+      .get(`/model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((model) => {
         setModelList(model.data.data);
         setLoading((prev) => ({ ...prev, model: false }));
@@ -78,7 +81,7 @@ export default function ListagemEquipamento() {
         );
       });
 
-  }, [situation]);
+  }, [accessToken, situation]);
 
   useEffect(() => {
 
@@ -118,7 +121,7 @@ export default function ListagemEquipamento() {
   useEffect (()=>{
     async function getEquipmentsByUser(){
       if(userId){
-      await api.get(`/user/${userId}`).then((response)=>{
+      await api.get(`/user/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response)=>{
         const idEquipments = response.data.user.id_equipments;
         let auxVector = [];
         if(idEquipments){
@@ -135,33 +138,11 @@ export default function ListagemEquipamento() {
     getEquipmentsByUser();
 
   },
-  [equipmentsOriginal]
+  [accessToken, equipmentsOriginal, userId]
    )
-  //  useEffect (()=>{
-  //   async function getUserByEquipment(){
-  //     if(idEquipments){
-  //     await api.get(`/equipment/${idEquipments}`).then((response)=>{
-  //       const userId = response.data.user.id;
-  //     })
-  //     }
-  //   }
-  //   getUserByEquipment();
 
-  // },
-  // []
-  //  )
   function FindEquipment(searchEquipment) {
-      
-    // if(userId){
-    //   equipmentsOriginal.forEach((item)=> {
-        
-    //   })
-    // }
-
-
-
-
-
+  
     if (searchEquipment.length > 0) {
 
       const equipmentsListToDisplay = [];

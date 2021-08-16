@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -16,6 +16,7 @@ import ordenar from "../../services/ordenar";
 import api from "../../services/api";
 import { useStyles } from "./listagemModeloStyle";
 import StickyHeadTable from "./Tabela";
+import { LoginContext } from '../../context/LoginContext';
 
 export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
@@ -24,10 +25,12 @@ export default function ListagemModelo() {
   const [modelsOriginal, setModelsOriginal] = useState();
   const [loading, setLoading] = useState(true);
   const [modelsListToDisplay, setModelsListToDisplay] = useState();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
   useEffect(() => {
     api
-      .get("model/index")
+      .get("model/index", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((model) => {
         const models = model.data.data;
         setModelsOriginal(models);
@@ -40,7 +43,7 @@ export default function ListagemModelo() {
           err
         );
       });
-  }, []);
+  }, [accessToken]);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {

@@ -23,10 +23,13 @@ import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 import { Autocomplete } from '@material-ui/lab';
+import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoEquipamento() {
   const { id } = useParams();
   const history = useHistory();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
   
 
   const [updating, setUpdating] = useState(false);
@@ -38,8 +41,8 @@ function AtualizacaoEquipamento() {
   const [error, setError] = useState({
     installation_date: "",
   });
-  const { sendMessage } = useContext(AuthContext);
 
+  const { sendMessage } = useContext(AuthContext);
   const [modelName, setModelName] = useState("");
 
   useEffect(() => {
@@ -48,7 +51,7 @@ function AtualizacaoEquipamento() {
     }
 
     api
-      .get(`equipment/${id}`)
+      .get(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((selected) => {
         var date = selected.data.equipment[0].installation_date;
         var installation_date = getRequiredDateFormat(date);
@@ -64,7 +67,7 @@ function AtualizacaoEquipamento() {
       });
 
     api
-      .get(`model/index`)
+      .get(`model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((models) => {
         console.log(models);
         setModelsList(models.data.data);
@@ -74,7 +77,7 @@ function AtualizacaoEquipamento() {
         console.error("Backend is not working properly", err);
       });
 
-  }, [id]);
+  }, [accessToken, id]);
 
   const classes = useStyles({ updating });
 
@@ -164,7 +167,7 @@ function AtualizacaoEquipamento() {
       sendMessage("Alterando dados...", "info", null);
 
       api
-        .put(`equipment/${id}`, data)
+        .put(`equipment/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           sendMessage("Dados alterados");
           setEquipmentOriginal(response.data.equipment);
@@ -189,7 +192,8 @@ function AtualizacaoEquipamento() {
       // excuir de verdade
       setDeleting(false);
       sendMessage("Excluindo equipamento...", "info", null);
-      api.delete(`equipment/${id}`).then((response) => {
+
+      api.delete(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
         sendMessage("Equipamento excluído com sucesso");
         history.push("/listagemequipamento");
       }).catch((err) => {

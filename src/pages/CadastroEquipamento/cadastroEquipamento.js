@@ -24,6 +24,8 @@ export default function CadastroEquipamento(props) {
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
   const { getUser } = useContext(LoginContext); 
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
 
   const [error, setError] = React.useState({
@@ -53,7 +55,7 @@ export default function CadastroEquipamento(props) {
   //pegar modelos
   React.useEffect(() => {
 
-    api.get('model/index')
+    api.get('model/index', {headers: {authorization: `Bearer ${accessToken}`}})
       .then(model => {
         const models = model.data.data;
         setModels(models);
@@ -70,7 +72,7 @@ export default function CadastroEquipamento(props) {
     }
 
     getUserFromSession();
-  }, [])
+  }, [accessToken, getUser, sendMessage])
 
   async function handleSubmit(event) {
 
@@ -101,7 +103,7 @@ export default function CadastroEquipamento(props) {
       sendMessage('Realizando cadastro...', 'info', null);
       
       try {
-        const resposta = await api.post('/equipment/create', data);
+        const resposta = await api.post('/equipment/create', data, {headers: {authorization: `Bearer ${accessToken}`}});
 
         console.log(resposta);
 
@@ -116,7 +118,7 @@ export default function CadastroEquipamento(props) {
         }
 
         // atualiza o vetor de id_equipments
-        await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments })
+        await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments }, {headers: {authorization: `Bearer ${accessToken}`}})
         user.id_equipments = arrayEquipments;
 
         if (resposta.data && resposta.data.id) {

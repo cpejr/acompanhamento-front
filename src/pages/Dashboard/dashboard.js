@@ -10,10 +10,12 @@ import api from "../../services/api";
 import Graphic from './Chart';
 import { DataContext } from '../../context/DataContext';
 import { AuthContext } from '../../context/AuthContext';
+import { LoginContext } from '../../context/LoginContext';
 
 export default function Dashboard() {
   const [equipmentsList, setEquipmentsList] = useState();
   const { isClient } = useContext(AuthContext);
+  const { getToken } = useContext(LoginContext);
 
   const [sitNum, setSitNum] = useState({
     ok: Number,
@@ -21,9 +23,10 @@ export default function Dashboard() {
     atencao: Number
   });
 
+  const accessToken = getToken()
   useEffect(() => {
     api
-      .get("equipment/index")
+      .get("equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((equipment) => {
         var equipments = equipment.data.equipment;
         setEquipmentsList(equipments);
@@ -34,7 +37,7 @@ export default function Dashboard() {
           err
         );
       });
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => { // define o número de bombas em cada situação
     if (equipmentsList){

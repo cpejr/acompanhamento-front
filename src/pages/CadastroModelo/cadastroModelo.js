@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import api from '../../services/api';
 
 import {
@@ -14,11 +14,10 @@ import {
 import { Alert, Autocomplete } from '@material-ui/lab';
 import MaskedInput from 'react-text-mask';
 import findError from '../../services/findError';
-
 import { useStyles } from './cadastroModeloStyle';
 import nextInput from '../../services/nextInput';
-
 import Slider from '@material-ui/core/Slider';
+import { LoginContext } from '../../context/LoginContext';
 
 function YearInput(props) {
   const { inputRef, ...other } = props;
@@ -37,7 +36,10 @@ export default function CadastroModelo(props) {
   const [openMensage, setOpenMensage] = React.useState({
     open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
   });
+
   const classes = useStyles();
+  const { getToken } = useContext(LoginContext);
+	const accessToken = getToken();
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
@@ -97,7 +99,7 @@ export default function CadastroModelo(props) {
 
       //enviar para o backend
       setOpenMensage(({ open: true, message: 'Realizando cadastro...', type: 'info', time: null }));
-      api.post('/model/create', data)
+      api.post('/model/create', data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then(res => {
           setFormData({
             modelName: '',

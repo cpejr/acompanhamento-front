@@ -2,6 +2,8 @@ import React from 'react';
 import { useStyles } from './tabelaStyle';
 import {
   Paper,
+  Button,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -12,21 +14,24 @@ import {
   Typography
 } from '@material-ui/core';
 import { FiMoreHorizontal } from "react-icons/fi"
-
+import history from '../../../history'
 import LinkMenu from '../../../components/LinkMenu'
 
 export default function StickyHeadTable(props) {
-
+  
   const classes = useStyles();
   const { ordem, setOrdem } = props;
   const [openMenu, setOpenMenu] = React.useState("");
+  
 
   const headerItems = [
     { title: "Código do Equipamento", ordemBy: "equipment_code" },
     // { title: "Modelo", ordemBy: "id_model" },
     { title: "CPF cliente", ordemBy: "cpf_client" },
     { title: "Última visita", ordemBy: "last_visit" },
+    { title: "Ações"},
   ]
+
 
   return (
     <Paper className={classes.root}>
@@ -64,10 +69,43 @@ export default function StickyHeadTable(props) {
                   <TableCell>{equipment.cpf_client}</TableCell>
 
                   <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
-                    <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
+                    {/* <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
                       <FiMoreHorizontal size={24} color="#C4C4C4" />
-                    </LinkMenu>
+                    </LinkMenu> */}
                   </TableCell>
+
+                  <TableCell> 
+                    <Button
+                      component={Link}
+                      onClick={ ()=> history.push(`/ae/${equipment.id}`)}
+                      variant="outlined"
+                      disableElevation
+                      className={classes.buttonAdd}
+                    >
+                      Detalhes
+                    </Button>
+          
+                    <Button
+                      component={Link}
+                      onClick={ ()=> history.push(`/funcionamentoequipamento/${equipment.id}`)}
+                      variant="outlined"
+                      disableElevation
+                      className={classes.buttonAdd_2}
+                    >
+                      Dados
+                    </Button>
+
+                    <Button
+                      component={Link}
+                      // to={`/funcionamentoequipamento/${equipment.id}`}
+                      variant="outlined"
+                      disableElevation
+                      className={classes.buttonAdd_3}
+                    >
+                     Manutenções
+                    </Button>
+
+                    </TableCell>
 
                 </TableRow>
               )

@@ -203,47 +203,49 @@ export default function ListagemEquipamento() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
-            Equipamentos
-          </Typography>
-          <Button
-            component={Link}
-            to="/cadastroequipamento"
-            className={classes.buttonAdd}
-          >
-            Adicionar Novo
-          </Button>
-        </div>
-        <div className={classes.searchplusfilter}>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+        <div className={classes.superior}>
+            <div className={classes.header}>
+              <Typography variant="h3" className={classes.title}>
+                Equipamentos
+              </Typography>
+              <Button
+                component={Link}
+                to="/cadastroequipamento"
+                className={classes.buttonAdd}
+              >
+                Adicionar Novo
+              </Button>
             </div>
-            <div className={classes.searchInput}>
-              <InputBase
-                className={classes.placeholder}
-                placeholder="Procurar equipamento"
-                onChange={(e) => FindEquipment(e.target.value)}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.input,
-                }}
-              />
-            </div>
+            <div className={classes.searchplusfilter}>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <div className={classes.searchInput}>
+                  <InputBase
+                    className={classes.placeholder}
+                    placeholder="Procurar equipamento"
+                    onChange={(e) => FindEquipment(e.target.value)}
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.input,
+                    }}
+                  />
+                </div>
+              </div>
+              <FormControl className={classes.filter}>
+                <Select
+                  className={classes.selectItens}
+                  value={filterby}
+                  onChange={(e) => setFilterby(e.target.value)}
+                  variant="outlined"
+                >
+                  {/* <MenuItem value="cpf_client">Cliente</MenuItem> */}
+                  <MenuItem value="id_model">Modelo</MenuItem>
+                  <MenuItem value="equipment_code">Código do Equipamento</MenuItem>
+                </Select>
+              </FormControl>
           </div>
-          <FormControl className={classes.filter}>
-            <Select
-              className={classes.selectItens}
-              value={filterby}
-              onChange={(e) => setFilterby(e.target.value)}
-              variant="outlined"
-            >
-              {/* <MenuItem value="cpf_client">Cliente</MenuItem> */}
-              <MenuItem value="id_model">Modelo</MenuItem>
-              <MenuItem value="equipment_code">Código do Equipamento</MenuItem>
-            </Select>
-          </FormControl>
         </div>
         <div className={classes.table}>
           <StickyHeadTable

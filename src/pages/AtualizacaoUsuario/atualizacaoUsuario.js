@@ -187,6 +187,8 @@ function AtualizacaoUsuario(props) {
           birthdate: userData.type === "PJ" ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
           password: userData.password,
+          corporate_name: userData.corporate_name,
+          state_registration: userData.state_registration
         };
 
         if (validateAllFields(updatedFields)) {

@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext} from "react";
 import { Link, useLocation,  useHistory  } from "react-router-dom";
 import {CssBaseline,Paper, Button} from "@material-ui/core";
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
-import { useStyles } from "./manuntencaoStyle";
+import { useStyles } from "./manutencaoStyle";
 import { useParams } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
 import api from '../../services/api';
 import moment from 'moment';
 
 
-export default function Manuntencao() {
+export default function Manutencao() {
   const { id } = useParams();
   const history = useHistory();
 
@@ -63,7 +63,7 @@ export default function Manuntencao() {
             <React.Fragment>
               <CssBaseline />
               <div className={classes.root}>
-                <h1 className={classes.title}>Manuntenção</h1>
+                <h1 className={classes.title}>Manutenção</h1>
                 <Paper className={classes.containerForm} elevation={0}>
                   <div className={classes. centralizar} >
                     <form >

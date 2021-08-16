@@ -24,7 +24,7 @@ import EsqueciSenha from "./pages/EsqueciSenha";
 import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
 import RoutesPrivate from "./components/Routes/Private/Private";
 import Perfil from "./pages/Perfil/Perfil";
-import Manuntencao from "./pages/Manuntecao/manuntencao";
+import Manutencao from "./pages/Manutencao/manutencao";
 import { useStyles } from "./routesStyles";
 
 function Routes() {
@@ -125,8 +125,8 @@ function Routes() {
                   component={Manuntencao}
                 /> */}
                  <RoutesPrivate
-                  path="/manuntencao"
-                  component={Manuntencao}
+                  path="/manutencao"
+                  component={Manutencao}
                 />
 
                 {/* Páginas para Testes */}

@@ -23,6 +23,7 @@ import Testes from "./pages/Testes";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
 import RoutesPrivate from "./components/Routes/Private/Private";
+import RoutesPublic from "./components/Routes/Private/PublicRestricted";
 import Perfil from "./pages/Perfil/Perfil";
 import UnAuthorized from "./pages/unAuthorized";
 
@@ -43,9 +44,10 @@ function Routes() {
           <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
 
           {/* Acesso não autorizado */}
-          <RoutesPrivate
+          <RoutesPublic
            path="/unAuthorized"
            component={UnAuthorized}
+           restricted
           />
 
           <Fragment>
@@ -53,7 +55,7 @@ function Routes() {
             <div className={classes.spaceContent}>
               <DataContextProvider>
                 {/* DashBoard */}
-                <RoutesPrivate path="/dashboard" component={Dashboard} />
+                <RoutesPublic path="/dashboard" component={Dashboard} restricted/>
 
                 {/* Listagem de Usuários via Dashboard
                 <Route path="/listagemdashboard/:situacao" component={ListagemDashboard} /> */}
@@ -89,26 +91,27 @@ function Routes() {
                 />
 
                 {/* Listagem de Equipamentos */}
-                <RoutesPrivate
+                <RoutesPublic
                   path="/listagemequipamento"
                   component={ListagemEquipamento}
+                  restricted
                 />
 
                 {/* Atualização de Usuários */}
                 <RoutesPrivate path="/au" exact>
-                  <Redirect to="/" />
+                  <Redirect to="/unAuthorized" />
                 </RoutesPrivate>
-                <RoutesPrivate path="/au/:id" component={Perfil} />
+                <RoutesPublic path="/au/:id" component={Perfil} restricted />
 
                 {/* Atualização de Modelo */}
                 <RoutesPrivate path="/am" exact>
-                  <Redirect to="/" />
+                  <Redirect to="/unAuthorized" />
                 </RoutesPrivate>
                 <RoutesPrivate path="/am/:id" component={AtualizacaoModelo} />
 
                 {/* Atualização de Equipamentos */}
                 <RoutesPrivate path="/ae" exact>
-                  <Redirect to="/" />
+                  <Redirect to="/unAuthorized"/>
                 </RoutesPrivate>
                 <RoutesPrivate
                   path="/ae/:id"

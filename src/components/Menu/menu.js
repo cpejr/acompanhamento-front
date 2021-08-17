@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import history from '../../history'
 import clsx from 'clsx';
-
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
@@ -24,7 +23,6 @@ import {
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
-
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
 import { AuthContext } from '../../context/AuthContext';
@@ -38,10 +36,12 @@ export default function Menu() {
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [user, setUser] = useState();
+ 
   function Client() {
     if(UserType === "PF" || UserType === "PJ") return true;
       return false;
   }
+  
   const isClient = Client();
   console.log(isClient, "cliente ou nao");
   useEffect(() => {

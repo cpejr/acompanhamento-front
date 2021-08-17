@@ -18,10 +18,9 @@ export const LoginContextProvider = (props) => {
     return localStorage.getItem("token");
   }
 
-  async function getUser() {
+  function getData() {
     const token = localStorage.getItem("token");
-
-    const userAux = jwt.verify(
+    const aux = jwt.verify(
       token,
       process.env.REACT_APP_ACCESS_TOKEN_SECRET,
       (err, data) => {
@@ -29,25 +28,26 @@ export const LoginContextProvider = (props) => {
         return data;
       }
     );
-    // const response = await api.get(`/user/${userData.id}`);
-    // console.log(userAux.userData, "userData");
-    // return response.data.user;
+    return aux;
+  }
+
+  function getUser() {
+    const userAux = getData();
     return userAux.userData;
   }
 
   function getUserId() {
-    const token = localStorage.getItem("token");
-    const userAux = 
-      jwt.verify(token, process.env.REACT_APP_ACCESS_TOKEN_SECRET, (err, data) => {
-        if (err) return err;
-        return data;
-    });
-    // console.log(userAux, "userAux");
+    const userAux = getData();
     return userAux.userData.id;
   }
 
+  function getUserType() {
+    const userAux = getData();
+    return userAux.userData.type;
+  }
+
   return (
-    <LoginContext.Provider value={{ signIn, logOut, getUser, getUserId, getToken }}>
+    <LoginContext.Provider value={{ signIn, logOut, getUser, getUserId, getToken, getUserType}}>
       {props.children}
     </LoginContext.Provider>
   );

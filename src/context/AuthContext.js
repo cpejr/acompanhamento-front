@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import CreatePeople from '../services/people';
 import api from '../services/api';
-import { Backdrop, CircularProgress, makeStyles, Snackbar } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Backdrop, CircularProgress, makeStyles, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 const AuthContext = createContext();
 
@@ -40,9 +40,6 @@ function AuthContextProvider({ children }) {
     setOpenMensage(prev => ({ ...prev, open: true, message, type, time }));
   }
 
-  // const isClient = user.role === "Cliente";
-  const isClient = false;
-
   if (loading) {
     return (
       <React.Fragment>
@@ -54,7 +51,7 @@ function AuthContextProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isClient, sendMessage }}>
+    <AuthContext.Provider value={{ user, sendMessage }}>
 
       {children}
 

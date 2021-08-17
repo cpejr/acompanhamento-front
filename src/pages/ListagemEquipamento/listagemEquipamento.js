@@ -23,8 +23,13 @@ import { LoginContext } from '../../context/LoginContext';
 export default function ListagemEquipamento() {
 
   const classes = useStyles();
-  const { getToken } = useContext(LoginContext);
+  const { getToken, getUserType } = useContext(LoginContext);
 	const accessToken = getToken();
+  const UserType = getUserType();
+  const isClient = (res)=>{
+    if(UserType === "PF" || UserType === "PJ") return true;
+    return false;
+  };
 
   const [filterby, setFilterby] = useState("equipment_code");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);

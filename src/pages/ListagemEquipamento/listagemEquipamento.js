@@ -23,7 +23,7 @@ import { LoginContext } from '../../context/LoginContext';
 export default function ListagemEquipamento() {
 
   const classes = useStyles();
-  const { getToken, getUserType } = useContext(LoginContext);
+  const { getToken, getUserType, getUserId} = useContext(LoginContext);
 	const accessToken = getToken();
   const UserType = getUserType();
   const isClient = (res)=>{
@@ -50,14 +50,18 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
-  const userId = query.get("userid");
-  
-  useEffect(() => {
+  // const userId = query.get("userid");
+  const userId = getUserId();
 
-    const url = situation
+  useEffect(() => {
+   var url ="";
+    if(isClient){
+      url = `equipments/${userId}`
+    }else{
+      url = situation
       ? `equipment/find_situation/${situation}`
       : "equipment/index";
-
+    }
     api
       .get(url, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((equipment) => {
@@ -86,7 +90,7 @@ export default function ListagemEquipamento() {
         );
       });
 
-  }, [accessToken, situation]);
+  }, [accessToken, situation, userId,]);
 
   useEffect(() => {
 
@@ -124,7 +128,8 @@ export default function ListagemEquipamento() {
   }, [equipmentsOriginal]);
 
   useEffect (()=>{
-    async function getEquipmentsByUser(){
+    if(!isClient){
+      async function getEquipmentsByUser(){
       if(userId){
       await api.get(`/user/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response)=>{
         const idEquipments = response.data.user.id_equipments;
@@ -141,7 +146,7 @@ export default function ListagemEquipamento() {
       }
     }
     getEquipmentsByUser();
-
+    }
   },
   [accessToken, equipmentsOriginal, userId]
    )

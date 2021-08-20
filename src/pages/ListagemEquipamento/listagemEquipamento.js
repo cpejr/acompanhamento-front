@@ -262,6 +262,7 @@ export default function ListagemEquipamento() {
                 id_model: equipment.id_model,
                 cpf_client: "", // inicialmente fica vazia
                 updatedAt: formattedDate,
+                maintenance: equipment.maintenance, 
               };
             })}
             setOrdem={setOrdem}

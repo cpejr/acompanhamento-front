@@ -98,6 +98,7 @@ export default function StickyHeadTable(props) {
                     <Button
                       component={Link}
                       // to={`/funcionamentoequipamento/${equipment.id}`}
+                      onClick={ ()=> history.push(`/manutencao/${equipment.id}`)}
                       variant="outlined"
                       disableElevation
                       className={classes.buttonAdd_3}

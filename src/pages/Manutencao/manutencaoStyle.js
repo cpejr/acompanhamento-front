@@ -24,7 +24,10 @@ export const useStyles = makeStyles(theme => ({
   input:{
     minHeight:"100vh",
     minWidth:"50vw",
-    marginLeft:"20vh",
+    // marginLeft:"20vh",
+    [theme.breakpoints.only("xs")]: {
+      // marginLeft:"1px",
+    },
 
     },
   // textForm:{    
@@ -34,6 +37,7 @@ export const useStyles = makeStyles(theme => ({
   //   flexDirection: "center",
   //   [theme.breakpoints.only("xs")]: {
   //     padding: "100px 5%",
+  //     marginLeft:"1%",
   //   },
   // },
   title: {
@@ -66,22 +70,22 @@ export const useStyles = makeStyles(theme => ({
     marginBottom:"10px",
     alignItems:"center",
 
-    borderRadius: "2px",
-    "&:first-child": {
-      background: props => props.updating ? verde : azulPadrao,
-    },
-    "&:last-child": {
-      background: vermelhoPadrao
-    },
-    [theme.breakpoints.only("xs")]: {
-      margin: "0",
-      margin: "15px 5px 0",
-      "&:first-child": {
-        marginRight: "10px"
-      },
-      "&:last-child": {
-        marginLeft: "10px"
-      },
-    },
+    // borderRadius: "2px",
+    // "&:first-child": {
+    //   background: props => props.updating ? verde : azulPadrao,
+    // },
+    // "&:last-child": {
+    //   background: vermelhoPadrao
+    // },
+    // [theme.breakpoints.only("xs")]: {
+    //   margin: "0",
+    //   margin: "15px 5px 0",
+    //   "&:first-child": {
+    //     marginRight: "10px"
+    //   },
+    //   "&:last-child": {
+    //     marginLeft: "10px"
+    //   },
+    // },
   },
 }))

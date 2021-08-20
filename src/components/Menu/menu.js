@@ -30,20 +30,13 @@ import { LoginContext } from "../../context/LoginContext";
 
 export default function Menu() {
   const classes = useStyles();
-  const { logOut, getUser, getUserType } = useContext(LoginContext);
+  const { logOut, getUser, IsClient } = useContext(LoginContext);
+  const isClient = IsClient();
   
-  const UserType = getUserType();
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [user, setUser] = useState();
- 
-  function Client() {
-    if(UserType === "PF" || UserType === "PJ") return true;
-      return false;
-  }
   
-  const isClient = Client();
-  console.log(isClient, "cliente ou nao");
   useEffect(() => {
     async function getUserFromSession() {
       const user = await getUser();

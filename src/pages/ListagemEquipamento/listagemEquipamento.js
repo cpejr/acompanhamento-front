@@ -23,13 +23,10 @@ import { LoginContext } from '../../context/LoginContext';
 export default function ListagemEquipamento() {
 
   const classes = useStyles();
-  const { getToken, getUserType, getUserId} = useContext(LoginContext);
+  const { getToken, getUserId, IsClient} = useContext(LoginContext);
 	const accessToken = getToken();
-  const UserType = getUserType();
-  const isClient = (res)=>{
-    if(UserType === "PF" || UserType === "PJ") return true;
-    return false;
-  };
+  const isClient = IsClient();
+  const userId = getUserId();
 
   const [filterby, setFilterby] = useState("equipment_code");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
@@ -50,18 +47,11 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
-  // const userId = query.get("userid");
-  const userId = getUserId();
 
   useEffect(() => {
-   var url ="";
-    if(isClient){
-      url = `equipments/${userId}`
-    }else{
-      url = situation
+    const url = situation
       ? `equipment/find_situation/${situation}`
       : "equipment/index";
-    }
     api
       .get(url, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((equipment) => {
@@ -76,59 +66,54 @@ export default function ListagemEquipamento() {
           err
         );
       });
-
-    api
-      .get(`/model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
-      .then((model) => {
-        setModelList(model.data.data);
-        setLoading((prev) => ({ ...prev, model: false }));
-      })
-      .catch((err) => {
-        console.error(
-          "Não foi possivel estabelecer conexão com o backend",
-          err
-        );
-      });
-
+        api
+          .get(`/model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
+          .then((model) => {
+            setModelList(model.data.data);
+            setLoading((prev) => ({ ...prev, model: false }));
+          })
+          .catch((err) => {
+            console.error(
+              "Não foi possivel estabelecer conexão com o backend",
+              err
+            );
+          });
   }, [accessToken, situation, userId,]);
 
   useEffect(() => {
 
-    setEquipmentsOriginal((velhosEquip) => {
-
-      return velhosEquip.map((equipment) => {
+      setEquipmentsOriginal((velhosEquip) => {
+        return velhosEquip.map((equipment) => {
         if (modelList[0].id) {
-
           // equipment.equipment_model = modelList.find(
-          //   (model) => model.id === equipment.id_model
+            //   (model) => model.id === equipment.id_model
           // ).modelName;
-
+          
           const selected = modelList.find(
             (model) => model.id === equipment.id_model
           );
-
           if (selected) {
             equipment.equipment_model = selected.modelName;
           }
-
+          
         }
-
         return equipment;
       });
     });
-
+    
     setLoading((prev) => ({ ...prev, changeNameModel: false }));
+  
   }, [modelList]);
 
   useEffect(() => {
-
     setEquipmentsListToDisplay(equipmentsOriginal);
     setLoading((prev) => ({ ...prev, setDisplay: false }));
 
   }, [equipmentsOriginal]);
 
+  // para q esse useEffect? ele tava bugando a lista para um funcionario pq o if era: !isClient
   useEffect (()=>{
-    if(!isClient){
+    if(isClient){
       async function getEquipmentsByUser(){
       if(userId){
       await api.get(`/user/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response)=>{

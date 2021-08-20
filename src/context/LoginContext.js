@@ -7,7 +7,6 @@ export const LoginContext = createContext();
 export const LoginContextProvider = (props) => {
   function signIn(accessToken) {
     localStorage.setItem("token", accessToken);
-    api.defaults.headers.Authorization = `Bearer ${accessToken}`;
   }
 
   function logOut() {
@@ -46,8 +45,14 @@ export const LoginContextProvider = (props) => {
     return userAux.userData.type;
   }
 
+  function IsClient(){
+    const userType = getUserType();
+    if(userType === "Funcionario") return false;
+    return true;
+  }
+
   return (
-    <LoginContext.Provider value={{ signIn, logOut, getUser, getUserId, getToken, getUserType}}>
+    <LoginContext.Provider value={{ signIn, logOut, getUser, getUserId, getToken, getUserType, IsClient}}>
       {props.children}
     </LoginContext.Provider>
   );

@@ -85,9 +85,6 @@ export default function Login() {
         password: values.password,
       });
 
-      // console.log(response.data);
-
-
       if (response.data.accessToken) {
         const user = response.data.user;
         const token = response.data.accessToken;
@@ -95,7 +92,7 @@ export default function Login() {
         signIn(token);
 
         // atualiza a última data ativa
-        await api.put(`/user/${user[0].id}`, { active: formattedDateAndTime });
+        await api.put(`/user/${user[0].id}`, { active: formattedDateAndTime }, {headers: {authorization: `Bearer ${token}`}});
 
         sendMessage("Login efetuado com sucesso!", "success", 1000);
         setTimeout(() => {

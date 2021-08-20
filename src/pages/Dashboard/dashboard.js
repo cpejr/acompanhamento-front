@@ -6,15 +6,12 @@ import { vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao
 import api from "../../services/api";
 import Graphic from './Chart';
 import { DataContext } from '../../context/DataContext';
-import { AuthContext } from '../../context/AuthContext';
 import { LoginContext } from '../../context/LoginContext';
 
 export default function Dashboard() {
   const [equipmentsList, setEquipmentsList] = useState();
-  const { isClient } = useContext(AuthContext);
-  const { getToken, getUserId, getUserType } = useContext(LoginContext);
-  const UserType = getUserType();
-  const userId = getUserId();
+  const { getToken, IsClient } = useContext(LoginContext);
+  const isClient = IsClient();
   const accessToken = getToken();
   const [sitNum, setSitNum] = useState({
     ok: Number,
@@ -22,40 +19,7 @@ export default function Dashboard() {
     atencao: Number
   });
 
- 
-
-  // useEffect(() => {
-  //   api
-  //     .get("equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
-  //     .then((equipment) => {
-  //       var equipments = equipment.data.equipment;
-  //       setEquipmentsList(equipments);
-  //     })
-  //     .catch((err) => {
-  //       console.error(
-  //         "Não foi possivel estabelecer conecção com o backend",
-  //         err
-  //       );
-  //     });
-  // }, [accessToken]);
-
-
-  // Pegar equipamentos por usuario 
   useEffect(() => {
-    if(UserType === "PF" || UserType === "PJ"){
-      api
-      .get(`equipments/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}})
-      .then((response) => {
-        var equipment = response.data.equipments;
-        setEquipmentsList(equipment);
-      })
-      .catch((err) => {
-        console.error(
-          "Não foi possivel estabelecer conecção com o backend",
-          err
-        );
-      });
-    }
     api
       .get("equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((equipment) => {
@@ -68,7 +32,7 @@ export default function Dashboard() {
           err
         );
       });
-  }, [accessToken, userId, UserType]);
+  }, [accessToken]);
 
   useEffect(() => { // define o número de bombas em cada situação
     if (equipmentsList){

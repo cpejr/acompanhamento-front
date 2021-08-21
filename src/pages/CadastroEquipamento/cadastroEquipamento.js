@@ -125,24 +125,41 @@ export default function CadastroEquipamento(props) {
       sendMessage('Realizando cadastro...', 'info', null);
 
       try {
-        const resposta = await api.post('/equipment/create', data);
+        let createdEquipment;
+        
+        await api
+          .post('/equipment/create', data)
+          .then((response) => {
+            console.log(response);
+            createdEquipment = response;
+          })
+          .catch((error) => {
+            console.log(error.response);
+            if (error.response.status === 400) {
+              sendMessage(error.response.data.notification, "error")
+            } 
+          });
 
         let arrayEquipments = user.id_equipments;
 
-        if (arrayEquipments) {
-          arrayEquipments.push(resposta.data.id);
-        } else {
-          arrayEquipments = [resposta.data.id];
-        }
+        if (createdEquipment) {
 
-        // atualiza o vetor de id_equipments
-        await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments })
-        user.id_equipments = arrayEquipments;
-
-        if (resposta.data && resposta.data.id) {
-          setIdCadastrado(resposta.data.id);
-          sendMessage('Cadastrado com sucesso')
-        };
+          if (arrayEquipments) {
+            arrayEquipments.push(createdEquipment.data.id);
+          } else {
+            arrayEquipments = [createdEquipment.data.id];
+          }
+  
+          // atualiza o vetor de id_equipments
+          await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments })
+          user.id_equipments = arrayEquipments;
+  
+          if (createdEquipment.data && createdEquipment.data.id) {
+            setIdCadastrado(createdEquipment.data.id);
+            sendMessage('Cadastrado com sucesso')
+          };
+        } else return;
+        
       } catch (err) {
         sendMessage('Error 501: Falha no cadastro', 'error')
         console.warn(err);

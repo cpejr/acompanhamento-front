@@ -139,7 +139,6 @@ export default function ListagemEquipamento() {
   function FindEquipment(searchEquipment) {
       
     if (searchEquipment.length > 0) {
-
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
 

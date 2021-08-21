@@ -126,7 +126,7 @@ function Routes() {
 
               {/* Pagina para inserir texto de manutenção do equipmanento */}
               <RoutesPrivate
-                path="/manuntencao/:id"
+                path="/manutencao/:id"
                 component={Manutencao}
               />
 

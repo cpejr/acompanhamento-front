@@ -21,14 +21,14 @@ export default function StickyHeadTable(props) {
   const headerItems = [
     { title: "Modelo", ordemBy: "modelName" },
     { title: "Tipo", ordemBy: "type" },
-    { title: "Fabricante", ordemBy: "manufacturer" },
-    { title: "Ações" }
+    { title: "Fabricante", ordemBy: "manufacturer" }
   ]
 
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
+
           <TableHead>
             <TableRow>
               {headerItems.map(item => (
@@ -46,8 +46,13 @@ export default function StickyHeadTable(props) {
                   </TableSortLabel>
                 </TableCell>
               ))}
+
+              <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
+                Ações
+              </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {props.modelsListToDisplay
               .map(model => (
@@ -57,6 +62,7 @@ export default function StickyHeadTable(props) {
                   <TableCell>{model.manufacturer}
                     <Link to={`/am/${model.id}`} />
                   </TableCell>
+
                   <TableCell className={classes.lastTableCell} >
                     <Button
                       component={Link}
@@ -68,10 +74,17 @@ export default function StickyHeadTable(props) {
                       Dados
                     </Button>
                   </TableCell>
+                  
                 </TableRow>
               )
               )}
-            {props.modelsListToDisplay.length <= 0 ? <Typography className={classes.nullModel}> Este modelo não foi encontrado </Typography> : null}
+
+            { props.modelsListToDisplay.length <= 0 ? 
+              <Typography className={classes.nullModel}> 
+                Este modelo não foi encontrado 
+              </Typography> 
+              : null }
+
           </TableBody>
         </Table>
       </TableContainer>

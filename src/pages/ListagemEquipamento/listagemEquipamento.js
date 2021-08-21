@@ -43,7 +43,7 @@ export default function ListagemEquipamento() {
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
   const userId = query.get("userid");
-  
+
   useEffect(() => {
 
     const url = situation
@@ -106,27 +106,27 @@ export default function ListagemEquipamento() {
 
   useEffect(() => {
 
-    async function getEquipmentsByUser(){
+    async function getEquipmentsByUser() {
 
       if (userId) {
-      await api
-        .get(`/user/${userId}`)
-        .then((response) => {
-          const idEquipments = response.data.user.id_equipments;
+        await api
+          .get(`/user/${userId}`)
+          .then((response) => {
+            const idEquipments = response.data.user.id_equipments;
 
-          let auxVector = [];
-          if (idEquipments) {
-            equipmentsOriginal.forEach((equipment) => {
-              if (idEquipments.includes(equipment.id)) {
-                auxVector.push(equipment);
-              }
-            })
-          }
-          setEquipmentsListToDisplay(auxVector);
-        })
-        .catch((error => {
-          console.error("Erro ao buscar usuário", error);
-        }))
+            let auxVector = [];
+            if (idEquipments) {
+              equipmentsOriginal.forEach((equipment) => {
+                if (idEquipments.includes(equipment.id)) {
+                  auxVector.push(equipment);
+                }
+              })
+            }
+            setEquipmentsListToDisplay(auxVector);
+          })
+          .catch((error => {
+            console.error("Erro ao buscar usuário", error);
+          }))
       }
     }
 
@@ -137,7 +137,7 @@ export default function ListagemEquipamento() {
   }, [equipmentsOriginal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function FindEquipment(searchEquipment) {
-      
+
     if (searchEquipment.length > 0) {
 
       const equipmentsListToDisplay = [];
@@ -174,7 +174,7 @@ export default function ListagemEquipamento() {
       </React.Fragment>
     );
   }
-  
+
   return (
     <>
       <div className={classes.root}>
@@ -190,13 +190,12 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
-        
+
         <div className={classes.searchplusfilter}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-
             <div className={classes.searchInput}>
               <InputBase
                 className={classes.placeholder}
@@ -208,39 +207,20 @@ export default function ListagemEquipamento() {
                 }}
               />
             </div>
-
-            <div className={classes.searchplusfilter}>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <div className={classes.searchInput}>
-                  <InputBase
-                    className={classes.placeholder}
-                    placeholder="Procurar equipamento"
-                    onChange={(e) => FindEquipment(e.target.value)}
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.input,
-                    }}
-                  />
-                </div>
-              </div>
-
-              <FormControl className={classes.filter}>
-                <Select
-                  className={classes.selectItens}
-                  value={filterby}
-                  onChange={(e) => setFilterby(e.target.value)}
-                  variant="outlined"
-                >
-                  {/* <MenuItem value="cpf_client">Cliente</MenuItem> */}
-                  <MenuItem value="id_model">Modelo</MenuItem>
-                  <MenuItem value="equipment_code">Código do Equipamento</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
           </div>
+
+          <FormControl className={classes.filter}>
+            <Select
+              className={classes.selectItens}
+              value={filterby}
+              onChange={(e) => setFilterby(e.target.value)}
+              variant="outlined"
+            >
+              {/* <MenuItem value="cpf_client">Cliente</MenuItem> */}
+              <MenuItem value="id_model">Modelo</MenuItem>
+              <MenuItem value="equipment_code">Código do Equipamento</MenuItem>
+            </Select>
+          </FormControl>
         </div>
 
         <div className={classes.table}>
@@ -258,7 +238,7 @@ export default function ListagemEquipamento() {
                 id_model: equipment.id_model,
                 cpf_client: "", // inicialmente fica vazia
                 updatedAt: formattedDate,
-                maintenance: equipment.maintenance, 
+                maintenance: equipment.maintenance,
               };
             })}
             setOrdem={setOrdem}

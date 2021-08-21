@@ -57,11 +57,12 @@ export const useStyles = makeStyles((theme) => ({
     }
   },
 
-  // lastTableCell: {
-  //   display: "flex",
-  //   justifyContent: "space-between",
-  //   alignItems: "center"
-  // },
+  lastTableCell: {
+    display: "flex",
+    flexDirection: "center",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
   nullEquipament: {
     padding: "18px",

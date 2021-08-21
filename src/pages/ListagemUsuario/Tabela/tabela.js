@@ -4,7 +4,7 @@ import { useStyles } from "./tabelaStyle";
 import {
   Button,
   Paper,
-  Table, 
+  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -41,13 +41,22 @@ export default function StickyHeadTable({
               </TableCell>
               <TableCell className={classes.tableCell}>Função</TableCell>
               <TableCell className={classes.tableCell}>
-                Última data ativa
+                <TableSortLabel
+                  active
+                  direction={ordemAlfabetica ? "desc" : "asc"}
+                  onClick={() =>
+                    setOrdemAlfabetica(!ordemAlfabetica)
+                  }
+                >
+                  Útima data ativa
+                </TableSortLabel>
               </TableCell>
               <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
                 Ações
               </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {usersListToDisplay.map((user) => (
               <TableRow hover key={user.id}>
@@ -58,7 +67,7 @@ export default function StickyHeadTable({
                   {user.funcao}{" "}
                 </TableCell>
                 <TableCell>
-                  {user.data}
+                  { user.data }
                 </TableCell>
 
                 <TableCell className={classes.lastTableCell} >
@@ -72,7 +81,7 @@ export default function StickyHeadTable({
                     Equipamentos
                   </Button>
 
-                  <Button 
+                  <Button
                     component={Link}
                     to={`/au/${user.id}`}
                     variant="outlined"
@@ -86,11 +95,13 @@ export default function StickyHeadTable({
 
               </TableRow>
             ))}
+
             {usersListToDisplay.length <= 0 ? (
               <Typography className={classes.nullUser}>
                 Este usuário não foi encontrado{" "}
               </Typography>
             ) : null}
+
           </TableBody>
         </Table>
       </TableContainer>

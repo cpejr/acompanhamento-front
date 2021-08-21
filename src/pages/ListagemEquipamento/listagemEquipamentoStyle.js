@@ -15,12 +15,12 @@ export const useStyles = makeStyles(theme => ({
   header: {
     display: "flex",
     flexDirection: "row",
-    // justifyContent: "flex-start",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     [theme.breakpoints.only("xs")]: {
       justifyContent: "space-between",
     },
   },
+
   title: {
     position: "relative",
     fontFamily: titlesFontFamilyPadrao,
@@ -107,19 +107,14 @@ export const useStyles = makeStyles(theme => ({
       width: "270px",
     }
   },
-
+  
   table: {
     marginTop: "30px",
-    marginLeft:"50px",
-    [theme.breakpoints.down('sm')]: {
-      marginLeft:"1px",
-    }
   },
 
   searchplusfilter: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
     [theme.breakpoints.down('sm')]: {
       flexDirection: "column"
     }

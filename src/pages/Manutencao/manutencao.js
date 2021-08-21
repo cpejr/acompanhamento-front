@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext} from "react";
-import { useHistory  } from "react-router-dom";
-import {CssBaseline,Paper, Button, CircularProgss} from "@material-ui/core";
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { CssBaseline, Paper, Button, CircularProgss, TextField } from "@material-ui/core";
 
 import { useStyles } from "./manutencaoStyle";
 import { useParams } from 'react-router';
@@ -26,18 +26,18 @@ export default function Manutencao() {
 
   // pega os dados do usuário com o id
   useEffect(() => {
-    console.log(id);
     try {
-       api 
-      .get(`/equipment/${id}`)
-      .then((response) => {
-        setEquipmentData(response.data.equipment);
-        setEquipmentDataOriginal(response.data.equipment);
-      })
+      api
+        .get(`/equipment/${id}`)
+        .then((response) => {
+          setEquipmentData(response.data.equipment);
+          setEquipmentDataOriginal(response.data.equipment);
+        })
     } catch (error) {
       console.warn(error);
-        alert("Erro ao buscar Equipamentos");
-    }},
+      alert("Erro ao buscar Equipamentos");
+    }
+  },
     [id]);
 
   function handleChangeInput(event) {
@@ -56,17 +56,17 @@ export default function Manutencao() {
         const updatedFields = {
           maintenance: document.getElementById("input").value
         }
-          api
-            .put(`/equipment/${id}`, updatedFields)
-            .then((response) => {
-              console.log(response);
-              sendMessage("Manutenção atualizada com sucesso!", "success");
-            })
+        api
+          .put(`/equipment/${id}`, updatedFields)
+          .then((response) => {
+            console.log(response);
+            sendMessage("Manutenção atualizada com sucesso!", "success");
+          })
 
-          setUpdating(false);
-          setLoading(false);
-        }
-         catch (error) {
+        setUpdating(false);
+        setLoading(false);
+      }
+      catch (error) {
         console.log(error);
 
         sendMessage("Falha ao atualizar a manutenção", "error");
@@ -76,42 +76,50 @@ export default function Manutencao() {
   }
 
 
-    return (
-            <React.Fragment>
-              <CssBaseline />
-              <div className={classes.root}>
-                <h1 className={classes.title}>Manutenção</h1>
-                <Paper className={classes.containerForm} elevation={0}>
-                  <div className={classes.centralizar} >
-                    <form >
-                    <label className={classes.textForm}>
-                    <textarea id="input" className={classes.input} type="text" size="100" maxLength="default" > 
-                    </textarea>
-                    </label>
-                    </form>
-                    <div className={classes.centralizar2}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.btn}
-                        onClick={handleChangeInput}
-                      >
-                      Editar
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.btn}
-                        onClick={handleSubmit}
-                      >
-                      Salvar
-                      </Button>
-                      
-                    </div>
-                  </div>
-                </Paper>
-              </div>
-            </React.Fragment>
-          );
-    
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <div className={classes.root}>
+        <h1 className={classes.title}>Manutenção</h1>
+        <Paper className={classes.containerForm} elevation={0}>
+          <div className={classes.centralizar} >
+
+            <TextField
+              name="name"
+              label="Manutenção"
+              type="text"
+              variant="filled"
+              required
+              multiline
+              minRows={10}
+              maxRows={20}
+              fullWidth
+              disabled={false}
+            />
+
+            <div className={classes.centralizar2}>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+                onClick={handleChangeInput}
+              >
+                Editar
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+                onClick={handleSubmit}
+              >
+                Salvar
+              </Button>
+
+            </div>
+          </div>
+        </Paper>
+      </div>
+    </React.Fragment>
+  );
+
 }

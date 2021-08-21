@@ -18,18 +18,17 @@ import history from '../../../history'
 import LinkMenu from '../../../components/LinkMenu'
 
 export default function StickyHeadTable(props) {
-  
+
   const classes = useStyles();
   const { ordem, setOrdem } = props;
   const [openMenu, setOpenMenu] = React.useState("");
-  
+
 
   const headerItems = [
     { title: "Código do Equipamento", ordemBy: "equipment_code" },
     // { title: "Modelo", ordemBy: "id_model" },
     { title: "CPF cliente", ordemBy: "cpf_client" },
-    { title: "Última visita", ordemBy: "last_visit" },
-    { title: "Ações"},
+    { title: "Última visita", ordemBy: "last_visit" }
   ]
 
 
@@ -37,6 +36,7 @@ export default function StickyHeadTable(props) {
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
+
           <TableHead>
             <TableRow>
               {headerItems.map(item => (
@@ -54,6 +54,10 @@ export default function StickyHeadTable(props) {
                   </TableSortLabel>
                 </TableCell>
               ))}
+
+              <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
+                Ações
+              </TableCell>
             </TableRow>
           </TableHead>
 
@@ -63,31 +67,25 @@ export default function StickyHeadTable(props) {
               .map(equipment => (
 
                 <TableRow hover tabIndex={-1} key={equipment.equipment_code}>
-                  
+
                   <TableCell>{equipment.equipment_code}</TableCell>
 
                   <TableCell>{equipment.cpf_client}</TableCell>
 
-                  <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
-                    {/* <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
-                      <FiMoreHorizontal size={24} color="#C4C4C4" />
-                    </LinkMenu> */}
-                  </TableCell>
+                  <TableCell>{equipment.updatedAt}</TableCell>
 
-                  <TableCell> 
+                  <TableCell className={classes.lastTableCell} >
                     <Button
-                      component={Link}
-                      onClick={ ()=> history.push(`/ae/${equipment.id}`)}
+                      onClick={() => history.push(`/ae/${equipment.id}`)}
                       variant="outlined"
                       disableElevation
                       className={classes.buttonAdd}
                     >
                       Detalhes
                     </Button>
-          
+
                     <Button
-                      component={Link}
-                      onClick={ ()=> history.push(`/funcionamentoequipamento/${equipment.id}`)}
+                      onClick={() => history.push(`/funcionamentoequipamento/${equipment.id}`)}
                       variant="outlined"
                       disableElevation
                       className={classes.buttonAdd_2}
@@ -96,21 +94,18 @@ export default function StickyHeadTable(props) {
                     </Button>
 
                     <Button
-                      component={Link}
-                      // to={`/funcionamentoequipamento/${equipment.id}`}
-                      onClick={ ()=> history.push(`/manutencao/${equipment.id}`)}
+                      onClick={() => history.push(`/manutencao/${equipment.id}`)}
                       variant="outlined"
                       disableElevation
                       className={classes.buttonAdd_3}
                     >
-                     Manutenções
+                      Manutenções
                     </Button>
-
-                    </TableCell>
+                  </TableCell>
 
                 </TableRow>
               )
-            )}
+              )}
 
             {props.equipmentsListToDisplay.length <= 0 ? <Typography className={classes.nullEquipament}> Este equipamento não foi encontrado </Typography> : null}
           </TableBody>

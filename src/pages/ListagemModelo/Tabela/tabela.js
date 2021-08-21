@@ -13,7 +13,6 @@ import {
   TableSortLabel,
   Typography
 } from '@material-ui/core';
-import { FiMoreHorizontal } from "react-icons/fi"
 
 export default function StickyHeadTable(props) {
   const classes = useStyles();

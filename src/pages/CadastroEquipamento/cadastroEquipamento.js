@@ -1,17 +1,21 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   CssBaseline,
   Typography,
   TextField,
   Button,
+  Grid,
   CircularProgress,
-  Backdrop
+  Backdrop,
+  Paper,
+  useMediaQuery,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+  MenuItem
 } from "@material-ui/core"
-import { Autocomplete } from '@material-ui/lab'
-import MaskedInput from 'react-text-mask'
 import { useStyles } from './cadastroEquipamentoStyle';
-import nextInput from '../../services/nextInput';
-import findError from '../../services/findError';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
@@ -23,8 +27,8 @@ export default function CadastroEquipamento(props) {
 
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
-  const { getUser } = useContext(LoginContext); 
-
+  const { getUser } = useContext(LoginContext);
+  const isMobile = useMediaQuery("(min-width:960px)");
 
   const [error, setError] = React.useState({
     cpf_client: "",
@@ -50,7 +54,7 @@ export default function CadastroEquipamento(props) {
     zipcode: "",
   });
 
-  //pegar modelos
+  // pegar modelos
   React.useEffect(() => {
 
     api.get('model/index')
@@ -70,7 +74,27 @@ export default function CadastroEquipamento(props) {
     }
 
     getUserFromSession();
-  }, [])
+
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function validateAllFields(data) {
+
+    if (
+      !data.id_model ||
+      !data.equipment_code ||
+      !data.installation_date
+      ) {
+      sendMessage("Há campos vazios!", "error");
+      return false;
+    }
+
+    if (data.zipcode !== "" && data.zipcode.length < 8) {
+      sendMessage("CEP inválido!", "error");
+      return false;
+    }
+
+    return true;
+  }
 
   async function handleSubmit(event) {
 
@@ -83,7 +107,8 @@ export default function CadastroEquipamento(props) {
 
     if (isAfter(parseISO(formData.installation_date), new Date()))
       setError(prev => ({ ...prev, installation_date: "Data inválida!" }))
-    else {
+
+    else if (validateAllFields(formData)) {
 
       const data = {
         id_model: formData.id_model,
@@ -91,28 +116,23 @@ export default function CadastroEquipamento(props) {
         installation_date: formData.installation_date,
         initial_work: formData.installation_date,
         situation: formData.situation,
-        // cpf_client: formData.cpf_client,
         address: formData.address,
         zipcode: formData.zipcode,
+        observation: formData.observation
       }
-      console.log("Data: ", data);
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null);
-      
+
       try {
         const resposta = await api.post('/equipment/create', data);
-
-        console.log(resposta);
-
-        console.log(user);
 
         let arrayEquipments = user.id_equipments;
 
         if (arrayEquipments) {
           arrayEquipments.push(resposta.data.id);
         } else {
-          arrayEquipments = [ resposta.data.id ];
+          arrayEquipments = [resposta.data.id];
         }
 
         // atualiza o vetor de id_equipments
@@ -124,24 +144,22 @@ export default function CadastroEquipamento(props) {
           sendMessage('Cadastrado com sucesso')
         };
       } catch (err) {
-          sendMessage('Error 501: Falha no cadastro', 'error')
-          console.warn(err);
+        sendMessage('Error 501: Falha no cadastro', 'error')
+        console.warn(err);
       }
-          setOpenModal(true);
+      setOpenModal(true);
     }
   }
 
-  function handleChangeInput(event, valueA) {
+  function handleChangeInput(event, fromFormControl = false) {
 
     let { name, value } = event.target;
     let str = value;
 
-    if (valueA) { // from autocomplete
+    if (fromFormControl) { // vem do seletor de modelos
 
-      setFormData(prev => ({ ...prev, equipment_model: valueA }));
-      const selectedModel = models.find(model => model.modelName === valueA);
-      setFormData(prev => ({ ...prev, id_model: selectedModel.id }))
-
+      const selectedModel = models.find(model => model.id === value);
+      setFormData({ ...formData, id_model: selectedModel.id });
     } else {
 
       if (name === "zipcode") {
@@ -149,28 +167,8 @@ export default function CadastroEquipamento(props) {
       }
       setFormData({ ...formData, [name]: value });
     }
-      
+
   }
-
-  // Referencias (próximo a declaração de um ponteiro nulo)
-  const equipmentModelRef = useRef(null);
-  const idEquipmentRef = useRef(null);
-  const instalationDateRef = useRef(null);
-  const cpfClientRef = useRef(null);
-  const observationRef = useRef(null);
-  const addressRef = useRef(null);
-  const zipcodeRef = useRef(null);
-  const buttonSubmitRef = useRef(null);
-
-  const relacionamentosRef = [ // relacimento entre name e ref citada no App.js
-    { name: "equipment_model", ref: idEquipmentRef },
-    { name: "equipment_code", ref: instalationDateRef },
-    { name: "installation_date", ref: cpfClientRef },
-    { name: "cpf_client", ref: observationRef },
-    { name: "observation", ref: addressRef },
-    { name: "address", ref: zipcodeRef },
-    { name: "zipCode", ref: buttonSubmitRef }
-  ];
 
   const classes = useStyles();
 
@@ -192,127 +190,118 @@ export default function CadastroEquipamento(props) {
           Cadastro de um novo equipamento
         </Typography>
 
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <Paper className={classes.formContainer} elevation={0}>
 
-          <div className={classes.containerForm}>
-            <Autocomplete
-              className={classes.inputs}
-              options={models.map(model => model.modelName)}
-              onChange={handleChangeInput}
-              // value={formData.equipment_model}
-              renderInput={params => (
-                <TextField
-                  name="equipment_model"
-                  {...params}
-                  label="Modelo do equipamento"
-                  type="text"
-                  helperText="*Obrigatório"
-                  variant="filled"
-                  required
-                  autoComplete="off"
-                  autoFocus
-                  inputRef={equipmentModelRef}
-                  onKeyPress={e => nextInput(e, relacionamentosRef)}
-                />
-              )}
-            />
+          <Grid container spacing={isMobile ? 5 : 0} >
+            <Grid item xs={12} md={6} className={classes.grid}>
 
-            <TextField
-              name="equipment_code"
-              className={classes.inputs}
-              value={formData.equipment_code}
-              onChange={handleChangeInput}
-              label="Código do Equipamento"
-              type="text"
-              helperText="*Obrigatório"
-              variant="filled"
-              required
-              autoComplete="off"
-              inputRef={idEquipmentRef} // atribui um elemento a ref criada
-              onKeyPress={e => nextInput(e, relacionamentosRef)} // manda a tecla apertada para a função analizar
-            />
+              <FormControl variant="filled" className={classes.inputType}>
+                <InputLabel>Modelo do Equipamento</InputLabel>
+                <Select
+                  labelId="tipo"
+                  onChange={(e) => handleChangeInput(e, true)}
+                  value={formData.id_model}
+                >
+                  {models.map((model, index) => {
+                    return (
+                      <MenuItem key={index} value={model.id}>{model.modelName}</MenuItem>
+                    )
+                  })}
+                </Select>
+                <FormHelperText style={{ marginBottom: "16px" }}>*Obrigatório</FormHelperText>
+              </FormControl>
 
-            <TextField
-              name="installation_date"
-              className={classes.inputs}
-              value={formData.installation_date}
-              onChange={handleChangeInput}
-              label="Data de Instalação"
-              type="date"
-              helperText={error.installation_date === "" ? "*Obrigatório" : error.installation_date}
-              error={error.installation_date !== ""}
-              variant="filled"
-              autoComplete="off"
-              inputRef={instalationDateRef}
-              onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+              <TextField
+                name="equipment_code"
+                className={classes.inputs}
+                value={formData.equipment_code}
+                onChange={handleChangeInput}
+                label="Código do Equipamento"
+                type="text"
+                helperText="*Obrigatório"
+                variant="filled"
+                required
+                autoComplete="off"
+              />
 
-            {/* <TextField
-              name="cpf_client"
-              className={classes.inputs}
-              value={formData.cpf_client}
-              onChange={handleChangeInput}
-              label="CPF/CNPJ do cliente"
-              type="text"
-              helperText={error.cpf_client === "" ? "(Opcional)" : error.cpf_client}
-              error={error.cpf_client !== ""}
-              variant="filled"
-              inputRef={cpfClientRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            /> */}
+              <TextField
+                name="installation_date"
+                className={classes.inputs}
+                value={formData.installation_date}
+                onChange={handleChangeInput}
+                label="Data de Instalação"
+                type="date"
+                helperText={error.installation_date === "" ? "*Obrigatório" : error.installation_date}
+                error={error.installation_date !== ""}
+                variant="filled"
+                autoComplete="off"
+              />
 
-            <TextField
-              name="observation"
-              className={classes.inputs}
-              value={formData.observation}
-              onChange={handleChangeInput}
-              label="Observações"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              variant="filled"
-              inputRef={observationRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            </Grid>
 
-            <TextField
-              name="address"
-              className={classes.inputs}
-              value={formData.address}
-              onChange={handleChangeInput}
-              label="Endereço"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              variant="filled"
-              inputRef={addressRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+            <Grid item xs={12} md={6}>
 
-            <TextField
-              name="zipcode"
-              className={classes.inputs}
-              value={formData.zipcode}
-              onChange={handleChangeInput}
-              label="CEP"
-              type="text"
-              helperText="(Opcional)"
-              autoComplete="off"
-              variant="filled"
-              inputProps={{ maxLength: 8 }}
-              inputRef={zipcodeRef} onKeyPress={e => nextInput(e, relacionamentosRef)}
-            />
+              <TextField
+                name="observation"
+                className={classes.inputs}
+                value={formData.observation}
+                onChange={handleChangeInput}
+                label="Observações"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                variant="filled"
+              />
 
-            <ModalRedirect openModal={openModal} closeModal={() => setOpenModal(false)} linkId={()=> history.push(`/ae/` + idCadastrado)}/>
-            <div>
-              <Button type="submit"
-                ref={buttonSubmitRef} // neste caso o button pode ser acessado 
-                // diretamente por isso usamos ref={}
-                className={classes.buttonRegister}>
-                  Cadastrar
-              </Button>
-            </div>
+              <TextField
+                name="address"
+                className={classes.inputs}
+                value={formData.address}
+                onChange={handleChangeInput}
+                label="Endereço"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                variant="filled"
+              />
 
+              <TextField
+                name="zipcode"
+                className={classes.inputs}
+                value={formData.zipcode}
+                onChange={handleChangeInput}
+                label="CEP"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                variant="filled"
+                inputProps={{ maxLength: 8 }}
+              />
+
+            </Grid>
+
+          </Grid>
+
+
+          <div className={classes.buttonContainer}  >
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.buttonRegister}
+              onClick={handleSubmit}
+            >
+              Cadastrar
+            </Button>
           </div>
 
-        </form>
+          <ModalRedirect
+            openModal={openModal}
+            closeModal={() => setOpenModal(false)}
+            linkId={() => history.push(`/ae/` + idCadastrado)}
+          />
+
+        </Paper>
+
       </div>
 
     </React.Fragment>

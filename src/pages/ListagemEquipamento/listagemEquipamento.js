@@ -184,7 +184,7 @@ export default function ListagemEquipamento() {
   }
 
   return (
-    <React.Fragment>
+    <>
       <div className={classes.root}>
         <div className={classes.header}>
           <Typography variant="h3" className={classes.title}>
@@ -216,6 +216,7 @@ export default function ListagemEquipamento() {
               />
             </div>
           </div>
+
           <FormControl className={classes.filter}>
             <Select
               className={classes.selectItens}
@@ -245,6 +246,7 @@ export default function ListagemEquipamento() {
                 id_model: equipment.id_model,
                 cpf_client: "", // inicialmente fica vazia
                 updatedAt: formattedDate,
+                maintenance: equipment.maintenance,
               };
             })}
             setOrdem={setOrdem}
@@ -252,6 +254,6 @@ export default function ListagemEquipamento() {
           />
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }

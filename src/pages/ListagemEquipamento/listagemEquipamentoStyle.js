@@ -103,12 +103,13 @@ export const useStyles = makeStyles(theme => ({
     width: "430px",
     [theme.breakpoints.down('xs')]: {
       fontSize: "12px",
+      marginLeft:"12px",
       width: "270px",
     }
   },
-
+  
   table: {
-    marginTop: "30px"
+    marginTop: "30px",
   },
 
   searchplusfilter: {

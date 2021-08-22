@@ -23,7 +23,7 @@ import RoutesPrivate from "./components/Routes/Private/Private";
 import RoutesPublic from "./components/Routes/Private/PublicRestricted";
 import Perfil from "./pages/Perfil/Perfil";
 import UnAuthorized from "./pages/unAuthorized";
-
+import Manutencao from "./pages/Manutencao/manutencao";
 import { useStyles } from "./routesStyles";
 
 function Routes() {
@@ -124,11 +124,17 @@ function Routes() {
                 component={FuncionamentoEquipamento}
               />
 
+              {/* Pagina para inserir texto de manutenção do equipmanento */}
+              <RoutesPrivate
+                path="/manutencao/:id"
+                component={Manutencao}
+              />
+
             </div>
           </Fragment>
         </Switch>
       </LoginContextProvider>
-    </Router>
+    </Router >
   );
 }
 

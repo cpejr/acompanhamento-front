@@ -21,6 +21,7 @@ export default function Manutencao() {
   const [messageSnackbar, setMessageSnackbar] = useState("");
   const [typeSnackbar, setTypeSnackbar] = useState("info");
   const [loading, setLoading] = useState(false);
+  const [maintenance, setMaintenance] = useState("")
 
   const classes = useStyles({ updating });
 
@@ -52,10 +53,11 @@ export default function Manutencao() {
       setLoading(true);
 
       try {
-        console.log(id);
+        console.log(equipmentData);
         const updatedFields = {
-          maintenance: document.getElementById("input").value
+          maintenance: maintenance
         }
+        console.log(updatedFields);
         api
           .put(`/equipment/${id}`, updatedFields)
           .then((response) => {
@@ -85,7 +87,7 @@ export default function Manutencao() {
           <div className={classes.centralizar} >
 
             <TextField
-              name="name"
+              name="maintenance"
               label="Manutenção"
               type="text"
               variant="filled"
@@ -95,6 +97,8 @@ export default function Manutencao() {
               maxRows={20}
               fullWidth
               disabled={false}
+              onChange={(e) => setMaintenance(e.target.value)}
+              value={maintenance}
             />
 
             <div className={classes.centralizar2}>

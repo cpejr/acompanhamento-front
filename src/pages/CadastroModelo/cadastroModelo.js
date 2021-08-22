@@ -68,7 +68,7 @@ export default function CadastroModelo(props) {
 
   const classes = useStyles();
   const { sendMessage } = useContext(AuthContext);
-  const isMobile = useMediaQuery("(min-width:960px)");
+  const isDesktop = useMediaQuery("(min-width:960px)");
   const buttonSubmitRef = useRef(null);
 
   // Mecanismo do Form
@@ -191,7 +191,7 @@ export default function CadastroModelo(props) {
         <Paper className={classes.formContainer} elevation={0}>
           <form className={classes.form} onSubmit={handleSubmit}>
 
-            <Grid container spacing={isMobile ? 5 : 0} >
+            <Grid container spacing={isDesktop ? 5 : 0} >
               <Grid item xs={12} md={6}>
 
                 <TextField

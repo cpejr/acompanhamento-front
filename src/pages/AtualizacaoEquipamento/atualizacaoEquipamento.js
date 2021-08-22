@@ -30,9 +30,10 @@ import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 
 function AtualizacaoEquipamento() {
+
   const { id } = useParams();
   const history = useHistory();
-  const isMobile = useMediaQuery("(min-width:960px)");
+  const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
@@ -43,9 +44,13 @@ function AtualizacaoEquipamento() {
   const [error, setError] = useState({
     installation_date: "",
   });
+  const [clientId, setClientId] = useState("");
+  const [clientCpfCnpj, setClientCpfCnpj] = useState("");
+  const [disableCpfCnpj, setDisableCpfCnpj] = useState(false);
   const { sendMessage } = useContext(AuthContext);
 
-  const [modelId, setModelId] = useState("");
+  const [modelId, setModelId] = useState();
+  const classes = useStyles({ updating });
 
   useEffect(() => {
 
@@ -63,6 +68,7 @@ function AtualizacaoEquipamento() {
         setEquipment({ ...equipment, installation_date: installation_date });
         setEquipmentOriginal({ ...equipment, installation_date: installation_date });
         setLoading((prev) => ({ ...prev, equipment: false }));
+        setClientId(response.data.equipment[0].client_id)
       })
       .catch((err) => {
         console.error("Erro ao buscar equipamento.", err);
@@ -80,7 +86,26 @@ function AtualizacaoEquipamento() {
 
   }, [id]);
 
-  const classes = useStyles({ updating });
+
+  useEffect(() => {
+
+    if (clientId) {
+      api
+      .get(`user/${clientId}`)
+      .then((response) => {
+
+        setClientCpfCnpj(
+          response.data.user.cpf 
+            ? response.data.user.cpf 
+            : response.data.user.cnpj
+          )
+        setDisableCpfCnpj(true);
+      })
+      .catch((err) => console.log(err));
+    }
+      
+  }, [clientId])
+
 
   useEffect(() => {
 
@@ -100,7 +125,7 @@ function AtualizacaoEquipamento() {
       !data.id_model ||
       !data.equipment_code ||
       !data.installation_date
-      ) {
+    ) {
       sendMessage("Há campos vazios!", "error");
       return false;
     }
@@ -135,6 +160,11 @@ function AtualizacaoEquipamento() {
     if (name === "zipcode") {
       value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
     }
+    if (name === "cpfcnpj") {
+      value = str.replace(/\D/g, ""); // somente numeros
+      setClientCpfCnpj(value)
+      return;
+    }
 
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
@@ -164,6 +194,7 @@ function AtualizacaoEquipamento() {
       initial_work: equipment.initial_work,
       address: equipment.address,
       zipcode: equipment.zipcode,
+      cpfcnpj: clientCpfCnpj
     };
 
     if (!updating) setUpdating(true);
@@ -181,8 +212,9 @@ function AtualizacaoEquipamento() {
       api
         .put(`equipment/${id}`, data)
         .then((response) => {
-          sendMessage("Dados alterados");
+          sendMessage("Dados alterados com sucesso.", "success");
           setEquipmentOriginal(response.data.equipment);
+          setDisableCpfCnpj(true)
         })
         .catch((err) => {
           sendMessage(`Erro: ${err.message}`, "error");
@@ -202,6 +234,7 @@ function AtualizacaoEquipamento() {
       setError({
         installation_date: "",
       });
+      setClientCpfCnpj("");
     } else if (confirmation === true) {
 
       // excuir de verdade
@@ -260,7 +293,7 @@ function AtualizacaoEquipamento() {
         <AreYouSure />
 
         <Paper className={classes.formContainer} elevation={0}>
-          <Grid container spacing={isMobile ? 5 : 0} >
+          <Grid container spacing={isDesktop ? 5 : 0} >
             <Grid item xs={12} md={6}>
 
               <FormControl variant="filled" className={classes.inputType}>
@@ -348,6 +381,22 @@ function AtualizacaoEquipamento() {
                 disabled={!updating}
                 variant="filled"
                 inputProps={{ maxLength: 8 }}
+              />
+            </Grid>
+
+            <Grid container justifyContent="center" style={{ marginTop: "16px" }} >
+
+              <TextField
+                name="cpfcnpj"
+                className={classes.input}
+                value={clientCpfCnpj ? clientCpfCnpj : ""}
+                onChange={handleChangeInput}
+                label="CPF / CNPJ do Proprietário"
+                type="text"
+                helperText="(Opcional)"
+                variant="filled"
+                style={{ width: isDesktop ? "50%" : "100%" }}
+                disabled={disableCpfCnpj ? true : !updating}
               />
             </Grid>
 

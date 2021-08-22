@@ -21,14 +21,12 @@ import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
 import { useHistory } from 'react-router';
 import ModalRedirect from '../../components/ModalRedirect/ModalRedirect';
-import { LoginContext } from '../../context/LoginContext';
 
 export default function CadastroEquipamento(props) {
 
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
-  const { getUser } = useContext(LoginContext);
-  const isMobile = useMediaQuery("(min-width:960px)");
+  const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [error, setError] = React.useState({
     cpf_client: "",
@@ -40,8 +38,6 @@ export default function CadastroEquipamento(props) {
   const [openModal, setOpenModal] = useState(false);
   const [idCadastrado, setIdCadastrado] = useState();
 
-  const [user, setUser] = useState();
-
   // Mecanismo do Form
   const [formData, setFormData] = useState({
     id_model: "",
@@ -52,6 +48,7 @@ export default function CadastroEquipamento(props) {
     observation: "",
     address: "",
     zipcode: "",
+    cpfcnpj: ""
   });
 
   // pegar modelos
@@ -69,12 +66,6 @@ export default function CadastroEquipamento(props) {
 
     setLoading(false);
 
-    async function getUserFromSession() {
-      setUser(await getUser());
-    }
-
-    getUserFromSession();
-
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function validateAllFields(data) {
@@ -83,7 +74,7 @@ export default function CadastroEquipamento(props) {
       !data.id_model ||
       !data.equipment_code ||
       !data.installation_date
-      ) {
+    ) {
       sendMessage("Há campos vazios!", "error");
       return false;
     }
@@ -118,53 +109,35 @@ export default function CadastroEquipamento(props) {
         situation: formData.situation,
         address: formData.address,
         zipcode: formData.zipcode,
-        observation: formData.observation
+        observation: formData.observation,
+        cpfcnpj: formData.cpfcnpj
       }
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null);
 
       try {
-        let createdEquipment;
-        
+
         await api
           .post('/equipment/create', data)
           .then((response) => {
             console.log(response);
-            createdEquipment = response;
+            setIdCadastrado(response.data.id);
+            sendMessage('Cadastrado com sucesso');
+            setOpenModal(true);
           })
           .catch((error) => {
             console.log(error.response);
             if (error.response.status === 400) {
               sendMessage(error.response.data.notification, "error")
-            } 
+            }
           });
 
-        let arrayEquipments = user.id_equipments;
-
-        if (createdEquipment) {
-
-          if (arrayEquipments) {
-            arrayEquipments.push(createdEquipment.data.id);
-          } else {
-            arrayEquipments = [createdEquipment.data.id];
-          }
-  
-          // atualiza o vetor de id_equipments
-          await api.put(`/user/${user.id}`, { id_equipments: arrayEquipments })
-          user.id_equipments = arrayEquipments;
-  
-          if (createdEquipment.data && createdEquipment.data.id) {
-            setIdCadastrado(createdEquipment.data.id);
-            sendMessage('Cadastrado com sucesso')
-          };
-        } else return;
-        
       } catch (err) {
         sendMessage('Error 501: Falha no cadastro', 'error')
         console.warn(err);
       }
-      setOpenModal(true);
+      
     }
   }
 
@@ -181,6 +154,9 @@ export default function CadastroEquipamento(props) {
 
       if (name === "zipcode") {
         value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
+      }
+      if (name === "cpfcnpj") {
+        value = str.replace(/\D/g, ""); // somente numeros
       }
       setFormData({ ...formData, [name]: value });
     }
@@ -209,8 +185,8 @@ export default function CadastroEquipamento(props) {
 
         <Paper className={classes.formContainer} elevation={0}>
 
-          <Grid container spacing={isMobile ? 5 : 0} >
-            <Grid item xs={12} md={6} className={classes.grid}>
+          <Grid container spacing={isDesktop ? 5 : 0} >
+            <Grid item xs={12} md={6} >
 
               <FormControl variant="filled" className={classes.inputType}>
                 <InputLabel>Modelo do Equipamento</InputLabel>
@@ -253,7 +229,6 @@ export default function CadastroEquipamento(props) {
                 variant="filled"
                 autoComplete="off"
               />
-
             </Grid>
 
             <Grid item xs={12} md={6}>
@@ -294,11 +269,23 @@ export default function CadastroEquipamento(props) {
                 variant="filled"
                 inputProps={{ maxLength: 8 }}
               />
-
             </Grid>
-
           </Grid>
 
+          <Grid container justifyContent="center" style={{ marginTop: "16px" }} >
+
+            <TextField
+              name="cpfcnpj"
+              className={classes.inputs}
+              value={formData.cpfcnpj}
+              onChange={handleChangeInput}
+              label="CPF / CNPJ do Proprietário"
+              type="text"
+              helperText="(Opcional)"
+              variant="filled"
+              style={{ width: isDesktop ? "50%" : "100%" }}
+            />
+          </Grid>
 
           <div className={classes.buttonContainer}  >
             <Button

@@ -26,7 +26,7 @@ const Items = [
     title: "Perfil",
     to: "/au/me",
     icon: <PersonIcon />,
-    adminOnly: true
+    adminOnly: false
   },
   {
     title: "Cadastro de usuário",

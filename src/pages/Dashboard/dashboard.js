@@ -1,19 +1,17 @@
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { Typography } from '@material-ui/core';
-
 import { useStyles } from './dashboardStyles';
 import { vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
-
 import api from "../../services/api";
-
 import Graphic from './Chart';
-import { AuthContext } from '../../context/AuthContext';
+import { LoginContext } from '../../context/LoginContext';
 
 export default function Dashboard() {
   const [equipmentsList, setEquipmentsList] = useState();
-  const { isClient } = useContext(AuthContext);
-
+  const { getToken, IsClient } = useContext(LoginContext);
+  const isClient = IsClient();
+  const accessToken = getToken();
   const [sitNum, setSitNum] = useState({
     ok: Number,
     revisao: Number,
@@ -22,7 +20,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     api
-      .get("equipment/index")
+      .get("equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((equipment) => {
         var equipments = equipment.data.equipment;
         setEquipmentsList(equipments);
@@ -33,7 +31,7 @@ export default function Dashboard() {
           err
         );
       });
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => { // define o número de bombas em cada situação
     if (equipmentsList){

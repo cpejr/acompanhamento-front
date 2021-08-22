@@ -21,7 +21,7 @@ import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
 import Slider from '@material-ui/core/Slider';
-
+import { LoginContext } from '../../context/LoginContext';
 const TEMPERATURE_SCALE_LOWEST = 0;
 const TEMPERATURE_SCALE_HIGHEST = 100;
 const CURRENT_SCALE_LOWEST = 0;
@@ -76,6 +76,9 @@ function AtualizacaoModelo() {
 
   const { id } = useParams();
   const history = useHistory();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken()
+
   const { sendMessage } = useContext(AuthContext);
   const isDesktop = useMediaQuery("(min-width:960px)");
 
@@ -95,8 +98,7 @@ function AtualizacaoModelo() {
   useEffect(() => {
 
     (async () => {
-
-      await api.get(`model/${id}`)
+      await api.get(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((selected) => {
           setModel(selected.data.model)
           setModelOriginal(selected.data.model)
@@ -112,8 +114,7 @@ function AtualizacaoModelo() {
 
       setLoading(false)
     })();
-
-  }, [id])
+  }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Aqui temos as funcoes para as faixas de valores
   const updateRangeTemp = (e, data) => {
@@ -198,7 +199,7 @@ function AtualizacaoModelo() {
 
       sendMessage("Atuaizando os dados...", "info", null);
 
-      api.put(`model/${id}`, data)
+      api.put(`model/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then(response => {
           sendMessage("Dados alterados com sucesso", "success");
           setModelOriginal(data);
@@ -217,7 +218,7 @@ function AtualizacaoModelo() {
   async function DeleteVerification() {
 
     await api
-      .get("/equipment/index")
+      .get("/equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
 
         console.log(response);
@@ -251,7 +252,7 @@ function AtualizacaoModelo() {
     } else if (confirmation === true) { // excuir de verdade
 
       setDeleting(false);
-      await api.delete(`model/${id}`).then((response) => {
+      await api.delete(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
 
         sendMessage("Modelo excluído com sucesso", "success");
         setTimeout(() => {
@@ -320,7 +321,6 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                autoFocus
                 disabled={!updating}
               />
 
@@ -334,7 +334,6 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                autoFocus
                 disabled={!updating}
               />
 

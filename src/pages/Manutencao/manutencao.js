@@ -3,11 +3,14 @@ import { CssBaseline, Paper, Button, TextField } from "@material-ui/core";
 import { useStyles } from "./manutencaoStyle";
 import { useParams } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
+import { LoginContext } from '../../context/LoginContext';
 import api from '../../services/api';
 
 export default function Manutencao() {
   let { id } = useParams();
   const { sendMessage } = useContext(AuthContext);
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
   // variaveis do snackbar
   const [maintenance, setMaintenance] = useState("")
@@ -19,7 +22,7 @@ export default function Manutencao() {
   useEffect(() => {
     try {
       api
-        .get(`/equipment/${id}`)
+        .get(`/equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           setMaintenanceOriginal(response.data.equipment[0].maintenance);
           setMaintenance(response.data.equipment[0].maintenance);
@@ -28,7 +31,7 @@ export default function Manutencao() {
       console.warn(error);
       alert("Erro ao buscar Equipamentos");
     }
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubmit() {
     setEditing(false);

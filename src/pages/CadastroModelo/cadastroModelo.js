@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core"
 import findError from '../../services/findError';
 import { useStyles } from './cadastroModeloStyle';
+import { LoginContext } from '../../context/LoginContext';
 import { AuthContext } from "../../context/AuthContext";
 
 const TEMPERATURE_SCALE_LOWEST = 0;
@@ -70,6 +71,8 @@ export default function CadastroModelo(props) {
   const { sendMessage } = useContext(AuthContext);
   const isDesktop = useMediaQuery("(min-width:960px)");
   const buttonSubmitRef = useRef(null);
+  const { getToken } = useContext(LoginContext);
+	const accessToken = getToken();
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
@@ -143,7 +146,7 @@ export default function CadastroModelo(props) {
       sendMessage("Realizando cadastro...", "info", null);
 
       api
-        .post('/model/create', data)
+        .post('/model/create', data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
 
           console.log(response);
@@ -204,7 +207,6 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  autoFocus
                 />
 
                 <TextField
@@ -217,7 +219,6 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  autoFocus
                 />
 
                 <TextField

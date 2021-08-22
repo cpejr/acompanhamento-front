@@ -22,12 +22,15 @@ import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from "../../services/dateValidation";
 import { useHistory } from "react-router-dom";
+import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoUsuario(props) {
 
   let { id } = useParams();
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
   // states
   const [updating, setUpdating] = useState(false);
@@ -63,7 +66,7 @@ function AtualizacaoUsuario(props) {
 
     } else {
       api
-        .get(`/user/${id}`)
+        .get(`/user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           setUserData(response.data.user);
           setUserDataOriginal(response.data.user);
@@ -130,8 +133,10 @@ function AtualizacaoUsuario(props) {
 
         if (validateEmailAndPassword(updatedFields)) {
 
+          sendMessage("Atualizando email e senha...", "info", null)
+
           await api
-            .put(`/user/${props.userPerfil.id}`, updatedEmail)
+            .put(`/user/${props.userPerfil.id}`, updatedEmail, {headers: {authorization: `Bearer ${accessToken}`}})
             .then((response) => {
             })
             .catch((error) => {
@@ -140,7 +145,7 @@ function AtualizacaoUsuario(props) {
             });
           
           await api
-            .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields)
+            .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields, {headers: {authorization: `Bearer ${accessToken}`}} )
             .then((response) => {
               sendMessage("Senha e email atualizados com sucesso!", "success");
             })
@@ -197,8 +202,9 @@ function AtualizacaoUsuario(props) {
             id = props.userPerfil.id;
           }
 
+
           api
-            .put(`/user/${id}`, updatedFields)
+            .put(`/user/${id}`, updatedFields, {headers: {authorization: `Bearer ${accessToken}`}})
             .then((response) => {
               sendMessage("Usuário atualizado com sucesso!", "success");
             })
@@ -253,7 +259,7 @@ function AtualizacaoUsuario(props) {
       setTypeSnackbar("info");
 
       try {
-        await api.delete(`user/${id}`);
+        await api.delete(`user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}});
 
         setOpenSnackbar(true);
         setMessageSnackbar("Usuário deletado com sucesso!");

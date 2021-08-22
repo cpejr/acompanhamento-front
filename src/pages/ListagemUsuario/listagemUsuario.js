@@ -17,6 +17,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import ordenar from "../../services/ordenar";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
+import { LoginContext } from '../../context/LoginContext';
+
 export default function ListagemUsuario() {
   const classes = useStyles();
 
@@ -26,11 +28,13 @@ export default function ListagemUsuario() {
   const [messagePlaceholder, setMessagePlaceholder] = useState("Procurar usuário por nome ou e-mail");
   const [usersListToDisplay, setUsersListToDisplay] = useState([]);
 
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
   const { sendMessage } = useContext(AuthContext);
 
   async function getEmployees() {
     api
-      .get("/user")
+      .get("/user", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
         setEmployees([...response.data.user]);
         setUsersListToDisplay([...response.data.user]);
@@ -54,7 +58,6 @@ export default function ListagemUsuario() {
       setMessagePlaceholder("Procurar usuário por função");
     }
   }
-
 
   function handleSearchChange(search) {
     const searchByName = findPeoplebyName(search);
@@ -143,9 +146,6 @@ export default function ListagemUsuario() {
                 placeholder={messagePlaceholder}
                 onChange={(e) => {
                   handleSearchChange(e.target.value);
-                  // var arroba = "@";
-                  // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
-                  // else FindPeoplebyName(e.target.value);
                 }}
                 classes={{
                   root: classes.inputRoot,

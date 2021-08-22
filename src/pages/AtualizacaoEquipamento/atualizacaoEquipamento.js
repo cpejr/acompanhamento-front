@@ -28,11 +28,15 @@ import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
+import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoEquipamento() {
 
   const { id } = useParams();
   const history = useHistory();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
+  
   const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
@@ -44,10 +48,11 @@ function AtualizacaoEquipamento() {
   const [error, setError] = useState({
     installation_date: "",
   });
+
+  const { sendMessage } = useContext(AuthContext);
   const [clientId, setClientId] = useState("");
   const [clientCpfCnpj, setClientCpfCnpj] = useState("");
   const [disableCpfCnpj, setDisableCpfCnpj] = useState(false);
-  const { sendMessage } = useContext(AuthContext);
 
   const [modelId, setModelId] = useState();
   const classes = useStyles({ updating });
@@ -59,7 +64,7 @@ function AtualizacaoEquipamento() {
     }
 
     api
-      .get(`equipment/${id}`)
+      .get(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
         const date = response.data.equipment[0].installation_date;
         const installation_date = getRequiredDateFormat(date);
@@ -75,7 +80,7 @@ function AtualizacaoEquipamento() {
       });
 
     api
-      .get(`model/index`)
+      .get(`model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((models) => {
         setModelsList(models.data.data);
         setLoading((prev) => ({ ...prev, models: false }));
@@ -84,14 +89,14 @@ function AtualizacaoEquipamento() {
         console.error("Erro ao buscar modelos.", err);
       });
 
-  }, [id]);
+  }, [accessToken, id]);
 
 
   useEffect(() => {
 
     if (clientId) {
       api
-      .get(`user/${clientId}`)
+      .get(`user/${clientId}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
 
         setClientCpfCnpj(
@@ -104,8 +109,7 @@ function AtualizacaoEquipamento() {
       .catch((err) => console.log(err));
     }
       
-  }, [clientId])
-
+  }, [clientId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
 
@@ -193,7 +197,7 @@ function AtualizacaoEquipamento() {
       situation: equipment.situation,
       initial_work: equipment.initial_work,
       address: equipment.address,
-      zipcode: equipment.zipcode,
+      zipcode: equipment.zipcode ? equipment.zipcode : "",
       cpfcnpj: clientCpfCnpj
     };
 
@@ -210,15 +214,17 @@ function AtualizacaoEquipamento() {
       sendMessage("Alterando dados...", "info", null);
 
       api
-        .put(`equipment/${id}`, data)
+        .put(`equipment/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           sendMessage("Dados alterados com sucesso.", "success");
           setEquipmentOriginal(response.data.equipment);
           setDisableCpfCnpj(true)
         })
-        .catch((err) => {
-          sendMessage(`Erro: ${err.message}`, "error");
-          console.log(err);
+        .catch((error) => {
+          console.log(error.response);
+          if (error.response.status === 400) {
+            sendMessage(error.response.data.notification, "error")
+          }
         });
       setUpdating(false);
     }
@@ -240,7 +246,8 @@ function AtualizacaoEquipamento() {
       // excuir de verdade
       setDeleting(false);
       sendMessage("Excluindo equipamento...", "info", null);
-      api.delete(`equipment/${id}`).then((response) => {
+
+      api.delete(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
         sendMessage("Equipamento excluído com sucesso");
         history.push("/listagemequipamento");
       }).catch((err) => {

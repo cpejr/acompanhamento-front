@@ -1,33 +1,59 @@
 import React, { createContext } from "react";
-import api from "../services/api";
+import jwt from "jsonwebtoken";
 
 export const LoginContext = createContext();
-export const LoginContextProvider = (props) => {
 
-  function signIn(user) {
-    localStorage.setItem("userId", user[0].id);
+export const LoginContextProvider = (props) => {
+  function signIn(accessToken) {
+    localStorage.setItem("token", accessToken);
   }
 
   function logOut() {
-    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
   }
 
-  async function getUser() {
-    const userId = localStorage.getItem("userId");
+  function getToken() {
+    return localStorage.getItem("token");
+  }
 
-    const response = await api.get(`/user/${userId}`);
+  function getData() {
+    const token = localStorage.getItem("token");
+    const aux = jwt.verify(
+      token,
+      process.env.REACT_APP_ACCESS_TOKEN_SECRET,
+      (err, data) => {
+        if (err) return err;
+        return data;
+      }
+    );
+    return aux;
+  }
 
-    return response.data.user;
+  function getUser() {
+    const userAux = getData();
+    return userAux.userData;
   }
 
   function getUserId() {
-    return localStorage.getItem("userId");
+    const userAux = getData();
+    return userAux.userData.id;
+  }
+
+  function getUserType() {
+    const userAux = getData();
+    if (userAux.userData) 
+      return userAux.userData.type;
+    else return undefined
+  }
+
+  function IsClient(){
+    const userType = getUserType();
+    if(userType === "Funcionario") return false;
+    return true;
   }
 
   return (
-    <LoginContext.Provider
-      value={{ signIn, logOut, getUser, getUserId }}
-    >
+    <LoginContext.Provider value={{ signIn, logOut, getUser, getUserId, getToken, getUserType, IsClient}}>
       {props.children}
     </LoginContext.Provider>
   );

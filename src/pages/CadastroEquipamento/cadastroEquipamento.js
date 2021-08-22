@@ -21,11 +21,15 @@ import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
 import { useHistory } from 'react-router';
 import ModalRedirect from '../../components/ModalRedirect/ModalRedirect';
+import { LoginContext } from "../../context/LoginContext"
 
 export default function CadastroEquipamento(props) {
 
   const history = useHistory();
   const { sendMessage } = useContext(AuthContext);
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
+
   const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [error, setError] = React.useState({
@@ -54,7 +58,7 @@ export default function CadastroEquipamento(props) {
   // pegar modelos
   React.useEffect(() => {
 
-    api.get('model/index')
+    api.get('model/index', {headers: {authorization: `Bearer ${accessToken}`}})
       .then(model => {
         const models = model.data.data;
         setModels(models);
@@ -119,7 +123,7 @@ export default function CadastroEquipamento(props) {
       try {
 
         await api
-          .post('/equipment/create', data)
+          .post('/equipment/create', data, {headers: {authorization: `Bearer ${accessToken}`}} )
           .then((response) => {
             console.log(response);
             setIdCadastrado(response.data.id);

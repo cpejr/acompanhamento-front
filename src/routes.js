@@ -19,9 +19,10 @@ import AtualizacaoModelo from "./pages/AtualizacaoModelo";
 import FuncionamentoEquipamento from "./pages/FuncionamentoEquipamento";
 import EsqueciSenha from "./pages/EsqueciSenha";
 import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
-import ErroDePermissao from "./pages/ErroDePermissao";
 import RoutesPrivate from "./components/Routes/Private/Private";
+import RoutesPublic from "./components/Routes/Private/PublicRestricted";
 import Perfil from "./pages/Perfil/Perfil";
+import UnAuthorized from "./pages/unAuthorized";
 import Manutencao from "./pages/Manutencao/manutencao";
 import { useStyles } from "./routesStyles";
 
@@ -40,17 +41,22 @@ function Routes() {
           <Route path="/login" component={Login} />
           <Route path="/esquecisenha" component={EsqueciSenha} />
           <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
-          <Route path="/erroPermissao" component={ErroDePermissao} />
+
+          {/* Acesso não autorizado */}
+          <RoutesPublic
+            path="/unAuthorized"
+            component={UnAuthorized}
+            restricted
+          />
+
           <Fragment>
+
             <Menu />
 
             <div className={classes.spaceContent}>
 
               {/* DashBoard */}
-              <RoutesPrivate
-                path="/dashboard"
-                component={Dashboard}
-              />
+              <RoutesPublic path="/dashboard" component={Dashboard} restricted />
 
               {/* Cadastro de Modelo */}
               <RoutesPrivate
@@ -83,32 +89,27 @@ function Routes() {
               />
 
               {/* Listagem de Equipamentos */}
-              <RoutesPrivate
+              <RoutesPublic
                 path="/listagemequipamento"
                 component={ListagemEquipamento}
+                restricted
               />
 
               {/* Atualização de Usuários */}
               <RoutesPrivate path="/au" exact>
-                <Redirect to="/" />
+                <Redirect to="/unAuthorized" />
               </RoutesPrivate>
-              <RoutesPrivate
-                path="/au/:id"
-                component={Perfil}
-              />
+              <RoutesPublic path="/au/:id" component={Perfil} restricted />
 
               {/* Atualização de Modelo */}
               <RoutesPrivate path="/am" exact>
-                <Redirect to="/" />
+                <Redirect to="/unAuthorized" />
               </RoutesPrivate>
-              <RoutesPrivate
-                path="/am/:id"
-                component={AtualizacaoModelo}
-              />
+              <RoutesPrivate path="/am/:id" component={AtualizacaoModelo} />
 
               {/* Atualização de Equipamentos */}
               <RoutesPrivate path="/ae" exact>
-                <Redirect to="/" />
+                <Redirect to="/unAuthorized" />
               </RoutesPrivate>
               <RoutesPrivate
                 path="/ae/:id"
@@ -125,10 +126,16 @@ function Routes() {
               />
 
               {/* Pagina para inserir texto de manutenção do equipmanento */}
+              <RoutesPrivate path="/manutencao" exact>
+                <Redirect to="/" />
+              </RoutesPrivate>
               <RoutesPrivate
                 path="/manutencao/:id"
                 component={Manutencao}
               />
+
+              <Route to="/Login" />
+
 
             </div>
           </Fragment>

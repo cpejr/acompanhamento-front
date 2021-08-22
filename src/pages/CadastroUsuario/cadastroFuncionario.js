@@ -195,7 +195,7 @@ function CadastroFuncionario(props) {
               variant="filled"
               onChange={(e) => handleInput(e, 'name')}
               required
-              disabled={mode === 'view'}
+              disabled={mode === "view" || mode === "updatepassword"}
             />
 
             <TextField
@@ -216,7 +216,6 @@ function CadastroFuncionario(props) {
               name="birthdate"
               className={classes.inputForm}
               label="Data de Nascimento"
-              defaultValue="2017-05-24"
               value={birthdate}
               helperText="*Obrigatório"
               inputProps={{ maxLength: 10 }}
@@ -224,7 +223,7 @@ function CadastroFuncionario(props) {
               onChange={(e) => handleInput(e, 'birthdate')}
               type="text"
               required
-              disabled={mode === 'view'}
+              disabled={mode === "view" || mode === "updatepassword"}
             />
 
             <TextField
@@ -238,7 +237,7 @@ function CadastroFuncionario(props) {
               inputProps={{ maxLength: 15 }}
               onChange={(e) => handleInput(e, 'phonenumber')}
               required
-              disabled={mode === 'view'}
+              disabled={mode === "view" || mode === "updatepassword"}
             />
           </Grid>
           

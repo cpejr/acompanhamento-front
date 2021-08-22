@@ -5,7 +5,6 @@ import { useStyles } from './dashboardStyles';
 import { vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
 import api from "../../services/api";
 import Graphic from './Chart';
-import { DataContext } from '../../context/DataContext';
 import { LoginContext } from '../../context/LoginContext';
 
 export default function Dashboard() {
@@ -43,9 +42,6 @@ export default function Dashboard() {
       else if (equipment.situation === "Atenção") numAtencao++;
       else if (equipment.situation === "Revisão") numRevisao++;
     });
-
-    console.log("Starts here:");
-    console.log(DataContext);
 
     setSitNum({
       ok: numOk,

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./tabelaStyle";
 import {
@@ -52,21 +52,13 @@ export default function StickyHeadTable({
             {usersListToDisplay.map((user) => (
               <TableRow hover key={user.id}>
                 <TableCell>
-                    {user.name}{" "}
+                  {user.name}{" "}
                 </TableCell>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    {user.funcao}{" "}
-                  </Link>
+                  {user.funcao}{" "}
                 </TableCell>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                  >
-                    {user.data}
-                  </Link>
+                  {user.data}
                 </TableCell>
 
                 <TableCell className={classes.lastTableCell} >

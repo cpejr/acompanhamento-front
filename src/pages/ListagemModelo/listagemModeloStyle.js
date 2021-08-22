@@ -5,26 +5,16 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    width: "90%",
-    marginLeft:"7%",
-    marginRight:"30%",
-    padding: "50px 0 66px 50px",
-    paddingTop: "50px",
-    paddingRight: "0px",
-    paddingBottom: "66px",
-    paddingLeft: "50px",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "30px 5% 80px",
       width: "100%",
-
     },
   },
+
   allsearch:{
-    // marginLeft:"28%",
      display: "flex",
      flexDirection: "column",
-     // marginLeft:"5%",
-     marginRight:"14%",
    },
 
   header: {
@@ -105,7 +95,6 @@ export const useStyles = makeStyles(theme => ({
 
   table: {
     marginTop: "30px",
-    marginRight: "14%",
   },
 
   searchplusfilter: {
@@ -115,6 +104,7 @@ export const useStyles = makeStyles(theme => ({
       flexDirection: "column"
     }
   },
+
 
   filter: {
     justifyContent: "center",

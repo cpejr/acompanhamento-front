@@ -3,7 +3,7 @@ import { azulPadraoClaro } from '../../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles({
   root: {
-    width: '100%',
+    width: '90%',
   },
 
   container: {

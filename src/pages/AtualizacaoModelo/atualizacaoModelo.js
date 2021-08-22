@@ -7,12 +7,11 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Typography,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  useMediaQuery
 } from "@material-ui/core"
 import api from '../../services/api';
 import { useHistory } from 'react-router-dom';
@@ -24,159 +23,121 @@ import { AuthContext } from '../../context/AuthContext'
 import MaskedInput from 'react-text-mask'
 import Slider from '@material-ui/core/Slider';
 import { LoginContext } from '../../context/LoginContext';
+const TEMPERATURE_SCALE_LOWEST = 0;
+const TEMPERATURE_SCALE_HIGHEST = 100;
+const CURRENT_SCALE_LOWEST = 0;
+const CURRENT_SCALE_HIGHEST = 100;
+const VOLTAGE_SCALE_LOWEST = 0;
+const VOLTAGE_SCALE_HIGHEST = 100;
+const VIBRATION_SCALE_LOWEST = 0;
+const VIBRATION_SCALE_HIGHEST = 10000;
 
-function YearInput(props) {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={(ref) => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={[/\d/, /\d/, /\d/, /\d/]}
-    />
-  );
-}
+const marcadoresTemp = [
+  {
+    value: TEMPERATURE_SCALE_LOWEST,
+    label: `${TEMPERATURE_SCALE_LOWEST}°C`
+  },
+  {
+    value: TEMPERATURE_SCALE_HIGHEST,
+    label: `${TEMPERATURE_SCALE_HIGHEST}°C`
+  }
+];
+const marcadoresCurrent = [
+  {
+    value: CURRENT_SCALE_LOWEST,
+    label: `${CURRENT_SCALE_LOWEST}A`
+  },
+  {
+    value: CURRENT_SCALE_HIGHEST,
+    label: `${CURRENT_SCALE_HIGHEST}A`
+  }
+];
+const marcadoresVolt = [
+  {
+    value: VOLTAGE_SCALE_LOWEST,
+    label: `${VOLTAGE_SCALE_LOWEST}V`
+  },
+  {
+    value: VOLTAGE_SCALE_HIGHEST,
+    label: `${VOLTAGE_SCALE_HIGHEST}V`
+  }
+];
+const marcadoresVibra = [
+  {
+    value: VIBRATION_SCALE_LOWEST,
+    label: `${VIBRATION_SCALE_LOWEST}krpm`
+  },
+  {
+    value: VIBRATION_SCALE_HIGHEST,
+    label: `${VIBRATION_SCALE_HIGHEST}krpm`
+  }
+];
 
 function AtualizacaoModelo() {
+
   const { id } = useParams();
   const history = useHistory();
   const { getToken } = useContext(LoginContext);
   const accessToken = getToken()
 
+  const { sendMessage } = useContext(AuthContext);
+  const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
   const [modelOriginal, setModelOriginal] = useState({});
-  const [valTempOriginal, setValTempOriginal] = useState([]);
-  const [valCurrentOriginal, setValCurrentOriginal] = useState([]);
-  const [valVoltOriginal, setValVoltOriginal] = useState([]);
-  const [valVibraOriginal, setValVibraOriginal] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState({
     releaseYear: '',
   });
-  const [valTemp, setValTemp]=useState([]);
-  const [valCurrent, setValCurrent]=useState([]);
-  const [valVolt, setValVolt]=useState([]);
-  const [valVibra, setValVibra]=useState([]);
+  const [valTemp, setValTemp] = useState([]);
+  const [valCurrent, setValCurrent] = useState([]);
+  const [valVolt, setValVolt] = useState([]);
+  const [valVibra, setValVibra] = useState([]);
 
-  const { sendMessage } = useContext(AuthContext);
-  useEffect(()=> console.log(model),[model])
   useEffect(() => {
+
     (async () => {
       await api.get(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((selected) => {
-          const response = selected.data.model
           setModel(selected.data.model)
           setModelOriginal(selected.data.model)
-          setValTempOriginal([response.min_temp, response.max_temp])
-          setValCurrentOriginal([response.min_current, response.max_current])
-          setValVoltOriginal([response.min_voltage, response.max_voltage])
-          setValVibraOriginal([response.min_vibra, response.max_vibra])
-          setValTemp([response.min_temp, response.max_temp])
-          setValCurrent([response.min_current, response.max_current])
-          setValVolt([response.min_voltage, response.max_voltage])
-          setValVibra([response.min_vibra, response.max_vibra])
-          // console.log(selected.data.model, 'Joao Gatao')
+
+          setValTemp([selected.data.model.min_temp, selected.data.model.max_temp]);
+          setValCurrent([selected.data.model.min_current, selected.data.model.max_current]);
+          setValVolt([selected.data.model.min_voltage, selected.data.model.max_voltage]);
+          setValVibra([selected.data.model.min_vibra, selected.data.model.max_vibra]);
         })
         .catch(err => {
-          console.error("Backend is not working properly", err);
+          console.error(err);
         });
+
       setLoading(false)
     })();
-  }, [accessToken, id])
+
+  }, [id])
 
   // Aqui temos as funcoes para as faixas de valores
-  const updateRangeTemp=(e,data)=>{ 
-    setValTemp(data) 
+  const updateRangeTemp = (e, data) => {
+    setValTemp(data)
     setModel({ ...model, min_temp: data[0], max_temp: data[1] })
   };
-  const updateRangeCurrent=(e,data)=>{ 
-    setValCurrent(data) 
+
+  const updateRangeCurrent = (e, data) => {
+    setValCurrent(data)
     setModel({ ...model, min_current: data[0], max_current: data[1] })
   };
-  const updateRangeVolt=(e,data)=>{ 
-    setValVolt(data) 
+
+  const updateRangeVolt = (e, data) => {
+    setValVolt(data)
     setModel({ ...model, min_voltage: data[0], max_voltage: data[1] })
   };
-  const updateRangeVibra=(e,data)=>{ 
-    setValVibra(data) 
+
+  const updateRangeVibra = (e, data) => {
+    setValVibra(data)
     setModel({ ...model, min_vibra: data[0], max_vibra: data[1] })
   };
-  const marcadoresTemp = [
-    {
-      value: 0,
-      label: '0°C',
-    },
-    {
-      value: 20,
-      label: '20°C',
-    },
-    {
-      value: 37,
-      label: '37°C',
-    },
-    {
-      value: 100,
-      label: '100°C',
-    },
-  ];
-  const marcadoresCurrent = [
-    {
-      value: 0,
-      label: '0A',
-    },
-    {
-      value: 30,
-      label: '30A',
-    },
-    {
-      value: 60,
-      label: '60A',
-    },
-    {
-      value: 100,
-      label: '100A',
-    },
-  ];
-  const marcadoresVolt = [
-    {
-      value: 0,
-      label: '0V',
-    },
-    {
-      value: 40,
-      label: '40V',
-    },
-    {
-      value: 76,
-      label: '76V',
-    },
-    {
-      value: 100,
-      label: '100V',
-    },
-  ];
-  const marcadoresVibra = [
-    {
-      value: 0,
-      label: '0rpm',
-    },
-    {
-      value: 2000,
-      label: '2krpm',
-    },
-    {
-      value: 6000,
-      label: '6krpm',
-    },
-    {
-      value: 10000,
-      label: '10krpm',
-    },
-  ];
 
   const classes = useStyles({ updating });
 
@@ -198,93 +159,100 @@ function AtualizacaoModelo() {
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
+    console.log(name);
+    console.log(value);
     setModel({ ...model, [name]: value });
   }
 
   function handleSubmit() {
+
     setError({
       releaseYear: "",
     })
+
     if (!updating) setUpdating(true)
+
     else if (Object.values(model).includes("")) {
       sendMessage('Alguns campos estão vazios', 'info');
     }
+
     else if (!findError("year", model.releaseYear))
       setError(prev => ({ ...prev, releaseYear: "Data inválido" }))
+
     else if (isAfter(parseISO(model.releaseYear), new Date()))
       setError(prev => ({ ...prev, releaseYear: "Ano inválido!" }))
+
     else {
-      // console.log(model, 'model que vai pro back!!')
-      const {
-        modelName,
-        type,
-        manufacturer,
-        releaseYear,
-        min_temp,
-        max_temp,
-        min_current,
-        max_current,
-        min_voltage,
-        max_voltage,
-        min_vibra,
-        max_vibra,
-      } = model;
+
       const data = {
-        modelName,
-        type,
-        manufacturer,
-        releaseYear,
-        min_temp,
-        max_temp,
-        min_current,
-        max_current,
-        min_voltage,
-        max_voltage,
-        min_vibra,
-        max_vibra,
+        modelName: model.modelName,
+        type: model.type,
+        manufacturer: model.manufacturer,
+        releaseYear: model.releaseYear,
+        min_temp: model.min_temp,
+        max_temp: model.max_temp,
+        min_current: model.min_current,
+        max_current: model.max_current,
+        min_voltage: model.min_voltage,
+        max_voltage: model.max_voltage,
+        min_vibra: model.min_vibra,
+        max_vibra: model.max_vibra,
       }
-      sendMessage("Alterando dados...", "info", null);
+
+      sendMessage("Atuaizando os dados...", "info", null);
+
       api.put(`model/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
         .then(response => {
-          sendMessage("Dados alterados");
+          sendMessage("Dados alterados com sucesso", "success");
           setModelOriginal(data);
           console.log(data, 'Dados depois de alterar');
         })
         .catch(err => {
           console.log(err);
-          sendMessage(`Erro: ${err.message}`, "error");
+          sendMessage("Erro ao atualizar modelo!", "error");
         })
-      setUpdating(false)
 
+      setUpdating(false)
     }
   }
 
-  //Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
+  // Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
   async function DeleteVerification() {
-    const response = await api.get("/equipment/index", {headers: {authorization: `Bearer ${accessToken}`}});
-    console.log(response);
-    if (response.data.equipment.find((x)=> {if(x.id_model === id) return true; return false})) { //se achar algo nao pode excluir
-      sendMessage("Não foi possível excluir modelo, ele possui equipamentos vinculados.", "error");
-      setDeleting(false);
-    }
-    else {//Caso nao tenha nenhuma bomba ligada ao modelo, pode excluir
-      handleDelete(true);
-    }
+
+    await api
+      .get("/equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
+      .then((response) => {
+
+        console.log(response);
+        if (response.data.equipment.find((equipment) => equipment.id_model === id)) { //se achar algo nao pode excluir
+          sendMessage("Não foi possível excluir modelo, ele possui equipamentos vinculados.", "error");
+          setDeleting(false);
+        } else { // Caso nao tenha nenhuma bomba ligada ao modelo, pode excluir
+          handleDelete(true);
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+        sendMessage("Erro ao validar remoção de modelo!", "error")
+      })
   }
 
   async function handleDelete(confirmation) {
+
     if (updating) { //cancelar
+
       setUpdating(false);
       setModel(modelOriginal);
-      setValTemp(valTempOriginal);
-      setValCurrent(valCurrentOriginal);
-      setValVolt(valVoltOriginal);
-      setValVibra(valVibraOriginal);
       setError({
         releaseYear: "",
       })
-    }
-    else if (confirmation === true) { // excuir de verdade
+      setValTemp([modelOriginal.min_temp, modelOriginal.max_temp]);
+      setValCurrent([modelOriginal.min_current, modelOriginal.max_current]);
+      setValVolt([modelOriginal.min_voltage, modelOriginal.max_voltage]);
+      setValVibra([modelOriginal.min_vibra, modelOriginal.max_vibra]);
+
+    } else if (confirmation === true) { // excuir de verdade
+
       setDeleting(false);
       await api.delete(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
 
@@ -292,9 +260,9 @@ function AtualizacaoModelo() {
         setTimeout(() => {
           history.push("/listagemmodelo");
         }, 1000)
-        
+
       }).catch((err) => {
-        sendMessage(`Erro ao excluir o modelo: ${err.message}`, "error");
+        sendMessage("Erro ao excluir modelo!", "error");
         console.log(err)
       })
     }
@@ -309,11 +277,11 @@ function AtualizacaoModelo() {
       onClose={() => setDeleting(false)}
     >
       <DialogTitle>Excluir modelo?</DialogTitle>
-   
+
       <DialogActions>
         <Button color="primary" onClick={() => setDeleting(false)}>
           Cancelar
-          </Button>
+        </Button>
         <Button color="secondary" onClick={() => DeleteVerification()} >
           Excluir
         </Button>
@@ -336,15 +304,15 @@ function AtualizacaoModelo() {
       <CssBaseline />
       <div className={classes.root}>
 
-        <h1 className={classes.title}>
+        <Typography variant="h3" className={classes.title}>
           Detalhes do Modelo
-        </h1>
+        </Typography>
 
         <AreYouSure />
 
-        <Paper className={classes.containerForm} elevation={0}>
-          <Grid container>
-            <Grid item xs={12} md={12} className={classes.grid}>
+        <Paper className={classes.formContainer} elevation={0}>
+          <Grid container spacing={isDesktop ? 5 : 0}>
+            <Grid item xs={12} md={6}>
               <TextField
                 name="modelName"
                 className={classes.input}
@@ -358,20 +326,21 @@ function AtualizacaoModelo() {
                 autoFocus
                 disabled={!updating}
               />
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.grid}>
+
               <TextField
-                value={model.type}
-                className={classes.input}
                 name="type"
+                className={classes.input}
+                value={model.type}
                 onChange={handleChangeInput}
-                disabled={!updating}
                 label="Tipo de equipamento"
                 type="text"
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
+                autoFocus
+                disabled={!updating}
               />
+
               <TextField
                 name="manufacturer"
                 className={classes.input}
@@ -384,6 +353,7 @@ function AtualizacaoModelo() {
                 autoComplete="off"
                 disabled={!updating}
               />
+
               <TextField
                 name="releaseYear"
                 className={classes.input}
@@ -396,57 +366,71 @@ function AtualizacaoModelo() {
                 variant="filled"
                 autoComplete="off"
                 disabled={!updating}
-                InputProps={{
-                  inputComponent: YearInput
-                }}
+                inputProps={{ maxLength: 4 }}
               />
             </Grid>
-            <Grid item xs={12} md={6} className={classes.grid}>
-              <div style={{width:300,margin:30}}>
-                <Typography id="range-slider-Temp" gutterBottom>
+
+            <Grid item xs={12} md={6}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+                <Typography gutterBottom style={{ marginTop: "16px" }}>
                   Limites de Temperatura
                 </Typography>
                 <Slider
-                value={valTemp}
-                onChange={updateRangeTemp}
-                marks={marcadoresTemp}
-                valueLabelDisplay="auto"
-                disabled={!updating}
+                  id="temperatureSlider"
+                  value={valTemp}
+                  onChangeCommitted={updateRangeTemp}
+                  marks={marcadoresTemp}
+                  valueLabelDisplay="auto"
+                  className={classes.slider}
+                  disabled={!updating}
                 />
-                <Typography id="range-slider-Current" gutterBottom>
+
+                <Typography gutterBottom style={{ marginTop: "16px" }}>
                   Limites de Corrente
                 </Typography>
                 <Slider
-                value={valCurrent}
-                onChange={updateRangeCurrent}
-                marks={marcadoresCurrent}
-                valueLabelDisplay="auto"
-                disabled={!updating}
+                  id="currentSlider"
+                  value={valCurrent}
+                  onChangeCommitted={updateRangeCurrent}
+                  marks={marcadoresCurrent}
+                  valueLabelDisplay="auto"
+                  className={classes.slider}
+                  disabled={!updating}
                 />
-                <Typography id="range-slider-Volt" gutterBottom>
+
+                <Typography gutterBottom style={{ marginTop: "16px" }}>
                   Limites de Tensão
                 </Typography>
                 <Slider
-                value={valVolt}
-                onChange={updateRangeVolt}
-                marks={marcadoresVolt}
-                valueLabelDisplay="auto"
-                disabled={!updating}
+                  id="voltageSlider"
+                  value={valVolt}
+                  onChangeCommitted={updateRangeVolt}
+                  marks={marcadoresVolt}
+                  valueLabelDisplay="auto"
+                  className={classes.slider}
+                  disabled={!updating}
                 />
-                <Typography id="range-slider-Vibra" gutterBottom>
+
+                <Typography gutterBottom style={{ marginTop: "16px" }}>
                   Limites de Vibração
                 </Typography>
                 <Slider
+                  id="vibraSlider"
                   value={valVibra}
-                  max={10000}
-                  step={500}
-                  onChange={updateRangeVibra}
+                  onChangeCommitted={updateRangeVibra}
                   marks={marcadoresVibra}
                   valueLabelDisplay="auto"
+                  className={classes.slider}
                   disabled={!updating}
+                  min={0}
+                  max={10000}
+                  step={500}
                 />
+
               </div>
             </Grid>
+
             <Grid className={classes.centralizar} item xs={12}>
               <Button variant="contained" color="primary" className={classes.btn}
                 onClick={handleSubmit}

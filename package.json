@@ -1,6 +1,6 @@
 {
-  "name": "agendamento-back",
-  "version": "0.1.0",
+  "name": "acompanhamento-front",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.2",

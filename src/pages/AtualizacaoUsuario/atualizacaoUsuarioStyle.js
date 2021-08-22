@@ -6,10 +6,9 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    minHeight: "100vh",
-    padding: "30px 60px 0",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+      padding: "32px 8px",
     },
   },
 
@@ -33,7 +32,11 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "16px",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center"
+    justifyContent: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   },
 
   title: {
@@ -46,11 +49,11 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
-  containerForm: {
-    padding: "50px 50px 30px",
+  formContainer: {
+    padding: "48px",
     borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
   grid: {
@@ -64,15 +67,12 @@ export const useStyles = makeStyles((theme) => ({
     width: "100%",
     marginBottom: "30px",
   },
-  centralizar: {
-    display: "flex",
-    justifyContent: "center",
-  },
   btn: {
     margin: "30px 40px 0",
     width: "150px",
     height: "50px",
     borderRadius: "2px",
+    color: "white",
     "&:first-child": {
       background: props => props.updating ? verde : azulPadrao,
     },
@@ -81,12 +81,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.only("xs")]: {
       margin: "0",
-      "&:first-child": {
-        marginRight: "10px"
-      },
-      "&:last-child": {
-        marginLeft: "10px"
-      },
+      marginBottom: "16px"
     },
   },
   btnPassword: {
@@ -110,7 +105,8 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
     [theme.breakpoints.down("sm")]: {
-      fontSize: "10px"
+      fontSize: "10px",
+      marginBottom: "16px"
     }
   }
 }));

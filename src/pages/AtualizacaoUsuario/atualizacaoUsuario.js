@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   CssBaseline,
   Paper,
-  Grid,
   Button,
   Dialog,
   DialogTitle,
@@ -22,7 +21,7 @@ import CadastroFuncionario from "../CadastroUsuario/cadastroFuncionario";
 import CadastroPJ from "../CadastroUsuario/cadastroPJ";
 import api from "../../services/api";
 import isValidDate from "../../services/dateValidation";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoUsuario(props) {
@@ -77,7 +76,7 @@ function AtualizacaoUsuario(props) {
           sendMessage("Erro ao atualizar email e senha", "error");
         });
     }
-  }, [accessToken, id, props.userPerfil, sendMessage]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function validateAllFields(data) {
 
@@ -191,6 +190,8 @@ function AtualizacaoUsuario(props) {
           birthdate: userData.type === "PJ" ? "01/01/1901" : userData.birthdate,
           phonenumber: userData.phonenumber,
           password: userData.password,
+          corporate_name: userData.corporate_name,
+          state_registration: userData.state_registration
         };
 
         if (validateAllFields(updatedFields)) {
@@ -255,7 +256,7 @@ function AtualizacaoUsuario(props) {
       setTypeSnackbar("info");
 
       try {
-        const response = await api.delete(`user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}});
+        await api.delete(`user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}});
 
         setOpenSnackbar(true);
         setMessageSnackbar("Usuário deletado com sucesso!");
@@ -315,13 +316,14 @@ function AtualizacaoUsuario(props) {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <h1 className={classes.title}>
+
+        <Typography variant="h3" className={classes.title}>
           {id === "me" ? "Seu Perfil" : "Detalhes do Usuário"}
-        </h1>
+        </Typography>
 
         <AreYouSure />
 
-        <Paper className={classes.containerForm} elevation={0}>
+        <Paper className={classes.formContainer} elevation={0}>
           {userData.type === "PF" ? (
             <CadastroPF
               formData={userData}
@@ -352,20 +354,8 @@ function AtualizacaoUsuario(props) {
                 )
             
           }
-
-          <div className={classes.buttonContainer} >
-            <Button
-              component={Link}
-              to={`/listagemequipamento?userid=${props.userPerfil.id}`}
-              variant="outlined"
-              disableElevation
-              className={classes.buttonAdd}
-            >
-              Acessar equipamentos
-            </Button>
-          </div>
           
-          <Grid className={classes.centralizar} item xs={12}>
+          <div className={classes.buttonContainer}>
             <Button
               variant="contained"
               color="primary"
@@ -407,14 +397,14 @@ function AtualizacaoUsuario(props) {
             {!(id === "me" && updating === false) && (
               <Button
                 variant="contained"
-                color="secondary"
                 className={classes.btn}
                 onClick={handleDelete}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
             )}
-          </Grid>
+
+          </div>
         </Paper>
       </div>
 

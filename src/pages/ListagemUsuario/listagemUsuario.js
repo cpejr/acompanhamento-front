@@ -6,8 +6,6 @@ import {
   InputBase,
   CssBaseline,
   Button,
-  FormControlLabel,
-  Checkbox,
   MenuItem,
   FormControl,
   Select,
@@ -17,14 +15,13 @@ import { useStyles } from "./listagemUsuarioStyle";
 import StickyHeadTable from "./Tabela";
 import SearchIcon from "@material-ui/icons/Search";
 import ordenar from "../../services/ordenar";
-import { DataContext } from "../../context/DataContext";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
 import { LoginContext } from '../../context/LoginContext';
 
 export default function ListagemUsuario() {
   const classes = useStyles();
-  const { clientsList } = useContext(DataContext);
+
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [filterByOptions, setFilterByOptions] = useState("nameEmail");
@@ -54,20 +51,20 @@ export default function ListagemUsuario() {
 
   useEffect(() => {
     getEmployees();
-  }, [getEmployees]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-// Mensagem do placeholder de acordo com a caixa de seleção
-  function messageDisplay(e){
+  // Mensagem do placeholder de acordo com a caixa de seleção
+  function messageDisplay(e) {
     setFilterByOptions(e.target.value);
-    if(e.target.value === "nameEmail"){
+    if (e.target.value === "nameEmail") {
       setMessagePlaceholder("Procurar usuário por nome ou e-mail");
-    }else if(e.target.value === "funcao"){
+    } else if (e.target.value === "funcao") {
       setMessagePlaceholder("Procurar usuário por função");
     }
   }
 
 
-  function handleSearchChange(search){
+  function handleSearchChange(search) {
     const searchByName = findPeoplebyName(search);
     const searchByEmail = findPeoplebyEmail(search);
     const searchByFuncao = findPeoplebyFuncao(search);
@@ -83,111 +80,89 @@ export default function ListagemUsuario() {
     setUsersListToDisplay(finalResult);
   }
 
-  function findPeoplebyName(name){
-    const filteredUsers = 
-    employees.filter((employee)=> {
-      if(employee.name){
-        return employee.name.toString().toLowerCase().includes(name.toString().toLowerCase())
-      }
-    })
+  function findPeoplebyName(name) {
+    const filteredUsers =
+      employees.filter((employee) => {
+
+        if (employee.name) {
+          return employee.name.toString().toLowerCase().includes(name.toString().toLowerCase())
+        } else return false;
+      })
     return filteredUsers;
   }
 
-  function findPeoplebyEmail(email){
-    const filteredUsers = 
-    employees.filter((employee)=> {
-      if(employee.email){
-        return employee.email.toString().toLowerCase().includes(email.toString().toLowerCase())
-      }
-    })
+  function findPeoplebyEmail(email) {
+    const filteredUsers =
+      employees.filter((employee) => {
+        if (employee.email) {
+          return employee.email.toString().toLowerCase().includes(email.toString().toLowerCase())
+        } else return false;
+      })
     return filteredUsers;
   }
 
-  function findPeoplebyFuncao(funcao){
-    const filterFuncao = 
-    employees.filter((employee)=> {
-      if(employee.type){
-        return employee.type.toString().toLowerCase().includes(funcao.toString().toLowerCase())
-      }
-    })
+  function findPeoplebyFuncao(funcao) {
+    const filterFuncao =
+      employees.filter((employee) => {
+        if (employee.type) {
+          return employee.type.toString().toLowerCase().includes(funcao.toString().toLowerCase())
+        } else return false;
+      })
     return filterFuncao;
   }
 
 
-  function getUnique(arr){
+  function getUnique(arr) {
     let final = [];
-    arr.forEach((elem)=>{
+    arr.forEach((elem) => {
       if (final.includes(elem)) return;
       final.push(elem);
     })
     return final;
   }
 
-  
-  const filterByUsers = (props) => {
-    let users = props;
-
-    //Remove ou não administrador
-    if (!filterThisUsers.administrador) {
-      users = users.filter((user) => user.funcao !== "Administrador");
-    }
-
-    //Remove ou não funcionário
-    if (!filterThisUsers.funcionario) {
-      users = users.filter((user) => user.funcao !== "Funcionário");
-    }
-
-    //Remove ou não cliente
-    if (!filterThisUsers.cliente) {
-      users = users.filter((user) => user.funcao !== "Cliente");
-    }
-
-    return users;
-  };
-
   return (
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-       <div className={classes.allsearch}>
+        <div className={classes.allsearch}>
           <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
-            Usuários
-          </Typography>
-          <Button
-            component={Link}
-            to="/cadastrousuario"
-            className={classes.buttonAdd}
-          >
-            Adicionar Novo
-          </Button>
-          </div>
-        </div>
-        
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <div className={classes.searchInput}>
-            <InputBase
-              className={classes.placeholder}
-              placeholder={messagePlaceholder}
-              onChange={(e) => {
-                handleSearchChange(e.target.value);
-                // var arroba = "@";
-                // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
-                // else FindPeoplebyName(e.target.value);
-              }}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.input,
-              }}
-            />
+            <Typography variant="h3" className={classes.title}>
+              Usuários
+            </Typography>
+            <Button
+              component={Link}
+              to="/cadastrousuario"
+              className={classes.buttonAdd}
+            >
+              Adicionar Novo
+            </Button>
           </div>
         </div>
 
-        {/* Renderiza a tabela de usuários em ordem alfabética/ ou inverso da ordem alfabética */}
-         <FormControl className={classes.filter}>
+        <div className={classes.searchplusfilter}>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <div className={classes.searchInput}>
+              <InputBase
+                className={classes.placeholder}
+                placeholder={messagePlaceholder}
+                onChange={(e) => {
+                  handleSearchChange(e.target.value);
+                  // var arroba = "@";
+                  // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
+                  // else FindPeoplebyName(e.target.value);
+                }}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.input,
+                }}
+              />
+            </div>
+          </div>
+          <FormControl className={classes.filter}>
             <Select
               className={classes.selectItens}
               value={filterByOptions}
@@ -198,11 +173,12 @@ export default function ListagemUsuario() {
               <MenuItem value="funcao">Função</MenuItem>
             </Select>
           </FormControl>
+        </div>
 
         <div className={classes.table}>
           <StickyHeadTable
             usersListToDisplay={ordenar(
-              filterByUsers(usersListToDisplay),
+              usersListToDisplay,
               "name",
               ordemAlfabetica
             ).map((employees) => {
@@ -216,7 +192,7 @@ export default function ListagemUsuario() {
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica}
-          /> 
+          />
         </div>
       </div>
     </React.Fragment>

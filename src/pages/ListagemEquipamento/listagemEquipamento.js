@@ -89,6 +89,7 @@ export default function ListagemEquipamento() {
             //   (model) => model.id === equipment.id_model
           // ).modelName;
           
+
           const selected = modelList.find(
             (model) => model.id === equipment.id_model
           );
@@ -106,40 +107,40 @@ export default function ListagemEquipamento() {
   }, [modelList]);
 
   useEffect(() => {
+
+    async function getEquipmentsByUser(){
+
+      if (userId) {
+      await api
+        .get(`/user/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}})
+        .then((response) => {
+          const idEquipments = response.data.user.id_equipments;
+
+          let auxVector = [];
+          if (idEquipments) {
+            equipmentsOriginal.forEach((equipment) => {
+              if (idEquipments.includes(equipment.id)) {
+                auxVector.push(equipment);
+              }
+            })
+          }
+          setEquipmentsListToDisplay(auxVector);
+        })
+        .catch((error => {
+          console.error("Erro ao buscar usuário", error);
+        }))
+      }
+    }
+
+    getEquipmentsByUser();
     setEquipmentsListToDisplay(equipmentsOriginal);
     setLoading((prev) => ({ ...prev, setDisplay: false }));
 
-  }, [equipmentsOriginal]);
-
-  // para q esse useEffect? ele tava bugando a lista para um funcionario pq o if era: !isClient
-  useEffect (()=>{
-    if(isClient){
-      async function getEquipmentsByUser(){
-      if(userId){
-      await api.get(`/user/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response)=>{
-        const idEquipments = response.data.user.id_equipments;
-        let auxVector = [];
-        if(idEquipments){
-          equipmentsOriginal.forEach((equipment)=>{
-            if(idEquipments.includes(equipment.id)){
-              auxVector.push(equipment);
-            }
-          })
-        }
-        setEquipmentsListToDisplay(auxVector);
-      })
-      }
-    }
-    getEquipmentsByUser();
-    }
-  },
-  [accessToken, equipmentsOriginal, userId]
-   )
+  }, [equipmentsOriginal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function FindEquipment(searchEquipment) {
-  
+      
     if (searchEquipment.length > 0) {
-
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
 
@@ -190,6 +191,7 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
+        
         <div className={classes.searchplusfilter}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -220,6 +222,7 @@ export default function ListagemEquipamento() {
             </Select>
           </FormControl>
         </div>
+
         <div className={classes.table}>
           <StickyHeadTable
             equipmentsListToDisplay={ordenar(

@@ -421,6 +421,7 @@ function AtualizacaoEquipamento() {
               <Button
                 className={classes.btn}
                 variant="contained"
+                onClick={() => history.push(`/au/${clientId}`)}
               >
                 Proprietário do equipamento
               </Button>

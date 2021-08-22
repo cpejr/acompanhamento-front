@@ -394,22 +394,12 @@ function AtualizacaoUsuario(props) {
             {!(id === "me" && updating === false) && (
               <Button
                 variant="contained"
-                color="secondary"
                 className={classes.btn}
                 onClick={handleDelete}
               >
                 {updating ? "Cancelar" : "Excluir"}
               </Button>
             )}
-
-            <Button
-              variant="outlined"
-              disableElevation
-              className={classes.btn}
-              onClick={() => history.push(`/listagemequipamento?userid=${props.userPerfil.id}`)}
-            >
-              Acessar equipamentos
-            </Button>
 
           </div>
         </Paper>

@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { titlesFontFamilyPadrao, titleFontSize, azulPadraoClaro,vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
+import { titlesFontFamilyPadrao, titleFontSize, azulPadrao, vermelhoPadrao, verde } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -24,22 +24,11 @@ export const useStyles = makeStyles(theme => ({
   input:{
     minHeight:"100vh",
     minWidth:"50vw",
-    // marginLeft:"20vh",
     [theme.breakpoints.only("xs")]: {
-      // marginLeft:"1px",
     },
 
     },
-  // textForm:{    
-  //   padding: "100px 100px 60px",
-  //   width:"300px",
-  //   borderRadius: "13px",
-  //   flexDirection: "center",
-  //   [theme.breakpoints.only("xs")]: {
-  //     padding: "100px 5%",
-  //     marginLeft:"1%",
-  //   },
-  // },
+ 
   title: {
     display:"flex",
     justifyContent: "center",
@@ -47,15 +36,10 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: "500",
     fontSize: titleFontSize,
     lineHeight: "40px",
-    display: "flex",
     color: "#000000",
   },
   centralizar:{
     justifyContent: "center",
-    // marginLeft:"280px",
-    [theme.breakpoints.only("xs")]: {
-      // marginLeft:"60px",
-    },
   },
   centralizar2:{
      marginLeft:"40%",
@@ -70,22 +54,21 @@ export const useStyles = makeStyles(theme => ({
     marginBottom:"10px",
     alignItems:"center",
 
-    // borderRadius: "2px",
-    // "&:first-child": {
-    //   background: props => props.updating ? verde : azulPadrao,
-    // },
-    // "&:last-child": {
-    //   background: vermelhoPadrao
-    // },
-    // [theme.breakpoints.only("xs")]: {
-    //   margin: "0",
-    //   margin: "15px 5px 0",
-    //   "&:first-child": {
-    //     marginRight: "10px"
-    //   },
-    //   "&:last-child": {
-    //     marginLeft: "10px"
-    //   },
-    // },
+    borderRadius: "2px",
+    "&:first-child": {
+      background: props => props.editing ? vermelhoPadrao: azulPadrao,
+    },
+    "&:last-child": {
+      background:props => props.editing? verde : "grey",
+    },
+    [theme.breakpoints.only("xs")]: {
+      margin: "15px 5px 0",
+      "&:first-child": {
+        marginRight: "10px"
+      },
+      "&:last-child": {
+        marginLeft: "10px"
+      },
+    },
   },
 }))

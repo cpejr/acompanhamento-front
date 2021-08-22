@@ -3,7 +3,6 @@ import { useStyles } from './tabelaStyle';
 import {
   Paper,
   Button,
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -13,20 +12,15 @@ import {
   TableSortLabel,
   Typography
 } from '@material-ui/core';
-import { FiMoreHorizontal } from "react-icons/fi"
 import history from '../../../history'
-import LinkMenu from '../../../components/LinkMenu'
 
 export default function StickyHeadTable(props) {
 
   const classes = useStyles();
   const { ordem, setOrdem } = props;
-  const [openMenu, setOpenMenu] = React.useState("");
-
 
   const headerItems = [
     { title: "Código do Equipamento", ordemBy: "equipment_code" },
-    // { title: "Modelo", ordemBy: "id_model" },
     { title: "CPF cliente", ordemBy: "cpf_client" },
     { title: "Última visita", ordemBy: "last_visit" }
   ]

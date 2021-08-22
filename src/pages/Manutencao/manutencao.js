@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { CssBaseline, Paper, Button, CircularProgss, TextField } from "@material-ui/core";
-
+import { CssBaseline, Paper, Button, TextField } from "@material-ui/core";
 import { useStyles } from "./manutencaoStyle";
 import { useParams } from 'react-router';
 import { AuthContext } from '../../context/AuthContext';
@@ -9,21 +7,13 @@ import api from '../../services/api';
 
 export default function Manutencao() {
   let { id } = useParams();
-  const history = useHistory();
-
-  const [updating, setUpdating] = useState(false);
-  const [equipmentData, setEquipmentData] = useState({});
-  const [equipmentDataOriginal, setEquipmentDataOriginal] = useState({});
   const { sendMessage } = useContext(AuthContext);
 
   // variaveis do snackbar
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [messageSnackbar, setMessageSnackbar] = useState("");
-  const [typeSnackbar, setTypeSnackbar] = useState("info");
-  const [loading, setLoading] = useState(false);
   const [maintenance, setMaintenance] = useState("")
-
-  const classes = useStyles({ updating });
+  const [maintenanceOriginal, setMaintenanceOriginal] = useState("")
+  const [editing, setEditing] = useState(false);
+  const classes = useStyles({ editing });
 
   // pega os dados do usuário com o id
   useEffect(() => {
@@ -31,51 +21,41 @@ export default function Manutencao() {
       api
         .get(`/equipment/${id}`)
         .then((response) => {
-          setEquipmentData(response.data.equipment);
-          setEquipmentDataOriginal(response.data.equipment);
+          setMaintenanceOriginal(response.data.equipment[0].maintenance);
+          setMaintenance(response.data.equipment[0].maintenance);
         })
     } catch (error) {
       console.warn(error);
       alert("Erro ao buscar Equipamentos");
     }
-  },
-    [id]);
-
-  function handleChangeInput(event) {
-    const { maintenance, value } = event.target;
-    setEquipmentData({ ...equipmentData, [maintenance]: value });
-  }
+  }, [id]);
 
   async function handleSubmit() {
-
-    if (!updating) setUpdating(true);
-    else {
-      setLoading(true);
-
-      try {
-        console.log(equipmentData);
-        const updatedFields = {
-          maintenance: maintenance
-        }
-        console.log(updatedFields);
-        api
-          .put(`/equipment/${id}`, updatedFields)
-          .then((response) => {
-            console.log(response);
-            sendMessage("Manutenção atualizada com sucesso!", "success");
-          })
-
-        setUpdating(false);
-        setLoading(false);
+    setEditing(false);
+    try {
+      const updatedFields = {
+        maintenance: maintenance
       }
-      catch (error) {
-        console.log(error);
-
-        sendMessage("Falha ao atualizar a manutenção", "error");
-        setUpdating(false);
-      }
+      api
+        .put(`/equipment/${id}`, updatedFields)
+        .then((response) => {
+          sendMessage("Manutenção atualizada com sucesso!", "success");
+        })
+    }
+    catch (error) {
+      console.log(error);
+      sendMessage("Falha ao atualizar a manutenção", "error");
     }
   }
+  function handleEdit(){
+    if(editing){
+      setEditing(false);
+      setMaintenance(maintenanceOriginal);
+    }
+    else{
+      setEditing(true);
+    } 
+   }
 
 
   return (
@@ -96,7 +76,7 @@ export default function Manutencao() {
               minRows={10}
               maxRows={20}
               fullWidth
-              disabled={false}
+              disabled={!editing}
               onChange={(e) => setMaintenance(e.target.value)}
               value={maintenance}
             />
@@ -106,17 +86,21 @@ export default function Manutencao() {
                 variant="contained"
                 color="primary"
                 className={classes.btn}
-                onClick={handleChangeInput}
+                onClick={handleEdit}
               >
-                Editar
+                {
+                  editing? "Cancelar" : "Editar"
+                }
               </Button>
+
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.btn}
+                disabled={!editing}
                 onClick={handleSubmit}
               >
-                Salvar
+                 Salvar
               </Button>
 
             </div>

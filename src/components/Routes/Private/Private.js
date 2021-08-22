@@ -3,27 +3,23 @@ import { Redirect, Route } from 'react-router-dom';
 import { LoginContext } from '../../../context/LoginContext'; 
  
 const RoutesPrivate = ({ component: Component, ...rest}) => { 
-    const { getUserId , getUserType } = useContext(LoginContext); 
-    const UserType = getUserType();
+    const { getToken , getUserType } = useContext(LoginContext); 
+    const userType = getUserType();
 
-    function Client() {
-        if(UserType === "PF" || UserType === "PJ") return true;   
+    function isClient() {
+        if (userType === "PF" || userType === "PJ") return true;   
         return false;
     }  
-
 
     return ( 
         <Route
             {...rest} 
-            render={() => getUserId() 
-                ? <Component {...rest} /> 
+            render={() => !!getToken() 
+                ? !isClient()
+                    ? <Component {... rest} />
+                    : <Redirect to="/unAuthorized" />
                 : <Redirect to="/login" /> 
             }
-            
-            render={()=> !Client()
-                ? <Component {... rest} />
-                : <Redirect to="/unAuthorized"/>
-           }
         />
     ) 
 } 

@@ -27,11 +27,7 @@ export default function ListagemUsuario() {
   const [filterByOptions, setFilterByOptions] = useState("nameEmail");
   const [messagePlaceholder, setMessagePlaceholder] = useState("Procurar usuário por nome ou e-mail");
   const [usersListToDisplay, setUsersListToDisplay] = useState([]);
-  const [filterThisUsers, setFilterThisUsers] = useState({
-    administrador: true,
-    funcionario: true,
-    cliente: true,
-  });  
+
   const { getToken } = useContext(LoginContext);
   const accessToken = getToken();
   const { sendMessage } = useContext(AuthContext);
@@ -62,7 +58,6 @@ export default function ListagemUsuario() {
       setMessagePlaceholder("Procurar usuário por função");
     }
   }
-
 
   function handleSearchChange(search) {
     const searchByName = findPeoplebyName(search);
@@ -151,9 +146,6 @@ export default function ListagemUsuario() {
                 placeholder={messagePlaceholder}
                 onChange={(e) => {
                   handleSearchChange(e.target.value);
-                  // var arroba = "@";
-                  // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
-                  // else FindPeoplebyName(e.target.value);
                 }}
                 classes={{
                   root: classes.inputRoot,

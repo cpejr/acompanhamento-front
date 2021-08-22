@@ -25,7 +25,6 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
-import { AuthContext } from '../../context/AuthContext';
 import { LoginContext } from "../../context/LoginContext";
 
 export default function Menu() {

@@ -1,5 +1,4 @@
 import React, { createContext } from "react";
-import api from "../services/api";
 import jwt from "jsonwebtoken";
 
 export const LoginContext = createContext();
@@ -42,7 +41,9 @@ export const LoginContextProvider = (props) => {
 
   function getUserType() {
     const userAux = getData();
-    return userAux.userData.type;
+    if (userAux.userData) 
+      return userAux.userData.type;
+    else return undefined
   }
 
   function IsClient(){

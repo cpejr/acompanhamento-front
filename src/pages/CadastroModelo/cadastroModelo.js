@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core"
 import findError from '../../services/findError';
 import { useStyles } from './cadastroModeloStyle';
-import nextInput from '../../services/nextInput';
 import { LoginContext } from '../../context/LoginContext';
 import { AuthContext } from "../../context/AuthContext";
 

@@ -17,7 +17,6 @@ function AuthContextProvider({ children }) {
 
   const classes = useStyles();
   const id = localStorage.getItem("userId");
-  let isClient;
 
   const [user, setUser] = useState(CreatePeople.people[3]);
   const [loading, setLoading] = useState(true);
@@ -42,12 +41,6 @@ function AuthContextProvider({ children }) {
   const sendMessage = (message = "", type = "success", time = 5000) => {
     setOpenMensage(prev => ({ ...prev, open: true, message, type, time }));
   }
-
-  // if (user.type === "PF" || user.type === "PJ") {
-  //   isClient = true;
-  // } else isClient = false;
-
-  isClient = false;
 
   if (loading) {
     return (

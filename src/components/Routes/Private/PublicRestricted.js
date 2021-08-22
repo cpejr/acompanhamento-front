@@ -3,16 +3,23 @@ import { Redirect, Route } from 'react-router-dom';
 import { LoginContext } from '../../../context/LoginContext'; 
  
 const RoutesPublic = ({ component: Component, restricted , ...rest}) => { 
-    const { getUserId , getUserType } = useContext(LoginContext);
+    const { getToken } = useContext(LoginContext);
 
 
     return ( 
         <Route
             {...rest} 
-            render={() => getUserId() && restricted 
+            render={() => getToken() && restricted 
                 ? <Component {...rest} /> 
                 : <Redirect to="/unAuthorized" /> 
             }
+
+            // render={() => getToken() 
+            //     ? !isClient()
+            //         ? <Component {... rest} />
+            //         : <Redirect to="/unAuthorized" />
+            //     : <Redirect to="/login" /> 
+            // }
             
         />
     ) 

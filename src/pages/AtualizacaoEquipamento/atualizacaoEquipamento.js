@@ -50,7 +50,6 @@ function AtualizacaoEquipamento() {
   });
 
   const { sendMessage } = useContext(AuthContext);
-  const [modelName, setModelName] = useState("");
   const [clientId, setClientId] = useState("");
   const [clientCpfCnpj, setClientCpfCnpj] = useState("");
   const [disableCpfCnpj, setDisableCpfCnpj] = useState(false);
@@ -110,8 +109,7 @@ function AtualizacaoEquipamento() {
       .catch((err) => console.log(err));
     }
       
-  }, [clientId])
-
+  }, [clientId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
 
@@ -199,7 +197,7 @@ function AtualizacaoEquipamento() {
       situation: equipment.situation,
       initial_work: equipment.initial_work,
       address: equipment.address,
-      zipcode: equipment.zipcode,
+      zipcode: equipment.zipcode ? equipment.zipcode : "",
       cpfcnpj: clientCpfCnpj
     };
 
@@ -222,9 +220,11 @@ function AtualizacaoEquipamento() {
           setEquipmentOriginal(response.data.equipment);
           setDisableCpfCnpj(true)
         })
-        .catch((err) => {
-          sendMessage(`Erro: ${err.message}`, "error");
-          console.log(err);
+        .catch((error) => {
+          console.log(error.response);
+          if (error.response.status === 400) {
+            sendMessage(error.response.data.notification, "error")
+          }
         });
       setUpdating(false);
     }

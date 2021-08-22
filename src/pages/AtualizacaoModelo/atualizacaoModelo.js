@@ -20,7 +20,6 @@ import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
-import MaskedInput from 'react-text-mask'
 import Slider from '@material-ui/core/Slider';
 import { LoginContext } from '../../context/LoginContext';
 const TEMPERATURE_SCALE_LOWEST = 0;
@@ -115,8 +114,7 @@ function AtualizacaoModelo() {
 
       setLoading(false)
     })();
-
-  }, [id])
+  }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Aqui temos as funcoes para as faixas de valores
   const updateRangeTemp = (e, data) => {

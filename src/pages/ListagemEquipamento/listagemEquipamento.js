@@ -25,12 +25,12 @@ export default function ListagemEquipamento() {
   const classes = useStyles();
   const { getToken, getUserId, IsClient } = useContext(LoginContext);
   const accessToken = getToken();
-  const isClient = IsClient();
   const userId = getUserId();
 
   const [filterby, setFilterby] = useState("equipment_code");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
   const [modelList, setModelList] = useState([]);
+  const isClient = IsClient();
 
   const [loading, setLoading] = useState({
     model: true,
@@ -57,7 +57,7 @@ export default function ListagemEquipamento() {
     api
       .get(url, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((equipment) => {
-        
+
         const equipments = equipment.data.equipment;
         console.log(equipments);
         setEquipmentsOriginal(equipments);
@@ -91,10 +91,6 @@ export default function ListagemEquipamento() {
     setEquipmentsOriginal((velhosEquip) => {
       return velhosEquip.map((equipment) => {
         if (modelList[0].id) {
-          // equipment.equipment_model = modelList.find(
-          //   (model) => model.id === equipment.id_model
-          // ).modelName;
-
 
           const selected = modelList.find(
             (model) => model.id === equipment.id_model
@@ -190,13 +186,16 @@ export default function ListagemEquipamento() {
           <Typography variant="h3" className={classes.title}>
             Equipamentos
           </Typography>
-          <Button
-            component={Link}
-            to="/cadastroequipamento"
-            className={classes.buttonAdd}
-          >
-            Adicionar Novo
-          </Button>
+          {!isClient && (
+            <Button
+              component={Link}
+              to="/cadastroequipamento"
+              className={classes.buttonAdd}
+            >
+              Adicionar Novo
+            </Button>
+          )}
+
         </div>
 
         <div className={classes.searchplusfilter}>

@@ -54,6 +54,7 @@ function Routes() {
             <Menu />
 
             <div className={classes.spaceContent}>
+
               {/* DashBoard */}
               <RoutesPublic path="/dashboard" component={Dashboard} restricted />
 
@@ -125,10 +126,16 @@ function Routes() {
               />
 
               {/* Pagina para inserir texto de manutenção do equipmanento */}
+              <RoutesPrivate path="/manutencao" exact>
+                <Redirect to="/" />
+              </RoutesPrivate>
               <RoutesPrivate
                 path="/manutencao/:id"
                 component={Manutencao}
               />
+
+              <Route to="/Login" />
+
 
             </div>
           </Fragment>

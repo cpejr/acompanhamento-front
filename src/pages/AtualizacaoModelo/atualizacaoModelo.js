@@ -323,7 +323,6 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                autoFocus
                 disabled={!updating}
               />
 
@@ -337,7 +336,6 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                autoFocus
                 disabled={!updating}
               />
 

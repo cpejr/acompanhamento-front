@@ -133,6 +133,8 @@ function AtualizacaoUsuario(props) {
 
         if (validateEmailAndPassword(updatedFields)) {
 
+          sendMessage("Atualizando email e senha...", "info", null)
+
           await api
             .put(`/user/${props.userPerfil.id}`, updatedEmail, {headers: {authorization: `Bearer ${accessToken}`}})
             .then((response) => {
@@ -143,7 +145,7 @@ function AtualizacaoUsuario(props) {
             });
           
           await api
-            .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields)
+            .put(`/user/updateFirebase/${props.userPerfil.firebaseUid}`, updatedFields, {headers: {authorization: `Bearer ${accessToken}`}} )
             .then((response) => {
               sendMessage("Senha e email atualizados com sucesso!", "success");
             })
@@ -199,6 +201,7 @@ function AtualizacaoUsuario(props) {
           if (isPerfil) {
             id = props.userPerfil.id;
           }
+
 
           api
             .put(`/user/${id}`, updatedFields, {headers: {authorization: `Bearer ${accessToken}`}})

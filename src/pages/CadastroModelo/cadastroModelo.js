@@ -208,7 +208,6 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  autoFocus
                 />
 
                 <TextField
@@ -221,7 +220,6 @@ export default function CadastroModelo(props) {
                   helperText="*Obrigatório"
                   variant="filled"
                   autoComplete="off"
-                  autoFocus
                 />
 
                 <TextField

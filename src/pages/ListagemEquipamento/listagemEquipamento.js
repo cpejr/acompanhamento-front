@@ -23,8 +23,8 @@ import { LoginContext } from '../../context/LoginContext';
 export default function ListagemEquipamento() {
 
   const classes = useStyles();
-  const { getToken, getUserId, IsClient} = useContext(LoginContext);
-	const accessToken = getToken();
+  const { getToken, getUserId, IsClient } = useContext(LoginContext);
+  const accessToken = getToken();
   const isClient = IsClient();
   const userId = getUserId();
 
@@ -47,15 +47,19 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
+  const userIdFromQuery = query.get("userId");
 
   useEffect(() => {
     const url = situation
       ? `equipment/find_situation/${situation}`
       : "equipment/index";
+
     api
-      .get(url, {headers: {authorization: `Bearer ${accessToken}`}})
+      .get(url, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((equipment) => {
-        var equipments = equipment.data.equipment;
+        
+        const equipments = equipment.data.equipment;
+        console.log(equipments);
         setEquipmentsOriginal(equipments);
         setEquipmentsListToDisplay(equipments);
         setLoading((prev) => ({ ...prev, equipments: false }));
@@ -66,29 +70,31 @@ export default function ListagemEquipamento() {
           err
         );
       });
-        api
-          .get(`/model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
-          .then((model) => {
-            setModelList(model.data.data);
-            setLoading((prev) => ({ ...prev, model: false }));
-          })
-          .catch((err) => {
-            console.error(
-              "Não foi possivel estabelecer conexão com o backend",
-              err
-            );
-          });
+
+    api
+      .get(`/model/index`, { headers: { authorization: `Bearer ${accessToken}` } })
+      .then((model) => {
+        setModelList(model.data.data);
+        setLoading((prev) => ({ ...prev, model: false }));
+      })
+      .catch((err) => {
+        console.error(
+          "Não foi possivel estabelecer conexão com o backend",
+          err
+        );
+      });
+
   }, [accessToken, situation, userId,]);
 
   useEffect(() => {
 
-      setEquipmentsOriginal((velhosEquip) => {
-        return velhosEquip.map((equipment) => {
+    setEquipmentsOriginal((velhosEquip) => {
+      return velhosEquip.map((equipment) => {
         if (modelList[0].id) {
           // equipment.equipment_model = modelList.find(
-            //   (model) => model.id === equipment.id_model
+          //   (model) => model.id === equipment.id_model
           // ).modelName;
-          
+
 
           const selected = modelList.find(
             (model) => model.id === equipment.id_model
@@ -96,39 +102,40 @@ export default function ListagemEquipamento() {
           if (selected) {
             equipment.equipment_model = selected.modelName;
           }
-          
+
         }
         return equipment;
       });
     });
-    
+
     setLoading((prev) => ({ ...prev, changeNameModel: false }));
-  
+
   }, [modelList]);
 
+  // é usado somente quando é para filtrar os equipamentos de um usuário específico, via qurery
   useEffect(() => {
 
-    async function getEquipmentsByUser(){
+    async function getEquipmentsByUser() {
 
-      if (userId) {
-      await api
-        .get(`/user/${userId}`, {headers: {authorization: `Bearer ${accessToken}`}})
-        .then((response) => {
-          const idEquipments = response.data.user.id_equipments;
+      if (userIdFromQuery) {
+        await api
+          .get(`/user/${userIdFromQuery}`, { headers: { authorization: `Bearer ${accessToken}` } })
+          .then((response) => {
+            const idEquipments = response.data.user.id_equipments;
 
-          let auxVector = [];
-          if (idEquipments) {
-            equipmentsOriginal.forEach((equipment) => {
-              if (idEquipments.includes(equipment.id)) {
-                auxVector.push(equipment);
-              }
-            })
-          }
-          setEquipmentsListToDisplay(auxVector);
-        })
-        .catch((error => {
-          console.error("Erro ao buscar usuário", error);
-        }))
+            let auxVector = [];
+            if (idEquipments) {
+              equipmentsOriginal.forEach((equipment) => {
+                if (idEquipments.includes(equipment.id)) {
+                  auxVector.push(equipment);
+                }
+              })
+            }
+            setEquipmentsListToDisplay(auxVector);
+          })
+          .catch((error => {
+            console.error("Erro ao buscar usuário", error);
+          }))
       }
     }
 
@@ -139,7 +146,7 @@ export default function ListagemEquipamento() {
   }, [equipmentsOriginal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function FindEquipment(searchEquipment) {
-      
+
     if (searchEquipment.length > 0) {
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
@@ -175,7 +182,7 @@ export default function ListagemEquipamento() {
       </React.Fragment>
     );
   }
-  
+
   return (
     <React.Fragment>
       <div className={classes.root}>
@@ -191,7 +198,7 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
-        
+
         <div className={classes.searchplusfilter}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

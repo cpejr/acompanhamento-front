@@ -28,7 +28,6 @@ import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
-import { Autocomplete } from '@material-ui/lab';
 import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoEquipamento() {
@@ -98,7 +97,7 @@ function AtualizacaoEquipamento() {
 
     if (clientId) {
       api
-      .get(`user/${clientId}`)
+      .get(`user/${clientId}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
 
         setClientCpfCnpj(

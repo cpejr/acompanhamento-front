@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { azulPadraoClaro } from '../../../StylePadrao/stylePadrao';
+import { azulPadraoClaro, verde } from '../../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,11 +20,48 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: "500",
     fontSize: "16px"
   },
+  buttonAdd:{
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: verde,
+    marginRight: "4px",
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: verde,
+    }
+  },
+  buttonAdd_2:{
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: azulPadraoClaro,
+    marginRight: "4px",
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: azulPadraoClaro,
+    }
+  },
+  buttonAdd_3:{
+
+    fontWeight: "500",
+    fontSize: "13px",
+    color: "orange",
+    marginRight: "4px",
+
+    "&:hover": {
+      color: "#fff",
+      backgroundColor:"orange" ,
+    }
+  },
 
   lastTableCell: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   nullEquipament: {

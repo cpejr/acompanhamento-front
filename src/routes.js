@@ -22,7 +22,7 @@ import DefinicaoNovaSenha from "./pages/DefinicaoNovaSenha";
 import ErroDePermissao from "./pages/ErroDePermissao";
 import RoutesPrivate from "./components/Routes/Private/Private";
 import Perfil from "./pages/Perfil/Perfil";
-
+import Manutencao from "./pages/Manutencao/manutencao";
 import { useStyles } from "./routesStyles";
 
 function Routes() {
@@ -124,11 +124,17 @@ function Routes() {
                 component={FuncionamentoEquipamento}
               />
 
+              {/* Pagina para inserir texto de manutenção do equipmanento */}
+              <RoutesPrivate
+                path="/manutencao/:id"
+                component={Manutencao}
+              />
+
             </div>
           </Fragment>
         </Switch>
       </LoginContextProvider>
-    </Router>
+    </Router >
   );
 }
 

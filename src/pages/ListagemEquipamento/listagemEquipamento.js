@@ -43,7 +43,7 @@ export default function ListagemEquipamento() {
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
   const userId = query.get("userid");
-  
+
   useEffect(() => {
 
     const url = situation
@@ -106,27 +106,27 @@ export default function ListagemEquipamento() {
 
   useEffect(() => {
 
-    async function getEquipmentsByUser(){
+    async function getEquipmentsByUser() {
 
       if (userId) {
-      await api
-        .get(`/user/${userId}`)
-        .then((response) => {
-          const idEquipments = response.data.user.id_equipments;
+        await api
+          .get(`/user/${userId}`)
+          .then((response) => {
+            const idEquipments = response.data.user.id_equipments;
 
-          let auxVector = [];
-          if (idEquipments) {
-            equipmentsOriginal.forEach((equipment) => {
-              if (idEquipments.includes(equipment.id)) {
-                auxVector.push(equipment);
-              }
-            })
-          }
-          setEquipmentsListToDisplay(auxVector);
-        })
-        .catch((error => {
-          console.error("Erro ao buscar usuário", error);
-        }))
+            let auxVector = [];
+            if (idEquipments) {
+              equipmentsOriginal.forEach((equipment) => {
+                if (idEquipments.includes(equipment.id)) {
+                  auxVector.push(equipment);
+                }
+              })
+            }
+            setEquipmentsListToDisplay(auxVector);
+          })
+          .catch((error => {
+            console.error("Erro ao buscar usuário", error);
+          }))
       }
     }
 
@@ -137,7 +137,7 @@ export default function ListagemEquipamento() {
   }, [equipmentsOriginal]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function FindEquipment(searchEquipment) {
-      
+
     if (searchEquipment.length > 0) {
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
@@ -173,9 +173,9 @@ export default function ListagemEquipamento() {
       </React.Fragment>
     );
   }
-  
+
   return (
-    <React.Fragment>
+    <>
       <div className={classes.root}>
         <div className={classes.header}>
           <Typography variant="h3" className={classes.title}>
@@ -189,7 +189,7 @@ export default function ListagemEquipamento() {
             Adicionar Novo
           </Button>
         </div>
-        
+
         <div className={classes.searchplusfilter}>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -207,6 +207,7 @@ export default function ListagemEquipamento() {
               />
             </div>
           </div>
+
           <FormControl className={classes.filter}>
             <Select
               className={classes.selectItens}
@@ -236,6 +237,7 @@ export default function ListagemEquipamento() {
                 id_model: equipment.id_model,
                 cpf_client: "", // inicialmente fica vazia
                 updatedAt: formattedDate,
+                maintenance: equipment.maintenance,
               };
             })}
             setOrdem={setOrdem}
@@ -243,6 +245,6 @@ export default function ListagemEquipamento() {
           />
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 }

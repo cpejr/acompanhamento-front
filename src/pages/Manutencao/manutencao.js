@@ -47,15 +47,15 @@ export default function Manutencao() {
       sendMessage("Falha ao atualizar a manutenção", "error");
     }
   }
-  function handleEdit(){
-    if(editing){
+  function handleEdit() {
+    if (editing) {
       setEditing(false);
       setMaintenance(maintenanceOriginal);
     }
-    else{
+    else {
       setEditing(true);
-    } 
-   }
+    }
+  }
 
 
   return (
@@ -73,7 +73,7 @@ export default function Manutencao() {
               variant="filled"
               required
               multiline
-              minRows={10}
+              minRows={15}
               maxRows={20}
               fullWidth
               disabled={!editing}
@@ -89,7 +89,7 @@ export default function Manutencao() {
                 onClick={handleEdit}
               >
                 {
-                  editing? "Cancelar" : "Editar"
+                  editing ? "Cancelar" : "Editar"
                 }
               </Button>
 
@@ -100,7 +100,7 @@ export default function Manutencao() {
                 disabled={!editing}
                 onClick={handleSubmit}
               >
-                 Salvar
+                Salvar
               </Button>
 
             </div>

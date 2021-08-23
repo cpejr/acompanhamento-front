@@ -241,7 +241,7 @@ function CadastroPJ(props) {
               name="corporate_name"
               className={classes.inputForm}
               value={formData.corporate_name}
-              label="Nome Corporativo"
+              label="Razão Social"
               type="corporate_name"
               helperText="Opcional"
               variant="filled"
@@ -254,7 +254,7 @@ function CadastroPJ(props) {
               name="state_registration"
               className={classes.inputForm}
               value={formData.state_registration}
-              label="Estado de Registro"
+              label="Inscrição Estadual"
               type="state_registration"
               helperText="Opcional"
               variant="filled"

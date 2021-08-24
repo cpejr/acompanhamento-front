@@ -11,8 +11,7 @@ import {
 } from '@material-ui/core';
 import CachedIcon from '@material-ui/icons/Cached';
 import { useStyles } from './funcionamentoequipamentoStyle'
-import { ptBR } from 'date-fns/locale';
-import { formatDistanceToNow } from 'date-fns/esm';
+import { format } from 'date-fns';
 
 const elementsOfTable = {
   temperature: [
@@ -70,7 +69,7 @@ const elementsOfTable = {
 
 const elementsFixedOfTable = [
   {
-    title: "Tempo ligado",
+    title: "Data de tivação",
     value: "worktime",
     unity: ""
   },
@@ -91,8 +90,8 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
       <h2 className={classes.itemTitle}>{title}</h2>
       <p className={classes.itemBody}>{
         value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" ?
-          formatDistanceToNow(dataToShow[value], { locale: ptBR }) :
-          dataToShow[value]
+          format(dataToShow[value], 'dd/MM/yyyy') :
+          dataToShow[value]  
       } {unity}</p>
     </Grid>
   )

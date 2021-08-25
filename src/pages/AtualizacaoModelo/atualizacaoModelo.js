@@ -157,8 +157,6 @@ function AtualizacaoModelo() {
 
   function handleChangeInput(event) {
     const { name, value } = event.target;
-    console.log(name);
-    console.log(value);
     setModel({ ...model, [name]: value });
   }
 

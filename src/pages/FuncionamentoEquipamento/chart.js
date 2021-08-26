@@ -89,7 +89,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
             },
             {
               label: 'Minimo do Modelo',
-              borderColor: "red",
+              borderColor: "orange",
               data: equipmentData.map(() => {
                 switch (selectedChart){
                   case "temperature":

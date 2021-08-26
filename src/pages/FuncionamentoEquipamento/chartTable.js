@@ -16,12 +16,12 @@ import { format } from 'date-fns';
 const elementsOfTable = {
   temperature: [
     {
-      title: "Máxima temperatura",
+      title: "Máxima temperatura medida",
       value: "tempMax",
       unity: "°C"
     },
     {
-      title: "Mínima temperatura",
+      title: "Mínima temperatura medida",
       value: "tempMin",
       unity: "°C"
     },
@@ -33,12 +33,12 @@ const elementsOfTable = {
   ],
   current: [
     {
-      title: "Máxima corrente",
+      title: "Máxima corrente medida",
       value: "currMax",
       unity: "A"
     },
     {
-      title: "Mínima corrente",
+      title: "Mínima corrente medida",
       value: "currMin",
       unity: "A"
     },
@@ -50,12 +50,12 @@ const elementsOfTable = {
   ],
   voltage: [
     {
-      title: "Máxima tensão",
+      title: "Máxima tensão medida",
       value: "voltMax",
       unity: "V"
     },
     {
-      title: "Mínima tensão",
+      title: "Mínima tensão medida",
       value: "voltMin",
       unity: "V"
     },

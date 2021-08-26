@@ -137,12 +137,12 @@ export default function FuncionamentoEquipamento() {
     var voltMax = 0;
     var voltMin = 0;
     if (equipmentData[0]) {
-      tempMax = Math.max(...equipmentData.map((data) => data.max_temp));
-      tempMin = Math.min(...equipmentData.map((data) => data.min_temp));
-      currMax = Math.max(...equipmentData.map((data) => data.max_current));
-      currMin = Math.min(...equipmentData.map((data) => data.min_current));
-      voltMax = Math.max(...equipmentData.map((data) => data.max_voltage));
-      voltMin = Math.min(...equipmentData.map((data) => data.min_voltage));
+      tempMax = Math.max(...equipmentData.map((data) => data.temperature));
+      tempMin = Math.min(...equipmentData.map((data) => data.temperature));
+      currMax = Math.max(...equipmentData.map((data) => data.current));
+      currMin = Math.min(...equipmentData.map((data) => data.current));
+      voltMax = Math.max(...equipmentData.map((data) => data.voltage));
+      voltMin = Math.min(...equipmentData.map((data) => data.voltage));
     }
     const data = {
       type: selectedChart,
@@ -156,7 +156,7 @@ export default function FuncionamentoEquipamento() {
       // worktime: equipment.work_time
     };
     setDataToShow((prev) => ({ ...prev, ...data })); //first time
-  }, [equipment, equipmentData, selectedChart]);
+  }, [limiteModel, equipment, equipmentData, selectedChart]);
 
   const classes = useStyles();
 

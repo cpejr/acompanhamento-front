@@ -74,14 +74,20 @@ export default function FuncionamentoEquipamento() {
     api
       .get(`model/${equipment.id_model}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
-        const current = response.data.model.currentLimit;
-        const voltage = response.data.model.voltageLimit;
-        const temperature = response.data.model.temperatureLimit;
+        const min_current = response.data.model.min_current;
+        const max_current = response.data.model.max_current;
+        const min_voltage = response.data.model.min_voltage;
+        const max_voltage = response.data.model.max_voltage;
+        const min_temp = response.data.model.min_temp;
+        const max_temp = response.data.model.max_temp;
 
         setLimiteModel({
-          current,
-          voltage,
-          temperature,
+          min_current,
+          max_current,
+          min_voltage,
+          max_voltage,
+          min_temp,
+          max_temp,
         });
       })
       .catch((err) => console.error(err));
@@ -131,12 +137,12 @@ export default function FuncionamentoEquipamento() {
     var voltMax = 0;
     var voltMin = 0;
     if (equipmentData[0]) {
-      tempMax = Math.max(...equipmentData.map((data) => data.temperature));
-      tempMin = Math.min(...equipmentData.map((data) => data.temperature));
-      currMax = Math.max(...equipmentData.map((data) => data.current));
-      currMin = Math.min(...equipmentData.map((data) => data.current));
-      voltMax = Math.max(...equipmentData.map((data) => data.voltage));
-      voltMin = Math.min(...equipmentData.map((data) => data.voltage));
+      tempMax = Math.max(...equipmentData.map((data) => data.max_temp));
+      tempMin = Math.min(...equipmentData.map((data) => data.min_temp));
+      currMax = Math.max(...equipmentData.map((data) => data.max_current));
+      currMin = Math.min(...equipmentData.map((data) => data.min_current));
+      voltMax = Math.max(...equipmentData.map((data) => data.max_voltage));
+      voltMin = Math.min(...equipmentData.map((data) => data.min_voltage));
     }
     const data = {
       type: selectedChart,

@@ -59,7 +59,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
       {!equipmentData[0] && <p className={classes.chartAlert}>
         Não há dados no período selecionado...
       </p>}
-
+      {console.log(selectedChart,"opa")}
       <Line
         data={{
           labels: equipmentData.map(data =>
@@ -75,7 +75,31 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
             {
               label: 'Máximo do Modelo',
               borderColor: "red",
-              data: equipmentData.map(data => limiteModel[selectedChart]),
+              data: equipmentData.map(() => {
+                switch (selectedChart){
+                  case "temperature":
+                    return limiteModel.max_temp;
+                  case "current":
+                    return limiteModel.max_current;
+                  default:
+                    return limiteModel.max_voltage;
+                }
+              }),
+              fill: false,
+            },
+            {
+              label: 'Minimo do Modelo',
+              borderColor: "red",
+              data: equipmentData.map(() => {
+                switch (selectedChart){
+                  case "temperature":
+                    return limiteModel.min_temp;
+                  case "current":
+                    return limiteModel.min_current;
+                  default:
+                    return limiteModel.min_voltage;
+                }
+              }),
               fill: false,
             }
           ]

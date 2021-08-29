@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import CreatePeople from '../services/people';
 import api from '../services/api';
 import { Backdrop, CircularProgress, makeStyles, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
@@ -18,7 +17,7 @@ function AuthContextProvider({ children }) {
   const classes = useStyles();
   const id = localStorage.getItem("userId");
 
-  const [user, setUser] = useState(CreatePeople.people[3]);
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [openMensage, setOpenMensage] = React.useState({
     open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000

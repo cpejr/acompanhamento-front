@@ -37,7 +37,7 @@ export default function FuncionamentoEquipamento() {
   const [selectedChart, setSelectedChart] = useState("temperature");
   const [limiteModel, setLimiteModel] = useState({});
   const [periodChart, setPeriodChart] = useState({
-    type: "mounth",
+    type: "all",
     value:1,
   });
   const [dataToShow, setDataToShow] = useState({
@@ -101,49 +101,17 @@ export default function FuncionamentoEquipamento() {
     setLoading(false);
   }, [accessToken, equipment]);
 
-  useEffect(() => {
-    if (equipmentDataWithoutPeriod[0]) {
-      var dateMin;
-      switch (periodChart.type) {
-        case "hour":
-          dateMin = subHours(new Date(), periodChart.value);
-          break;
-        case "day":
-          dateMin = subDays(new Date(), periodChart.value);
-          break;
-        case "mounth":
-          dateMin = subMonths(new Date(), periodChart.value);
-          break;
-        case "year":
-          dateMin = subYears(new Date(), periodChart.value);
-          break;
-        default:
-          dateMin = new Date();
-          break;
-      }
-
-      const dataFiltered =
-        periodChart.type !== "all"
-          ? equipmentDataWithoutPeriod.filter((data) => {
-              const createdAt = parseISO(data.createdAt);
-              return isAfter(createdAt, dateMin);
-            })
-          : equipmentDataWithoutPeriod;
-
-      setEquipmentData(dataFiltered);
-    }
-  }, [equipmentDataWithoutPeriod, periodChart]);
-
   useEffect(()=>{
-    if(periodChart.datebegin && periodChart.dateend && equipmentData){
-      let filteredDates=equipmentData;
+    if(periodChart.datebegin && periodChart.dateend && equipmentDataWithoutPeriod){
+      let filteredDates=equipmentDataWithoutPeriod;
+      console.log(periodChart, "aqui");
       filteredDates = filteredDates.filter((equipment)=>{
       return new Date(equipment.updatedAt)>= periodChart.datebegin && new Date(equipment.updatedAt)<= periodChart.dateend
       })
-      console.log(filteredDates);
+      console.log(filteredDates, "filteredDates");
       setEquipmentData(filteredDates);
-    }
-  },[periodChart])
+    } if(periodChart.type === "all") setEquipmentData(equipmentDataWithoutPeriod);
+  },[periodChart, equipmentDataWithoutPeriod])
 
   useEffect(() => {
     var tempMax = 0;
@@ -200,7 +168,7 @@ export default function FuncionamentoEquipamento() {
     return { color: "black" };
   };
 
-  console.log(dataToShow);
+  // console.log(dataToShow);
 
   return (
     <div className={classes.root}>

@@ -100,7 +100,8 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
   const handleChangeTempPeriod = (e) => {
     const { name, value } = e.target;
     console.log(new Date(value));
-    setTempSelectedChart(prev => ({ ...prev, [name]: new Date(value)}));
+    if( name === "type") setTempSelectedChart(prev => ({ ...prev, [name]: value }));
+    else setTempSelectedChart(prev => ({ ...prev, [name]: new Date(value)}));
   }
 
   const sendChangeOfPeriod = () => {
@@ -148,7 +149,6 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             disabled={tempSelectedChart.type === 'all'}
             label="Data Inicial"
             type="datetime-local"
-            defaultValue="2017-05-24T10:30"
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
@@ -163,7 +163,6 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             disabled={tempSelectedChart.type === 'all'}
             label="Data Final"
             type="datetime-local"
-            defaultValue="2017-05-24T10:30"
             className={classes.textField}
             InputLabelProps={{
               shrink: true,

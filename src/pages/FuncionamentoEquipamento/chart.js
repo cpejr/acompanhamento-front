@@ -9,8 +9,8 @@ import { ptBR } from 'date-fns/locale';
 
 export default function ({ dataToShow, equipmentData, selectedChart, periodChart, limiteModel }) {
   const classes = useStyles();
-
   const [chartTitle, setChartTitle] = useState("");
+
 
   useEffect(() => {
     const title = () => {
@@ -59,7 +59,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
       {!equipmentData[0] && <p className={classes.chartAlert}>
         Não há dados no período selecionado...
       </p>}
-      {console.log(selectedChart,"opa")}
+      
       <Line
         data={{
           labels: equipmentData.map(data =>

@@ -38,7 +38,7 @@ export default function FuncionamentoEquipamento() {
   const [limiteModel, setLimiteModel] = useState({});
   const [periodChart, setPeriodChart] = useState({
     type: "mounth",
-    value: 1,
+    value:1,
   });
   const [dataToShow, setDataToShow] = useState({
     type: selectedChart,
@@ -56,10 +56,16 @@ export default function FuncionamentoEquipamento() {
   });
   const [loading, setLoading] = useState(true);
 
+ 
   useEffect(() => {
     // get datas of equipment
     api.get(`data/equipment/${id}`).then((response) => {
       const data = response.data.data;
+      if(data){
+        data.sort((a,b)=>{
+          return new Date(a.updatedAt) - new Date(b.updatedAt)
+        });
+      }
       setEquipmentDataWithoutPeriod(data);
     });
 
@@ -111,7 +117,6 @@ export default function FuncionamentoEquipamento() {
         case "year":
           dateMin = subYears(new Date(), periodChart.value);
           break;
-
         default:
           dateMin = new Date();
           break;
@@ -128,6 +133,17 @@ export default function FuncionamentoEquipamento() {
       setEquipmentData(dataFiltered);
     }
   }, [equipmentDataWithoutPeriod, periodChart]);
+
+  useEffect(()=>{
+    if(periodChart.datebegin && periodChart.dateend && equipmentData){
+      let filteredDates=equipmentData;
+      filteredDates = filteredDates.filter((equipment)=>{
+      return new Date(equipment.updatedAt)>= periodChart.datebegin && new Date(equipment.updatedAt)<= periodChart.dateend
+      })
+      console.log(filteredDates);
+      setEquipmentData(filteredDates);
+    }
+  },[periodChart])
 
   useEffect(() => {
     var tempMax = 0;

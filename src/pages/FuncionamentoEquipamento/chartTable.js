@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import {
   Box,
   CssBaseline,
@@ -96,14 +96,17 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
     </Grid>
   )
 
+
   const handleChangeTempPeriod = (e) => {
     const { name, value } = e.target;
-    setTempSelectedChart(prev => ({ ...prev, [name]: value }))
+    console.log(new Date(value));
+    setTempSelectedChart(prev => ({ ...prev, [name]: new Date(value)}));
   }
 
   const sendChangeOfPeriod = () => {
     setPeriodChart(tempSelectedChart)
   }
+
 
   return (
     <Grid container>
@@ -111,30 +114,62 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
 
       <Grid xs={6} md={12} item className={classes.itemTable}>
         <h2 className={classes.itemTitle}>Período</h2>
-        <Box display="flex" justifyContent="space-around" alignItems="center">
-          <TextField
+        <Box display="flex" display="block" alignItems="center">
+          {/* <TextField
             type="number"
             name="value"
             value={tempSelectedChart.value}
             onChange={handleChangeTempPeriod}
             className={classes.inputPeriod}
             disabled={tempSelectedChart.type === 'all'}
-          />
-          <FormControl
-            className={classes.selectPeriod}
-          >
+          /> */}
+         <Box display="flex" justifyContent="space-around" alignItems="center">
+          <FormControl className={classes.selectPeriod}>
             <Select
               value={tempSelectedChart.type}
               onChange={handleChangeTempPeriod}
               name="type"
-            >
-              <MenuItem value="hour">horas</MenuItem>
-              <MenuItem value="day">dias</MenuItem>
-              <MenuItem value="mounth">meses</MenuItem>
-              <MenuItem value="year">anos</MenuItem>
-              <MenuItem value="all">tudo</MenuItem>
+              >
+                <MenuItem value="hour">horas</MenuItem>
+                <MenuItem value="day">dias</MenuItem>
+                <MenuItem value="mounth">meses</MenuItem>
+                <MenuItem value="year">anos</MenuItem>
+                <MenuItem value="all">tudo</MenuItem>
             </Select>
           </FormControl>
+        </Box>
+
+          <TextField
+            type="number"
+            name="datebegin"
+            // value={tempSelectedChart.value}
+            onChange={handleChangeTempPeriod}
+            className={classes.inputPeriod}
+            disabled={tempSelectedChart.type === 'all'}
+            label="Data Inicial"
+            type="datetime-local"
+            defaultValue="2017-05-24T10:30"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            type="number"
+            name="dateend"
+            // value={tempSelectedChart.value}
+            onChange={handleChangeTempPeriod}
+            className={classes.inputPeriod}
+            disabled={tempSelectedChart.type === 'all'}
+            label="Data Final"
+            type="datetime-local"
+            defaultValue="2017-05-24T10:30"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+
           <Button
             onClick={sendChangeOfPeriod}
             className={classes.sendChange}

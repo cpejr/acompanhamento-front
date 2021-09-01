@@ -40,7 +40,7 @@ export default function Manutencao() {
         maintenance: maintenance
       }
       api
-        .put(`/equipment/${id}`, updatedFields)
+        .put(`/equipment/${id}`, updatedFields, {headers: {authorization: `Bearer ${accessToken}`}})
         .then((response) => {
           sendMessage("Manutenção atualizada com sucesso!", "success");
         })

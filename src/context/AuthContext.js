@@ -16,6 +16,7 @@ function AuthContextProvider({ children }) {
 
   const classes = useStyles();
   const id = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("token")
 
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -24,7 +25,7 @@ function AuthContextProvider({ children }) {
   });
 
   useEffect(() => {
-    api.get(`/user/${id}`)
+    api.get(`/user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then(response => setUser(response.data.user))
       .catch(err => console.error("Verifique se o backend está ligado ou se há usuário logado.", err));
     setLoading(false);

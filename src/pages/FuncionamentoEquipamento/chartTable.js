@@ -1,16 +1,13 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   CssBaseline,
   Grid,
-  Select,
-  MenuItem,
   TextField,
-  FormControl,
   Button
 } from '@material-ui/core';
 import CachedIcon from '@material-ui/icons/Cached';
-import { useStyles } from './funcionamentoequipamentoStyle'
+import { useStyles } from './funcionamentoequipamentoStyle';
 import { format } from 'date-fns';
 
 const elementsOfTable = {
@@ -81,11 +78,11 @@ const elementsFixedOfTable = [
 ]
 
 export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) {
+
   const classes = useStyles();
+  const [selectedPeriod, setSelectedPeriod] = useState(periodChart);
 
-  const [tempSelectedChart, setTempSelectedChart] = useState(periodChart)
-
-  const Module = ({ title, value, unity }) => (
+  const GraphInfo = ({ title, value, unity }) => (
     <Grid xs={6} md={12} item className={classes.itemTable}>
       <h2 className={classes.itemTitle}>{title}</h2>
       <p className={classes.itemBody}>{
@@ -95,58 +92,50 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
       } {unity}</p>
     </Grid>
   )
+  const handlePeriodChange = (e) => {
 
-
-  const handleChangeTempPeriod = (e) => {
     const { name, value } = e.target;
-    console.log(new Date(value));
-    if( name === "type") setTempSelectedChart(prev => ({ ...prev, [name]: value }));
-    else setTempSelectedChart(prev => ({ ...prev, [name]: new Date(value)}));
+    setSelectedPeriod(prev => ({ ...prev, [name]: new Date(value) }));
   }
 
   const sendChangeOfPeriod = () => {
-    setPeriodChart(tempSelectedChart)
+
+    if (!selectedPeriod.datebegin || !selectedPeriod.dateend) {
+      let aux = selectedPeriod;
+
+      aux.datebegin = aux.datebegin ? aux.datebegin : new Date("01/01/1900");
+      aux.dateend = aux.dateend ? aux.dateend : new Date(Date.now());
+      setPeriodChart(aux);
+    } else setPeriodChart(selectedPeriod);
   }
 
+  const handlePeriodReset = () => {
+
+    setPeriodChart(prev => ({
+      ...prev,
+      datebegin: new Date("01/01/1900"),
+      dateend: new Date(Date.now())
+    }));
+  }
 
   return (
     <Grid container>
       <CssBaseline />
 
       <Grid xs={6} md={12} item className={classes.itemTable}>
-        <h2 className={classes.itemTitle}>Período</h2>
-        <Box display="flex" display="block" alignItems="center">
-          {/* <TextField
-            type="number"
-            name="value"
-            value={tempSelectedChart.value}
-            onChange={handleChangeTempPeriod}
-            className={classes.inputPeriod}
-            disabled={tempSelectedChart.type === 'all'}
-          /> */}
-         <Box display="flex" justifyContent="space-around" alignItems="center">
-          <FormControl className={classes.selectPeriod}>
-            <Select
-              value={tempSelectedChart.type}
-              onChange={handleChangeTempPeriod}
-              name="type"
-              >
-                <MenuItem value="hour">horas</MenuItem>
-                <MenuItem value="day">dias</MenuItem>
-                <MenuItem value="mounth">meses</MenuItem>
-                <MenuItem value="year">anos</MenuItem>
-                <MenuItem value="all">tudo</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
+
+        <h2 
+          className={classes.itemTitle} 
+          style={{ marginBottom: "16px" }}
+        >
+          Filtro por data Inicial e Final
+        </h2>
+
+        <Box display="block" alignItems="center">
 
           <TextField
-            type="number"
             name="datebegin"
-            // value={tempSelectedChart.value}
-            onChange={handleChangeTempPeriod}
-            className={classes.inputPeriod}
-            disabled={tempSelectedChart.type === 'all'}
+            onChange={handlePeriodChange}
             label="Data Inicial"
             type="datetime-local"
             className={classes.textField}
@@ -154,19 +143,17 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
               shrink: true,
             }}
           />
+
           <TextField
-            type="number"
             name="dateend"
-            // value={tempSelectedChart.value}
-            onChange={handleChangeTempPeriod}
-            className={classes.inputPeriod}
-            disabled={tempSelectedChart.type === 'all'}
+            onChange={handlePeriodChange}
             label="Data Final"
             type="datetime-local"
             className={classes.textField}
             InputLabelProps={{
               shrink: true,
             }}
+            style={{ marginTop: "16px" }}
           />
 
           <Button
@@ -176,14 +163,25 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             <CachedIcon />
           </Button>
         </Box>
+
+        <Button
+          className={classes.buttonRegister}
+          color="primary"
+          variant="outlined"
+          onClick={handlePeriodReset}
+          style={{ textTransform: "none", marginTop: "16px" }}
+        >
+          Mostrar período completo
+        </Button>
+
       </Grid>
       {
         elementsOfTable[dataToShow.type]
           .concat(elementsFixedOfTable)
           .map((props) => (
-            <Module key={props.title} {...props} />
+            <GraphInfo key={props.title} {...props} />
           ))
       }
-    </Grid >
+    </Grid>
   )
 }

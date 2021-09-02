@@ -4,13 +4,13 @@ import {
 } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
 import { useStyles } from './funcionamentoequipamentoStyle';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export default function ({ dataToShow, equipmentData, selectedChart, periodChart, limiteModel }) {
+export default function ({ dataToShow, equipmentData, selectedChart, limiteModel }) {
+
   const classes = useStyles();
   const [chartTitle, setChartTitle] = useState("");
-
 
   useEffect(() => {
     const title = () => {
@@ -29,54 +29,38 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
     setChartTitle(title);
   }, [dataToShow]);
 
-  const dateLabalFormat = () => {
-    switch (periodChart.type) {
-      case "hour":
-        return "HH:mm";
-      case "day":
-        return "dd/MM";
-      case "mounth":
-        return "dd/MM";
-      case "year":
-        return "MM/yyyy";
-      case "all":
-        return "MM/yyyy";
-
-      default:
-        return "dd/MM";
-    }
-  }
-
   return (
     <React.Fragment>
       <CssBaseline />
 
       <h2 className={classes.title}>{chartTitle}</h2>
       <p className={classes.subtitle}>
-        {format(new Date(), "PPPP", { locale: ptBR })}
+        { format(new Date(), "PPPP", { locale: ptBR }) }
       </p>
 
-      {!equipmentData[0] && <p className={classes.chartAlert}>
-        Não há dados no período selecionado...
-      </p>}
-      
+      {!equipmentData[0] && 
+        <p className={classes.chartAlert}>
+          Não há dados no período selecionado.
+        </p>}
+
       <Line
         data={{
-          labels: equipmentData.map(data =>
-            format(parseISO(data.createdAt), dateLabalFormat())
-          ),
+          labels: equipmentData.map(data => {
+            return format(new Date(data.updatedAt), "dd-MM HH:mm");
+          }),
           datasets: [
             {
               label: 'Atual',
               borderColor: "blue",
               data: equipmentData.map(data => data[selectedChart]),
               fill: false,
+              lineTension: 0.25
             },
             {
               label: 'Máximo do Modelo',
               borderColor: "red",
               data: equipmentData.map(() => {
-                switch (selectedChart){
+                switch (selectedChart) {
                   case "temperature":
                     return limiteModel.max_temp;
                   case "current":
@@ -91,7 +75,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
               label: 'Minimo do Modelo',
               borderColor: "orange",
               data: equipmentData.map(() => {
-                switch (selectedChart){
+                switch (selectedChart) {
                   case "temperature":
                     return limiteModel.min_temp;
                   case "current":
@@ -102,9 +86,18 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
               }),
               fill: false,
             }
-          ]
+          ],
         }}
-        options={{}}
+        options={{
+          scales: {
+            xAxes: [{
+              ticks: {
+                autoSkip: false,
+                minRotation: 45
+              }
+            }]
+          }
+        }}
       />
     </React.Fragment>
   )

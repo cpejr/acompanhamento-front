@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   CssBaseline,
+  useMediaQuery
 } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
 import { useStyles } from './funcionamentoequipamentoStyle';
@@ -11,6 +12,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
 
   const classes = useStyles();
   const [chartTitle, setChartTitle] = useState("");
+  const isDesktop = useMediaQuery("(min-width:960px)");
 
   useEffect(() => {
     const title = () => {
@@ -46,7 +48,11 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
       <Line
         data={{
           labels: equipmentData.map(data => {
-            return format(new Date(data.updatedAt), "dd-MM HH:mm");
+
+            if (isDesktop) {
+              return format(new Date(data.updatedAt), "dd-MM HH:mm");
+            } else return format(new Date(data.updatedAt), "HH:mm");
+            
           }),
           datasets: [
             {
@@ -93,10 +99,18 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
             xAxes: [{
               ticks: {
                 autoSkip: false,
-                minRotation: 45
+                minRotation: isDesktop ? 45 : 80
               }
             }]
-          }
+          },
+          responsive: true,
+          legend: {
+            labels: {
+              boxWidth: isDesktop ? 30 : 10,
+              fontSize: isDesktop ? 12 : 10
+            }
+          },
+          
         }}
       />
     </React.Fragment>

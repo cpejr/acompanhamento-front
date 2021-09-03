@@ -128,10 +128,10 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
           className={classes.itemTitle} 
           style={{ marginBottom: "16px" }}
         >
-          Filtro por data Inicial e Final
+          Filtros
         </h2>
 
-        <Box display="block" alignItems="center">
+        <Box display="block" alignItems="center" style={{ maxWidth: "100%" }} >
 
           <TextField
             name="datebegin"
@@ -142,6 +142,7 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             InputLabelProps={{
               shrink: true,
             }}
+            style={{ width: "75%" }}
           />
 
           <TextField
@@ -153,7 +154,7 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             InputLabelProps={{
               shrink: true,
             }}
-            style={{ marginTop: "16px" }}
+            style={{ marginTop: "16px", width: "75%" }}
           />
 
           <Button

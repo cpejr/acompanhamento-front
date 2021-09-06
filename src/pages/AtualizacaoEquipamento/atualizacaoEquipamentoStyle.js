@@ -11,6 +11,32 @@ export const useStyles = makeStyles((theme) => ({
       padding: "32px 8px",
     },
   },
+  header: {
+    display: "flex",
+  },
+  situationOk:{
+    background: verde,
+    marginLeft: "20px",
+    marginRight: "20px",
+  },
+  situationAtencao:{
+    background: azulPadrao,
+    marginLeft: "20px",
+    marginRight: "20px",
+  },
+  situationRevisao:{
+    background: vermelhoPadrao,
+    marginLeft: "20px",
+    marginRight: "20px",
+  }, 
+
+  connectionPendente:{
+    background: vermelhoPadrao,
+  },
+  connectionConectado:{
+    background: verde,
+  },
+
   formContainer: {
     padding: "48px",
     borderRadius: "13px",

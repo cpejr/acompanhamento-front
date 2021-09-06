@@ -18,7 +18,8 @@ import {
   InputLabel,
   Select,
   FormHelperText,
-  MenuItem
+  MenuItem,
+  Chip,
 } from "@material-ui/core"
 import api from '../../services/api';
 import { AuthContext } from '../../context/AuthContext'
@@ -29,6 +30,7 @@ import findError from '../../services/findError';
 import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 import { LoginContext } from '../../context/LoginContext';
+
 
 function AtualizacaoEquipamento() {
 
@@ -142,6 +144,44 @@ function AtualizacaoEquipamento() {
     return true;
   }
 
+  function connectionStatus() {
+    if(equipment.connection === "Conectado"){
+      return(
+        <Chip className={classes.connectionConectado}
+          label={`${equipment.flag_connection}`}
+        />
+      )
+      } else
+        return(
+          <Chip className={classes.connectionPendente}
+            label={`${equipment.flag_connection}`}
+          />
+      )
+  }
+
+  function situationStatus(){
+    if (equipment.situation === "Ok"){
+      return(
+        <Chip className={classes.situationOk}
+          label={`${equipment.situation}`}
+        />
+      );
+    } else if (equipment.situation === "Atenção"){
+      return(
+        <Chip className={classes.situationAtencao}
+          label={`${equipment.situation}`}
+        />
+      );
+    } else if (equipment.situation === "Revisão") {
+      return(
+        <Chip className={classes.situationRevisao}
+          label={`${equipment.situation}`}
+        />
+      );
+    }
+
+  }
+  
   if (!equipment) {
     return (
       <React.Fragment>
@@ -195,6 +235,7 @@ function AtualizacaoEquipamento() {
       equipment_code: equipment.equipment_code,
       installation_date: equipment.installation_date,
       situation: equipment.situation,
+      connection: equipment.flag_connection, 
       initial_work: equipment.initial_work,
       address: equipment.address,
       zipcode: equipment.zipcode ? equipment.zipcode : "",
@@ -293,12 +334,14 @@ function AtualizacaoEquipamento() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <Typography variant="h3" className={classes.title}>
-          Detalhes do equipamento
-        </Typography>
-
+        <div className={classes.header}>
+          <Typography variant="h3" className={classes.title}>
+            Detalhes do equipamento
+          </Typography>
+          {situationStatus()}
+          {connectionStatus()}
+        </div>
         <AreYouSure />
-
         <Paper className={classes.formContainer} elevation={0}>
           <Grid container spacing={isDesktop ? 5 : 0} >
             <Grid item xs={12} md={6}>

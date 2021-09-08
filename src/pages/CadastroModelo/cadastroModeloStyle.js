@@ -19,7 +19,6 @@ export const useStyles = makeStyles(theme => ({
       padding: "48px 24px",
     },
   },
-
   title: {
     width: "100%",
     marginBottom: "30px",
@@ -50,18 +49,14 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: "20px 20px 0px 0px",
     backgroundColor: "#FFFFFF",
   },
-
-
   inputs: {
     width: "100%",
     marginBottom: "16px",
   },
-
   slider: {
     color: azulPadrao,
     width: "70%"
   },
-
   buttonRegister: {
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",

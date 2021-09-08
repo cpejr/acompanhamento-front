@@ -8,62 +8,61 @@ import {
   Grid,
   Paper,
   useMediaQuery,
-  Slider
 } from "@material-ui/core"
 import findError from '../../services/findError';
 import { useStyles } from './cadastroModeloStyle';
 import { LoginContext } from '../../context/LoginContext';
 import { AuthContext } from "../../context/AuthContext";
 
-const TEMPERATURE_SCALE_LOWEST = 0;
-const TEMPERATURE_SCALE_HIGHEST = 100;
-const CURRENT_SCALE_LOWEST = 0;
-const CURRENT_SCALE_HIGHEST = 100;
-const VOLTAGE_SCALE_LOWEST = 0;
-const VOLTAGE_SCALE_HIGHEST = 100;
-const VIBRATION_SCALE_LOWEST = 0;
-const VIBRATION_SCALE_HIGHEST = 10000;
+// const TEMPERATURE_SCALE_LOWEST = 0;
+// const TEMPERATURE_SCALE_HIGHEST = 100;
+// const CURRENT_SCALE_LOWEST = 0;
+// const CURRENT_SCALE_HIGHEST = 100;
+// const VOLTAGE_SCALE_LOWEST = 0;
+// const VOLTAGE_SCALE_HIGHEST = 100;
+// const VIBRATION_SCALE_LOWEST = 0;
+// const VIBRATION_SCALE_HIGHEST = 10000;
 
-const marcadoresTemp = [
-  {
-    value: TEMPERATURE_SCALE_LOWEST,
-    label: `${TEMPERATURE_SCALE_LOWEST}°C`
-  },
-  {
-    value: TEMPERATURE_SCALE_HIGHEST,
-    label: `${TEMPERATURE_SCALE_HIGHEST}°C`
-  }
-];
-const marcadoresCurrent = [
-  {
-    value: CURRENT_SCALE_LOWEST,
-    label: `${CURRENT_SCALE_LOWEST}A`
-  },
-  {
-    value: CURRENT_SCALE_HIGHEST,
-    label: `${CURRENT_SCALE_HIGHEST}A`
-  }
-];
-const marcadoresVolt = [
-  {
-    value: VOLTAGE_SCALE_LOWEST,
-    label: `${VOLTAGE_SCALE_LOWEST}V`
-  },
-  {
-    value: VOLTAGE_SCALE_HIGHEST,
-    label: `${VOLTAGE_SCALE_HIGHEST}V`
-  }
-];
-const marcadoresVibra = [
-  {
-    value: VIBRATION_SCALE_LOWEST,
-    label: `${VIBRATION_SCALE_LOWEST}krpm`
-  },
-  {
-    value: VIBRATION_SCALE_HIGHEST,
-    label: `${VIBRATION_SCALE_HIGHEST}krpm`
-  }
-];
+// const marcadoresTemp = [
+//   {
+//     value: TEMPERATURE_SCALE_LOWEST,
+//     label: `${TEMPERATURE_SCALE_LOWEST}°C`
+//   },
+//   {
+//     value: TEMPERATURE_SCALE_HIGHEST,
+//     label: `${TEMPERATURE_SCALE_HIGHEST}°C`
+//   }
+// ];
+// const marcadoresCurrent = [
+//   {
+//     value: CURRENT_SCALE_LOWEST,
+//     label: `${CURRENT_SCALE_LOWEST}A`
+//   },
+//   {
+//     value: CURRENT_SCALE_HIGHEST,
+//     label: `${CURRENT_SCALE_HIGHEST}A`
+//   }
+// ];
+// const marcadoresVolt = [
+//   {
+//     value: VOLTAGE_SCALE_LOWEST,
+//     label: `${VOLTAGE_SCALE_LOWEST}V`
+//   },
+//   {
+//     value: VOLTAGE_SCALE_HIGHEST,
+//     label: `${VOLTAGE_SCALE_HIGHEST}V`
+//   }
+// ];
+// const marcadoresVibra = [
+//   {
+//     value: VIBRATION_SCALE_LOWEST,
+//     label: `${VIBRATION_SCALE_LOWEST}krpm`
+//   },
+//   {
+//     value: VIBRATION_SCALE_HIGHEST,
+//     label: `${VIBRATION_SCALE_HIGHEST}krpm`
+//   }
+// ];
 
 export default function CadastroModelo(props) {
 
@@ -94,10 +93,21 @@ export default function CadastroModelo(props) {
     releaseYear: '',
   });
 
-  const [valTemp, setValTemp] = useState([TEMPERATURE_SCALE_LOWEST, TEMPERATURE_SCALE_HIGHEST]);
-  const [valCurrent, setValCurrent] = useState([CURRENT_SCALE_LOWEST, CURRENT_SCALE_HIGHEST]);
-  const [valVolt, setValVolt] = useState([VOLTAGE_SCALE_LOWEST, VOLTAGE_SCALE_HIGHEST]);
-  const [valVibra, setValVibra] = useState([VIBRATION_SCALE_LOWEST, VIBRATION_SCALE_HIGHEST]);
+  const valTemp = [];
+  const valCurrent = [];
+  const valVolt = [];
+  const valVibra = [];
+
+  // Definição de estados, min e max, de cada tipo de informação
+  // Raphael, caso isso seja desnecessário, favor me informar para que eu possa refatorar
+  const [minTemp, setMinTemp] = useState( ); 
+  const [maxTemp, setMaxTemp] = useState( ); 
+  const [minCurrent, setMinCurrent] = useState( ); 
+  const [maxCurrent, setMaxCurrent] = useState( ); 
+  const [minVolt , setMinVolt] = useState( );
+  const [maxVolt, setMaxVolt] = useState( );
+  const [minVibra, setMinVibra] = useState( );
+  const [maxVibra, setMaxVibra] = useState( );
 
   function handleChangeInput(event, valueA) {
     const { name, value } = event.target;
@@ -159,29 +169,65 @@ export default function CadastroModelo(props) {
     }
   }
 
-  // Aqui temos as funcoes para as faixas de valores
-  // O Slider ele sempre vai de 0 até 100, mas tem como mudar a escala, quando definir os limites colocamos as escalas
+  // Aqui temos as funcoes que escutam os valores digitados nos inputs e os definem no formData
+  // Raphael, aqui pode ser que não tenha ficado o mais otimizado possível, caso não esteja adequado, favor me informar
+  const updateMinTemp = (e) => {
 
-  const updateRangeTemp = (e, data) => {
-    setValTemp(data)
-    setFormData({ ...formData, min_temp: data[0], max_temp: data[1] })
+    setMinTemp(e.target.value);
+    valTemp[0] = minTemp;
+    // console.log(valTemp[0]);
+    setFormData({ ...formData, min_temp: e.target.value })
   };
+  const updateMaxTemp = (e) => {
 
-  const updateRangeCurrent = (e, data) => {
-    setValCurrent(data)
-    setFormData({ ...formData, min_current: data[0], max_current: data[1] })
+    setMaxTemp(e.target.value);
+    valTemp[1] = maxTemp;
+    // console.log(valTemp[1]);
+    setFormData({ ...formData, max_temp: e.target.value })
   };
+  const updateMinCurrent = (e) => {
 
-  const updateRangeVolt = (e, data) => {
-    setValVolt(data)
-    setFormData({ ...formData, min_voltage: data[0], max_voltage: data[1] })
+    setMinCurrent(e.target.value);
+    valCurrent[0] = minCurrent;
+    // console.log(valCurrent[0]);
+    setFormData({ ...formData, min_current: e.target.value })
   };
+  const updateMaxCurrent = (e) => {
 
-  const updateRangeVibra = (e, data) => {
-    setValVibra(data);
-    setFormData({ ...formData, min_vibra: data[0], max_vibra: data[1] })
+    setMaxCurrent(e.target.value);
+    valCurrent[1] = maxCurrent;
+    // console.log(valCurrent[1]);
+    setFormData({ ...formData, max_current: e.target.value })
   };
+  const updateMinVolt = (e) => {
 
+    setMinVolt(e.target.value);
+    valVolt[0] = minVolt;
+    // console.log(valVolt[0]);
+    setFormData({ ...formData, min_voltage: e.target.value })
+  };
+  const updateMaxVolt = (e) => {
+
+    setMaxVolt(e.target.value);
+    valVolt[1] = maxVolt;
+    // console.log(valVolt[1]);
+    setFormData({ ...formData, max_voltage: e.target.value })
+  };
+  const updateMinVibra = (e) => {
+
+    setMinVibra(e.target.value);
+    valVibra[0] = minVibra;
+    // console.log(valVibra[0]);
+    setFormData({ ...formData, min_vibra: e.target.value })
+  };
+  const updateMaxVibra = (e) => {
+
+    setMaxVibra(e.target.value);
+    valVibra[1] = maxVibra;
+    // console.log(valVibra[1]);
+    setFormData({ ...formData, max_vibra: e.target.value })
+  };
+ 
   return (
     <React.Fragment>
       <CssBaseline />
@@ -249,59 +295,140 @@ export default function CadastroModelo(props) {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
 
                   <Typography gutterBottom style={{ marginTop: "16px" }}>
                     Limites de Temperatura
                   </Typography>
-                  <Slider
-                    id="temperatureSlider"
-                    value={valTemp}
-                    onChangeCommitted={updateRangeTemp}
-                    marks={marcadoresTemp}
-                    valueLabelDisplay="auto"
-                    className={classes.slider}
-                  />
-
+                  {/* As divs foram criadas dessa forma para possibilitar o alinhamento dos inputs */}
+                  <div style={{display: "flex", flexDirection: "row"}}>
+                    <div style={{marginRight: "50px"}}>
+                      <TextField
+                        className={classes.inputRange}
+                        name="tempMin"
+                        helperText= "mínimo"
+                        label = "°C"
+                        variant="filled"
+                        value={minTemp}
+                        margin="dense"
+                        onChange={updateMinTemp} // input min
+                        inputProps = {{step:1, min: 0, max: 100}} // permite dispensar os marcadores - linha 26 ...
+                        type = 'number' 
+                      />
+                    </div>
+                    <div>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "máximo"
+                        label = "°C"
+                        variant="filled"
+                        value={maxTemp}
+                        margin="dense"
+                        onChange={updateMaxTemp} // input max
+                        inputProps = {{step:1, min: 0, max: 100}} 
+                        type = 'number' 
+                      />
+                    </div>
+                  </div>  
+                 
                   <Typography gutterBottom style={{ marginTop: "16px" }}>
                     Limites de Corrente
                   </Typography>
-                  <Slider
-                    id="currentSlider"
-                    value={valCurrent}
-                    onChangeCommitted={updateRangeCurrent}
-                    marks={marcadoresCurrent}
-                    valueLabelDisplay="auto"
-                    className={classes.slider}
-                  />
+                  
+                  <div style={{display: "flex", flexDirection: "row"}}>
+                    <div style={{marginRight: "50px"}}>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "mínimo"
+                        label = "A"
+                        variant="filled"
+                        value={minCurrent}
+                        margin="dense"
+                        onChange={updateMinCurrent} // input min
+                        inputProps = {{step:1, min: 0, max: 100}}
+                        type = 'number' 
+                        /> 
+                    </div>
+                    <div>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "máximo"
+                        label = "A"
+                        variant="filled"
+                        value={maxCurrent}
+                        margin="dense"
+                        onChange={updateMaxCurrent} // input max
+                        inputProps = {{step:1, min: 0, max: 100}}
+                        type = 'number' 
+                        />
+                    </div>
+                  </div> 
 
                   <Typography gutterBottom style={{ marginTop: "16px" }}>
                     Limites de Tensão
                   </Typography>
-                  <Slider
-                    id="voltageSlider"
-                    value={valVolt}
-                    onChangeCommitted={updateRangeVolt}
-                    marks={marcadoresVolt}
-                    valueLabelDisplay="auto"
-                    className={classes.slider}
-                  />
+                  
+                  <div style={{display: "flex", flexDirection: "row"}}>
+                    <div style={{marginRight: "50px"}}>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "mínimo"
+                        label = "V"
+                        variant="filled"
+                        value={minVolt}
+                        margin="dense"
+                        onChange={updateMinVolt} // input min
+                        inputProps = {{step:1, min: 0, max: 100}}
+                        type = 'number' 
+                        /> 
+                    </div>
+                    <div>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "máximo"
+                        label = "V"
+                        variant="filled"
+                        value={maxVolt}
+                        margin="dense"
+                        onChange={updateMaxVolt} // input max
+                        inputProps = {{step:1, min: 0, max: 100}}
+                        type = 'number' 
+                        /> 
+                    </div>
+                  </div>
 
                   <Typography gutterBottom style={{ marginTop: "16px" }}>
                     Limites de Vibração
                   </Typography>
-                  <Slider
-                    id="vibraSlider"
-                    value={valVibra}
-                    onChangeCommitted={updateRangeVibra}
-                    marks={marcadoresVibra}
-                    valueLabelDisplay="auto"
-                    className={classes.slider}
-                    min={0}
-                    max={10000}
-                    step={500}
-                  />
-
+                  
+                  <div style={{display: "flex", flexDirection: "row"}}>
+                    <div style={{marginRight: "50px"}}>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "mínimo"
+                        label = "krpm"
+                        variant="filled"
+                        value={minVibra}
+                        margin="dense"
+                        onChange={updateMinVibra} // input min
+                        inputProps = {{step:1, min: 0, max: 10000}}
+                        type = 'number' 
+                      />
+                    </div>
+                    <div>
+                      <TextField
+                        className={classes.inputRange}
+                        helperText= "máximo"
+                        label = "krpm"
+                        variant="filled"
+                        value={maxVibra}
+                        margin="dense"
+                        onChange={updateMaxVibra} // input max
+                        inputProps = {{step:1, min: 0, max: 10000}}
+                        type = 'number' 
+                        />
+                    </div>
+                  </div> 
                 </div>
               </Grid>
             </Grid>
@@ -311,7 +438,7 @@ export default function CadastroModelo(props) {
                 type="submit"
                 ref={buttonSubmitRef}
                 className={classes.buttonRegister}
-              >
+                >
                 Cadastrar
               </Button>
             </div>

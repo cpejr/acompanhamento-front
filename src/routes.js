@@ -23,6 +23,9 @@ import RoutesPrivate from "./components/Routes/Private/Private";
 import RoutesPublic from "./components/Routes/Private/PublicRestricted";
 import Perfil from "./pages/Perfil/Perfil";
 import UnAuthorized from "./pages/unAuthorized";
+
+import RouteInexistente from "./pages/routeInexistente"
+
 import Manutencao from "./pages/Manutencao/manutencao";
 import { useStyles } from "./routesStyles";
 
@@ -38,15 +41,21 @@ function Routes() {
             <Redirect to="/login" />
           </Route>
 
-          <Route path="/login" component={Login} />
-          <Route path="/esquecisenha" component={EsqueciSenha} />
-          <Route path="/definicaosenha" component={DefinicaoNovaSenha} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/esquecisenha" component={EsqueciSenha} />
+          <Route exact path="/definicaosenha" component={DefinicaoNovaSenha} />
 
           {/* Acesso não autorizado */}
           <RoutesPublic
-            path="/unAuthorized"
+            exact path="/unAuthorized"
             component={UnAuthorized}
             restricted
+          />
+
+          {/* Página não encontrada */}
+          <Route
+            path="/routeInexistente"
+            component={RouteInexistente}
           />
 
           <Fragment>
@@ -56,41 +65,42 @@ function Routes() {
             <div className={classes.spaceContent}>
 
               {/* DashBoard */}
-              <RoutesPublic path="/dashboard" component={Dashboard} restricted />
+              <RoutesPublic exact path="/dashboard" component={Dashboard} restricted />
 
               {/* Cadastro de Modelo */}
               <RoutesPrivate
-                path="/cadastromodelo"
+                exact path="/cadastromodelo"
                 component={CadastroModelo}
               />
 
               {/* Cadastro de Equipamento */}
               <RoutesPrivate
-                path="/cadastroequipamento"
+                exact path="/cadastroequipamento"
                 component={CadastroEquipamento}
               />
 
               {/* Cadastro de Usuários */}
               <RoutesPrivate
-                path="/cadastrousuario"
+                exact path="/cadastrousuario"
                 component={CadastroUsuario}
               />
 
               {/* Listagem de Usuários */}
               <RoutesPrivate
-                path="/listagemusuario"
+                exact path="/listagemusuario"
                 component={ListagemUsuario}
               />
 
               {/* Listagem de Modelo */}
               <RoutesPrivate
                 path="/listagemmodelo"
+                exact
                 component={ListagemModelo}
               />
 
               {/* Listagem de Equipamentos */}
               <RoutesPublic
-                path="/listagemequipamento"
+                exact path="/listagemequipamento"
                 component={ListagemEquipamento}
                 restricted
               />
@@ -135,7 +145,6 @@ function Routes() {
               />
 
               <Route to="/Login" />
-
 
             </div>
           </Fragment>

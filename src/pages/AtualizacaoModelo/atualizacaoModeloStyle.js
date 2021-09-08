@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core"
+import { grey } from "@material-ui/core/colors";
 import { titlesFontFamilyPadrao, titleFontSize, vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles((theme) => ({
@@ -39,12 +40,12 @@ export const useStyles = makeStyles((theme) => ({
   },
   slider: {
     color: azulPadrao,
-    width: "70%"
+    width: "70%",
   },
   inputs: {
     width: "100%",
     marginBottom: "20px",
-  },
+  }, 
   centralizar: {
     display: "flex",
     justifyContent: "center",

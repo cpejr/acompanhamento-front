@@ -24,7 +24,7 @@ import RoutesPublic from "./components/Routes/Private/PublicRestricted";
 import Perfil from "./pages/Perfil/Perfil";
 import UnAuthorized from "./pages/unAuthorized";
 
-import RouteInexistente from "./pages/routeInexistente"
+import RouteInexistente from "./pages/routeInexistente";
 
 import Manutencao from "./pages/Manutencao/manutencao";
 import { useStyles } from "./routesStyles";
@@ -34,7 +34,6 @@ function Routes() {
 
   return (
     <Router history={history}>
-
       <LoginContextProvider>
         <Switch>
           <Route path="/" exact>
@@ -47,110 +46,115 @@ function Routes() {
 
           {/* Acesso não autorizado */}
           <RoutesPublic
-            exact path="/unAuthorized"
+            exact
+            path="/unAuthorized"
             component={UnAuthorized}
             restricted
           />
 
           {/* Página não encontrada */}
-          <Route
-            path="/routeInexistente"
-            component={RouteInexistente}
-          />
+          <Route path="/404" component={RouteInexistente} />
 
           <Fragment>
-
             <Menu />
 
             <div className={classes.spaceContent}>
+              <Switch>
+                {/* DashBoard */}
+                <RoutesPublic
+                  exact
+                  path="/dashboard"
+                  component={Dashboard}
+                  restricted
+                />
 
-              {/* DashBoard */}
-              <RoutesPublic exact path="/dashboard" component={Dashboard} restricted />
+                {/* Cadastro de Modelo */}
+                <RoutesPrivate
+                  exact
+                  path="/cadastromodelo"
+                  component={CadastroModelo}
+                />
 
-              {/* Cadastro de Modelo */}
-              <RoutesPrivate
-                exact path="/cadastromodelo"
-                component={CadastroModelo}
-              />
+                {/* Cadastro de Equipamento */}
+                <RoutesPrivate
+                  exact
+                  path="/cadastroequipamento"
+                  component={CadastroEquipamento}
+                />
 
-              {/* Cadastro de Equipamento */}
-              <RoutesPrivate
-                exact path="/cadastroequipamento"
-                component={CadastroEquipamento}
-              />
+                {/* Cadastro de Usuários */}
+                <RoutesPrivate
+                  exact
+                  path="/cadastrousuario"
+                  component={CadastroUsuario}
+                />
 
-              {/* Cadastro de Usuários */}
-              <RoutesPrivate
-                exact path="/cadastrousuario"
-                component={CadastroUsuario}
-              />
+                {/* Listagem de Usuários */}
+                <RoutesPrivate
+                  exact
+                  path="/listagemusuario"
+                  component={ListagemUsuario}
+                />
 
-              {/* Listagem de Usuários */}
-              <RoutesPrivate
-                exact path="/listagemusuario"
-                component={ListagemUsuario}
-              />
+                {/* Listagem de Modelo */}
+                <RoutesPrivate
+                  path="/listagemmodelo"
+                  exact
+                  component={ListagemModelo}
+                />
 
-              {/* Listagem de Modelo */}
-              <RoutesPrivate
-                path="/listagemmodelo"
-                exact
-                component={ListagemModelo}
-              />
+                {/* Listagem de Equipamentos */}
+                <RoutesPublic
+                  exact
+                  path="/listagemequipamento"
+                  component={ListagemEquipamento}
+                  restricted
+                />
 
-              {/* Listagem de Equipamentos */}
-              <RoutesPublic
-                exact path="/listagemequipamento"
-                component={ListagemEquipamento}
-                restricted
-              />
+                {/* Atualização de Usuários */}
+                <RoutesPrivate path="/au" exact>
+                  <Redirect to="/unAuthorized" />
+                </RoutesPrivate>
+                <RoutesPublic path="/au/:id" component={Perfil} restricted />
 
-              {/* Atualização de Usuários */}
-              <RoutesPrivate path="/au" exact>
-                <Redirect to="/unAuthorized" />
-              </RoutesPrivate>
-              <RoutesPublic path="/au/:id" component={Perfil} restricted />
+                {/* Atualização de Modelo */}
+                <RoutesPrivate path="/am" exact>
+                  <Redirect to="/unAuthorized" />
+                </RoutesPrivate>
+                <RoutesPrivate path="/am/:id" component={AtualizacaoModelo} />
 
-              {/* Atualização de Modelo */}
-              <RoutesPrivate path="/am" exact>
-                <Redirect to="/unAuthorized" />
-              </RoutesPrivate>
-              <RoutesPrivate path="/am/:id" component={AtualizacaoModelo} />
+                {/* Atualização de Equipamentos */}
+                <RoutesPrivate path="/ae" exact>
+                  <Redirect to="/unAuthorized" />
+                </RoutesPrivate>
+                <RoutesPrivate
+                  path="/ae/:id"
+                  component={AtualizacaoEquipamento}
+                />
 
-              {/* Atualização de Equipamentos */}
-              <RoutesPrivate path="/ae" exact>
-                <Redirect to="/unAuthorized" />
-              </RoutesPrivate>
-              <RoutesPrivate
-                path="/ae/:id"
-                component={AtualizacaoEquipamento}
-              />
+                {/* Funcionamento de Equipamentos */}
+                <RoutesPrivate path="/funcionamentoequipamento" exact>
+                  <Redirect to="/" />
+                </RoutesPrivate>
+                <RoutesPrivate
+                  path="/funcionamentoequipamento/:id"
+                  component={FuncionamentoEquipamento}
+                />
 
-              {/* Funcionamento de Equipamentos */}
-              <RoutesPrivate path="/funcionamentoequipamento" exact>
-                <Redirect to="/" />
-              </RoutesPrivate>
-              <RoutesPrivate
-                path="/funcionamentoequipamento/:id"
-                component={FuncionamentoEquipamento}
-              />
+                {/* Pagina para inserir texto de manutenção do equipmanento */}
+                <RoutesPrivate path="/manutencao" exact>
+                  <Redirect to="/" />
+                </RoutesPrivate>
+                <RoutesPrivate path="/manutencao/:id" component={Manutencao} />
 
-              {/* Pagina para inserir texto de manutenção do equipmanento */}
-              <RoutesPrivate path="/manutencao" exact>
-                <Redirect to="/" />
-              </RoutesPrivate>
-              <RoutesPrivate
-                path="/manutencao/:id"
-                component={Manutencao}
-              />
-
-              <Route to="/Login" />
-
+                <Redirect to="/404" />
+                
+              </Switch>
             </div>
           </Fragment>
         </Switch>
       </LoginContextProvider>
-    </Router >
+    </Router>
   );
 }
 

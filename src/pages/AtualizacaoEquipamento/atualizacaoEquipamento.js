@@ -31,6 +31,13 @@ import { useParams } from 'react-router';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 import { LoginContext } from '../../context/LoginContext';
 
+// icons
+import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
+import RssFeedIcon from '@material-ui/icons/RssFeed';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import WarningIcon from '@material-ui/icons/Warning';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
 
 function AtualizacaoEquipamento() {
 
@@ -38,7 +45,7 @@ function AtualizacaoEquipamento() {
   const history = useHistory();
   const { getToken } = useContext(LoginContext);
   const accessToken = getToken();
-  
+
   const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
@@ -55,7 +62,6 @@ function AtualizacaoEquipamento() {
   const [clientId, setClientId] = useState("");
   const [clientCpfCnpj, setClientCpfCnpj] = useState("");
   const [disableCpfCnpj, setDisableCpfCnpj] = useState(false);
-
   const [modelId, setModelId] = useState();
   const classes = useStyles({ updating });
 
@@ -66,7 +72,7 @@ function AtualizacaoEquipamento() {
     }
 
     api
-      .get(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
+      .get(`equipment/${id}`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((response) => {
         const date = response.data.equipment[0].installation_date;
         const installation_date = getRequiredDateFormat(date);
@@ -82,7 +88,7 @@ function AtualizacaoEquipamento() {
       });
 
     api
-      .get(`model/index`, {headers: {authorization: `Bearer ${accessToken}`}})
+      .get(`model/index`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((models) => {
         setModelsList(models.data.data);
         setLoading((prev) => ({ ...prev, models: false }));
@@ -98,19 +104,19 @@ function AtualizacaoEquipamento() {
 
     if (clientId) {
       api
-      .get(`user/${clientId}`, {headers: {authorization: `Bearer ${accessToken}`}})
-      .then((response) => {
+        .get(`user/${clientId}`, { headers: { authorization: `Bearer ${accessToken}` } })
+        .then((response) => {
 
-        setClientCpfCnpj(
-          response.data.user.cpf 
-            ? response.data.user.cpf 
-            : response.data.user.cnpj
+          setClientCpfCnpj(
+            response.data.user.cpf
+              ? response.data.user.cpf
+              : response.data.user.cnpj
           )
-        setDisableCpfCnpj(true);
-      })
-      .catch((err) => console.log(err));
+          setDisableCpfCnpj(true);
+        })
+        .catch((err) => console.log(err));
     }
-      
+
   }, [clientId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -144,44 +150,62 @@ function AtualizacaoEquipamento() {
     return true;
   }
 
-  function connectionStatus() {
-    if(equipment.connection === "Conectado"){
-      return(
-        <Chip className={classes.connectionConectado}
-          label={`${equipment.flag_connection}`}
+  function getConnectionStatus() {
+
+    if (equipment.flag_connection === "Conectado") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<RssFeedIcon className={classes.iconConnected} />}
+          className={classes.connected}
+          label="Conexão: Conectado"
         />
       )
-      } else
-        return(
-          <Chip className={classes.connectionPendente}
-            label={`${equipment.flag_connection}`}
-          />
+    } else {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<SignalWifiOffIcon className={classes.iconPending} />}
+          className={classes.connectionPending}
+          label="Conexão: Pendente"
+        />
       )
+    }
   }
 
-  function situationStatus(){
-    if (equipment.situation === "Ok"){
-      return(
-        <Chip className={classes.situationOk}
-          label={`${equipment.situation}`}
+  function getSituationStatus() {
+
+    if (equipment.situation === "Ok") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<CheckCircleOutlineIcon className={classes.iconConnected} />}
+          className={classes.connected}
+          label="Situação: Ok"
         />
       );
-    } else if (equipment.situation === "Atenção"){
-      return(
-        <Chip className={classes.situationAtencao}
-          label={`${equipment.situation}`}
+    } else if (equipment.situation === "Atenção") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<WarningIcon className={classes.iconWarning} />}
+          className={classes.statusWarning}
+          label="Situação: Atenção"
         />
       );
     } else if (equipment.situation === "Revisão") {
-      return(
-        <Chip className={classes.situationRevisao}
-          label={`${equipment.situation}`}
+      return (
+        <Chip
+          variant="outlined"
+          icon={<ErrorOutlineIcon className={classes.iconPending} />}
+          className={classes.connectionPending}
+          label="Situação: Revisão"
         />
       );
     }
 
   }
-  
+
   if (!equipment) {
     return (
       <React.Fragment>
@@ -235,7 +259,7 @@ function AtualizacaoEquipamento() {
       equipment_code: equipment.equipment_code,
       installation_date: equipment.installation_date,
       situation: equipment.situation,
-      connection: equipment.flag_connection, 
+      connection: equipment.flag_connection,
       initial_work: equipment.initial_work,
       address: equipment.address,
       zipcode: equipment.zipcode ? equipment.zipcode : "",
@@ -255,7 +279,7 @@ function AtualizacaoEquipamento() {
       sendMessage("Alterando dados...", "info", null);
 
       api
-        .put(`equipment/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
+        .put(`equipment/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
         .then((response) => {
           sendMessage("Dados alterados com sucesso.", "success");
           setEquipmentOriginal(response.data.equipment);
@@ -288,7 +312,7 @@ function AtualizacaoEquipamento() {
       setDeleting(false);
       sendMessage("Excluindo equipamento...", "info", null);
 
-      api.delete(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
+      api.delete(`equipment/${id}`, { headers: { authorization: `Bearer ${accessToken}` } }).then((response) => {
         sendMessage("Equipamento excluído com sucesso");
         history.push("/listagemequipamento");
       }).catch((err) => {
@@ -335,11 +359,15 @@ function AtualizacaoEquipamento() {
       <CssBaseline />
       <div className={classes.root}>
         <div className={classes.header}>
+
           <Typography variant="h3" className={classes.title}>
             Detalhes do equipamento
           </Typography>
-          {situationStatus()}
-          {connectionStatus()}
+
+          {getSituationStatus()}
+
+          {getConnectionStatus()}
+
         </div>
         <AreYouSure />
         <Paper className={classes.formContainer} elevation={0}>

@@ -13,28 +13,51 @@ export const useStyles = makeStyles((theme) => ({
   },
   header: {
     display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    },
   },
-  situationOk:{
-    background: verde,
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  situationAtencao:{
-    background: azulPadrao,
-    marginLeft: "20px",
-    marginRight: "20px",
-  },
-  situationRevisao:{
-    background: vermelhoPadrao,
-    marginLeft: "20px",
-    marginRight: "20px",
-  }, 
 
-  connectionPendente:{
-    background: vermelhoPadrao,
+  connectionPending:{
+    borderColor: vermelhoPadrao,
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
   },
-  connectionConectado:{
-    background: verde,
+
+  connected:{
+    borderColor: verde,
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  statusWarning: {
+    borderColor: "orange",
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  iconPending: {
+    color: vermelhoPadrao,
+    fontSize: "20px"
+  },
+
+  iconConnected: {
+    color: verde,
+  },
+
+  iconWarning: {
+    color: "orange",
+    fontSize: "20px"
   },
 
   formContainer: {

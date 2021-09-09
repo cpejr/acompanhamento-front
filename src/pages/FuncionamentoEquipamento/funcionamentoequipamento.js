@@ -11,23 +11,19 @@ import {
 import {
   getTime,
   parseISO,
-  subDays,
-  subHours,
-  subMonths,
-  subYears,
 } from "date-fns";
 
 import { useStyles } from "./funcionamentoequipamentoStyle";
 import ChartTable from "./chartTable";
 import Table from "./table";
 import Chart from "./chart";
-import { isAfter } from "date-fns/esm";
 import { LoginContext } from '../../context/LoginContext';
 
 export default function FuncionamentoEquipamento() {
   const { id } = useParams();
   const { getToken } = useContext(LoginContext);
   const accessToken = getToken();
+  const classes = useStyles();
 
   const [equipmentData, setEquipmentData] = useState([]);
   const [equipmentDataWithoutPeriod, setEquipmentDataWithoutPeriod] = useState(
@@ -37,8 +33,7 @@ export default function FuncionamentoEquipamento() {
   const [selectedChart, setSelectedChart] = useState("temperature");
   const [limiteModel, setLimiteModel] = useState({});
   const [periodChart, setPeriodChart] = useState({
-    type: "mounth",
-    value: 1,
+    value: 1
   });
   const [dataToShow, setDataToShow] = useState({
     type: selectedChart,
@@ -56,33 +51,48 @@ export default function FuncionamentoEquipamento() {
   });
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     // get datas of equipment
     api.get(`data/equipment/${id}`).then((response) => {
       const data = response.data.data;
+      if (data) {
+        data.sort((a, b) => {
+          return new Date(a.updatedAt) - new Date(b.updatedAt)
+        });
+      }
       setEquipmentDataWithoutPeriod(data);
     });
 
     // get equipment
-    api.get(`equipment/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
+    api.get(`equipment/${id}`, { headers: { authorization: `Bearer ${accessToken}` } }).then((response) => {
       setEquipment(response.data.equipment[0]);
     });
   }, [accessToken, id]);
 
   useEffect(() => {
-    // get datas of equipment
+    // get limits of model
     api
-      .get(`model/${equipment.id_model}`, {headers: {authorization: `Bearer ${accessToken}`}})
+      .get(`model/${equipment.id_model}`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((response) => {
-        const current = response.data.model.currentLimit;
-        const voltage = response.data.model.voltageLimit;
-        const temperature = response.data.model.temperatureLimit;
 
-        setLimiteModel({
-          current,
-          voltage,
-          temperature,
-        });
+        if (response.data.model) {
+          const min_current = response.data.model.min_current;
+          const max_current = response.data.model.max_current;
+          const min_voltage = response.data.model.min_voltage;
+          const max_voltage = response.data.model.max_voltage;
+          const min_temp = response.data.model.min_temp;
+          const max_temp = response.data.model.max_temp;
+  
+          setLimiteModel({
+            min_current,
+            max_current,
+            min_voltage,
+            max_voltage,
+            min_temp,
+            max_temp,
+          });
+        }
       })
       .catch((err) => console.error(err));
 
@@ -90,38 +100,19 @@ export default function FuncionamentoEquipamento() {
   }, [accessToken, equipment]);
 
   useEffect(() => {
-    if (equipmentDataWithoutPeriod[0]) {
-      var dateMin;
-      switch (periodChart.type) {
-        case "hour":
-          dateMin = subHours(new Date(), periodChart.value);
-          break;
-        case "day":
-          dateMin = subDays(new Date(), periodChart.value);
-          break;
-        case "mounth":
-          dateMin = subMonths(new Date(), periodChart.value);
-          break;
-        case "year":
-          dateMin = subYears(new Date(), periodChart.value);
-          break;
 
-        default:
-          dateMin = new Date();
-          break;
-      }
+    if (periodChart.datebegin && periodChart.dateend && equipmentDataWithoutPeriod) {
 
-      const dataFiltered =
-        periodChart.type !== "all"
-          ? equipmentDataWithoutPeriod.filter((data) => {
-              const createdAt = parseISO(data.createdAt);
-              return isAfter(createdAt, dateMin);
-            })
-          : equipmentDataWithoutPeriod;
+      let filteredDates = equipmentDataWithoutPeriod;
 
-      setEquipmentData(dataFiltered);
-    }
-  }, [equipmentDataWithoutPeriod, periodChart]);
+      filteredDates = filteredDates.filter((equipment) => {
+        return new Date(equipment.updatedAt) >= periodChart.datebegin && 
+          new Date(equipment.updatedAt) <= periodChart.dateend
+      })
+      setEquipmentData(filteredDates);
+    } else setEquipmentData(equipmentDataWithoutPeriod);
+    
+  }, [periodChart, equipmentDataWithoutPeriod])
 
   useEffect(() => {
     var tempMax = 0;
@@ -147,12 +138,9 @@ export default function FuncionamentoEquipamento() {
       voltMax,
       voltMin,
       situation: equipment.situation,
-      // worktime: equipment.work_time
     };
     setDataToShow((prev) => ({ ...prev, ...data })); //first time
-  }, [equipment, equipmentData, selectedChart]);
-
-  const classes = useStyles();
+  }, [limiteModel, equipment, equipmentData, selectedChart]);
 
   if (loading || Object.keys(dataToShow).length === 0) {
     return (
@@ -178,8 +166,6 @@ export default function FuncionamentoEquipamento() {
     return { color: "black" };
   };
 
-  console.log(dataToShow);
-
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -190,7 +176,6 @@ export default function FuncionamentoEquipamento() {
               dataToShow={dataToShow}
               equipmentData={equipmentData}
               selectedChart={selectedChart}
-              periodChart={periodChart}
               limiteModel={limiteModel}
             />
           </Grid>

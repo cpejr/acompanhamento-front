@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import CreatePeople from '../services/people';
 import api from '../services/api';
 import { Backdrop, CircularProgress, makeStyles, Snackbar } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
@@ -17,15 +16,16 @@ function AuthContextProvider({ children }) {
 
   const classes = useStyles();
   const id = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("token")
 
-  const [user, setUser] = useState(CreatePeople.people[3]);
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [openMensage, setOpenMensage] = React.useState({
     open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
   });
 
   useEffect(() => {
-    api.get(`/user/${id}`)
+    api.get(`/user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
       .then(response => setUser(response.data.user))
       .catch(err => console.error("Verifique se o backend está ligado ou se há usuário logado.", err));
     setLoading(false);

@@ -3,26 +3,22 @@ import {
   Box,
   CssBaseline,
   Grid,
-  Select,
-  MenuItem,
   TextField,
-  FormControl,
   Button
 } from '@material-ui/core';
 import CachedIcon from '@material-ui/icons/Cached';
-import { useStyles } from './funcionamentoequipamentoStyle'
-import { ptBR } from 'date-fns/locale';
-import { formatDistanceToNow } from 'date-fns/esm';
+import { useStyles } from './funcionamentoequipamentoStyle';
+import { format } from 'date-fns';
 
 const elementsOfTable = {
   temperature: [
     {
-      title: "Máxima temperatura",
+      title: "Máxima temperatura medida",
       value: "tempMax",
       unity: "°C"
     },
     {
-      title: "Mínima temperatura",
+      title: "Mínima temperatura medida",
       value: "tempMin",
       unity: "°C"
     },
@@ -34,12 +30,12 @@ const elementsOfTable = {
   ],
   current: [
     {
-      title: "Máxima corrente",
+      title: "Máxima corrente medida",
       value: "currMax",
       unity: "A"
     },
     {
-      title: "Mínima corrente",
+      title: "Mínima corrente medida",
       value: "currMin",
       unity: "A"
     },
@@ -51,12 +47,12 @@ const elementsOfTable = {
   ],
   voltage: [
     {
-      title: "Máxima tensão",
+      title: "Máxima tensão medida",
       value: "voltMax",
       unity: "V"
     },
     {
-      title: "Mínima tensão",
+      title: "Mínima tensão medida",
       value: "voltMin",
       unity: "V"
     },
@@ -70,7 +66,7 @@ const elementsOfTable = {
 
 const elementsFixedOfTable = [
   {
-    title: "Tempo ligado",
+    title: "Data de tivação",
     value: "worktime",
     unity: ""
   },
@@ -82,28 +78,44 @@ const elementsFixedOfTable = [
 ]
 
 export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) {
+
   const classes = useStyles();
+  const [selectedPeriod, setSelectedPeriod] = useState(periodChart);
 
-  const [tempSelectedChart, setTempSelectedChart] = useState(periodChart)
-
-  const Module = ({ title, value, unity }) => (
+  const GraphInfo = ({ title, value, unity }) => (
     <Grid xs={6} md={12} item className={classes.itemTable}>
       <h2 className={classes.itemTitle}>{title}</h2>
       <p className={classes.itemBody}>{
         value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" ?
-          formatDistanceToNow(dataToShow[value], { locale: ptBR }) :
-          dataToShow[value]
+          format(dataToShow[value], 'dd/MM/yyyy') :
+          dataToShow[value]  
       } {unity}</p>
     </Grid>
   )
+  const handlePeriodChange = (e) => {
 
-  const handleChangeTempPeriod = (e) => {
     const { name, value } = e.target;
-    setTempSelectedChart(prev => ({ ...prev, [name]: value }))
+    setSelectedPeriod(prev => ({ ...prev, [name]: new Date(value) }));
   }
 
   const sendChangeOfPeriod = () => {
-    setPeriodChart(tempSelectedChart)
+
+    if (!selectedPeriod.datebegin || !selectedPeriod.dateend) {
+      let aux = selectedPeriod;
+
+      aux.datebegin = aux.datebegin ? aux.datebegin : new Date("01/01/1900");
+      aux.dateend = aux.dateend ? aux.dateend : new Date(Date.now());
+      setPeriodChart(aux);
+    } else setPeriodChart(selectedPeriod);
+  }
+
+  const handlePeriodReset = () => {
+
+    setPeriodChart(prev => ({
+      ...prev,
+      datebegin: new Date("01/01/1900"),
+      dateend: new Date(Date.now())
+    }));
   }
 
   return (
@@ -111,31 +123,40 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
       <CssBaseline />
 
       <Grid xs={6} md={12} item className={classes.itemTable}>
-        <h2 className={classes.itemTitle}>Período</h2>
-        <Box display="flex" justifyContent="space-around" alignItems="center">
+
+        <h2 
+          className={classes.itemTitle} 
+          style={{ marginBottom: "16px" }}
+        >
+          Filtros
+        </h2>
+
+        <Box display="block" alignItems="center" style={{ maxWidth: "100%" }} >
+
           <TextField
-            type="number"
-            name="value"
-            value={tempSelectedChart.value}
-            onChange={handleChangeTempPeriod}
-            className={classes.inputPeriod}
-            disabled={tempSelectedChart.type === 'all'}
+            name="datebegin"
+            onChange={handlePeriodChange}
+            label="Data Inicial"
+            type="datetime-local"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            style={{ width: "75%" }}
           />
-          <FormControl
-            className={classes.selectPeriod}
-          >
-            <Select
-              value={tempSelectedChart.type}
-              onChange={handleChangeTempPeriod}
-              name="type"
-            >
-              <MenuItem value="hour">horas</MenuItem>
-              <MenuItem value="day">dias</MenuItem>
-              <MenuItem value="mounth">meses</MenuItem>
-              <MenuItem value="year">anos</MenuItem>
-              <MenuItem value="all">tudo</MenuItem>
-            </Select>
-          </FormControl>
+
+          <TextField
+            name="dateend"
+            onChange={handlePeriodChange}
+            label="Data Final"
+            type="datetime-local"
+            className={classes.textField}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            style={{ marginTop: "16px", width: "75%" }}
+          />
+
           <Button
             onClick={sendChangeOfPeriod}
             className={classes.sendChange}
@@ -143,14 +164,25 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             <CachedIcon />
           </Button>
         </Box>
+
+        <Button
+          className={classes.buttonRegister}
+          color="primary"
+          variant="outlined"
+          onClick={handlePeriodReset}
+          style={{ textTransform: "none", marginTop: "16px" }}
+        >
+          Mostrar período completo
+        </Button>
+
       </Grid>
       {
         elementsOfTable[dataToShow.type]
           .concat(elementsFixedOfTable)
           .map((props) => (
-            <Module key={props.title} {...props} />
+            <GraphInfo key={props.title} {...props} />
           ))
       }
-    </Grid >
+    </Grid>
   )
 }

@@ -11,7 +11,7 @@ import {
   Typography,
   Backdrop,
   CircularProgress,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core"
 import api from '../../services/api';
 import { useHistory } from 'react-router-dom';
@@ -20,57 +20,7 @@ import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
-import Slider from '@material-ui/core/Slider';
 import { LoginContext } from '../../context/LoginContext';
-const TEMPERATURE_SCALE_LOWEST = 0;
-const TEMPERATURE_SCALE_HIGHEST = 100;
-const CURRENT_SCALE_LOWEST = 0;
-const CURRENT_SCALE_HIGHEST = 100;
-const VOLTAGE_SCALE_LOWEST = 0;
-const VOLTAGE_SCALE_HIGHEST = 100;
-const VIBRATION_SCALE_LOWEST = 0;
-const VIBRATION_SCALE_HIGHEST = 10000;
-
-const marcadoresTemp = [
-  {
-    value: TEMPERATURE_SCALE_LOWEST,
-    label: `${TEMPERATURE_SCALE_LOWEST}°C`
-  },
-  {
-    value: TEMPERATURE_SCALE_HIGHEST,
-    label: `${TEMPERATURE_SCALE_HIGHEST}°C`
-  }
-];
-const marcadoresCurrent = [
-  {
-    value: CURRENT_SCALE_LOWEST,
-    label: `${CURRENT_SCALE_LOWEST}A`
-  },
-  {
-    value: CURRENT_SCALE_HIGHEST,
-    label: `${CURRENT_SCALE_HIGHEST}A`
-  }
-];
-const marcadoresVolt = [
-  {
-    value: VOLTAGE_SCALE_LOWEST,
-    label: `${VOLTAGE_SCALE_LOWEST}V`
-  },
-  {
-    value: VOLTAGE_SCALE_HIGHEST,
-    label: `${VOLTAGE_SCALE_HIGHEST}V`
-  }
-];
-const marcadoresVibra = [
-  {
-    value: VIBRATION_SCALE_LOWEST,
-    label: `${VIBRATION_SCALE_LOWEST}krpm`
-  },
-  {
-    value: VIBRATION_SCALE_HIGHEST,
-    label: `${VIBRATION_SCALE_HIGHEST}krpm`
-  }
-];
 
 function AtualizacaoModelo() {
 
@@ -90,23 +40,15 @@ function AtualizacaoModelo() {
   const [error, setError] = useState({
     releaseYear: '',
   });
-  const [valTemp, setValTemp] = useState([]);
-  const [valCurrent, setValCurrent] = useState([]);
-  const [valVolt, setValVolt] = useState([]);
-  const [valVibra, setValVibra] = useState([]);
+  const classes = useStyles({ updating });
 
   useEffect(() => {
 
     (async () => {
-      await api.get(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
+      await api.get(`model/${id}`, { headers: { authorization: `Bearer ${accessToken}` } })
         .then((selected) => {
           setModel(selected.data.model)
           setModelOriginal(selected.data.model)
-
-          setValTemp([selected.data.model.min_temp, selected.data.model.max_temp]);
-          setValCurrent([selected.data.model.min_current, selected.data.model.max_current]);
-          setValVolt([selected.data.model.min_voltage, selected.data.model.max_voltage]);
-          setValVibra([selected.data.model.min_vibra, selected.data.model.max_vibra]);
         })
         .catch(err => {
           console.error(err);
@@ -116,28 +58,6 @@ function AtualizacaoModelo() {
     })();
   }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Aqui temos as funcoes para as faixas de valores
-  const updateRangeTemp = (e, data) => {
-    setValTemp(data)
-    setModel({ ...model, min_temp: data[0], max_temp: data[1] })
-  };
-
-  const updateRangeCurrent = (e, data) => {
-    setValCurrent(data)
-    setModel({ ...model, min_current: data[0], max_current: data[1] })
-  };
-
-  const updateRangeVolt = (e, data) => {
-    setValVolt(data)
-    setModel({ ...model, min_voltage: data[0], max_voltage: data[1] })
-  };
-
-  const updateRangeVibra = (e, data) => {
-    setValVibra(data)
-    setModel({ ...model, min_vibra: data[0], max_vibra: data[1] })
-  };
-
-  const classes = useStyles({ updating });
 
   if (!model) {
     return (
@@ -169,7 +89,7 @@ function AtualizacaoModelo() {
     if (!updating) setUpdating(true)
 
     else if (Object.values(model).includes("")) {
-      sendMessage('Alguns campos estão vazios', 'info');
+      sendMessage('Alguns campos estão vazios', 'error');
     }
 
     else if (!findError("year", model.releaseYear))
@@ -197,7 +117,7 @@ function AtualizacaoModelo() {
 
       sendMessage("Atuaizando os dados...", "info", null);
 
-      api.put(`model/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
+      api.put(`model/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
         .then(response => {
           sendMessage("Dados alterados com sucesso", "success");
           setModelOriginal(data);
@@ -216,7 +136,7 @@ function AtualizacaoModelo() {
   async function DeleteVerification() {
 
     await api
-      .get("/equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
+      .get("/equipment/index", { headers: { authorization: `Bearer ${accessToken}` } })
       .then((response) => {
 
         console.log(response);
@@ -242,15 +162,11 @@ function AtualizacaoModelo() {
       setError({
         releaseYear: "",
       })
-      setValTemp([modelOriginal.min_temp, modelOriginal.max_temp]);
-      setValCurrent([modelOriginal.min_current, modelOriginal.max_current]);
-      setValVolt([modelOriginal.min_voltage, modelOriginal.max_voltage]);
-      setValVibra([modelOriginal.min_vibra, modelOriginal.max_vibra]);
 
-    } else if (confirmation === true) { // excuir de verdade
+    } else if (confirmation === true) { // excuir 
 
       setDeleting(false);
-      await api.delete(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
+      await api.delete(`model/${id}`, { headers: { authorization: `Bearer ${accessToken}` } }).then((response) => {
 
         sendMessage("Modelo excluído com sucesso", "success");
         setTimeout(() => {
@@ -307,11 +223,13 @@ function AtualizacaoModelo() {
         <AreYouSure />
 
         <Paper className={classes.formContainer} elevation={0}>
-          <Grid container spacing={isDesktop ? 5 : 0}>
+          <Grid container spacing={isDesktop ? 2 : 0} >
+
             <Grid item xs={12} md={6}>
               <TextField
+                disabled={!updating}
                 name="modelName"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.modelName}
                 onChange={handleChangeInput}
                 label="Nome do modelo"
@@ -319,12 +237,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
 
               <TextField
+                disabled={!updating}
                 name="type"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.type}
                 onChange={handleChangeInput}
                 label="Tipo de equipamento"
@@ -332,12 +250,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
 
               <TextField
+                disabled={!updating}
                 name="manufacturer"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.manufacturer}
                 onChange={handleChangeInput}
                 label="Fabricante"
@@ -345,12 +263,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
 
               <TextField
+                disabled={!updating}
                 name="releaseYear"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.releaseYear}
                 onChange={handleChangeInput}
                 label="Ano de lançamento"
@@ -359,88 +277,151 @@ function AtualizacaoModelo() {
                 error={error.releaseYear !== ""}
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
                 inputProps={{ maxLength: 4 }}
               />
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Temperatura
+              </Typography>
 
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Temperatura
-                </Typography>
-                <Slider
-                  id="temperatureSlider"
-                  value={valTemp}
-                  onChangeCommitted={updateRangeTemp}
-                  marks={marcadoresTemp}
-                  valueLabelDisplay="auto"
-                  className={classes.slider}
+              <div className={classes.rangesContainer}>
+                <TextField
                   disabled={!updating}
+                  className={classes.inputRange}
+                  name="min_temp"
+                  helperText="mínimo"
+                  label="°C"
+                  variant="filled"
+                  value={model.min_temp}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
                 />
-
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Corrente
-                </Typography>
-                <Slider
-                  id="currentSlider"
-                  value={valCurrent}
-                  onChangeCommitted={updateRangeCurrent}
-                  marks={marcadoresCurrent}
-                  valueLabelDisplay="auto"
-                  className={classes.slider}
+                <TextField
                   disabled={!updating}
+                  name="max_temp"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="°C"
+                  variant="filled"
+                  value={model.max_temp}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
                 />
+              </div>
 
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Tensão
-                </Typography>
-                <Slider
-                  id="voltageSlider"
-                  value={valVolt}
-                  onChangeCommitted={updateRangeVolt}
-                  marks={marcadoresVolt}
-                  valueLabelDisplay="auto"
-                  className={classes.slider}
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Corrente
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
                   disabled={!updating}
+                  name="min_current"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="A"
+                  variant="filled"
+                  value={model.min_current}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
                 />
-
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Vibração
-                </Typography>
-                <Slider
-                  id="vibraSlider"
-                  value={valVibra}
-                  onChangeCommitted={updateRangeVibra}
-                  marks={marcadoresVibra}
-                  valueLabelDisplay="auto"
-                  className={classes.slider}
+                <TextField
                   disabled={!updating}
-                  min={0}
-                  max={10000}
-                  step={500}
+                  name="max_current"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="A"
+                  variant="filled"
+                  value={model.max_current}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
                 />
+              </div>
 
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Tensão
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_voltage"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="V"
+                  variant="filled"
+                  value={model.min_voltage}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_voltage"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="V"
+                  variant="filled"
+                  value={model.max_voltage}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
+
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Vibração
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_vibra"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="krpm"
+                  variant="filled"
+                  value={model.min_vibra}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_vibra"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="krpm"
+                  variant="filled"
+                  value={model.max_vibra}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
               </div>
             </Grid>
+          </Grid>
 
-            <Grid className={classes.centralizar} item xs={12}>
-              <Button variant="contained" color="primary" className={classes.btn}
-                onClick={handleSubmit}
-              >
-                {updating ? "Salvar" : "Editar"}
-              </Button>
-              <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
+          <Grid className={classes.centralizar} item xs={12}>
+            <Button variant="contained" color="primary" className={classes.btn}
+              onClick={handleSubmit}
+            >
+              {updating ? "Salvar" : "Editar"}
+            </Button>
+            <Button variant="contained" color="secondary" className={classes.btn}
+              onClick={handleDelete}
+            >
+              {updating ? "Cancelar" : "Excluir"}
+            </Button>
 
-            </Grid>
           </Grid>
         </Paper>
-
       </div>
     </React.Fragment >
   );

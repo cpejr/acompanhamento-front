@@ -19,7 +19,6 @@ export const useStyles = makeStyles(theme => ({
       padding: "48px 24px",
     },
   },
-
   title: {
     width: "100%",
     marginBottom: "30px",
@@ -50,18 +49,34 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: "20px 20px 0px 0px",
     backgroundColor: "#FFFFFF",
   },
-
-
   inputs: {
     width: "100%",
-    marginBottom: "16px",
+    marginTop: "49px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "0px",
+      marginBottom: "16px"
+    }
   },
-
+  inputRange: {
+    width: "96px",
+    [theme.breakpoints.up("md")]: {
+      width: "192px",
+    }
+  },
+  rangesTitle: {
+    marginTop: "16px",
+    textAlign: "center"
+  },
+  rangesContainer: {
+    display: "flex", 
+    flexDirection: "row", 
+    justifyContent: "center",
+    gap: "64px",
+  },
   slider: {
     color: azulPadrao,
     width: "70%"
   },
-
   buttonRegister: {
     border: "1px solid rgba(0, 0, 0, 0.12)",
     boxSizing: "border-box",

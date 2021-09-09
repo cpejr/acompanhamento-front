@@ -59,7 +59,6 @@ export default function ListagemEquipamento() {
       .then((equipment) => {
 
         const equipments = equipment.data.equipment;
-        console.log(equipments);
         setEquipmentsOriginal(equipments);
         setEquipmentsListToDisplay(equipments);
         setLoading((prev) => ({ ...prev, equipments: false }));

@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core"
-import { grey } from "@material-ui/core/colors";
 import { titlesFontFamilyPadrao, titleFontSize, vermelhoPadrao, azulPadrao, verde } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles((theme) => ({
@@ -44,8 +43,28 @@ export const useStyles = makeStyles((theme) => ({
   },
   inputs: {
     width: "100%",
-    marginBottom: "20px",
-  }, 
+    marginTop: "49px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "0px",
+      marginBottom: "16px"
+    }
+  },
+  inputRange: {
+    width: "96px",
+    [theme.breakpoints.up("md")]: {
+      width: "192px",
+    }
+  },
+  rangesTitle: {
+    marginTop: "16px",
+    textAlign: "center"
+  },
+  rangesContainer: {
+    display: "flex", 
+    flexDirection: "row", 
+    justifyContent: "center",
+    gap: "64px",
+  },
   centralizar: {
     display: "flex",
     justifyContent: "center",

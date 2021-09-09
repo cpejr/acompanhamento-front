@@ -21,57 +21,6 @@ import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
 import { LoginContext } from '../../context/LoginContext';
-import { TrendingUpRounded } from '@material-ui/icons';
-
-// const TEMPERATURE_SCALE_LOWEST = 0;
-// const TEMPERATURE_SCALE_HIGHEST = 100;
-// const CURRENT_SCALE_LOWEST = 0;
-// const CURRENT_SCALE_HIGHEST = 100;
-// const VOLTAGE_SCALE_LOWEST = 0;
-// const VOLTAGE_SCALE_HIGHEST = 100;
-// const VIBRATION_SCALE_LOWEST = 0;
-// const VIBRATION_SCALE_HIGHEST = 10000;
-
-// const marcadoresTemp = [
-//   {
-//     value: TEMPERATURE_SCALE_LOWEST,
-//     label: `${TEMPERATURE_SCALE_LOWEST}°C`
-//   },
-//   {
-//     value: TEMPERATURE_SCALE_HIGHEST,
-//     label: `${TEMPERATURE_SCALE_HIGHEST}°C`
-//   }
-// ];
-// const marcadoresCurrent = [
-//   {
-//     value: CURRENT_SCALE_LOWEST,
-//     label: `${CURRENT_SCALE_LOWEST}A`
-//   },
-//   {
-//     value: CURRENT_SCALE_HIGHEST,
-//     label: `${CURRENT_SCALE_HIGHEST}A`
-//   }
-// ];
-// const marcadoresVolt = [
-//   {
-//     value: VOLTAGE_SCALE_LOWEST,
-//     label: `${VOLTAGE_SCALE_LOWEST}V`
-//   },
-//   {
-//     value: VOLTAGE_SCALE_HIGHEST,
-//     label: `${VOLTAGE_SCALE_HIGHEST}V`
-//   }
-// ];
-// const marcadoresVibra = [
-//   {
-//     value: VIBRATION_SCALE_LOWEST,
-//     label: `${VIBRATION_SCALE_LOWEST}krpm`
-//   },
-//   {
-//     value: VIBRATION_SCALE_HIGHEST,
-//     label: `${VIBRATION_SCALE_HIGHEST}krpm`
-//   }
-// ];
 
 function AtualizacaoModelo() {
 
@@ -91,90 +40,15 @@ function AtualizacaoModelo() {
   const [error, setError] = useState({
     releaseYear: '',
   });
-
-  // vetores de estados
-  const [valTemp, setValTemp] = useState([]);
-  const [valCurrent, setValCurrent] = useState([]);
-  const [valVolt, setValVolt] = useState([]);
-  const [valVibra, setValVibra] = useState([]);
-
-  // Definição de estados, min e max, de cada tipo de informação
-  // Raphael, caso isso seja desnecessário, favor me informar para que eu possa refatorar
-  const [minTemp, setMinTemp] = useState( ); 
-  const [maxTemp, setMaxTemp] = useState( ); 
-  const [minCurrent, setMinCurrent] = useState( ); 
-  const [maxCurrent, setMaxCurrent] = useState( ); 
-  const [minVolt , setMinVolt] = useState( );
-  const [maxVolt, setMaxVolt] = useState( );
-  const [minVibra, setMinVibra] = useState( );
-  const [maxVibra, setMaxVibra] = useState( );
-
-
   const classes = useStyles({ updating });
- 
-    // Aqui temos as funcoes que escutam os valores digitados nos inputs e os definem no Model
-    // Raphael, aqui pode ser que não tenha ficado o mais otimizado possível, caso não esteja adequado, favor me informar
-    const updateMinTemp = (e) => {
-     
-      valTemp[0] = minTemp;
-      setMinTemp(e.target.value);      
-      setModel({ ...model, min_temp: e.target.value});
-    };
-    const updateMaxTemp = (e) => {
-     
-      valTemp[1] = maxTemp;
-      setMaxTemp(e.target.value);
-      setModel({ ...model, max_temp: e.target.value});
-    };
-    const updateMinCurrent = (e) => {
 
-      valCurrent[0] = minCurrent;
-      setMinCurrent(e.target.value);
-      setModel({ ...model, min_current: e.target.value});
-    }
-    const updateMaxCurrent = (e) => {
-
-      valCurrent[1] = maxCurrent;
-      setMaxCurrent(e.target.value);
-      setModel({ ...model, max_current: e.target.value});
-    }
-    const updateMinVolt = (e) => {
-
-      valVolt[0] = minVolt;
-      setMinVolt(e.target.value);
-      setModel({ ...model, min_voltage: e.target.value});
-    }
-    const updateMaxVolt = (e) => {
-
-      valVolt[1] = maxVolt;
-      setMaxVolt(e.target.value);
-      setModel({ ...model, max_voltage: e.target.value});
-    }
-    const updateMinVibra = (e) => {
-
-      valVibra[0] = minVibra;
-      setMinVibra(e.target.value);
-      setModel({ ...model, min_vibra: e.target.value});
-    }
-    const updateMaxVibra = (e) => {
-
-      valVibra[1] = maxVibra;
-      setMaxVibra(e.target.value);
-      setModel({ ...model, max_vibra: e.target.value});
-    }
-    
   useEffect(() => {
 
     (async () => {
-      await api.get(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
+      await api.get(`model/${id}`, { headers: { authorization: `Bearer ${accessToken}` } })
         .then((selected) => {
           setModel(selected.data.model)
           setModelOriginal(selected.data.model)
-
-          setValTemp([selected.data.model.min_temp, selected.data.model.max_temp]);
-          setValCurrent([selected.data.model.min_current, selected.data.model.max_current]);
-          setValVolt([selected.data.model.min_voltage, selected.data.model.max_voltage]);
-          setValVibra([selected.data.model.min_vibra, selected.data.model.max_vibra]);
         })
         .catch(err => {
           console.error(err);
@@ -215,7 +89,7 @@ function AtualizacaoModelo() {
     if (!updating) setUpdating(true)
 
     else if (Object.values(model).includes("")) {
-      sendMessage('Alguns campos estão vazios', 'info');
+      sendMessage('Alguns campos estão vazios', 'error');
     }
 
     else if (!findError("year", model.releaseYear))
@@ -243,7 +117,7 @@ function AtualizacaoModelo() {
 
       sendMessage("Atuaizando os dados...", "info", null);
 
-      api.put(`model/${id}`, data, {headers: {authorization: `Bearer ${accessToken}`}})
+      api.put(`model/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
         .then(response => {
           sendMessage("Dados alterados com sucesso", "success");
           setModelOriginal(data);
@@ -262,10 +136,10 @@ function AtualizacaoModelo() {
   async function DeleteVerification() {
 
     await api
-      .get("/equipment/index", {headers: {authorization: `Bearer ${accessToken}`}})
+      .get("/equipment/index", { headers: { authorization: `Bearer ${accessToken}` } })
       .then((response) => {
 
-         console.log(response);
+        console.log(response);
         if (response.data.equipment.find((equipment) => equipment.id_model === id)) { //se achar algo nao pode excluir
           sendMessage("Não foi possível excluir modelo, ele possui equipamentos vinculados.", "error");
           setDeleting(false);
@@ -288,15 +162,11 @@ function AtualizacaoModelo() {
       setError({
         releaseYear: "",
       })
-      setValTemp([modelOriginal.min_temp, modelOriginal.max_temp]);
-      setValCurrent([modelOriginal.min_current, modelOriginal.max_current]);
-      setValVolt([modelOriginal.min_voltage, modelOriginal.max_voltage]);
-      setValVibra([modelOriginal.min_vibra, modelOriginal.max_vibra]);
 
     } else if (confirmation === true) { // excuir 
 
       setDeleting(false);
-      await api.delete(`model/${id}`, {headers: {authorization: `Bearer ${accessToken}`}}).then((response) => {
+      await api.delete(`model/${id}`, { headers: { authorization: `Bearer ${accessToken}` } }).then((response) => {
 
         sendMessage("Modelo excluído com sucesso", "success");
         setTimeout(() => {
@@ -353,11 +223,13 @@ function AtualizacaoModelo() {
         <AreYouSure />
 
         <Paper className={classes.formContainer} elevation={0}>
-          <Grid container spacing={isDesktop ? 5 : 0}>
+          <Grid container spacing={isDesktop ? 2 : 0} >
+
             <Grid item xs={12} md={6}>
               <TextField
+                disabled={!updating}
                 name="modelName"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.modelName}
                 onChange={handleChangeInput}
                 label="Nome do modelo"
@@ -365,12 +237,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
 
               <TextField
+                disabled={!updating}
                 name="type"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.type}
                 onChange={handleChangeInput}
                 label="Tipo de equipamento"
@@ -378,12 +250,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
 
               <TextField
+                disabled={!updating}
                 name="manufacturer"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.manufacturer}
                 onChange={handleChangeInput}
                 label="Fabricante"
@@ -391,12 +263,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
 
               <TextField
+                disabled={!updating}
                 name="releaseYear"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.releaseYear}
                 onChange={handleChangeInput}
                 label="Ano de lançamento"
@@ -405,177 +277,149 @@ function AtualizacaoModelo() {
                 error={error.releaseYear !== ""}
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
                 inputProps={{ maxLength: 4 }}
               />
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Temperatura
+              </Typography>
 
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Temperatura
-                </Typography>
-                {/* As divs foram criadas dessa forma para possibilitar o alinhamento dos inputs */}
-                <div style={{display: "flex", flexDirection: "row"}}>
-                  <div style={{marginRight: "50px"}}>
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "mínimo"
-                      label = "°C"
-                      variant="filled"
-                      value={minTemp}
-                      margin="dense"
-                      defaultValue={valTemp[0]}
-                      onChange={updateMinTemp} // input min
-                      inputProps = {{step:1, min: 0, max: 100}} // permite dispensar os marcadores - linha 27 ...
-                      type = 'number' 
-                    />  
-                  </div>
-                  <div>
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "máximo"
-                      label = "°C"
-                      variant="filled"
-                      value={maxTemp}
-                      margin="dense"
-                      defaultValue={valTemp[1]}
-                      onChange={updateMaxTemp} // input max
-                      inputProps = {{step:1, min: 0, max: 100}}                  
-                      type = 'number'
-                    />
-                  </div>
-                </div>
-                
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Corrente
-                </Typography>
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  className={classes.inputRange}
+                  name="min_temp"
+                  helperText="mínimo"
+                  label="°C"
+                  variant="filled"
+                  value={model.min_temp}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_temp"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="°C"
+                  variant="filled"
+                  value={model.max_temp}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
 
-                <div style={{display: "flex", flexDirection: "row"}}>
-                  <div style={{marginRight: "50px"}}>
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "mínimo"
-                      label = "A"
-                      variant="filled"
-                      value={minCurrent}
-                      margin="dense"
-                      defaultValue={valCurrent[0]}
-                      onChange={updateMinCurrent} // input min
-                      inputProps = {{step:1, min: 0, max: 100}}
-                      type = 'number' 
-                     /> 
-                  </div> 
-                  <div>
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "máximo"
-                      label = "A"
-                      variant="filled"
-                      value={maxCurrent}
-                      margin="dense"
-                      defaultValue={valCurrent[1]}
-                      onChange={updateMaxCurrent} // input max
-                      inputProps = {{step:1, min: 0, max: 100}}                  
-                      type = 'number'
-                    />
-                  </div>
-                </div>
- 
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Tensão
-                </Typography>
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Corrente
+              </Typography>
 
-                <div style={{display: "flex", flexDirection: "row"}}>
-                  <div style={{marginRight: "50px"}}>
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "mínimo"
-                      label = "V"
-                      variant="filled"
-                      value={minVolt}
-                      margin="dense"
-                      defaultValue={valVolt[0]}
-                      onChange={updateMinVolt} // input min
-                      inputProps = {{step:1, min: 0, max: 100}}
-                      type = 'number' 
-                      />
-                  </div>
-                  <div>
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "máximo"
-                      label = "V"
-                      variant="filled"
-                      value={maxVolt}
-                      margin="dense"
-                      defaultValue={valVolt[1]}
-                      onChange={updateMaxVolt} // input max
-                      inputProps = {{step:1, min: 0, max: 100}}                  
-                      type = 'number'
-                    />
-                  </div>
-                </div>
-      
-                <Typography gutterBottom style={{ marginTop: "16px" }}>
-                  Limites de Vibração
-                </Typography>
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_current"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="A"
+                  variant="filled"
+                  value={model.min_current}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_current"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="A"
+                  variant="filled"
+                  value={model.max_current}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
 
-                <div style={{display: "flex", flexDirection: "row"}}>
-                  <div style={{marginRight: "50px"}}>        
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "mínimo"
-                      label = "Krpm"
-                      variant="filled"
-                      value={minVibra}
-                      margin="dense"
-                      defaultValue={valVibra[0]}
-                      onChange={updateMinVibra} // input min
-                      inputProps = {{step:1, min: 0, max: 10000}}
-                      type = 'number' 
-                      />
-                  </div>
-                  <div>  
-                    <TextField
-                      className={classes.inputRange}
-                      disabled={!updating}
-                      helperText= "máximo"
-                      label = "Krpm"
-                      variant="filled"
-                      value={maxVibra}
-                      margin="dense"
-                      defaultValue={valVibra[1]}
-                      onChange={updateMaxVibra} // input max
-                      inputProps = {{step:1, min: 0, max: 10000}}                  
-                      type = 'number'
-                      />
-                  </div>
-                </div>
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Tensão
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_voltage"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="V"
+                  variant="filled"
+                  value={model.min_voltage}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_voltage"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="V"
+                  variant="filled"
+                  value={model.max_voltage}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
+
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Vibração
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_vibra"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="krpm"
+                  variant="filled"
+                  value={model.min_vibra}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_vibra"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="krpm"
+                  variant="filled"
+                  value={model.max_vibra}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
               </div>
             </Grid>
+          </Grid>
 
-            <Grid className={classes.centralizar} item xs={12}>
-              <Button variant="contained" color="primary" className={classes.btn}
-                onClick={handleSubmit}
-              >
-                {updating ? "Salvar" : "Editar"}
-              </Button>
-              <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
+          <Grid className={classes.centralizar} item xs={12}>
+            <Button variant="contained" color="primary" className={classes.btn}
+              onClick={handleSubmit}
+            >
+              {updating ? "Salvar" : "Editar"}
+            </Button>
+            <Button variant="contained" color="secondary" className={classes.btn}
+              onClick={handleDelete}
+            >
+              {updating ? "Cancelar" : "Excluir"}
+            </Button>
 
-            </Grid>
           </Grid>
         </Paper>
       </div>

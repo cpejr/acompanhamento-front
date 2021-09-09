@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./styleText.css";
 import LottieControl from "./Animation";
 import { Link } from "react-router-dom";
+import { LoginContext } from "../../context/LoginContext";
 
-export default function unAuthorized() {
+export default function UnAuthorized() {
+
+  const { logOut } = useContext(LoginContext);
+
   return (
     <>
       <LottieControl />
@@ -14,7 +18,13 @@ export default function unAuthorized() {
       </div>
 
       <div className="back">
-        <Link style={{ color: 'blue', fontSize: '1.2rem' }} to="/Login"> Voltar para a tela de Login </Link>
+        <Link 
+          style={{ color: 'blue', fontSize: '1.2rem' }} 
+          onClick={() => logOut()}
+          to="/Login"
+        > 
+          Voltar para a tela de Login 
+        </Link>
       </div>
     </>
   );

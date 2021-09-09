@@ -124,21 +124,19 @@ function Routes() {
                 <RoutesPrivate path="/am/:id" component={AtualizacaoModelo} />
 
                 {/* Atualização de Equipamentos */}
-                <RoutesPrivate path="/ae" exact>
-                  <Redirect to="/unAuthorized" />
-                </RoutesPrivate>
-                <RoutesPrivate
+                <RoutesPublic
+                  exact
                   path="/ae/:id"
                   component={AtualizacaoEquipamento}
+                  restricted
                 />
 
                 {/* Funcionamento de Equipamentos */}
-                <RoutesPrivate path="/funcionamentoequipamento" exact>
-                  <Redirect to="/" />
-                </RoutesPrivate>
-                <RoutesPrivate
+                <RoutesPublic
+                  exact
                   path="/funcionamentoequipamento/:id"
                   component={FuncionamentoEquipamento}
+                  restricted
                 />
 
                 {/* Pagina para inserir texto de manutenção do equipmanento */}

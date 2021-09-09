@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useStyles } from './tabelaStyle';
 import {
   Paper,
@@ -12,12 +12,14 @@ import {
   TableSortLabel,
   Typography
 } from '@material-ui/core';
-import history from '../../../history'
+import history from '../../../history';
+import { LoginContext } from '../../../context/LoginContext';
 
 export default function StickyHeadTable(props) {
 
   const classes = useStyles();
   const { ordem, setOrdem } = props;
+  const { IsClient } = useContext(LoginContext);
 
   const headerItems = [
     { title: "Código do Equipamento", ordemBy: "equipment_code" },
@@ -87,14 +89,16 @@ export default function StickyHeadTable(props) {
                       Dados
                     </Button>
 
-                    <Button
-                      onClick={() => history.push(`/manutencao/${equipment.id}`)}
-                      variant="outlined"
-                      disableElevation
-                      className={classes.buttonAdd_3}
-                    >
-                      Manutenções
-                    </Button>
+                    { !IsClient() && (
+                      <Button
+                        onClick={() => history.push(`/manutencao/${equipment.id}`)}
+                        variant="outlined"
+                        disableElevation
+                        className={classes.buttonAdd_3}
+                      >
+                        Manutenções
+                      </Button>
+                    )}
                   </TableCell>
 
                 </TableRow>

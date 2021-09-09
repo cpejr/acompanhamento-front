@@ -43,7 +43,7 @@ function AtualizacaoEquipamento() {
 
   const { id } = useParams();
   const history = useHistory();
-  const { getToken } = useContext(LoginContext);
+  const { getToken, IsClient } = useContext(LoginContext);
   const accessToken = getToken();
 
   const isDesktop = useMediaQuery("(min-width:960px)");
@@ -478,32 +478,34 @@ function AtualizacaoEquipamento() {
               />
             </Grid>
 
-            <div className={classes.buttonContainer}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.btn}
-                onClick={handleSubmit}
-              >
-                {updating ? "Salvar" : "Editar"}
-              </Button>
+            { !IsClient() && (
+              <div className={classes.buttonContainer}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.btn}
+                  onClick={handleSubmit}
+                >
+                  {updating ? "Salvar" : "Editar"}
+                </Button>
 
-              <Button
-                variant="contained"
-                className={classes.btn}
-                onClick={handleDelete}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
+                <Button
+                  variant="contained"
+                  className={classes.btn}
+                  onClick={handleDelete}
+                >
+                  {updating ? "Cancelar" : "Excluir"}
+                </Button>
 
-              <Button
-                className={classes.btn}
-                variant="contained"
-                onClick={() => history.push(`/au/${clientId}`)}
-              >
-                Proprietário do equipamento
-              </Button>
-            </div>
+                <Button
+                  className={classes.btn}
+                  variant="contained"
+                  onClick={() => history.push(`/au/${clientId}`)}
+                >
+                  Proprietário do equipamento
+                </Button>
+              </div>
+            )}
           </Grid>
         </Paper>
       </div>

@@ -27,4 +27,5 @@ export default class LottieControl extends React.Component {
               isPaused={this.state.isPaused}/>
     </div>
   }
+  
 }

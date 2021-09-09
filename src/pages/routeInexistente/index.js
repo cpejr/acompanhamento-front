@@ -1,1 +1,1 @@
-export { default } from './routeInexistente';
+export { default } from './routeInexistente' ;

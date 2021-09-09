@@ -47,7 +47,7 @@ export default function ListagemEquipamento() {
 
   const query = new URLSearchParams(useLocation().search);
   const situation = query.get("situation");
-  const userIdFromQuery = query.get("userId");
+  const userIdFromQuery = query.get("userid");
 
   useEffect(() => {
     const url = situation
@@ -59,7 +59,6 @@ export default function ListagemEquipamento() {
       .then((equipment) => {
 
         const equipments = equipment.data.equipment;
-        console.log(equipments);
         setEquipmentsOriginal(equipments);
         setEquipmentsListToDisplay(equipments);
         setLoading((prev) => ({ ...prev, equipments: false }));
@@ -112,18 +111,18 @@ export default function ListagemEquipamento() {
   useEffect(() => {
 
     async function getEquipmentsByUser() {
-
+      
       if (userIdFromQuery) {
         await api
           .get(`/user/${userIdFromQuery}`, { headers: { authorization: `Bearer ${accessToken}` } })
           .then((response) => {
             const idEquipments = response.data.user.id_equipments;
-
+            
             let auxVector = [];
             if (idEquipments) {
               equipmentsOriginal.forEach((equipment) => {
                 if (idEquipments.includes(equipment.id)) {
-                  auxVector.push(equipment);
+                  auxVector.push(equipment); 
                 }
               })
             }

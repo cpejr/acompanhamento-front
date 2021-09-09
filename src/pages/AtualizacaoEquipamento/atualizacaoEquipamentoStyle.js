@@ -11,6 +11,55 @@ export const useStyles = makeStyles((theme) => ({
       padding: "32px 8px",
     },
   },
+  header: {
+    display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    },
+  },
+
+  connectionPending:{
+    borderColor: vermelhoPadrao,
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  connected:{
+    borderColor: verde,
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  statusWarning: {
+    borderColor: "orange",
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  iconPending: {
+    color: vermelhoPadrao,
+    fontSize: "20px"
+  },
+
+  iconConnected: {
+    color: verde,
+  },
+
+  iconWarning: {
+    color: "orange",
+    fontSize: "20px"
+  },
+
   formContainer: {
     padding: "48px",
     borderRadius: "13px",

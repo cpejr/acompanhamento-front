@@ -21,7 +21,7 @@ export default function StickyHeadTable({
   setOrdemAlfabetica
 }) {
   const classes = useStyles();
-
+  
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>

@@ -29,6 +29,7 @@ export default function ListagemEquipamento() {
 
   const [filterby, setFilterby] = useState("equipment_code");
   const [equipmentsOriginal, setEquipmentsOriginal] = useState([]);
+  const [usersOriginal, setUsersOriginal] = useState([]);
   const [modelList, setModelList] = useState([]);
   const isClient = IsClient();
 
@@ -54,7 +55,7 @@ export default function ListagemEquipamento() {
       ? `equipment/find_situation/${situation}`
       : "equipment/index";
 
-    api
+      api
       .get(url, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((equipment) => {
 
@@ -70,7 +71,7 @@ export default function ListagemEquipamento() {
         );
       });
 
-    api
+      api
       .get(`/model/index`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((model) => {
         setModelList(model.data.data);
@@ -83,7 +84,19 @@ export default function ListagemEquipamento() {
         );
       });
 
-  }, [accessToken, situation, userId,]);
+      api
+      .get(`/user`, { headers: { authorization: `Bearer ${accessToken}` } })
+      .then((userAux) => {
+        setUsersOriginal(userAux.data.user);
+        setLoading((prev) => ({ ...prev, model: false }));
+      })
+      .catch((err) => {
+        console.error(
+          "Não foi possivel estabelecer conexão com o backend",
+          err
+        );
+      });
+  }, [accessToken, situation, userId]);
 
   useEffect(() => {
 
@@ -145,14 +158,23 @@ export default function ListagemEquipamento() {
     if (searchEquipment.length > 0) {
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
-
-      equipmentsOriginal.forEach((item) => {
-        var probable = item[filterby].toLowerCase().match(filteredEquipment);
-        if (probable) {
-          equipmentsListToDisplay.push(item);
-        }
-      });
-
+      if(filterby === "client_name"){
+          usersOriginal.forEach((user) => {
+            var probable = user["name"].toLowerCase().match(filteredEquipment);
+            if (probable) {
+              equipmentsOriginal.forEach((equipment) => {
+                if (equipment.client_id === user.id) equipmentsListToDisplay.push(equipment);
+              })
+            }
+          });
+      }else{
+        equipmentsOriginal.forEach((item) => {
+          var probable = item[filterby].toLowerCase().match(filteredEquipment);
+          if (probable) {
+            equipmentsListToDisplay.push(item);
+          }
+        });
+      }
       setEquipmentsListToDisplay(equipmentsListToDisplay);
     } else {
       setEquipmentsListToDisplay(equipmentsOriginal);
@@ -222,15 +244,15 @@ export default function ListagemEquipamento() {
               onChange={(e) => setFilterby(e.target.value)}
               variant="outlined"
             >
-              {/* <MenuItem value="cpf_client">Cliente</MenuItem> */}
-              <MenuItem value="id_model">Modelo</MenuItem>
               <MenuItem value="equipment_code">Código do Equipamento</MenuItem>
+              <MenuItem value="client_name">Nome do Cliente</MenuItem>
             </Select>
           </FormControl>
         </div>
 
         <div className={classes.table}>
           <StickyHeadTable
+            all_users={usersOriginal}
             equipmentsListToDisplay={ordenar(
               equipmentsListToDisplay,
               ordem.by,
@@ -243,6 +265,7 @@ export default function ListagemEquipamento() {
                 equipment_code: equipment.equipment_code,
                 id_model: equipment.id_model,
                 cpf_client: "", // inicialmente fica vazia
+                id_client: equipment.client_id,
                 updatedAt: formattedDate,
                 maintenance: equipment.maintenance,
               };

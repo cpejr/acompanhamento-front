@@ -23,11 +23,16 @@ export default function StickyHeadTable(props) {
 
   const headerItems = [
     { title: "Código do Equipamento", ordemBy: "equipment_code" },
-    { title: "CPF cliente", ordemBy: "cpf_client" },
+    { title: "Nome cliente", ordemBy: "client_name" },
     { title: "Última visita", ordemBy: "last_visit" }
   ]
 
 
+  function getNameClient(clientId){
+    const user = props.all_users.filter(client => client.id === clientId);
+    if(user[0]) return user[0].name;
+    return " ";
+  };
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -66,7 +71,7 @@ export default function StickyHeadTable(props) {
 
                   <TableCell>{equipment.equipment_code}</TableCell>
 
-                  <TableCell>{equipment.cpf_client}</TableCell>
+                  <TableCell>{getNameClient(equipment.id_client)}</TableCell>
 
                   <TableCell>{equipment.updatedAt}</TableCell>
 

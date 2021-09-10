@@ -71,7 +71,7 @@ export default function StickyHeadTable(props) {
 
                   <TableCell>{equipment.equipment_code}</TableCell>
 
-                  <TableCell>{getNameClient(equipment.id_client)}</TableCell>
+                  {!IsClient && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
 
                   <TableCell>{equipment.updatedAt}</TableCell>
 

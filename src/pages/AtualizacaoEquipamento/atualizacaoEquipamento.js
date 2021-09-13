@@ -233,7 +233,17 @@ function AtualizacaoEquipamento() {
       setClientCpfCnpj(value)
       return;
     }
-
+    if (name === "phone_number") {
+      let cleaned = str.replace(/\D/g, ""); // somente numeros
+      if(cleaned.length === 10){            // Numero residencial
+        let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+        if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+        }
+        else if(cleaned.length === 11){     // Numero celular
+          let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+        }
+    }
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -263,7 +273,8 @@ function AtualizacaoEquipamento() {
       initial_work: equipment.initial_work,
       address: equipment.address,
       zipcode: equipment.zipcode ? equipment.zipcode : "",
-      cpfcnpj: clientCpfCnpj
+      cpfcnpj: clientCpfCnpj,
+      phone_number: equipment.phone_number
     };
 
     if (!updating) setUpdating(true);
@@ -417,6 +428,17 @@ function AtualizacaoEquipamento() {
                 disabled={!updating}
                 onChange={handleChangeInput}
               />
+              <TextField
+                name="phone_number"
+                className={classes.inputs}
+                value={equipment.phone_number}
+                onChange={handleChangeInput}
+                label="Telefone do Proprietário"
+                type="text"
+                autoComplete="off"
+                variant="filled"
+                disabled={!updating}
+              />
 
             </Grid>
 
@@ -460,10 +482,6 @@ function AtualizacaoEquipamento() {
                 variant="filled"
                 inputProps={{ maxLength: 8 }}
               />
-            </Grid>
-
-            <Grid container justifyContent="center" style={{ marginTop: "16px" }} >
-
               <TextField
                 name="cpfcnpj"
                 className={classes.input}

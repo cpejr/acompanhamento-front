@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   CssBaseline,
   Typography,
@@ -58,7 +58,7 @@ export default function CadastroEquipamento(props) {
   });
 
   // pegar modelos
-  React.useEffect(() => {
+  useEffect(() => {
 
     api.get('model/index', {headers: {authorization: `Bearer ${accessToken}`}})
       .then(model => {
@@ -130,7 +130,7 @@ export default function CadastroEquipamento(props) {
       sendMessage('Realizando cadastro...', 'info', null);
 
       try {
-
+        console.log(data, "data");
         await api
           .post('/equipment/create', data, {headers: {authorization: `Bearer ${accessToken}`}} )
           .then((response) => {
@@ -167,26 +167,23 @@ export default function CadastroEquipamento(props) {
 
       if (name === "zipcode") {
         value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
+        console.log(value, 'zipcode');
       }
       if (name === "cpfcnpj") {
         value = str.replace(/\D/g, ""); // somente numeros
+        console.log(value, 'cpf');
       }
       if (name === "phone_number") {
-        value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'  /d{2})(\d{5})(\d{4})$/
-      }
-
-      // if (name === "phone_number") {
-      //   let cleaned = str.replace(/\D/g, ""); // somente numeros
-      //   if(cleaned.lenght === 10){ // Numero residencial
-      //     let match = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
-      //     if(match) return '(' + match[1] + ') ' + match[2] + '-' + match[3]
-      //     }
-      //   else if(cleaned.lenght === 11){ // Numero celular
-      //     let match = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
-      //     if(match) return '(' + match[1] + ') ' + match[2] + '-' + match[3]
-      //     } 
-      //   }
-
+        let cleaned = str.replace(/\D/g, ""); // somente numeros
+        if(cleaned.length === 10){ // Numero residencial
+          let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+          }
+        else if(cleaned.length === 11){ // Numero celular
+          let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+          }
+        }
       setFormData({ ...formData, [name]: value });
     }
 
@@ -258,7 +255,6 @@ export default function CadastroEquipamento(props) {
                 variant="filled"
                 autoComplete="off"
               />
-
               <TextField
                 name="phone_number"
                 className={classes.inputs}
@@ -266,10 +262,9 @@ export default function CadastroEquipamento(props) {
                 onChange={handleChangeInput}
                 label="Telefone do Proprietário"
                 type="text"
-                helperText={error.phone_number === "" ? "*Obrigatório" : error.phone_number}
-                error={error.phone_number !== ""}
-                variant="filled"
+                helperText="*Obrigatório"
                 autoComplete="off"
+                variant="filled"
               />
             </Grid>
 

@@ -175,11 +175,11 @@ export default function CadastroEquipamento(props) {
       }
       if (name === "phone_number") {
         let cleaned = str.replace(/\D/g, ""); // somente numeros
-        if(cleaned.length === 10){ // Numero residencial
+        if(cleaned.length === 10){            // Numero residencial
           let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
           if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
           }
-        else if(cleaned.length === 11){ // Numero celular
+        else if(cleaned.length === 11){       // Numero celular
           let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
           if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
           }
@@ -260,7 +260,7 @@ export default function CadastroEquipamento(props) {
                 className={classes.inputs}
                 value={formData.phone_number}
                 onChange={handleChangeInput}
-                label="Telefone do Proprietário"
+                label="Telefone para Contato"
                 type="text"
                 helperText="*Obrigatório"
                 autoComplete="off"

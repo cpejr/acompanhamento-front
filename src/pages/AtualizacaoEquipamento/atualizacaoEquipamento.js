@@ -136,7 +136,8 @@ function AtualizacaoEquipamento() {
     if (
       !data.id_model ||
       !data.equipment_code ||
-      !data.installation_date
+      !data.installation_date ||
+      !data.phone_number
     ) {
       sendMessage("Há campos vazios!", "error");
       return false;
@@ -433,11 +434,13 @@ function AtualizacaoEquipamento() {
                 className={classes.inputs}
                 value={equipment.phone_number}
                 onChange={handleChangeInput}
-                label="Telefone do Proprietário"
+                label="Telefone para Contato"
                 type="text"
                 autoComplete="off"
+                helperText="*Obrigatório"
                 variant="filled"
                 disabled={!updating}
+                style={{ width: "100%" }}
               />
 
             </Grid>
@@ -491,7 +494,6 @@ function AtualizacaoEquipamento() {
                 type="text"
                 helperText="(Opcional)"
                 variant="filled"
-                style={{ width: isDesktop ? "50%" : "100%" }}
                 disabled={disableCpfCnpj ? true : !updating}
               />
             </Grid>

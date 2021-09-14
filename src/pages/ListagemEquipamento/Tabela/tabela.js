@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useStyles } from './tabelaStyle';
 import {
   Paper,
@@ -20,22 +20,21 @@ export default function StickyHeadTable(props) {
   const classes = useStyles();
   const { ordem, setOrdem } = props;
   const { IsClient } = useContext(LoginContext);
+  let headerItems = [];
 
-  useEffect(()=> {
-    if(!IsClient){
-      const headerItems = [
+    if(!IsClient()){
+      headerItems = [
         { title: "Código do Equipamento", ordemBy: "equipment_code" },
         { title: "Nome cliente", ordemBy: "client_name" },
         { title: "Última visita", ordemBy: "last_visit" }
       ]
-    } else {
-      const headerItems = [
+    }
+    if(IsClient()){
+      headerItems = [
         { title: "Código do Equipamento", ordemBy: "equipment_code" },
         { title: "Última visita", ordemBy: "last_visit" }
       ]
     }
-  },[])
-
 
   function getNameClient(clientId){
     const user = props.all_users.filter(client => client.id === clientId);
@@ -80,7 +79,7 @@ export default function StickyHeadTable(props) {
 
                   <TableCell>{equipment.equipment_code}</TableCell>
 
-                  {!IsClient && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
+                  {!IsClient() && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
 
                   <TableCell>{equipment.updatedAt}</TableCell>
 

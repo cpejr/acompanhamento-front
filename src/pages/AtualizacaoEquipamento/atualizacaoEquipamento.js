@@ -270,7 +270,6 @@ function AtualizacaoEquipamento() {
       equipment_code: equipment.equipment_code,
       installation_date: equipment.installation_date,
       situation: equipment.situation,
-      connection: equipment.flag_connection,
       initial_work: equipment.initial_work,
       address: equipment.address,
       zipcode: equipment.zipcode ? equipment.zipcode : "",
@@ -302,6 +301,8 @@ function AtualizacaoEquipamento() {
           if (error.response.status === 400) {
             sendMessage(error.response.data.notification, "error")
           }
+          setEquipmentOriginal(equipmentOriginal);
+          setClientCpfCnpj("");
         });
       setUpdating(false);
     }

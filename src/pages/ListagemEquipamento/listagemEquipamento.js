@@ -41,8 +41,8 @@ export default function ListagemEquipamento() {
   });
 
   const [ordem, setOrdem] = useState({
-    alfabetica: false,
-    by: "last_collect_date",
+    alfabetica: true,
+    by: "equipment_code",
   });
   const [equipmentsListToDisplay, setEquipmentsListToDisplay] = useState();
 

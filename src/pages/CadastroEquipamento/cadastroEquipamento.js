@@ -82,7 +82,7 @@ export default function CadastroEquipamento(props) {
       !data.installation_date ||
       !data.phone_number
     ) {
-      sendMessage("Há campos vazios!", "error");
+      sendMessage("Há campos obrigatórios vazios!", "error");
       return false;
     }
 

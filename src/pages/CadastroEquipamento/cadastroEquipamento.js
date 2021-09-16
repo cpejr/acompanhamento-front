@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   CssBaseline,
   Typography,
@@ -34,7 +34,8 @@ export default function CadastroEquipamento(props) {
 
   const [error, setError] = React.useState({
     cpf_client: "",
-    installation_date: ""
+    installation_date: "",
+    phone_number: ""
   });
   const [models, setModels] = React.useState([{}]);
   const [loading, setLoading] = useState(true);
@@ -52,11 +53,12 @@ export default function CadastroEquipamento(props) {
     observation: "",
     address: "",
     zipcode: "",
-    cpfcnpj: ""
+    cpfcnpj: "",
+    phone_number: ""
   });
 
   // pegar modelos
-  React.useEffect(() => {
+  useEffect(() => {
 
     api.get('model/index', {headers: {authorization: `Bearer ${accessToken}`}})
       .then(model => {
@@ -77,14 +79,19 @@ export default function CadastroEquipamento(props) {
     if (
       !data.id_model ||
       !data.equipment_code ||
-      !data.installation_date
+      !data.installation_date ||
+      !data.phone_number
     ) {
-      sendMessage("Há campos vazios!", "error");
+      sendMessage("Há campos obrigatórios vazios!", "error");
       return false;
     }
 
     if (data.zipcode !== "" && data.zipcode.length < 8) {
       sendMessage("CEP inválido!", "error");
+      return false;
+    }
+    if (data.phone_number !== "" && data.phone_number.length < 8) {
+      sendMessage("Telefone inválido!", "error");
       return false;
     }
 
@@ -97,7 +104,8 @@ export default function CadastroEquipamento(props) {
 
     setError({
       cpf_client: "",
-      installation_date: ""
+      installation_date: "",
+      phone_number: ""
     })
 
     if (isAfter(parseISO(formData.installation_date), new Date()))
@@ -114,14 +122,15 @@ export default function CadastroEquipamento(props) {
         address: formData.address,
         zipcode: formData.zipcode,
         observation: formData.observation,
-        cpfcnpj: formData.cpfcnpj
+        cpfcnpj: formData.cpfcnpj,
+        phone_number: formData.phone_number
       }
 
       //enviar para o backend
       sendMessage('Realizando cadastro...', 'info', null);
 
       try {
-
+        console.log(data, "data");
         await api
           .post('/equipment/create', data, {headers: {authorization: `Bearer ${accessToken}`}} )
           .then((response) => {
@@ -158,10 +167,23 @@ export default function CadastroEquipamento(props) {
 
       if (name === "zipcode") {
         value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
+        console.log(value, 'zipcode');
       }
       if (name === "cpfcnpj") {
         value = str.replace(/\D/g, ""); // somente numeros
+        console.log(value, 'cpf');
       }
+      if (name === "phone_number") {
+        let cleaned = str.replace(/\D/g, ""); // somente numeros
+        if(cleaned.length === 10){            // Numero residencial
+          let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+          }
+        else if(cleaned.length === 11){       // Numero celular
+          let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+          }
+        }
       setFormData({ ...formData, [name]: value });
     }
 
@@ -233,6 +255,17 @@ export default function CadastroEquipamento(props) {
                 variant="filled"
                 autoComplete="off"
               />
+              <TextField
+                name="phone_number"
+                className={classes.inputs}
+                value={formData.phone_number}
+                onChange={handleChangeInput}
+                label="Telefone para Contato"
+                type="text"
+                helperText="*Obrigatório"
+                autoComplete="off"
+                variant="filled"
+              />
             </Grid>
 
             <Grid item xs={12} md={6}>
@@ -273,11 +306,6 @@ export default function CadastroEquipamento(props) {
                 variant="filled"
                 inputProps={{ maxLength: 8 }}
               />
-            </Grid>
-          </Grid>
-
-          <Grid container justifyContent="center" style={{ marginTop: "16px" }} >
-
             <TextField
               name="cpfcnpj"
               className={classes.inputs}
@@ -286,10 +314,14 @@ export default function CadastroEquipamento(props) {
               label="CPF / CNPJ do Proprietário"
               type="text"
               helperText="(Opcional)"
+              autoComplete="off"
               variant="filled"
-              style={{ width: isDesktop ? "50%" : "100%" }}
             />
+
+            </Grid>
           </Grid>
+
+          
 
           <div className={classes.buttonContainer}  >
             <Button

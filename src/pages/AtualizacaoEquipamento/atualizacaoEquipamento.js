@@ -136,7 +136,8 @@ function AtualizacaoEquipamento() {
     if (
       !data.id_model ||
       !data.equipment_code ||
-      !data.installation_date
+      !data.installation_date ||
+      !data.phone_number
     ) {
       sendMessage("Há campos vazios!", "error");
       return false;
@@ -233,7 +234,17 @@ function AtualizacaoEquipamento() {
       setClientCpfCnpj(value)
       return;
     }
-
+    if (name === "phone_number") {
+      let cleaned = str.replace(/\D/g, ""); // somente numeros
+      if(cleaned.length === 10){            // Numero residencial
+        let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+        if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+        }
+        else if(cleaned.length === 11){     // Numero celular
+          let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+        }
+    }
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -259,11 +270,11 @@ function AtualizacaoEquipamento() {
       equipment_code: equipment.equipment_code,
       installation_date: equipment.installation_date,
       situation: equipment.situation,
-      connection: equipment.flag_connection,
       initial_work: equipment.initial_work,
       address: equipment.address,
       zipcode: equipment.zipcode ? equipment.zipcode : "",
-      cpfcnpj: clientCpfCnpj
+      cpfcnpj: clientCpfCnpj,
+      phone_number: equipment.phone_number
     };
 
     if (!updating) setUpdating(true);
@@ -290,6 +301,8 @@ function AtualizacaoEquipamento() {
           if (error.response.status === 400) {
             sendMessage(error.response.data.notification, "error")
           }
+          setEquipmentOriginal(equipmentOriginal);
+          setClientCpfCnpj("");
         });
       setUpdating(false);
     }
@@ -417,6 +430,19 @@ function AtualizacaoEquipamento() {
                 disabled={!updating}
                 onChange={handleChangeInput}
               />
+              <TextField
+                name="phone_number"
+                className={classes.inputs}
+                value={equipment.phone_number}
+                onChange={handleChangeInput}
+                label="Telefone para Contato"
+                type="text"
+                autoComplete="off"
+                helperText="*Obrigatório"
+                variant="filled"
+                disabled={!updating}
+                style={{ width: "100%" }}
+              />
 
             </Grid>
 
@@ -460,10 +486,6 @@ function AtualizacaoEquipamento() {
                 variant="filled"
                 inputProps={{ maxLength: 8 }}
               />
-            </Grid>
-
-            <Grid container justifyContent="center" style={{ marginTop: "16px" }} >
-
               <TextField
                 name="cpfcnpj"
                 className={classes.input}
@@ -473,7 +495,6 @@ function AtualizacaoEquipamento() {
                 type="text"
                 helperText="(Opcional)"
                 variant="filled"
-                style={{ width: isDesktop ? "50%" : "100%" }}
                 disabled={disableCpfCnpj ? true : !updating}
               />
             </Grid>

@@ -20,13 +20,26 @@ export default function StickyHeadTable(props) {
   const classes = useStyles();
   const { ordem, setOrdem } = props;
   const { IsClient } = useContext(LoginContext);
+  let headerItems = [];
 
-  const headerItems = [
-    { title: "Código do Equipamento", ordemBy: "equipment_code" },
-    { title: "CPF cliente", ordemBy: "cpf_client" },
-    { title: "Última visita", ordemBy: "last_visit" }
-  ]
+  if (!IsClient()) {
+    headerItems = [
+      { title: "Código do Equipamento", ordemBy: "equipment_code" },
+      { title: "Nome cliente", ordemBy: "client_name" },
+      { title: "Última visita", ordemBy: "last_visit" }
+    ]
+  } else {
+    headerItems = [
+      { title: "Código do Equipamento", ordemBy: "equipment_code" },
+      { title: "Última visita", ordemBy: "last_visit" }
+    ]
+  }
 
+  function getNameClient(clientId) {
+    const user = props.all_users.filter(client => client.id === clientId);
+    if (user[0]) return user[0].name;
+    else return " ";
+  };
 
   return (
     <Paper className={classes.root}>
@@ -66,7 +79,7 @@ export default function StickyHeadTable(props) {
 
                   <TableCell>{equipment.equipment_code}</TableCell>
 
-                  <TableCell>{equipment.cpf_client}</TableCell>
+                  {!IsClient() && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
 
                   <TableCell>{equipment.updatedAt}</TableCell>
 
@@ -89,7 +102,7 @@ export default function StickyHeadTable(props) {
                       Dados
                     </Button>
 
-                    { !IsClient() && (
+                    {!IsClient() && (
                       <Button
                         onClick={() => history.push(`/manutencao/${equipment.id}`)}
                         variant="outlined"

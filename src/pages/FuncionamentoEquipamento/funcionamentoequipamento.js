@@ -209,7 +209,7 @@ export default function FuncionamentoEquipamento() {
               onClick={() => handleChangeChartData("voltage")}
               style={changeColor("voltage")}
             >
-              V
+              T
             </button>
           </Tooltip>
         </Grid>

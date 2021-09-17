@@ -39,7 +39,7 @@ export default function StickyHeadTable({
                   Nome
                 </TableSortLabel>
               </TableCell>
-              <TableCell className={classes.tableCell}>Função</TableCell>
+              <TableCell className={classes.tableCell}>Tipo de Usuário</TableCell>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active

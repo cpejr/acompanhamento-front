@@ -162,7 +162,7 @@ export default function ListagemUsuario() {
               variant="outlined"
             >
               <MenuItem value="nameEmail">Nome</MenuItem>
-              <MenuItem value="funcao">Função</MenuItem>
+              <MenuItem value="funcao">Tipo de Usuário</MenuItem>
             </Select>
           </FormControl>
         </div>

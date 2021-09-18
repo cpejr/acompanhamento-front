@@ -55,7 +55,7 @@ export default function ListagemEquipamento() {
       ? `equipment/find_situation/${situation}`
       : "equipment/index";
 
-      api
+    api
       .get(url, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((equipment) => {
 
@@ -71,7 +71,7 @@ export default function ListagemEquipamento() {
         );
       });
 
-      api
+    api
       .get(`/model/index`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((model) => {
         setModelList(model.data.data);
@@ -84,7 +84,7 @@ export default function ListagemEquipamento() {
         );
       });
 
-      api
+    api
       .get(`/user`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((userAux) => {
         setUsersOriginal(userAux.data.user);
@@ -124,18 +124,18 @@ export default function ListagemEquipamento() {
   useEffect(() => {
 
     async function getEquipmentsByUser() {
-      
+
       if (userIdFromQuery) {
         await api
           .get(`/user/${userIdFromQuery}`, { headers: { authorization: `Bearer ${accessToken}` } })
           .then((response) => {
             const idEquipments = response.data.user.id_equipments;
-            
+
             let auxVector = [];
             if (idEquipments) {
               equipmentsOriginal.forEach((equipment) => {
                 if (idEquipments.includes(equipment.id)) {
-                  auxVector.push(equipment); 
+                  auxVector.push(equipment);
                 }
               })
             }
@@ -158,16 +158,16 @@ export default function ListagemEquipamento() {
     if (searchEquipment.length > 0) {
       const equipmentsListToDisplay = [];
       const filteredEquipment = new RegExp(searchEquipment.toLowerCase(), "g");
-      if(filterby === "client_name"){
-          usersOriginal.forEach((user) => {
-            var probable = user["name"].toLowerCase().match(filteredEquipment);
-            if (probable) {
-              equipmentsOriginal.forEach((equipment) => {
-                if (equipment.client_id === user.id) equipmentsListToDisplay.push(equipment);
-              })
-            }
-          });
-      }else{
+      if (filterby === "client_name") {
+        usersOriginal.forEach((user) => {
+          var probable = user["name"].toLowerCase().match(filteredEquipment);
+          if (probable) {
+            equipmentsOriginal.forEach((equipment) => {
+              if (equipment.client_id === user.id) equipmentsListToDisplay.push(equipment);
+            })
+          }
+        });
+      } else {
         equipmentsOriginal.forEach((item) => {
           var probable = item[filterby].toLowerCase().match(filteredEquipment);
           if (probable) {

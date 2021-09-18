@@ -236,14 +236,14 @@ function AtualizacaoEquipamento() {
     }
     if (name === "phone_number") {
       let cleaned = str.replace(/\D/g, ""); // somente numeros
-      if(cleaned.length === 10){            // Numero residencial
+      if (cleaned.length === 10) {            // Numero residencial
         let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
-        if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
-        }
-        else if(cleaned.length === 11){     // Numero celular
-          let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
-          if(aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
-        }
+        if (aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+      }
+      else if (cleaned.length === 11) {     // Numero celular
+        let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+        if (aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+      }
     }
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
@@ -294,7 +294,8 @@ function AtualizacaoEquipamento() {
         .then((response) => {
           sendMessage("Dados alterados com sucesso.", "success");
           setEquipmentOriginal(response.data.equipment);
-          setDisableCpfCnpj(true)
+          setDisableCpfCnpj(true);
+          setClientId(response.data.equipment.client_id)
         })
         .catch((error) => {
           console.log(error.response);
@@ -318,7 +319,7 @@ function AtualizacaoEquipamento() {
       setError({
         installation_date: "",
       });
-      setClientCpfCnpj("");
+      setClientCpfCnpj(clientId ? clientCpfCnpj : "");
     } else if (confirmation === true) {
 
       // excuir de verdade
@@ -499,7 +500,7 @@ function AtualizacaoEquipamento() {
               />
             </Grid>
 
-            { !IsClient() && (
+            {!IsClient() && (
               <div className={classes.buttonContainer}>
                 <Button
                   variant="contained"
@@ -522,6 +523,8 @@ function AtualizacaoEquipamento() {
                   className={classes.btn}
                   variant="contained"
                   onClick={() => history.push(`/au/${clientId}`)}
+                  disabled={!clientId}
+                  style={{ backgroundColor: !clientId ? "gray" : "orange" }}
                 >
                   Proprietário do equipamento
                 </Button>

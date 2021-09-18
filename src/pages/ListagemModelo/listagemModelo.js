@@ -115,8 +115,6 @@ export default function ListagemModelo() {
               className={classes.selectItens}
               value={filterby}
               onChange={(e) => messageDisplay(e)}
-              // displayEmpty={true}
-              // native={false}
               variant="outlined"
             >
               <MenuItem value="modelName">Modelo</MenuItem>

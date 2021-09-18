@@ -4,7 +4,6 @@ import history from "./history";
 
 import { LoginContextProvider } from "./context/LoginContext";
 
-// import Home from './pages/Home'
 import Login from "./pages/Login";
 import Menu from "./components/Menu";
 import Dashboard from "./pages/Dashboard/dashboard";

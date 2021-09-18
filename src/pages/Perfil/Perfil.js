@@ -11,8 +11,6 @@ function Perfil() {
   useEffect(() => {
     async function getUserFromSession() {
       setUser(await getUser());
-      const aux = getUser();
-      console.log(aux, "perfil");
     }
   
     getUserFromSession();

@@ -26,12 +26,12 @@ export default function StickyHeadTable(props) {
     headerItems = [
       { title: "Código do Equipamento", ordemBy: "equipment_code" },
       { title: "Nome cliente", ordemBy: "client_name" },
-      { title: "Última visita", ordemBy: "last_visit" }
+      { title: "Última visita", ordemBy: "updatedAt" }
     ]
   } else {
     headerItems = [
       { title: "Código do Equipamento", ordemBy: "equipment_code" },
-      { title: "Última visita", ordemBy: "last_visit" }
+      { title: "Última visita", ordemBy: "updatedAt" }
     ]
   }
 

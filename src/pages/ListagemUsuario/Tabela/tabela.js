@@ -13,27 +13,29 @@ import {
   TableSortLabel,
   Typography,
 } from "@material-ui/core";
-import "./tabela.css"
 
 export default function StickyHeadTable({
   ordemAlfabetica,
   usersListToDisplay,
-  setOrdemAlfabetica
+  setOrdemAlfabetica,
+  setOrdemBy
 }) {
   const classes = useStyles();
-  
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table" id="table">
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active
                   direction={ordemAlfabetica ? "desc" : "asc"}
-                  onClick={() =>
-                    setOrdemAlfabetica(!ordemAlfabetica)
+                  onClick={() => {
+                      setOrdemAlfabetica(!ordemAlfabetica);
+                      setOrdemBy("name");
+                    }
                   }
                 >
                   Nome
@@ -44,8 +46,10 @@ export default function StickyHeadTable({
                 <TableSortLabel
                   active
                   direction={ordemAlfabetica ? "desc" : "asc"}
-                  onClick={() =>
-                    setOrdemAlfabetica(!ordemAlfabetica)
+                  onClick={() => {
+                      setOrdemAlfabetica(!ordemAlfabetica);
+                      setOrdemBy("active");
+                    }
                   }
                 >
                   Útima data ativa

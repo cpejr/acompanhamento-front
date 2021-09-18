@@ -1,9 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { azulPadraoClaro, verde } from '../../../StylePadrao/stylePadrao';
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles((theme) => ({
   root: {
     width: '90%',
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
   },
   container: {
     maxHeight: 550,
@@ -66,4 +69,4 @@ export const useStyles = makeStyles({
       border: "none",
     }
   }
-});
+}));

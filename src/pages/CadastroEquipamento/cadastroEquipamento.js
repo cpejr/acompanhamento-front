@@ -130,11 +130,9 @@ export default function CadastroEquipamento(props) {
       sendMessage('Realizando cadastro...', 'info', null);
 
       try {
-        console.log(data, "data");
         await api
           .post('/equipment/create', data, {headers: {authorization: `Bearer ${accessToken}`}} )
           .then((response) => {
-            console.log(response);
             setIdCadastrado(response.data.id);
             sendMessage('Cadastrado com sucesso');
             setOpenModal(true);
@@ -167,11 +165,9 @@ export default function CadastroEquipamento(props) {
 
       if (name === "zipcode") {
         value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
-        console.log(value, 'zipcode');
       }
       if (name === "cpfcnpj") {
         value = str.replace(/\D/g, ""); // somente numeros
-        console.log(value, 'cpf');
       }
       if (name === "phone_number") {
         let cleaned = str.replace(/\D/g, ""); // somente numeros
@@ -317,11 +313,8 @@ export default function CadastroEquipamento(props) {
               autoComplete="off"
               variant="filled"
             />
-
             </Grid>
           </Grid>
-
-          
 
           <div className={classes.buttonContainer}  >
             <Button

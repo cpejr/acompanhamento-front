@@ -23,6 +23,7 @@ export default function ListagemUsuario() {
   const classes = useStyles();
 
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
+  const [ordemBy, setOrdemBy] = useState("name");
   const [employees, setEmployees] = useState([]);
   const [filterByOptions, setFilterByOptions] = useState("nameEmail");
   const [messagePlaceholder, setMessagePlaceholder] = useState("Procurar usuário por nome ou e-mail");
@@ -171,7 +172,7 @@ export default function ListagemUsuario() {
           <StickyHeadTable
             usersListToDisplay={ordenar(
               usersListToDisplay,
-              "name",
+              ordemBy,
               ordemAlfabetica
             ).map((employees) => {
               return {
@@ -184,6 +185,7 @@ export default function ListagemUsuario() {
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica}
+            setOrdemBy={setOrdemBy}
           />
         </div>
       </div>

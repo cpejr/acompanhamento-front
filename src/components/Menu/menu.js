@@ -4,6 +4,7 @@ import history from '../../history'
 import clsx from 'clsx';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { ReactComponent as Logo } from "../../assets/logo.svg";
 
 import {
   Hidden,
@@ -31,11 +32,11 @@ export default function Menu() {
   const classes = useStyles();
   const { logOut, getUser, IsClient } = useContext(LoginContext);
   const isClient = IsClient();
-  
+
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [user, setUser] = useState();
-  
+
   useEffect(() => {
     async function getUserFromSession() {
       const user = await getUser();
@@ -73,7 +74,8 @@ export default function Menu() {
     return (
       <div className={classes.headerInfos}>
         <div className={classes.mainTitle}>
-          <Link className={classes.link} to="/dashboard">
+          <Link className={classes.link} to="/dashboard" style={{ textDecoration: 'none' }}>
+            <Logo className={classes.logo} />
             <Typography variant="h6" className={classes.pagTitle} noWrap>
               Paraíso das Bombas
             </Typography>
@@ -93,9 +95,9 @@ export default function Menu() {
           >
             <List>
               <ListItem button onClick={() => {
-                  history.push('/au/me');
-                  setOpenMenu(false);
-                }}>
+                history.push('/au/me');
+                setOpenMenu(false);
+              }}>
                 <ListItemIcon><PersonIcon /></ListItemIcon>
                 <ListItemText>Perfil</ListItemText>
               </ListItem>

@@ -40,12 +40,15 @@ export default function FuncionamentoEquipamento() {
     tempMax: 0,
     currMax: 0,
     voltMax: 0,
+    vibraMax: 0,
     tempMin: 0,
     currMin: 0,
     voltMin: 0,
+    vibraMin: 0,
     tempLastAlert: getTime(parseISO("2020-09-16")),
     currLastAlert: getTime(parseISO("2020-10-09")),
     voltLastAlert: getTime(parseISO("2020-08-01")),
+    vibraLastAlert: getTime(parseISO("2020-07-01")),
     worktime: getTime(parseISO("2020-08-12")),
     situation: "",
   });
@@ -83,6 +86,8 @@ export default function FuncionamentoEquipamento() {
           const max_voltage = response.data.model.max_voltage;
           const min_temp = response.data.model.min_temp;
           const max_temp = response.data.model.max_temp;
+          const min_vibra = response.data.model.min_vibra;
+          const max_vibra = response.data.model.max_vibra;
   
           setLimiteModel({
             min_current,
@@ -91,6 +96,8 @@ export default function FuncionamentoEquipamento() {
             max_voltage,
             min_temp,
             max_temp,
+            min_vibra,
+            max_vibra,
           });
         }
       })
@@ -121,6 +128,14 @@ export default function FuncionamentoEquipamento() {
     var currMin = 0;
     var voltMax = 0;
     var voltMin = 0;
+    var vibraMaxX = 0;
+    var vibraMinX = 0;
+    var vibraMaxY = 0;
+    var vibraMinY = 0;
+    var vibraMaxZ = 0;
+    var vibraMinZ = 0;
+    var vibraMax = 0;
+    var vibraMin = 0;
     if (equipmentData[0]) {
       tempMax = Math.max(...equipmentData.map((data) => data.temperature));
       tempMin = Math.min(...equipmentData.map((data) => data.temperature));
@@ -128,6 +143,14 @@ export default function FuncionamentoEquipamento() {
       currMin = Math.min(...equipmentData.map((data) => data.current));
       voltMax = Math.max(...equipmentData.map((data) => data.voltage));
       voltMin = Math.min(...equipmentData.map((data) => data.voltage));
+      vibraMaxX = Math.max(...equipmentData.map((data) => data.vibration.x_axis));
+      vibraMinX = Math.min(...equipmentData.map((data) => data.vibration.x_axis));
+      vibraMaxY = Math.max(...equipmentData.map((data) => data.vibration.y_axis));
+      vibraMinY = Math.min(...equipmentData.map((data) => data.vibration.y_axis));
+      vibraMaxZ = Math.max(...equipmentData.map((data) => data.vibration.z_axis));
+      vibraMinZ = Math.min(...equipmentData.map((data) => data.vibration.z_axis));
+      vibraMax = Math.max(vibraMaxX,vibraMaxY,vibraMaxZ);
+      vibraMin = Math.min(vibraMinX,vibraMinY,vibraMinZ);
     }
     const data = {
       type: selectedChart,
@@ -137,6 +160,8 @@ export default function FuncionamentoEquipamento() {
       currMin,
       voltMax,
       voltMin,
+      vibraMax,
+      vibraMin,
       situation: equipment.situation,
     };
     setDataToShow((prev) => ({ ...prev, ...data })); //first time
@@ -210,6 +235,14 @@ export default function FuncionamentoEquipamento() {
               style={changeColor("voltage")}
             >
               T
+            </button>
+          </Tooltip>
+          <Tooltip title="Vibração" arrow>
+            <button
+              onClick={() => handleChangeChartData("vibration")}
+              style={changeColor("vibration")}
+            >
+              V
             </button>
           </Tooltip>
         </Grid>

@@ -13,7 +13,107 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
   const classes = useStyles();
   const [chartTitle, setChartTitle] = useState("");
   const isDesktop = useMediaQuery("(min-width:960px)");
-
+  console.log(limiteModel);
+  const notVibrationData = [
+    {
+      label: 'Atual',
+      borderColor: "blue",
+      data: equipmentData.map(data => data[selectedChart]),
+      fill: false,
+      lineTension: 0.25
+    },  
+    {
+      label: 'Máximo do Modelo',
+      borderColor: "red",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.max_temp;
+          case "current":
+            return limiteModel.max_current;
+          case "vibration":
+            return limiteModel.max_vibra;
+          default:
+            return limiteModel.max_voltage;
+        }
+      }),
+      fill: false,
+    },
+    {
+      label: 'Minimo do Modelo',
+      borderColor: "orange",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.min_temp;
+          case "current":
+            return limiteModel.min_current;
+          case "vibration":
+            return limiteModel.min_vibra; 
+          default:
+            return limiteModel.min_voltage;
+        }
+      }),
+      fill: false,
+    }
+  ]
+  const vibrationData = [
+    {
+      label: 'Eixo X',
+      borderColor: "blue",
+      data: equipmentData.map(data => data[selectedChart].x_axis),
+      fill: false,
+      lineTension: 0.25
+    },
+    {
+      label: 'Eixo Y',
+      borderColor: "green",
+      data: equipmentData.map(data => data[selectedChart].y_axis),
+      fill: false,
+      lineTension: 0.25
+    },
+    {
+      label: 'Eixo Z',
+      borderColor: "grey",
+      data: equipmentData.map(data => data[selectedChart].z_axis),
+      fill: false,
+      lineTension: 0.25
+    },  
+    {
+      label: 'Máximo do Modelo',
+      borderColor: "red",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.max_temp;
+          case "current":
+            return limiteModel.max_current;
+          case "vibration":
+            return limiteModel.max_vibra;
+          default:
+            return limiteModel.max_voltage;
+        }
+      }),
+      fill: false,
+    },
+    {
+      label: 'Minimo do Modelo',
+      borderColor: "orange",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.min_temp;
+          case "current":
+            return limiteModel.min_current;
+          case "vibration":
+            return limiteModel.min_vibra; 
+          default:
+            return limiteModel.min_voltage;
+        }
+      }),
+      fill: false,
+    }
+  ]
   useEffect(() => {
     const title = () => {
       switch (dataToShow.type) {
@@ -23,6 +123,8 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
           return "Corrente";
         case "voltage":
           return "Tensão";
+        case "vibration":
+          return "Vibração";
 
         default:
           return dataToShow.type;
@@ -54,45 +156,8 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
             } else return format(new Date(data.updatedAt), "HH:mm");
             
           }),
-          datasets: [
-            {
-              label: 'Atual',
-              borderColor: "blue",
-              data: equipmentData.map(data => data[selectedChart]),
-              fill: false,
-              lineTension: 0.25
-            },
-            {
-              label: 'Máximo do Modelo',
-              borderColor: "red",
-              data: equipmentData.map(() => {
-                switch (selectedChart) {
-                  case "temperature":
-                    return limiteModel.max_temp;
-                  case "current":
-                    return limiteModel.max_current;
-                  default:
-                    return limiteModel.max_voltage;
-                }
-              }),
-              fill: false,
-            },
-            {
-              label: 'Minimo do Modelo',
-              borderColor: "orange",
-              data: equipmentData.map(() => {
-                switch (selectedChart) {
-                  case "temperature":
-                    return limiteModel.min_temp;
-                  case "current":
-                    return limiteModel.min_current;
-                  default:
-                    return limiteModel.min_voltage;
-                }
-              }),
-              fill: false,
-            }
-          ],
+
+          datasets : selectedChart === "vibration" ? vibrationData : notVibrationData 
         }}
         options={{
           scales: {

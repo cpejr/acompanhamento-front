@@ -61,6 +61,23 @@ const elementsOfTable = {
       value: "voltLastAlert",
       unity: ""
     }
+  ],
+  vibration: [
+    {
+      title: "Máxima Vibração medida",
+      value: "vibraMax",
+      unity: "G"
+    },
+    {
+      title: "Mínima vibração medida",
+      value: "vibraMin",
+      unity: "G"
+    },
+    {
+      title: "Último alerta de vibração",
+      value: "vibraLastAlert",
+      unity: ""
+    }
   ]
 }
 
@@ -81,12 +98,12 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
 
   const classes = useStyles();
   const [selectedPeriod, setSelectedPeriod] = useState(periodChart);
-
+  console.log(dataToShow)
   const GraphInfo = ({ title, value, unity }) => (
     <Grid xs={6} md={12} item className={classes.itemTable}>
       <h2 className={classes.itemTitle}>{title}</h2>
       <p className={classes.itemBody}>{
-        value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" ?
+        value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" || value === "vibraLastAlert"?
           format(dataToShow[value], 'dd/MM/yyyy') :
           dataToShow[value]  
       } {unity}</p>

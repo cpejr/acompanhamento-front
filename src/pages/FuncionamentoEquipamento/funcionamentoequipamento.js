@@ -53,7 +53,7 @@ export default function FuncionamentoEquipamento() {
     situation: "",
   });
   const [loading, setLoading] = useState(true);
-
+  const [showLabel, setShowLabel] = useState(false);
 
   useEffect(() => {
     // get datas of equipment
@@ -88,7 +88,7 @@ export default function FuncionamentoEquipamento() {
           const max_temp = response.data.model.max_temp;
           const min_vibra = response.data.model.min_vibra;
           const max_vibra = response.data.model.max_vibra;
-  
+
           setLimiteModel({
             min_current,
             max_current,
@@ -113,12 +113,12 @@ export default function FuncionamentoEquipamento() {
       let filteredDates = equipmentDataWithoutPeriod;
 
       filteredDates = filteredDates.filter((equipment) => {
-        return new Date(equipment.updatedAt) >= periodChart.datebegin && 
+        return new Date(equipment.updatedAt) >= periodChart.datebegin &&
           new Date(equipment.updatedAt) <= periodChart.dateend
       })
       setEquipmentData(filteredDates);
     } else setEquipmentData(equipmentDataWithoutPeriod);
-    
+
   }, [periodChart, equipmentDataWithoutPeriod])
 
   useEffect(() => {
@@ -149,8 +149,8 @@ export default function FuncionamentoEquipamento() {
       vibraMinY = Math.min(...equipmentData.map((data) => data.vibration.y_axis));
       vibraMaxZ = Math.max(...equipmentData.map((data) => data.vibration.z_axis));
       vibraMinZ = Math.min(...equipmentData.map((data) => data.vibration.z_axis));
-      vibraMax = Math.max(vibraMaxX,vibraMaxY,vibraMaxZ);
-      vibraMin = Math.min(vibraMinX,vibraMinY,vibraMinZ);
+      vibraMax = Math.max(vibraMaxX, vibraMaxY, vibraMaxZ);
+      vibraMin = Math.min(vibraMinX, vibraMinY, vibraMinZ);
     }
     const data = {
       type: selectedChart,
@@ -195,24 +195,7 @@ export default function FuncionamentoEquipamento() {
     <div className={classes.root}>
       <CssBaseline />
       <Grid container>
-        <Grid container className={classes.chartContainer}>
-          <Grid item md={9} xs={12} className={classes.chart}>
-            <Chart
-              dataToShow={dataToShow}
-              equipmentData={equipmentData}
-              selectedChart={selectedChart}
-              limiteModel={limiteModel}
-            />
-          </Grid>
-          <Grid item md={3} xs={12} className={classes.chartTable}>
-            <ChartTable
-              dataToShow={dataToShow}
-              setPeriodChart={setPeriodChart}
-              periodChart={periodChart}
-            />
-          </Grid>
-        </Grid>
-        <Grid item md={12} xs={12} className={classes.chartButtons}>
+        <Grid item xs={12} className={classes.chartButtons}>
           <Tooltip title="Temperatura" arrow>
             <button
               onClick={() => handleChangeChartData("temperature")}
@@ -246,7 +229,28 @@ export default function FuncionamentoEquipamento() {
             </button>
           </Tooltip>
         </Grid>
-        <Grid item md={12} xs={12} className={classes.table}>
+
+        <Grid item xs={12} className={classes.chart}>
+          <Chart
+            dataToShow={dataToShow}
+            equipmentData={equipmentData}
+            selectedChart={selectedChart}
+            limiteModel={limiteModel}
+            showLabel={showLabel}
+          />
+        </Grid>
+
+        <Grid item xs={12} className={classes.chartTable}>
+          <ChartTable
+            dataToShow={dataToShow}
+            setPeriodChart={setPeriodChart}
+            periodChart={periodChart}
+            showLabel={showLabel}
+            setShowLabel={setShowLabel}
+          />
+        </Grid>
+
+        <Grid item xs={12} className={classes.table} style={{ marginTop: "32px" }} >
           <Table equipment={equipment} />
         </Grid>
       </Grid>

@@ -519,15 +519,15 @@ function AtualizacaoEquipamento() {
                   {updating ? "Cancelar" : "Excluir"}
                 </Button>
 
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  onClick={() => history.push(`/au/${clientId}`)}
-                  disabled={!clientId}
-                  style={{ backgroundColor: !clientId ? "gray" : "orange" }}
-                >
-                  Proprietário do equipamento
-                </Button>
+                {clientId && 
+                  <Button
+                    className={classes.btn}
+                    variant="contained"
+                    onClick={() => history.push(`/au/${clientId}`)}
+                    style={{ backgroundColor: "orange", fontSize: "11px" }}
+                  >
+                    Proprietário do equipamento
+                  </Button>}
               </div>
             )}
           </Grid>

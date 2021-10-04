@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import {
   Box,
-  CssBaseline,
   Grid,
   TextField,
-  Button
+  Button,
+  Typography
 } from '@material-ui/core';
-import CachedIcon from '@material-ui/icons/Cached';
 import { useStyles } from './funcionamentoequipamentoStyle';
 import { format } from 'date-fns';
 
@@ -64,14 +63,14 @@ const elementsOfTable = {
   ],
   vibration: [
     {
-      title: "Máxima Vibração medida",
+      title: "Máxima vibração medida",
       value: "vibraMax",
-      unity: "G"
+      unity: "m/s²"
     },
     {
       title: "Mínima vibração medida",
       value: "vibraMin",
-      unity: "G"
+      unity: "m/s²"
     },
     {
       title: "Último alerta de vibração",
@@ -83,7 +82,7 @@ const elementsOfTable = {
 
 const elementsFixedOfTable = [
   {
-    title: "Data de tivação",
+    title: "Data de ativação",
     value: "worktime",
     unity: ""
   },
@@ -94,20 +93,19 @@ const elementsFixedOfTable = [
   },
 ]
 
-export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) {
+export default function ChartTable({ dataToShow, setPeriodChart, periodChart, setShowLabel, showLabel }) {
 
   const classes = useStyles();
   const [selectedPeriod, setSelectedPeriod] = useState(periodChart);
-  console.log(dataToShow)
   const GraphInfo = ({ title, value, unity }) => (
-    <Grid xs={6} md={12} item className={classes.itemTable}>
+    <div className={classes.tableData} >
       <h2 className={classes.itemTitle}>{title}</h2>
       <p className={classes.itemBody}>{
-        value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" || value === "vibraLastAlert"?
+        value === "worktime" || value === "voltLastAlert" || value === "currLastAlert" || value === "tempLastAlert" || value === "vibraLastAlert" ?
           format(dataToShow[value], 'dd/MM/yyyy') :
-          dataToShow[value]  
+          dataToShow[value]
       } {unity}</p>
-    </Grid>
+    </div>
   )
   const handlePeriodChange = (e) => {
 
@@ -136,17 +134,21 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
   }
 
   return (
-    <Grid container>
-      <CssBaseline />
+    <Grid container direction="row" style={{ width: "100%", display: "flex", flexDirection: "row" }} >
+      <Grid item xs={12} sm={6} className={classes.itemTable}>
 
-      <Grid xs={6} md={12} item className={classes.itemTable}>
-
-        <h2 
-          className={classes.itemTitle} 
-          style={{ marginBottom: "16px" }}
-        >
-          Filtros
-        </h2>
+        <Typography style={{ marginBottom: "8px" }} >
+          Filtro atual aplicado ao gráfico:
+        </Typography>
+        <Typography >
+          Início: <b>{format(periodChart.datebegin ? periodChart.datebegin : new Date("01-01-1970"), "dd/MM/yyyy HH:mm")}</b>
+        </Typography>
+        <Typography >
+          -
+        </Typography>
+        <Typography style={{ marginBottom: "8px" }} >
+          Fim: <b>{format(periodChart.dateend ? periodChart.dateend : Date.now(), "dd/MM/yyyy HH:mm")}</b>
+        </Typography>
 
         <Box display="block" alignItems="center" style={{ maxWidth: "100%" }} >
 
@@ -159,7 +161,7 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             InputLabelProps={{
               shrink: true,
             }}
-            style={{ width: "75%" }}
+            style={{ width: "100%" }}
           />
 
           <TextField
@@ -171,16 +173,18 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
             InputLabelProps={{
               shrink: true,
             }}
-            style={{ marginTop: "16px", width: "75%" }}
+            style={{ marginTop: "16px", width: "100%" }}
           />
-
-          <Button
-            onClick={sendChangeOfPeriod}
-            className={classes.sendChange}
-          >
-            <CachedIcon />
-          </Button>
         </Box>
+
+        <Button
+          className={classes.buttonApply}
+          variant="contained"
+          onClick={sendChangeOfPeriod}
+          style={{ textTransform: "none", marginTop: "16px" }}
+        >
+          Aplicar filtros
+        </Button>
 
         <Button
           className={classes.buttonRegister}
@@ -192,14 +196,27 @@ export default function ChartTable({ dataToShow, setPeriodChart, periodChart }) 
           Mostrar período completo
         </Button>
 
+        <Button
+          className={classes.buttonAxis}
+          variant="outlined"
+          onClick={() => setShowLabel(prev => !prev)}
+          style={{ textTransform: "none", marginTop: "16px" }}
+        >
+          {showLabel ? "Remover escala de tempo" : "Mostrar escala de tempo"}
+        </Button>
       </Grid>
-      {
-        elementsOfTable[dataToShow.type]
-          .concat(elementsFixedOfTable)
-          .map((props) => (
-            <GraphInfo key={props.title} {...props} />
-          ))
-      }
+
+      <Grid item xs={12} sm={6} style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%" }} >
+        {
+          elementsOfTable[dataToShow.type]
+            .concat(elementsFixedOfTable)
+            .map((props) => (
+              <GraphInfo key={props.title} {...props} />
+            ))
+        }
+      </Grid>
+
+
     </Grid>
   )
 }

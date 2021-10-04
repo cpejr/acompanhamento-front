@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  CssBaseline,
   useMediaQuery
 } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
@@ -8,12 +7,11 @@ import { useStyles } from './funcionamentoequipamentoStyle';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export default function ({ dataToShow, equipmentData, selectedChart, limiteModel }) {
+export default function ({ dataToShow, equipmentData, selectedChart, limiteModel, showLabel }) {
 
   const classes = useStyles();
   const [chartTitle, setChartTitle] = useState("");
   const isDesktop = useMediaQuery("(min-width:960px)");
-  console.log(limiteModel);
   const notVibrationData = [
     {
       label: 'Atual',
@@ -38,6 +36,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
         }
       }),
       fill: false,
+      pointRadius: 0,
     },
     {
       label: 'Minimo do Modelo',
@@ -55,6 +54,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
         }
       }),
       fill: false,
+      pointRadius: 0,
     }
   ]
   const vibrationData = [
@@ -63,14 +63,14 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
       borderColor: "blue",
       data: equipmentData.map(data => data[selectedChart].x_axis),
       fill: false,
-      lineTension: 0.25
+      lineTension: 0.25,
     },
     {
       label: 'Eixo Y',
       borderColor: "green",
       data: equipmentData.map(data => data[selectedChart].y_axis),
       fill: false,
-      lineTension: 0.25
+      lineTension: 0.25,
     },
     {
       label: 'Eixo Z',
@@ -95,6 +95,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
         }
       }),
       fill: false,
+      pointRadius: 0,
     },
     {
       label: 'Minimo do Modelo',
@@ -112,6 +113,7 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
         }
       }),
       fill: false,
+      pointRadius: 0,
     }
   ]
   useEffect(() => {
@@ -135,8 +137,6 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
 
   return (
     <React.Fragment>
-      <CssBaseline />
-
       <h2 className={classes.title}>{chartTitle}</h2>
       <p className={classes.subtitle}>
         { format(new Date(), "PPPP", { locale: ptBR }) }
@@ -148,34 +148,34 @@ export default function ({ dataToShow, equipmentData, selectedChart, limiteModel
         </p>}
 
       <Line
+        height={96}
         data={{
           labels: equipmentData.map(data => {
-
             if (isDesktop) {
               return format(new Date(data.updatedAt), "dd-MM HH:mm");
             } else return format(new Date(data.updatedAt), "HH:mm");
-            
           }),
-
           datasets : selectedChart === "vibration" ? vibrationData : notVibrationData 
         }}
         options={{
           scales: {
             xAxes: [{
+              display: showLabel,
               ticks: {
                 autoSkip: false,
                 minRotation: isDesktop ? 45 : 80
-              }
-            }]
+              },
+            }],
           },
           responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 10,
           legend: {
             labels: {
               boxWidth: isDesktop ? 30 : 10,
               fontSize: isDesktop ? 12 : 10
             }
           },
-          
         }}
       />
     </React.Fragment>

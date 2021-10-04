@@ -1,12 +1,12 @@
 import { makeStyles } from '@material-ui/core';
-import { azulPadraoClaro } from '../../StylePadrao/stylePadrao';
+import { azulPadraoClaro, verde, vermelhoPadrao } from '../../StylePadrao/stylePadrao';
 
 export const useStyles = makeStyles(theme => ({
   root: {
     boxSizing: "border-box",
     display: "flex",
-    width: "90%",
-    padding: "50px 0 66px 50px",
+    width: "100%",
+    padding: "16px 16px 32px 16px",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 30px",
       width: "100%",
@@ -20,7 +20,7 @@ export const useStyles = makeStyles(theme => ({
     background: "white",
     borderRight: "1px solid rgba(0,0,0,.2)",
     padding: "0 20px 10px",
-    position: "relative"
+    position: "relative",
   },
   chartAlert: {
     position: "absolute",
@@ -40,12 +40,7 @@ export const useStyles = makeStyles(theme => ({
   },
   chartTable: {
     background: "white",
-    // height: "100%",
-
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    width: "100%"
   },
   itemTable: {
     // height: "70px",
@@ -54,7 +49,18 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    border: "1px solid rgba(0,0,0,.2)",
+    borderRight: "1px solid rgba(0,0,0,.2)",
+  },
+  tableData: {
+    borderBottom: "1px solid rgba(0,0,0,.2)", 
+    display: "flex", 
+    flexDirection: "column", 
+    alignItems: "center", 
+    width: "90%", 
+    margin: "8px 0px",
+    "&:last-child": {
+      borderBottom: "0px solid rgba(0,0,0,.2)",
+    }
   },
   itemBody: {
     lineHeight: "0",
@@ -66,6 +72,12 @@ export const useStyles = makeStyles(theme => ({
     lineHeight: "0",
     color: "rgba(0,0,0,.4)",
     fontSize: "12px",
+  },
+  itemTitleFilter: {
+    lineHeight: "0",
+    color: "black",
+    fontSize: "18px",
+    fontWeight: 600
   },
   selectPeriod: {
     width: "10ch",
@@ -85,7 +97,7 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    margin: "5px 0 35px",
+    margin: "16px",
 
     "& button": {
       fontWeight: "bold",
@@ -167,4 +179,17 @@ export const useStyles = makeStyles(theme => ({
     color: "rgba(0,0,0,.4)",
     fontSize: "14px",
   },
+  buttonApply: {
+    backgroundColor: verde,
+    "&:hover": {
+      backgroundColor: verde,
+    }
+  },
+  buttonAxis: {
+    borderColor: vermelhoPadrao,
+    color: vermelhoPadrao,
+    "&:hover": {
+      color: vermelhoPadrao,
+    }
+  }
 }))

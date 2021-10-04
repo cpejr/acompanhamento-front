@@ -124,10 +124,6 @@ export const useStyles = makeStyles((theme) => ({
     "&:nth-child(2n)": {
       background: vermelhoPadrao,
     },
-    "&:last-child": {
-      background: verde,
-      fontSize: "12px"
-    },
     [theme.breakpoints.only("xs")]: {
       margin: "0",
       marginBottom: "16px"

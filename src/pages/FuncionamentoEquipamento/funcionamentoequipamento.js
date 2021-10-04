@@ -204,7 +204,7 @@ export default function FuncionamentoEquipamento() {
               T
             </button>
           </Tooltip>
-          <Tooltip title="Corrente" arrow>
+          {/* <Tooltip title="Corrente" arrow>
             <button
               onClick={() => handleChangeChartData("current")}
               style={changeColor("current")}
@@ -219,7 +219,7 @@ export default function FuncionamentoEquipamento() {
             >
               T
             </button>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Vibração" arrow>
             <button
               onClick={() => handleChangeChartData("vibration")}

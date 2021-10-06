@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useStyles } from './tabelaStyle';
 import {
   Paper,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -11,26 +12,40 @@ import {
   TableSortLabel,
   Typography
 } from '@material-ui/core';
-import { FiMoreHorizontal } from "react-icons/fi"
-
-import LinkMenu from '../../../components/LinkMenu'
+import history from '../../../history';
+import { LoginContext } from '../../../context/LoginContext';
 
 export default function StickyHeadTable(props) {
+
   const classes = useStyles();
   const { ordem, setOrdem } = props;
-  const [openMenu, setOpenMenu] = React.useState("");
+  const { IsClient } = useContext(LoginContext);
+  let headerItems = [];
 
-  const headerItems = [
-    { title: "Nº série", ordemBy: "id_equipment" },
-    // { title: "Modelo", ordemBy: "equipment_model" },
-    { title: "CPF cliente", ordemBy: "cpf_client" },
-    { title: "Última visita", ordemBy: "updatedAt" },
-  ]
+  if (!IsClient()) {
+    headerItems = [
+      { title: "Código do Equipamento", ordemBy: "equipment_code" },
+      { title: "Nome cliente", ordemBy: "client_name" },
+      { title: "Última visita", ordemBy: "updatedAt" }
+    ]
+  } else {
+    headerItems = [
+      { title: "Código do Equipamento", ordemBy: "equipment_code" },
+      { title: "Última visita", ordemBy: "updatedAt" }
+    ]
+  }
+
+  function getNameClient(clientId) {
+    const user = props.all_users.filter(client => client.id === clientId);
+    if (user[0]) return user[0].name;
+    else return " ";
+  };
 
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
         <Table stickyHeader>
+
           <TableHead>
             <TableRow>
               {headerItems.map(item => (
@@ -48,23 +63,61 @@ export default function StickyHeadTable(props) {
                   </TableSortLabel>
                 </TableCell>
               ))}
+
+              <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
+                Ações
+              </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {props.equipmentsListToDisplay
+
               .map(equipment => (
-                <TableRow hover tabIndex={-1} key={equipment.id_equipment}>
-                  <TableCell>{equipment.id_equipment}</TableCell>
-                  {/* <TableCell>{equipment.equipment_model}</TableCell> */}
-                  <TableCell>{equipment.cpf_client}</TableCell>
-                  <TableCell className={classes.lastTableCell}>{equipment.updatedAt}
-                    <LinkMenu id={equipment.id} openMenu={openMenu} setOpenMenu={setOpenMenu}>
-                      <FiMoreHorizontal size={24} color="#C4C4C4" />
-                    </LinkMenu>
+
+                <TableRow hover tabIndex={-1} key={equipment.equipment_code}>
+
+                  <TableCell>{equipment.equipment_code}</TableCell>
+
+                  {!IsClient() && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
+
+                  <TableCell>{equipment.updatedAt}</TableCell>
+
+                  <TableCell className={classes.lastTableCell} >
+                    <Button
+                      onClick={() => history.push(`/ae/${equipment.id}`)}
+                      variant="outlined"
+                      disableElevation
+                      className={classes.buttonAdd}
+                    >
+                      Detalhes
+                    </Button>
+
+                    <Button
+                      onClick={() => history.push(`/funcionamentoequipamento/${equipment.id}`)}
+                      variant="outlined"
+                      disableElevation
+                      className={classes.buttonAdd_2}
+                    >
+                      Dados
+                    </Button>
+
+                    {!IsClient() && (
+                      <Button
+                        onClick={() => history.push(`/manutencao/${equipment.id}`)}
+                        variant="outlined"
+                        disableElevation
+                        className={classes.buttonAdd_3}
+                      >
+                        Manutenções
+                      </Button>
+                    )}
                   </TableCell>
+
                 </TableRow>
               )
               )}
+
             {props.equipmentsListToDisplay.length <= 0 ? <Typography className={classes.nullEquipament}> Este equipamento não foi encontrado </Typography> : null}
           </TableBody>
         </Table>

@@ -6,36 +6,36 @@ import {
   InputBase,
   CssBaseline,
   Button,
-  FormControlLabel,
-  Checkbox,
+  MenuItem,
+  FormControl,
+  Select,
 } from "@material-ui/core";
 
 import { useStyles } from "./listagemUsuarioStyle";
 import StickyHeadTable from "./Tabela";
 import SearchIcon from "@material-ui/icons/Search";
 import ordenar from "../../services/ordenar";
-import { DataContext } from "../../context/DataContext";
 import api from "../../services/api";
 import { AuthContext } from "../../context/AuthContext";
+import { LoginContext } from '../../context/LoginContext';
+
 export default function ListagemUsuario() {
   const classes = useStyles();
 
-  const { clientsList } = useContext(DataContext);
-
   const [ordemAlfabetica, setOrdemAlfabetica] = useState(true);
+  const [ordemBy, setOrdemBy] = useState("name");
   const [employees, setEmployees] = useState([]);
+  const [filterByOptions, setFilterByOptions] = useState("nameEmail");
+  const [messagePlaceholder, setMessagePlaceholder] = useState("Procurar usuário por nome ou e-mail");
   const [usersListToDisplay, setUsersListToDisplay] = useState([]);
-  const [filterThisUsers, setFilterThisUsers] = useState({
-    administrador: true,
-    funcionario: true,
-    cliente: true,
-  });
 
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
   const { sendMessage } = useContext(AuthContext);
 
   async function getEmployees() {
     api
-      .get("/user")
+      .get("/user", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((response) => {
         setEmployees([...response.data.user]);
         setUsersListToDisplay([...response.data.user]);
@@ -48,134 +48,131 @@ export default function ListagemUsuario() {
 
   useEffect(() => {
     getEmployees();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function FindPeoplebyName(searchPerson) {
-    //Seta para vazio
-    setUsersListToDisplay([]);
-
-    const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
-    employees.forEach((employee) => {
-      if (
-        employee.name.toLowerCase().match(filteredPeople) ||
-        employee.type.toLowerCase().match(filteredPeople)
-      ) {
-        //Adiciona funcionario filtrado ao array
-        setUsersListToDisplay((usersListToDisplay) => [
-          ...usersListToDisplay,
-          employee,
-        ]);
-        // funcionario.push(employee);
-        // setEmployees(funcionario);
-      }
-    });
-
-    // Se nao tiver nada no Input de busca, cooca todos
-    if (filteredPeople === "") {
-      setUsersListToDisplay([...employees]);
+  // Mensagem do placeholder de acordo com a caixa de seleção
+  function messageDisplay(e) {
+    setFilterByOptions(e.target.value);
+    if (e.target.value === "nameEmail") {
+      setMessagePlaceholder("Procurar usuário por nome ou e-mail");
+    } else if (e.target.value === "funcao") {
+      setMessagePlaceholder("Procurar usuário por função");
     }
   }
 
-  // function FindPeoplebyName(searchPerson) {
-  //   if (searchPerson.length > 0) {
-  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), "g");
+  function handleSearchChange(search) {
+    const searchByName = findPeoplebyName(search);
+    const searchByEmail = findPeoplebyEmail(search);
+    const searchByFuncao = findPeoplebyFuncao(search);
+    let finalResult;
 
-  //     employees.filter((item) => {
-  //       const probable = item.name.toLowerCase().match(filteredPeople);
-  //       if (probable) {
-  //         usersListToDisplay.push(item);
-  //         console.log("UserList: ", usersListToDisplay);
-  //       }
-  //     });
-  //     setUsersListToDisplay(usersListToDisplay);
-  //   } else {
-  //     setUsersListToDisplay(employees);
-  //   }
-  // }
-
-  // function FindPeoplebyEmail(searchPerson) {
-  //   if (searchPerson.length > 0) {
-  //     const usersListToDisplay = [];
-  //     const filteredPeople = new RegExp(searchPerson.toLowerCase(), 'g');
-
-  //     usersList.forEach((item) => {
-  //       const probable = item.email.toLowerCase().match(filteredPeople);
-  //       if (probable) {
-  //         usersListToDisplay.push(item);
-  //       }
-  //     });
-  //     setUsersListToDisplay(usersListToDisplay);
-  //   } else {
-  //     setUsersListToDisplay(usersList);
-  //   }
-  // }
-
-  const filterByUsers = (props) => {
-    let users = props;
-
-    //Remove ou não administrador
-    if (!filterThisUsers.administrador) {
-      users = users.filter((user) => user.funcao !== "Administrador");
+    if (filterByOptions === "nameEmail") {
+      finalResult = getUnique([...searchByName, ...searchByEmail])
+    }
+    if (filterByOptions === "funcao") {
+      finalResult = getUnique([...searchByFuncao])
     }
 
-    //Remove ou não funcionário
-    if (!filterThisUsers.funcionario) {
-      users = users.filter((user) => user.funcao !== "Funcionário");
-    }
+    setUsersListToDisplay(finalResult);
+  }
 
-    //Remove ou não cliente
-    if (!filterThisUsers.cliente) {
-      users = users.filter((user) => user.funcao !== "Cliente");
-    }
+  function findPeoplebyName(name) {
+    const filteredUsers =
+      employees.filter((employee) => {
 
-    return users;
-  };
+        if (employee.name) {
+          return employee.name.toString().toLowerCase().includes(name.toString().toLowerCase())
+        } else return false;
+      })
+    return filteredUsers;
+  }
+
+  function findPeoplebyEmail(email) {
+    const filteredUsers =
+      employees.filter((employee) => {
+        if (employee.email) {
+          return employee.email.toString().toLowerCase().includes(email.toString().toLowerCase())
+        } else return false;
+      })
+    return filteredUsers;
+  }
+
+  function findPeoplebyFuncao(funcao) {
+    const filterFuncao =
+      employees.filter((employee) => {
+        if (employee.type) {
+          return employee.type.toString().toLowerCase().includes(funcao.toString().toLowerCase())
+        } else return false;
+      })
+    return filterFuncao;
+  }
+
+
+  function getUnique(arr) {
+    let final = [];
+    arr.forEach((elem) => {
+      if (final.includes(elem)) return;
+      final.push(elem);
+    })
+    return final;
+  }
 
   return (
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
-            Usuários
-          </Typography>
-          <Button
-            component={Link}
-            to="/cadastrousuario"
-            className={classes.buttonAdd}
-          >
-            Adicionar Novo
-          </Button>
+        <div className={classes.allsearch}>
+          <div className={classes.header}>
+            <Typography variant="h3" className={classes.title}>
+              Usuários
+            </Typography>
+            <Button
+              component={Link}
+              to="/cadastrousuario"
+              className={classes.buttonAdd}
+            >
+              Adicionar Novo
+            </Button>
+          </div>
         </div>
 
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
+        <div className={classes.searchplusfilter}>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <div className={classes.searchInput}>
+              <InputBase
+                className={classes.placeholder}
+                placeholder={messagePlaceholder}
+                onChange={(e) => {
+                  handleSearchChange(e.target.value);
+                }}
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.input,
+                }}
+              />
+            </div>
           </div>
-          <div className={classes.searchInput}>
-            <InputBase
-              className={classes.placeholder}
-              placeholder="Procurar usuário por nome ou email"
-              onChange={(e) => {
-                FindPeoplebyName(e.target.value);
-                // var arroba = "@";
-                // if ((e.target.value).indexOf(arroba) > -1) FindPeoplebyEmail(e.target.value);
-                // else FindPeoplebyName(e.target.value);
-              }}
-              classes={{
-                root: classes.inputRoot,
-                input: classes.input,
-              }}
-            />
-          </div>
+          <FormControl className={classes.filter}>
+            <Select
+              className={classes.selectItens}
+              value={filterByOptions}
+              onChange={(e) => messageDisplay(e)}
+              variant="outlined"
+            >
+              <MenuItem value="nameEmail">Nome</MenuItem>
+              <MenuItem value="funcao">Tipo de Usuário</MenuItem>
+            </Select>
+          </FormControl>
         </div>
-        <div className={classes.searchFilter}></div>
 
         <div className={classes.table}>
           <StickyHeadTable
             usersListToDisplay={ordenar(
-              filterByUsers(usersListToDisplay),
-              "name",
+              usersListToDisplay,
+              ordemBy,
               ordemAlfabetica
             ).map((employees) => {
               return {
@@ -183,10 +180,12 @@ export default function ListagemUsuario() {
                 name: employees.name,
                 funcao: employees.type,
                 data: employees.active,
+                id_equipments: employees.id_equipments,
               };
             })}
             setOrdemAlfabetica={setOrdemAlfabetica}
             ordemAlfabetica={ordemAlfabetica}
+            setOrdemBy={setOrdemBy}
           />
         </div>
       </div>

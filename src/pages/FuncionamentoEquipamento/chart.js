@@ -1,17 +1,121 @@
 import React, { useEffect, useState } from 'react';
 import {
-  CssBaseline,
+  useMediaQuery
 } from '@material-ui/core';
 import { Line } from 'react-chartjs-2';
 import { useStyles } from './funcionamentoequipamentoStyle';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export default function ({ dataToShow, equipmentData, selectedChart, periodChart, limiteModel }) {
+export default function ({ dataToShow, equipmentData, selectedChart, limiteModel, showLabel }) {
+
   const classes = useStyles();
-
   const [chartTitle, setChartTitle] = useState("");
-
+  const isDesktop = useMediaQuery("(min-width:960px)");
+  const notVibrationData = [
+    {
+      label: 'Atual',
+      borderColor: "blue",
+      data: equipmentData.map(data => data[selectedChart]),
+      fill: false,
+      lineTension: 0.25
+    },  
+    {
+      label: 'Máximo do Modelo',
+      borderColor: "red",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.max_temp;
+          case "current":
+            return limiteModel.max_current;
+          case "vibration":
+            return limiteModel.max_vibra;
+          default:
+            return limiteModel.max_voltage;
+        }
+      }),
+      fill: false,
+      pointRadius: 0,
+    },
+    {
+      label: 'Minimo do Modelo',
+      borderColor: "orange",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.min_temp;
+          case "current":
+            return limiteModel.min_current;
+          case "vibration":
+            return limiteModel.min_vibra; 
+          default:
+            return limiteModel.min_voltage;
+        }
+      }),
+      fill: false,
+      pointRadius: 0,
+    }
+  ]
+  const vibrationData = [
+    {
+      label: 'Eixo X',
+      borderColor: "blue",
+      data: equipmentData.map(data => data[selectedChart].x_axis),
+      fill: false,
+      lineTension: 0.25,
+    },
+    {
+      label: 'Eixo Y',
+      borderColor: "green",
+      data: equipmentData.map(data => data[selectedChart].y_axis),
+      fill: false,
+      lineTension: 0.25,
+    },
+    {
+      label: 'Eixo Z',
+      borderColor: "grey",
+      data: equipmentData.map(data => data[selectedChart].z_axis),
+      fill: false,
+      lineTension: 0.25
+    },  
+    {
+      label: 'Máximo do Modelo',
+      borderColor: "red",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.max_temp;
+          case "current":
+            return limiteModel.max_current;
+          case "vibration":
+            return limiteModel.max_vibra;
+          default:
+            return limiteModel.max_voltage;
+        }
+      }),
+      fill: false,
+      pointRadius: 0,
+    },
+    {
+      label: 'Minimo do Modelo',
+      borderColor: "orange",
+      data: equipmentData.map(() => {
+        switch (selectedChart) {
+          case "temperature":
+            return limiteModel.min_temp;
+          case "current":
+            return limiteModel.min_current;
+          case "vibration":
+            return limiteModel.min_vibra; 
+          default:
+            return limiteModel.min_voltage;
+        }
+      }),
+      fill: false,
+      pointRadius: 0,
+    }
+  ]
   useEffect(() => {
     const title = () => {
       switch (dataToShow.type) {
@@ -21,6 +125,8 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
           return "Corrente";
         case "voltage":
           return "Tensão";
+        case "vibration":
+          return "Vibração";
 
         default:
           return dataToShow.type;
@@ -29,58 +135,48 @@ export default function ({ dataToShow, equipmentData, selectedChart, periodChart
     setChartTitle(title);
   }, [dataToShow]);
 
-  const dateLabalFormat = () => {
-    switch (periodChart.type) {
-      case "hour":
-        return "HH:mm";
-      case "day":
-        return "dd/MM";
-      case "mounth":
-        return "dd/MM";
-      case "year":
-        return "MM/yyyy";
-      case "all":
-        return "MM/yyyy";
-
-      default:
-        return "dd/MM";
-    }
-  }
-
   return (
     <React.Fragment>
-      <CssBaseline />
-
       <h2 className={classes.title}>{chartTitle}</h2>
       <p className={classes.subtitle}>
-        {format(new Date(), "PPPP", { locale: ptBR })}
+        { format(new Date(), "PPPP", { locale: ptBR }) }
       </p>
 
-      {!equipmentData[0] && <p className={classes.chartAlert}>
-        Não há dados no período selecionado...
-      </p>}
+      {!equipmentData[0] && 
+        <p className={classes.chartAlert}>
+          Não há dados no período selecionado.
+        </p>}
 
       <Line
+        height={96}
         data={{
-          labels: equipmentData.map(data =>
-            format(parseISO(data.createdAt), dateLabalFormat())
-          ),
-          datasets: [
-            {
-              label: 'Atual',
-              borderColor: "blue",
-              data: equipmentData.map(data => data[selectedChart]),
-              fill: false,
-            },
-            {
-              label: 'Máximo do Modelo',
-              borderColor: "red",
-              data: equipmentData.map(data => limiteModel[selectedChart]),
-              fill: false,
-            }
-          ]
+          labels: equipmentData.map(data => {
+            if (isDesktop) {
+              return format(new Date(data.updatedAt), "dd-MM HH:mm");
+            } else return format(new Date(data.updatedAt), "HH:mm");
+          }),
+          datasets : selectedChart === "vibration" ? vibrationData : notVibrationData 
         }}
-        options={{}}
+        options={{
+          scales: {
+            xAxes: [{
+              display: showLabel,
+              ticks: {
+                autoSkip: false,
+                minRotation: isDesktop ? 45 : 80
+              },
+            }],
+          },
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 10,
+          legend: {
+            labels: {
+              boxWidth: isDesktop ? 30 : 10,
+              fontSize: isDesktop ? 12 : 10
+            }
+          },
+        }}
       />
     </React.Fragment>
   )

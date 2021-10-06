@@ -6,11 +6,16 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    minHeight: "100vh",
-
-    padding: "30px 60px 0",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+      padding: "32px 8px",
+    },
+  },
+  formContainer: {
+    padding: "48px",
+    borderRadius: "13px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
   backdrop: {
@@ -19,7 +24,6 @@ export const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: "30px",
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
@@ -28,24 +32,38 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
-  containerForm: {
-    padding: "50px 50px 30px",
-    marginBottom: "50px",
-    borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
-    },
-  },
-  grid: {
-    padding: "0 40px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "0",
-    },
-  },
   input: {
     boxSizing: "border-box",
     width: "100%",
-    marginBottom: "30px",
+    marginBottom: "16px",
+  },
+  slider: {
+    color: azulPadrao,
+    width: "70%",
+  },
+  inputs: {
+    width: "100%",
+    marginTop: "49px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "0px",
+      marginBottom: "16px"
+    }
+  },
+  inputRange: {
+    width: "96px",
+    [theme.breakpoints.up("md")]: {
+      width: "192px",
+    }
+  },
+  rangesTitle: {
+    marginTop: "16px",
+    textAlign: "center"
+  },
+  rangesContainer: {
+    display: "flex", 
+    flexDirection: "row", 
+    justifyContent: "center",
+    gap: "64px",
   },
   centralizar: {
     display: "flex",

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import history from '../../history'
 import clsx from 'clsx';
-
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { ReactComponent as Logo } from "../../assets/logo.svg";
 
 import {
   Hidden,
@@ -24,28 +24,38 @@ import {
 } from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
-
 import { useStyles } from './menuStyles'
 import ShortcutsList from './shortcutsList';
-import { AuthContext } from '../../context/AuthContext';
 import { LoginContext } from "../../context/LoginContext";
 
 export default function Menu() {
   const classes = useStyles();
-  const { user, isClient } = useContext(AuthContext);
-  const { logOut } = useContext(LoginContext);
+  const { logOut, getUser, IsClient } = useContext(LoginContext);
+  const isClient = IsClient();
+
   const [open, setOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    async function getUserFromSession() {
+      const user = await getUser();
+
+      setUser(user);
+    }
+
+    getUserFromSession();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // MenuProfile
   const [openMenu, setOpenMenu] = React.useState(false);
   const handleToggleMenu = () => {
     setOpenMenu(!openMenu);
   };
-  const handleClickMenu = (path) => {
+  const handleLogout = () => {
     logOut();
     setOpenMenu(false);
-    history.push(path);
+    history.push("/login");
   }
 
   // Drawer
@@ -64,7 +74,8 @@ export default function Menu() {
     return (
       <div className={classes.headerInfos}>
         <div className={classes.mainTitle}>
-          <Link className={classes.link} to="/dashboard">
+          <Link className={classes.link} to="/dashboard" style={{ textDecoration: 'none' }}>
+            <Logo className={classes.logo} />
             <Typography variant="h6" className={classes.pagTitle} noWrap>
               Paraíso das Bombas
             </Typography>
@@ -77,17 +88,20 @@ export default function Menu() {
             className={classes.link}
             onClick={handleToggleMenu}
           >
-            {user.name.split(' ')[0]}
+            {user ? user.name.split(' ')[0] : " "}
           </Button>
           {openMenu && <Paper
             className={classes.menuProfile}
           >
             <List>
-              <ListItem button onClick={() => handleClickMenu('/au/me')}>
+              <ListItem button onClick={() => {
+                history.push('/au/me');
+                setOpenMenu(false);
+              }}>
                 <ListItemIcon><PersonIcon /></ListItemIcon>
                 <ListItemText>Perfil</ListItemText>
               </ListItem>
-              <ListItem button onClick={() => handleClickMenu('/login')}>
+              <ListItem button onClick={() => handleLogout()}>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText>Sair</ListItemText>
               </ListItem>

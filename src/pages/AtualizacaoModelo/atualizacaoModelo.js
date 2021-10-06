@@ -7,38 +7,31 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Typography,
   Backdrop,
-  CircularProgress
+  CircularProgress,
+  useMediaQuery,
 } from "@material-ui/core"
 import api from '../../services/api';
-
-import { useParams } from 'react-router';
+import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
-
-import MaskedInput from 'react-text-mask';
-
-function YearInput(props) {
-  const { inputRef, ...other } = props;
-  return (
-    <MaskedInput
-      {...other}
-      ref={(ref) => {
-        inputRef(ref ? ref.inputElement : null);
-      }}
-      mask={[/\d/, /\d/, /\d/, /\d/]}
-    />
-  );
-}
+import { LoginContext } from '../../context/LoginContext';
 
 function AtualizacaoModelo() {
+
   const { id } = useParams();
+  const history = useHistory();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken()
+
+  const { sendMessage } = useContext(AuthContext);
+  const isDesktop = useMediaQuery("(min-width:960px)");
+
   const [updating, setUpdating] = useState(false);
   const [model, setModel] = useState({});
   const [modelOriginal, setModelOriginal] = useState({});
@@ -47,24 +40,24 @@ function AtualizacaoModelo() {
   const [error, setError] = useState({
     releaseYear: '',
   });
-
-  const { sendMessage } = useContext(AuthContext);
+  const classes = useStyles({ updating });
 
   useEffect(() => {
+
     (async () => {
-      await api.get(`model/${id}`)
+      await api.get(`model/${id}`, { headers: { authorization: `Bearer ${accessToken}` } })
         .then((selected) => {
           setModel(selected.data.model)
           setModelOriginal(selected.data.model)
         })
         .catch(err => {
-          console.error("Backend is not working properly", err);
+          console.error(err);
         });
+
       setLoading(false)
     })();
-  }, [id])
+  }, [id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const classes = useStyles({ updating });
 
   if (!model) {
     return (
@@ -88,63 +81,102 @@ function AtualizacaoModelo() {
   }
 
   function handleSubmit() {
+
     setError({
       releaseYear: "",
     })
+
     if (!updating) setUpdating(true)
+
     else if (Object.values(model).includes("")) {
-      sendMessage('Alguns campos estão vazios', 'info');
+      sendMessage('Alguns campos estão vazios', 'error');
     }
+
     else if (!findError("year", model.releaseYear))
       setError(prev => ({ ...prev, releaseYear: "Data inválido" }))
+
     else if (isAfter(parseISO(model.releaseYear), new Date()))
       setError(prev => ({ ...prev, releaseYear: "Ano inválido!" }))
+
     else {
-      console.log(model)
-      const {
-        modelName,
-        type,
-        manufacturer,
-        releaseYear,
-        temperatureLimit,
-        currentLimit,
-        voltageLimit,
-      } = model;
+
       const data = {
-        modelName,
-        type,
-        manufacturer,
-        releaseYear,
-        temperatureLimit,
-        currentLimit,
-        voltageLimit,
+        modelName: model.modelName,
+        type: model.type,
+        manufacturer: model.manufacturer,
+        releaseYear: model.releaseYear,
+        min_temp: model.min_temp,
+        max_temp: model.max_temp,
+        min_current: model.min_current,
+        max_current: model.max_current,
+        min_voltage: model.min_voltage,
+        max_voltage: model.max_voltage,
+        min_vibra: model.min_vibra,
+        max_vibra: model.max_vibra,
       }
-      sendMessage("Alterando dados...", "info", null);
-      api.put(`model/${id}`, data)
+
+      sendMessage("Atuaizando os dados...", "info", null);
+
+      api.put(`model/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
         .then(response => {
-          sendMessage("Dados alterados");
+          sendMessage("Dados alterados com sucesso", "success");
           setModelOriginal(data);
+          console.log(data, 'Dados depois de alterar');
         })
         .catch(err => {
           console.log(err);
-          sendMessage(`Erro: ${err.message}`, "error");
+          sendMessage("Erro ao atualizar modelo!", "error");
         })
-      setUpdating(false)
 
+      setUpdating(false)
     }
   }
 
-  function handleDelete(confirmation) {
+  // Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
+  async function DeleteVerification() {
+
+    await api
+      .get("/equipment/index", { headers: { authorization: `Bearer ${accessToken}` } })
+      .then((response) => {
+
+        console.log(response);
+        if (response.data.equipment.find((equipment) => equipment.id_model === id)) { //se achar algo nao pode excluir
+          sendMessage("Não foi possível excluir modelo, ele possui equipamentos vinculados.", "error");
+          setDeleting(false);
+        } else { // Caso nao tenha nenhuma bomba ligada ao modelo, pode excluir
+          handleDelete(true);
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+        sendMessage("Erro ao validar remoção de modelo!", "error")
+      })
+  }
+
+  async function handleDelete(confirmation) {
+
     if (updating) { //cancelar
+
       setUpdating(false);
       setModel(modelOriginal);
       setError({
         releaseYear: "",
       })
-    }
-    else if (confirmation === true) { // excuir de verdade
+
+    } else if (confirmation === true) { // excuir 
+
       setDeleting(false);
-      alert("Excluindo modelo do banco de dados...")
+      await api.delete(`model/${id}`, { headers: { authorization: `Bearer ${accessToken}` } }).then((response) => {
+
+        sendMessage("Modelo excluído com sucesso", "success");
+        setTimeout(() => {
+          history.push("/listagemmodelo");
+        }, 1000)
+
+      }).catch((err) => {
+        sendMessage("Erro ao excluir modelo!", "error");
+        console.log(err)
+      })
     }
     else { // confirmar exclusão
       setDeleting(true);
@@ -157,19 +189,14 @@ function AtualizacaoModelo() {
       onClose={() => setDeleting(false)}
     >
       <DialogTitle>Excluir modelo?</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Você tem certeza que deseja excluir este modelo? Equipamento que fazem
-          uso deste modelo podem ser afetados!
-        </DialogContentText>
-      </DialogContent>
+
       <DialogActions>
         <Button color="primary" onClick={() => setDeleting(false)}>
           Cancelar
-          </Button>
-        <Button color="secondary" onClick={() => handleDelete(true)}>
+        </Button>
+        <Button color="secondary" onClick={() => DeleteVerification()} >
           Excluir
-          </Button>
+        </Button>
       </DialogActions>
     </Dialog>
   );
@@ -189,18 +216,20 @@ function AtualizacaoModelo() {
       <CssBaseline />
       <div className={classes.root}>
 
-        <h1 className={classes.title}>
+        <Typography variant="h3" className={classes.title}>
           Detalhes do Modelo
-        </h1>
+        </Typography>
 
         <AreYouSure />
 
-        <Paper className={classes.containerForm} elevation={0}>
-          <Grid container>
-            <Grid item xs={12} md={12} className={classes.grid}>
+        <Paper className={classes.formContainer} elevation={0}>
+          <Grid container spacing={isDesktop ? 2 : 0} >
+
+            <Grid item xs={12} md={6}>
               <TextField
+                disabled={!updating}
                 name="modelName"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.modelName}
                 onChange={handleChangeInput}
                 label="Nome do modelo"
@@ -208,45 +237,25 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                autoFocus
-                disabled={!updating}
               />
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.grid}>
-              {/* <Autocomplete
-                value={model.type}
-                freeSolo
-                className={classes.input}
-                options={["Motor", "Bomba hidráulica"]}
-                onChange={handleChangeInput}
-                disabled={!updating}
-                renderInput={params => (
-                  <TextField
-                    name="type"
-                    {...params}
-                    label="Tipo de equipamento"
-                    type="text"
-                    helperText="*Obrigatório"
-                    variant="filled"
-                    autoComplete="off"
-                  />
-                )}
-              /> */}
+
               <TextField
-                value={model.type}
-                className={classes.input}
-                name="type"
-                onChange={handleChangeInput}
                 disabled={!updating}
+                name="type"
+                className={classes.inputs}
+                value={model.type}
+                onChange={handleChangeInput}
                 label="Tipo de equipamento"
                 type="text"
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
               />
+
               <TextField
+                disabled={!updating}
                 name="manufacturer"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.manufacturer}
                 onChange={handleChangeInput}
                 label="Fabricante"
@@ -254,11 +263,12 @@ function AtualizacaoModelo() {
                 helperText="*Obrigatório"
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
               />
+
               <TextField
+                disabled={!updating}
                 name="releaseYear"
-                className={classes.input}
+                className={classes.inputs}
                 value={model.releaseYear}
                 onChange={handleChangeInput}
                 label="Ano de lançamento"
@@ -267,66 +277,151 @@ function AtualizacaoModelo() {
                 error={error.releaseYear !== ""}
                 variant="filled"
                 autoComplete="off"
-                disabled={!updating}
-                InputProps={{
-                  inputComponent: YearInput
-                }}
+                inputProps={{ maxLength: 4 }}
               />
             </Grid>
-            <Grid item xs={12} md={6} className={classes.grid}>
-              <TextField
-                name="temperatureLimit"
-                className={classes.input}
-                value={model.temperatureLimit}
-                onChange={handleChangeInput}
-                label="Limite temperatura"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="currentLimit"
-                className={classes.input}
-                value={model.currentLimit}
-                onChange={handleChangeInput}
-                label="Limite corrente"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-              <TextField
-                name="voltageLimit"
-                className={classes.input}
-                value={model.voltageLimit}
-                onChange={handleChangeInput}
-                label="Limite tensão"
-                type="number"
-                helperText="*Obrigatório"
-                variant="filled"
-                autoComplete="off"
-                disabled={!updating}
-              />
-            </Grid>
-            <Grid className={classes.centralizar} item xs={12}>
-              <Button variant="contained" color="primary" className={classes.btn}
-                onClick={handleSubmit}
-              >
-                {updating ? "Salvar" : "Editar"}
-              </Button>
-              <Button variant="contained" color="secondary" className={classes.btn}
-                onClick={handleDelete}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
 
+            <Grid item xs={12} md={6}>
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Temperatura
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  className={classes.inputRange}
+                  name="min_temp"
+                  helperText="mínimo"
+                  label="°C"
+                  variant="filled"
+                  value={model.min_temp}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_temp"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="°C"
+                  variant="filled"
+                  value={model.max_temp}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
+
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Corrente
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_current"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="A"
+                  variant="filled"
+                  value={model.min_current}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_current"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="A"
+                  variant="filled"
+                  value={model.max_current}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
+
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Tensão
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_voltage"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="V"
+                  variant="filled"
+                  value={model.min_voltage}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_voltage"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="V"
+                  variant="filled"
+                  value={model.max_voltage}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
+
+              <Typography gutterBottom className={classes.rangesTitle}>
+                Limites de Vibração
+              </Typography>
+
+              <div className={classes.rangesContainer}>
+                <TextField
+                  disabled={!updating}
+                  name="min_vibra"
+                  className={classes.inputRange}
+                  helperText="mínimo"
+                  label="krpm"
+                  variant="filled"
+                  value={model.min_vibra}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+                <TextField
+                  disabled={!updating}
+                  name="max_vibra"
+                  className={classes.inputRange}
+                  helperText="máximo"
+                  label="krpm"
+                  variant="filled"
+                  value={model.max_vibra}
+                  margin="dense"
+                  onChange={handleChangeInput}
+                  type='number'
+                />
+              </div>
             </Grid>
           </Grid>
-        </Paper>
 
+          <Grid className={classes.centralizar} item xs={12}>
+            <Button variant="contained" color="primary" className={classes.btn}
+              onClick={handleSubmit}
+            >
+              {updating ? "Salvar" : "Editar"}
+            </Button>
+            <Button variant="contained" color="secondary" className={classes.btn}
+              onClick={handleDelete}
+            >
+              {updating ? "Cancelar" : "Excluir"}
+            </Button>
+
+          </Grid>
+        </Paper>
       </div>
     </React.Fragment >
   );

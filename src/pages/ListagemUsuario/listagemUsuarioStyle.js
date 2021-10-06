@@ -5,27 +5,35 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-
-    width: "90%",
-    padding: "50px 0 66px 50px",
-    paddingTop: "50px",
-    paddingRight: "0px",
-    paddingBottom: "66px",
-    paddingLeft: "50px",
-
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
+      padding: "30px 5% 80px",
       width: "100%",
     },
   },
 
+
+  allsearch:{
+    display: "flex",
+    flexDirection: "column",
+  },
+
   header: {
     display: "flex",
+    //marginLeft: "35%",
     flexDirection: "row",
     justifyContent: "flex-start",
     [theme.breakpoints.only("xs")]: {
       justifyContent: "space-between",
     },
+  },
+
+  searchplusfilter: {
+    display: "flex",
+    flexDirection: "row",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column"
+    }
   },
 
   title: {
@@ -39,10 +47,10 @@ export const useStyles = makeStyles(theme => ({
   },
 
   buttonAdd: {
-    marginLeft: "40px",
+    marginLeft: "30px",
     padding: "0 20px",
-    border: "1px solid", azulPadraoClaro,
-
+    border: "1px solid", azulPadraoClaro ,
+ 
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: "13px",
@@ -68,6 +76,7 @@ export const useStyles = makeStyles(theme => ({
       width: "100%",
     }
   },
+
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -79,7 +88,7 @@ export const useStyles = makeStyles(theme => ({
   },
   searchFilter: {
     margin: "20px 0",
-
+   // marginLeft: "30%",
     display: "flex",
     flexDirection: "row",
     [theme.breakpoints.only('xs')]: {
@@ -102,13 +111,40 @@ export const useStyles = makeStyles(theme => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     // width: isMobile ? "270px" : '430px',
     width: "430px",
+ 
     [theme.breakpoints.down('xs')]: {
       fontSize: "12px",
       width: "270px",
     }
   },
 
-  table: {
-    marginTop: "30px"
+  filter: {
+    justifyContent: "center",
+    borderRadius: "5px",
+    position: 'relative',
+    // backgroundColor: azulPadraoClaro,
+    border: "2px solid rgba(0,0,0,0.8)",
+    marginTop: "40px",
+    fontSize: "20px",
+    height: "40px",
+    width: "120px",
+    outline: "none",
+    // transition: theme.transitions.create(['border-color', 'box-shadow']),
+    [theme.breakpoints.down('sm')]: {
+      marginTop: "10px",
+    }
   },
+
+  selectItens: {
+    position: 'relative',
+    height: "100%",
+    width: '100%',
+    fontSize: "12px",
+  },
+  
+
+  table: {
+    marginTop: "30px",
+  },  
+    
 }))

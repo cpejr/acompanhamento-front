@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext , useState} from 'react';
 import {
   CssBaseline,
   TableContainer,
@@ -13,25 +13,31 @@ import { format } from 'date-fns/esm';
 import { parseISO } from 'date-fns';
 
 import { useStyles } from './funcionamentoequipamentoStyle';
+import api from '../../services/api';
+import { LoginContext } from '../../context/LoginContext';
 
 export default function ({ equipment }) {
   const classes = useStyles();
-
-  const [dataToTable, setDataToTable] = React.useState([
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
+  const [dataToTable, setDataToTable] = useState([
     { name: "", value: "" },
-  ])
+  ]);
 
-  React.useEffect(() => {
-    if (Object.keys(equipment).length !== 0) {
-      setDataToTable([
-        { name: "Nº de Sêrie", value: equipment.id_equipment },
-        { name: "Modelo do equipamento", value: equipment.equipment_model },
-        { name: "Data de Instalação", value: format(parseISO(equipment.instalation_date), "PPP", { locale: ptBR }) },
-        { name: "Última Atualização", value: format(parseISO(equipment.updatedAt), "PPP", { locale: ptBR }) },
-        { name: "Observações", value: equipment.observation },
-      ])
+  useEffect(() => {
+    if (equipment.id_model) {
+      api.get(`model/${equipment.id_model}`, { headers: { authorization: `Bearer ${accessToken}` } })
+        .then((response) => {
+          const nameModel = response.data.model.modelName;
+          setDataToTable([
+            { name: "Código do Equipamento", value: equipment.equipment_code },
+            { name: "Modelo do Equipamento", value: nameModel },
+            { name: "Última Atualização", value: format(parseISO(equipment.updatedAt), "PPP", { locale: ptBR }) },
+            { name: "Observações", value: equipment.observation },
+          ])
+        });
     }
-  }, [equipment])
+  }, [equipment, accessToken])
 
   if (Object.keys(equipment).length === 0) {
     return (

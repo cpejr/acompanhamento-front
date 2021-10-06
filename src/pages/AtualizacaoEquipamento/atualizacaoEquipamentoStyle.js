@@ -6,20 +6,83 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    minHeight: "100vh",
-
-    padding: "30px 60px 0",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
+      padding: "32px 8px",
+    },
+  },
+  header: {
+    display: "flex",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    },
+  },
+
+  connectionPending:{
+    borderColor: vermelhoPadrao,
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  connected:{
+    borderColor: verde,
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  statusWarning: {
+    borderColor: "orange",
+    marginLeft: "16px",
+    [theme.breakpoints.down("xs")]: {
+      margin: "0px 0px 8px 0px",
+      maxWidth: "75vw"
+    },
+  },
+
+  iconPending: {
+    color: vermelhoPadrao,
+    fontSize: "20px"
+  },
+
+  iconConnected: {
+    color: verde,
+  },
+
+  iconWarning: {
+    color: "orange",
+    fontSize: "20px"
+  },
+
+  formContainer: {
+    padding: "48px",
+    borderRadius: "13px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },
+  buttonAdd: {
+    fontWeight: "500",
+    fontSize: "13px",
+    color: verde,
+    "&:hover": {
+      color: "#fff",
+      backgroundColor: verde,
+    }
+  },
+
   title: {
     marginBottom: "30px",
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
@@ -28,35 +91,24 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: "center",
     },
   },
-  containerForm: {
-    display: "flex",
-    padding: "50px 50px 30px",
-    marginBottom: "50px",
-    borderRadius: "13px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "30px 5%",
-    },
-  },
-  leftSection: {
-    maxWidth: "350px",
-    [theme.breakpoints.only("xs")]: {
-      maxWidth: "100%"
-    }
-  },
-  rightSection: {
-    marginLeft: "100px",
-  },
-  subtitle:{
-    fontWeight:"400",
-  },
   input: {
     boxSizing: "border-box",
     width: "100%",
-    marginBottom: "30px",
+    marginBottom: "16px",
   },
-  centralizar: {
+  inputType: {
+    width: "100%",
+    flexDirection: "colunm",
+  },
+  buttonContainer: {
+    width: "100vw",
     display: "flex",
+    flexDirection: "row",
     justifyContent: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
+      alignItems: "center"
+    }
   },
   btn: {
     margin: "30px 10px 0",
@@ -64,20 +116,21 @@ export const useStyles = makeStyles((theme) => ({
     height: "50px",
 
     borderRadius: "2px",
+    color: "white",
     "&:first-child": {
       background: props => props.updating ? verde : azulPadrao,
     },
-    "&:last-child": {
-      background: vermelhoPadrao
+    "&:nth-child(2n)": {
+      background: vermelhoPadrao,
     },
     [theme.breakpoints.only("xs")]: {
       margin: "0",
-      "&:first-child": {
-        marginRight: "10px"
-      },
-      "&:last-child": {
-        marginLeft: "10px"
-      },
+      marginBottom: "16px"
     },
+
+    btnOwner: {
+      color: verde,
+      maxHeight: "50px",
+    }
   }
 }));

@@ -1,34 +1,41 @@
 import { makeStyles } from '@material-ui/core'
 import { titlesFontFamilyPadrao, textFontFamilyPadrao, titleFontSize, azulPadraoClaro, azulPadraoEscuro } from '../../StylePadrao/stylePadrao';
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? true : (window.innerWidth <= 450);
-
 export const useStyles = makeStyles(theme => ({
+
   root: {
     display: "flex",
     flexDirection: "column",
-
     width: "100%",
-    padding: "50px 60px 60px 50px",
-
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
-      padding: "30px 5% 30px",
-      width: "100%",
+      padding: "32px 8px",
+    },
+  },
+  formContainer: {
+    padding: "48px",
+    borderRadius: "13px",
+    [theme.breakpoints.down("xs")]: {
+      padding: "48px 24px",
     },
   },
 
   title: {
     width: "100%",
     marginBottom: "30px",
-
     fontFamily: titlesFontFamilyPadrao,
     fontWeight: "500",
     fontSize: titleFontSize,
-
-    display: "flex",
-    alignItems: "center",
-    textAlign: isMobile ? "center" : "",
     color: "#000000",
+    textAlign: "left",
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center"
+    },
+  },
+
+  inputType: {
+    width: "100%",
+    flexDirection: "colunm",
   },
 
   titleTab: {
@@ -52,50 +59,30 @@ export const useStyles = makeStyles(theme => ({
     borderRadius: "13px",
   },
 
-  containerForm: {
-    padding: "40px 60px",
-
-    display: "flex",
-    flexDirection: "column",
-
-    maxWidth: "500px",
-    [theme.breakpoints.only("xs")]: {
-      padding: "10% 5%",
-      width: "100%",
-      alignItems: "center"
-    },
+  inputs: {
+    boxSizing: "border-box",
+    width: "100%",
+    marginBottom: "16px",
   },
 
-  inputs: {
-    width: "100%",
-    marginBottom: "20px",
+  buttonContainer: {
+    marginTop: "16px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center"
   },
 
 
   buttonRegister: {
-    border: "1px solid rgba(0, 0, 0, 0.12)",
-    boxSizing: "border-box",
-    borderRadius: "2px",
     backgroundColor: azulPadraoClaro,
-
-    marginTop: "20px",
-    padding: "10px",
-    paddingLeft: "15px",
-    paddingRight: "20px",
-    width: "150px",
-    [theme.breakpoints.only("xs")]: {
-      width: "100%",
-    },
-
+    border: "1px solid rgba(0, 0, 0, 0.12)",
+    borderRadius: "2px",
+    padding: "10px 20px",
     fontFamily: textFontFamilyPadrao,
-    fontStyle: "normal",
-    fontWeight: "normal",
     fontSize: "14px",
-    lineHeight: "24px",
-    letterSpacing: "0.02em",
     color: "#FFFFFF",
-
     cursor: "pointer",
+
     "&:hover": {
       backgroundColor: azulPadraoEscuro,
     },

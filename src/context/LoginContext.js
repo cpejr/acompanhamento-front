@@ -1,67 +1,60 @@
-import ClipLoader from "react-spinners/ClipLoader";
-import React, { createContext, useState, useEffect } from "react";
-import useStorage from '../utils/useStorage';
-import api from "../services/api";
+import React, { createContext } from "react";
+import jwt from "jsonwebtoken";
 
 export const LoginContext = createContext();
 
-const LoginContextProvider = (props) => {
-  const [token, setToken] = useStorage('token');
-  const [user, setUser] = useState();
-
-  async function verify(token) {
-    try {
-      const response = await api.get("/verify");
-      const data = response.data;
-
-      if (data.verified) {
-        setToken(token);
-        setUser(data.user[0]);
-      } else {
-        setToken(null);
-        setUser(null);
-        localStorage.removeItem("accessToken");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
-
-  useEffect(async () => {
-
-    const currentToken = localStorage.getItem("accessToken");
-
-    if (currentToken && currentToken !== " ") {
-      await verify(currentToken);
-    }
-    console.log("UseEffect LoginContext");
-  }, []);
-
-  function signIn(token, user) {
-    const existsToken = localStorage.getItem("accessToken");
-
-    if (existsToken) {
-      localStorage.removeItem("accessToken");
-    }
-
-    localStorage.setItem("accessToken", token);
-    setUser(user[0]);
-    setToken(token);
+export const LoginContextProvider = (props) => {
+  function signIn(accessToken) {
+    localStorage.setItem("token", accessToken);
   }
 
   function logOut() {
-    localStorage.removeItem("accessToken");
-    setUser(null);
-    setToken(null);
+    localStorage.removeItem("token");
+  }
+
+  function getToken() {
+    return localStorage.getItem("token");
+  }
+
+  function getData() {
+    const token = localStorage.getItem("token");
+    const aux = jwt.verify(
+      token,
+      process.env.REACT_APP_ACCESS_TOKEN_SECRET,
+      (err, data) => {
+        if (err) return err;
+        return data;
+      }
+    );
+    return aux;
+  }
+
+  function getUser() {
+    const userAux = getData();
+    return userAux.userData;
+  }
+
+  function getUserId() {
+    const userAux = getData();
+    return userAux.userData.id;
+  }
+
+  function getUserType() {
+    const userAux = getData();
+    if (userAux.userData) 
+      return userAux.userData.type;
+    else return undefined
+  }
+
+  function IsClient(){
+    const userType = getUserType();
+    if(userType === "Funcionario") return false;
+    return true;
   }
 
   return (
-    <LoginContext.Provider
-      value={{ token, user, signIn, logOut, setUser, verify }}
-    >
+    <LoginContext.Provider value={{ signIn, logOut, getUser, getUserId, getToken, getUserType, IsClient}}>
       {props.children}
     </LoginContext.Provider>
   );
 };
-
-export default LoginContextProvider;

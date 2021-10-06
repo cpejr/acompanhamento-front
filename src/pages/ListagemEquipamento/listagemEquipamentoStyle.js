@@ -5,8 +5,7 @@ export const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    width: "90%",
-    padding: "50px 0 80px 50px",
+    padding: "32px",
     [theme.breakpoints.only("xs")]: {
       padding: "30px 5% 80px",
       width: "100%",
@@ -37,7 +36,7 @@ export const useStyles = makeStyles(theme => ({
     padding: "0 20px",
     border: "1px solid", azulPadraoClaro,
     fontFamily: titlesFontFamilyPadrao,
-    fontWeight: "500",
+    fontWeight: "200",
     fontSize: "13px",
     textAlign: "center",
     color: azulPadraoClaro,
@@ -104,12 +103,13 @@ export const useStyles = makeStyles(theme => ({
     width: "430px",
     [theme.breakpoints.down('xs')]: {
       fontSize: "12px",
+      marginLeft:"12px",
       width: "270px",
     }
   },
-
+  
   table: {
-    marginTop: "30px"
+    marginTop: "30px",
   },
 
   searchplusfilter: {

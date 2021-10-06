@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -16,6 +16,7 @@ import ordenar from "../../services/ordenar";
 import api from "../../services/api";
 import { useStyles } from "./listagemModeloStyle";
 import StickyHeadTable from "./Tabela";
+import { LoginContext } from '../../context/LoginContext';
 
 export default function ListagemModelo() {
   const [filterby, setFilterby] = useState("modelName");
@@ -23,10 +24,12 @@ export default function ListagemModelo() {
   const [modelsOriginal, setModelsOriginal] = useState();
   const [loading, setLoading] = useState(true);
   const [modelsListToDisplay, setModelsListToDisplay] = useState();
+  const { getToken } = useContext(LoginContext);
+  const accessToken = getToken();
 
   useEffect(() => {
     api
-      .get("model/index")
+      .get("model/index", {headers: {authorization: `Bearer ${accessToken}`}})
       .then((model) => {
         const models = model.data.data;
         setModelsOriginal(models);
@@ -35,11 +38,11 @@ export default function ListagemModelo() {
       })
       .catch((err) => {
         console.error(
-          "Não foi possivel estabelecer conecção com o backend",
+          "Não foi possivel estabelecer conexão com o backend",
           err
         );
       });
-  }, []);
+  }, [accessToken]);
 
   function FindModel(searchModel) {
     if (searchModel.length > 0) {
@@ -57,6 +60,10 @@ export default function ListagemModelo() {
       setModelsListToDisplay(modelsOriginal);
     }
   }
+  
+  function messageDisplay(e){
+    setFilterby(e.target.value);
+  }
 
   const classes = useStyles();
 
@@ -73,42 +80,41 @@ export default function ListagemModelo() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <div className={classes.header}>
-          <Typography variant="h3" className={classes.title}>
-            Modelos
-          </Typography>
-          <Button
-            component={Link}
-            to="/cadastromodelo"
-            className={classes.buttonAdd}
-          >
-            Adicionar Novo
-          </Button>
-        </div>
-        <div className={classes.searchplusfilter}>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <div className={classes.searchInput}>
-              <InputBase
-                className={classes.placeholder}
-                placeholder="Procurar modelo"
-                onChange={(e) => FindModel(e.target.value)}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.input,
-                }}
-              />
-            </div>
+        <div className={classes.allsearch}>
+          <div className={classes.header}>
+            <Typography variant="h3" className={classes.title}>
+              Modelos
+            </Typography>
+            <Button
+              component={Link}
+              to="/cadastromodelo"
+              className={classes.buttonAdd}
+            >
+              Adicionar Novo
+            </Button>
           </div>
-          <FormControl className={classes.filter}>
+          <div className={classes.searchplusfilter}>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <div className={classes.searchInput}>
+                <InputBase
+                  className={classes.placeholder}
+                  placeholder="Procurar modelo"
+                  onChange={(e) => FindModel(e.target.value)}
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.input,
+                  }}
+                />
+              </div>
+            </div>
+            <FormControl className={classes.filter}>
             <Select
               className={classes.selectItens}
               value={filterby}
-              onChange={(e) => setFilterby(e.target.value)}
-              // displayEmpty={true}
-              // native={false}
+              onChange={(e) => messageDisplay(e)}
               variant="outlined"
             >
               <MenuItem value="modelName">Modelo</MenuItem>
@@ -117,6 +123,9 @@ export default function ListagemModelo() {
             </Select>
           </FormControl>
         </div>
+          
+        </div>
+        
         <div className={classes.table}>
           <StickyHeadTable
             modelsListToDisplay={ordenar(

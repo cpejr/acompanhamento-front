@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
-import CreatePeople from '../services/people';
 import api from '../services/api';
-import { Backdrop, CircularProgress, makeStyles, Snackbar } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Backdrop, CircularProgress, makeStyles, Snackbar } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 const AuthContext = createContext();
 
@@ -14,20 +13,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AuthContextProvider({ children }) {
+
   const classes = useStyles();
-  const id = "8b1e92f0-f1db-11ea-993d-dbb50037214a"
-  const [user, setUser] = useState(CreatePeople.people[3]);
+  const id = localStorage.getItem("userId");
+  const accessToken = localStorage.getItem("token")
+
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [openMensage, setOpenMensage] = React.useState({
     open: false, message: 'Cadastrado com sucesso', type: 'success', time: 5000
   });
 
   useEffect(() => {
-    api.get(`/client/${id}`)
-      .then(data => setUser(data.data.client))
-      .catch(err => console.error("Liga o backend ai mano", err));
+    api.get(`/user/${id}`, {headers: {authorization: `Bearer ${accessToken}`}})
+      .then(response => setUser(response.data.user))
+      .catch(err => console.error("Verifique se o backend está ligado ou se há usuário logado.", err));
     setLoading(false);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleCloseMensage = (event, reason) => {
     if (reason === 'clickaway') {
@@ -40,8 +42,6 @@ function AuthContextProvider({ children }) {
     setOpenMensage(prev => ({ ...prev, open: true, message, type, time }));
   }
 
-  const isClient = user.role === "Cliente";
-
   if (loading) {
     return (
       <React.Fragment>
@@ -53,7 +53,7 @@ function AuthContextProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, isClient, sendMessage }}>
+    <AuthContext.Provider value={{ user, sendMessage }}>
 
       {children}
 

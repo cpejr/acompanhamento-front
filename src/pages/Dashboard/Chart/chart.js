@@ -5,6 +5,7 @@ import history from "../../../history";
 export default function Graphic(props) {
   return (
     <Doughnut
+      id="chart"
       data={{
         datasets: [{
           data: props.data,
@@ -26,7 +27,7 @@ export default function Graphic(props) {
             var label = chartData.labels[idx];
             history.push(`/listagemequipamento?situation=${label}`);
           }
-        }
+        },
       }}
     />
   )

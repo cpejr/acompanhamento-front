@@ -36,7 +36,7 @@ export const useStyles = makeStyles((theme) => ({
     }),
   },
   menuButtonPerm: {
-    marginRight: 36,
+    marginRight: "8px",
   },
   hidePerm: {
     display: 'none',
@@ -70,7 +70,7 @@ export const useStyles = makeStyles((theme) => ({
 
   // Drawer Temporary ->>
   menuButtonTemp: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
       display: 'none',
     },
@@ -85,8 +85,9 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center"
   },
   link: {
-    textDecoration: "none",
-    color: "white"
+    color: "white",
+    display: "flex",
+    flexDirection: "row"
   },
   userProfile: {
     position: "relative",
@@ -103,6 +104,12 @@ export const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("xs")]: {
       fontSize: "16px",
-    }
+      display: "none"
+    },
+    margin: "10px"
   },
+  logo: {
+    width: "64px",
+    height: "64px"
+  }
 }));

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useStyles } from "./tabelaStyle";
 import {
+  Button,
   Paper,
   Table,
   TableBody,
@@ -12,9 +13,13 @@ import {
   TableSortLabel,
   Typography,
 } from "@material-ui/core";
-import { FiMoreHorizontal } from "react-icons/fi";
 
-export default function StickyHeadTable(props) {
+export default function StickyHeadTable({
+  ordemAlfabetica,
+  usersListToDisplay,
+  setOrdemAlfabetica,
+  setOrdemBy
+}) {
   const classes = useStyles();
 
   return (
@@ -26,54 +31,81 @@ export default function StickyHeadTable(props) {
               <TableCell className={classes.tableCell}>
                 <TableSortLabel
                   active
-                  direction={props.ordemAlfabetica ? "desc" : "asc"}
-                  onClick={() =>
-                    props.setOrdemAlfabetica(!props.ordemAlfabetica)
+                  direction={ordemAlfabetica ? "desc" : "asc"}
+                  onClick={() => {
+                      setOrdemAlfabetica(!ordemAlfabetica);
+                      setOrdemBy("name");
+                    }
                   }
                 >
                   Nome
                 </TableSortLabel>
               </TableCell>
-              <TableCell className={classes.tableCell}>Função</TableCell>
+              <TableCell className={classes.tableCell}>Tipo de Usuário</TableCell>
               <TableCell className={classes.tableCell}>
-                Última data ativa
+                <TableSortLabel
+                  active
+                  direction={ordemAlfabetica ? "desc" : "asc"}
+                  onClick={() => {
+                      setOrdemAlfabetica(!ordemAlfabetica);
+                      setOrdemBy("active");
+                    }
+                  }
+                >
+                  Útima data ativa
+                </TableSortLabel>
+              </TableCell>
+              <TableCell className={classes.tableCell} style={{ textAlign: "center" }} >
+                Ações
               </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {props.usersListToDisplay.map((user) => (
-              <TableRow hover tabIndex={-1} key={user.name}>
+            {usersListToDisplay.map((user) => (
+              <TableRow hover key={user.id}>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
-                    {user.name}{" "}
-                  </Link>
+                  {user.name}{" "}
                 </TableCell>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
-                    {user.funcao}{" "}
-                  </Link>
+                  {user.funcao}{" "}
                 </TableCell>
                 <TableCell>
-                  <Link
-                    style={{ textDecoration: "none", color: "black" }}
-                    to={`/au/${user.id}`}
-                  >
-                    {user.data}
-                  </Link>
+                  { user.data }
                 </TableCell>
+
+                <TableCell className={classes.lastTableCell} >
+                  <Button
+                    component={Link}
+                    to={`/listagemequipamento?userid=${user.id}`}
+                    variant="outlined"
+                    disableElevation
+                    className={classes.buttonAdd}
+                  >
+                    Equipamentos
+                  </Button>
+
+                  <Button
+                    component={Link}
+                    to={`/au/${user.id}`}
+                    variant="outlined"
+                    disableElevation
+                    className={classes.buttonUser}
+                  >
+                    Dados
+                  </Button>
+
+                </TableCell>
+
               </TableRow>
             ))}
-            {props.usersListToDisplay.length <= 0 ? (
+
+            {usersListToDisplay.length <= 0 ? (
               <Typography className={classes.nullUser}>
                 Este usuário não foi encontrado{" "}
               </Typography>
             ) : null}
+
           </TableBody>
         </Table>
       </TableContainer>

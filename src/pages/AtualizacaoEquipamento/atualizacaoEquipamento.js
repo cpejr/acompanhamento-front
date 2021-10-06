@@ -9,23 +9,45 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Grid,
   Typography,
   Backdrop,
   CircularProgress,
-} from "@material-ui/core";
-import api from "../../services/api";
-import { AuthContext } from "../../context/AuthContext";
-import moment from "moment";
-import { useHistory } from "react-router-dom";
-import { parseISO, isAfter } from "date-fns";
-import findError from "../../services/findError";
-import { useParams } from "react-router";
-import { useStyles } from "./atualizacaoEquipamentoStyle";
-import { Autocomplete } from "@material-ui/lab";
+  useMediaQuery,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
+  MenuItem,
+  Chip,
+} from "@material-ui/core"
+import api from '../../services/api';
+import { AuthContext } from '../../context/AuthContext'
+import moment from 'moment';
+import { useHistory } from 'react-router-dom';
+import { parseISO, isAfter } from 'date-fns';
+import findError from '../../services/findError';
+import { useParams } from 'react-router-dom';
+import { useStyles } from './atualizacaoEquipamentoStyle'
+import { LoginContext } from '../../context/LoginContext';
+
+// icons
+import SignalWifiOffIcon from '@material-ui/icons/SignalWifiOff';
+import RssFeedIcon from '@material-ui/icons/RssFeed';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import WarningIcon from '@material-ui/icons/Warning';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+
 
 function AtualizacaoEquipamento() {
+
   const { id } = useParams();
   const history = useHistory();
+  const { getToken, IsClient } = useContext(LoginContext);
+  const accessToken = getToken();
+
+  const isDesktop = useMediaQuery("(min-width:960px)");
+
   const [updating, setUpdating] = useState(false);
   const [equipment, setEquipment] = useState({});
   const [equipmentOriginal, setEquipmentOriginal] = useState({});
@@ -33,46 +55,157 @@ function AtualizacaoEquipamento() {
   const [loading, setLoading] = useState({ equipment: true, models: true });
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState({
-    instalation_date: "",
+    installation_date: "",
   });
+
   const { sendMessage } = useContext(AuthContext);
-  // const [instalationError, setInstalationError] = useState(false);
+  const [clientId, setClientId] = useState("");
+  const [clientCpfCnpj, setClientCpfCnpj] = useState("");
+  const [disableCpfCnpj, setDisableCpfCnpj] = useState(false);
+  const [modelId, setModelId] = useState();
+  const classes = useStyles({ updating });
 
   useEffect(() => {
+
     function getRequiredDateFormat(timeStamp, format = "YYYY-MM-DD") {
       return moment(timeStamp).format(format);
     }
-    api
-      .get(`equipment/${id}`)
-      .then((selected) => {
-        var date = selected.data.equipment[0].instalation_date;
-        var instalation_date = getRequiredDateFormat(date);
 
-        setEquipment(selected.data.equipment[0]);
-        setEquipmentOriginal(selected.data.equipment[0]);
-        setEquipment((prev) => ({ ...prev, instalation_date }));
-        setEquipmentOriginal((prev) => ({ ...prev, instalation_date }));
+    api
+      .get(`equipment/${id}`, { headers: { authorization: `Bearer ${accessToken}` } })
+      .then((response) => {
+        const date = response.data.equipment[0].installation_date;
+        const installation_date = getRequiredDateFormat(date);
+        const equipment = response.data.equipment[0];
+
+        setEquipment({ ...equipment, installation_date: installation_date });
+        setEquipmentOriginal({ ...equipment, installation_date: installation_date });
         setLoading((prev) => ({ ...prev, equipment: false }));
+        setClientId(response.data.equipment[0].client_id)
       })
       .catch((err) => {
-        console.error("Backend is not working properly", err);
+        console.error("Erro ao buscar equipamento.", err);
       });
+
     api
-      .get(`model/index`)
+      .get(`model/index`, { headers: { authorization: `Bearer ${accessToken}` } })
       .then((models) => {
         setModelsList(models.data.data);
         setLoading((prev) => ({ ...prev, models: false }));
       })
       .catch((err) => {
-        console.error("Backend is not working properly", err);
+        console.error("Erro ao buscar modelos.", err);
       });
-  }, [id]);
 
-  const classes = useStyles({ updating });
+  }, [accessToken, id]);
+
 
   useEffect(() => {
-    console.log("OPA", equipment);
-  }, [equipment]);
+
+    if (clientId) {
+      api
+        .get(`user/${clientId}`, { headers: { authorization: `Bearer ${accessToken}` } })
+        .then((response) => {
+
+          setClientCpfCnpj(
+            response.data.user.cpf
+              ? response.data.user.cpf
+              : response.data.user.cnpj
+          )
+          setDisableCpfCnpj(true);
+        })
+        .catch((err) => console.log(err));
+    }
+
+  }, [clientId]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+
+    if (modelsList && equipment) {
+      modelsList.find((model) => {
+        if (model.id === equipment.id_model) {
+          setModelId(model.id);
+          return true;
+        } else return false;
+      })
+    }
+  }, [modelsList, equipment]);
+
+  function validateAllFields(data) {
+
+    if (
+      !data.id_model ||
+      !data.equipment_code ||
+      !data.installation_date ||
+      !data.phone_number
+    ) {
+      sendMessage("Há campos vazios!", "error");
+      return false;
+    }
+
+    if (data.zipcode !== "" && data.zipcode.length < 8) {
+      sendMessage("CEP inválido!", "error");
+      return false;
+    }
+
+    return true;
+  }
+
+  function getConnectionStatus() {
+
+    if (equipment.flag_connection === "Conectado") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<RssFeedIcon className={classes.iconConnected} />}
+          className={classes.connected}
+          label="Conexão: Conectado"
+        />
+      )
+    } else {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<SignalWifiOffIcon className={classes.iconPending} />}
+          className={classes.connectionPending}
+          label="Conexão: Pendente"
+        />
+      )
+    }
+  }
+
+  function getSituationStatus() {
+
+    if (equipment.situation === "Ok") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<CheckCircleOutlineIcon className={classes.iconConnected} />}
+          className={classes.connected}
+          label="Situação: Ok"
+        />
+      );
+    } else if (equipment.situation === "Atenção") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<WarningIcon className={classes.iconWarning} />}
+          className={classes.statusWarning}
+          label="Situação: Atenção"
+        />
+      );
+    } else if (equipment.situation === "Revisão") {
+      return (
+        <Chip
+          variant="outlined"
+          icon={<ErrorOutlineIcon className={classes.iconPending} />}
+          className={classes.connectionPending}
+          label="Situação: Revisão"
+        />
+      );
+    }
+
+  }
 
   if (!equipment) {
     return (
@@ -80,7 +213,7 @@ function AtualizacaoEquipamento() {
         <CssBaseline />
         <div className={classes.root}>
           <h1 className={classes.title}>Detalhes do Equipamento</h1>
-          <Paper className={classes.containerForm} elevation={0}>
+          <Paper className={classes.fromContainer} elevation={0}>
             <Typography variant="h5">Dados inválidos!</Typography>
           </Paper>
         </div>
@@ -88,64 +221,89 @@ function AtualizacaoEquipamento() {
     );
   }
 
-  function handleChangeInput(event, valueA) {
-    const { name, value } = event.target;
+  function handleChangeInput(event) {
+
+    let { name, value } = event.target;
+    let str = value;
+
+    if (name === "zipcode") {
+      value = str.replace(/[^0-9]/g, ""); // somente numeros e '-'
+    }
+    if (name === "cpfcnpj") {
+      value = str.replace(/\D/g, ""); // somente numeros
+      setClientCpfCnpj(value)
+      return;
+    }
+    if (name === "phone_number") {
+      let cleaned = str.replace(/\D/g, ""); // somente numeros
+      if (cleaned.length === 10) {            // Numero residencial
+        let aux = cleaned.match(/^(\d{2})(\d{4})(\d{4})$/);
+        if (aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+      }
+      else if (cleaned.length === 11) {     // Numero celular
+        let aux = cleaned.match(/^(\d{2})(\d{5})(\d{4})$/);
+        if (aux) value = '(' + aux[1] + ') ' + aux[2] + '-' + aux[3]
+      }
+    }
     setEquipment((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleChangeAutocomplete(event, value) {
-    console.debug(event.target);
-    setEquipment((prev) => ({ ...prev, equipment_model: value }));
+  function handleChangeSelect(event, value) {
+
+    modelsList.find((model) => {
+      if (model.id === event.target.value) {
+        equipment.id_model = model.id;
+        setModelId(model.id);
+        return true;
+      } else return false;
+    })
   }
 
   function handleSubmit() {
+
     setError({
-      instalation_date: "",
+      installation_date: "",
     });
+
+    const data = {
+      id_model: modelId,
+      equipment_code: equipment.equipment_code,
+      installation_date: equipment.installation_date,
+      situation: equipment.situation,
+      initial_work: equipment.initial_work,
+      address: equipment.address,
+      zipcode: equipment.zipcode ? equipment.zipcode : "",
+      cpfcnpj: clientCpfCnpj,
+      phone_number: equipment.phone_number
+    };
+
     if (!updating) setUpdating(true);
-    else if (Object.values(equipment).includes("")) {
-      sendMessage("Alguns campos estão vazios", "info");
-    } else if (!findError("date", equipment.instalation_date)) {
-      setError((prev) => ({ ...prev, instalation_date: "Data inválidaaaaa" }));
-      console.log(equipment.instalation_date);
-    } else if (isAfter(parseISO(equipment.instalation_date), new Date()))
-      setError((prev) => ({ ...prev, instalation_date: "Data inválida" }));
-    else {
-      console.log(equipment);
-      const {
-        id_model,
-        id_equipment,
-        equipment_model,
-        instalation_date,
-        maintenance_date,
-        last_collect_date,
-        situation,
-        cpf_client,
-        observation,
-        work_time,
-      } = equipment;
-      const data = {
-        id_model,
-        id_equipment,
-        equipment_model,
-        instalation_date,
-        maintenance_date,
-        last_collect_date,
-        situation,
-        cpf_client,
-        observation,
-        work_time,
-      };
+
+    else if (!findError("date", equipment.installation_date)) {
+      setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
+
+    } else if (isAfter(parseISO(equipment.installation_date), new Date()))
+      setError((prev) => ({ ...prev, installation_date: "Data inválida" }));
+
+    else if (validateAllFields(data)) {
+
       sendMessage("Alterando dados...", "info", null);
+
       api
-        .put(`equipment/${id}`, data)
+        .put(`equipment/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
         .then((response) => {
-          sendMessage("Dados alterados");
+          sendMessage("Dados alterados com sucesso.", "success");
           setEquipmentOriginal(response.data.equipment);
+          setDisableCpfCnpj(true);
+          setClientId(response.data.equipment.client_id)
         })
-        .catch((err) => {
-          sendMessage(`Erro: ${err.message}`, "error");
-          console.log(err);
+        .catch((error) => {
+          console.log(error.response);
+          if (error.response.status === 400) {
+            sendMessage(error.response.data.notification, "error")
+          }
+          setEquipmentOriginal(equipmentOriginal);
+          setClientCpfCnpj("");
         });
       setUpdating(false);
     }
@@ -153,28 +311,30 @@ function AtualizacaoEquipamento() {
 
   function handleDelete(confirmation) {
     if (updating) {
+
       //cancelar
       setUpdating(false);
       setEquipment(equipmentOriginal);
+      setModelId(equipmentOriginal.id_model)
       setError({
-        instalation_date: "",
+        installation_date: "",
       });
+      setClientCpfCnpj(clientId ? clientCpfCnpj : "");
     } else if (confirmation === true) {
+
       // excuir de verdade
       setDeleting(false);
       sendMessage("Excluindo equipamento...", "info", null);
-      api
-        .delete(`equipment/${id}`)
-        .then((response) => {
-          sendMessage("Equipamento excluído com sucesso");
-          history.push("/listagemequipamento");
-        })
-        .catch((err) => {
-          sendMessage(`Erro ao excluir o equipamento: ${err.message}`, "error");
-          console.log(err);
-        });
-    } else {
-      // confirmar exclusão
+
+      api.delete(`equipment/${id}`, { headers: { authorization: `Bearer ${accessToken}` } }).then((response) => {
+        sendMessage("Equipamento excluído com sucesso");
+        history.push("/listagemequipamento");
+      }).catch((err) => {
+        sendMessage(`Erro ao excluir o equipamento: ${err.message}`, "error");
+        console.log(err)
+      })
+    }
+    else {
       setDeleting(true);
     }
   }
@@ -225,108 +385,165 @@ function AtualizacaoEquipamento() {
     <React.Fragment>
       <CssBaseline />
       <div className={classes.root}>
-        <h1 className={classes.title}>Detalhes do Equipamento</h1>
+        <div className={classes.header}>
 
+          <Typography variant="h3" className={classes.title}>
+            Detalhes do equipamento
+          </Typography>
+
+          {getSituationStatus()}
+
+          {getConnectionStatus()}
+
+        </div>
         <AreYouSure />
+        <Paper className={classes.formContainer} elevation={0}>
+          <Grid container spacing={isDesktop ? 5 : 0} >
+            <Grid item xs={12} md={6}>
 
-        <Paper className={classes.containerForm} elevation={0}>
-          <div className={classes.leftSection}>
-            <Autocomplete
-              freeSolo
-              className={classes.input}
-              options={modelsList.map((model) => model.modelName)}
-              onChange={handleChangeAutocomplete}
-              value={equipment.equipment_model}
-              renderInput={(params) => (
-                <TextField
-                  name="equipment_model"
-                  {...params}
-                  value={equipment.equipment_model}
-                  label="Modelo"
-                  variant="filled"
+              <FormControl variant="filled" className={classes.inputType}>
+                <InputLabel>Modelo do Equipamento</InputLabel>
+                <Select
+                  labelId="tipo"
+                  onChange={handleChangeSelect}
+                  value={modelId}
                   disabled={!updating}
-                  autoComplete="off"
-                />
-              )}
-            />
-            <TextField
-              name="cpf_client"
-              className={classes.input}
-              value={equipment.cpf_client}
-              label="CPF" //Trocar depois:  empresa tem cnpj e pessoa cpf massó vem cpf banco
-              variant="filled"
-              disabled //cpf não deve alterar
-              onChange={handleChangeInput}
-            />
-            <TextField
-              name="id_equipment"
-              className={classes.input}
-              value={equipment.id_equipment}
-              label="Número de série"
-              variant="filled"
-              disabled={!updating}
-              onChange={handleChangeInput}
-            />
-            <TextField
-              name="instalation_date"
-              className={classes.input}
-              value={equipment.instalation_date}
-              label="Data instalação"
-              type="date"
-              helperText={
-                error.instalation_date === ""
-                  ? "*Obrigatório"
-                  : error.instalation_date
-              }
-              error={error.instalation_date !== ""}
-              variant="filled"
-              disabled={!updating}
-              onChange={handleChangeInput}
-            />
-            <TextField
-              name="observation"
-              className={classes.input}
-              value={equipment.observation}
-              label="Observações"
-              type="text"
-              variant="filled"
-              disabled={!updating}
-              onChange={handleChangeInput}
-            />
-            {/* </Grid> */}
+                >
+                  {modelsList.map((model, index) => {
+                    return (
+                      <MenuItem key={index} value={model.id}>{model.modelName}</MenuItem>
+                    )
+                  })}
+                </Select>
+                <FormHelperText style={{ marginBottom: "16px" }}>*Obrigatório</FormHelperText>
+              </FormControl>
 
-            <div className={classes.centralizar}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.btn}
-                onClick={handleSubmit}
-              >
-                {updating ? "Salvar" : "Editar"}
-              </Button>
+              <TextField
+                name="equipment_code"
+                className={classes.input}
+                value={equipment.equipment_code}
+                label="Código do equipamento"
+                variant="filled"
+                disabled={true}
+                helperText="*Obrigatório"
+              />
 
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.btn}
-                onClick={handleDelete}
-              >
-                {updating ? "Cancelar" : "Excluir"}
-              </Button>
-            </div>
-          </div>
-          <div className={classes.rightSection}>
-            <h3 className={classes.subtitle}>
-              Código para conexão com equipamento:
-            </h3>
-            <h2>{equipment.id}</h2>
-            <h3 className={classes.subtitle}>
-              Status de conexão com equipamento:
-            </h3>
-            <div className="status">
-              {Status(equipment.installation_status)}
-            </div>
-          </div>
+              <TextField
+                name="installation_date"
+                className={classes.input}
+                value={equipment.installation_date}
+                label="Data instalação"
+                type="date"
+                helperText={
+                  error.installation_date === ""
+                    ? "*Obrigatório"
+                    : error.installation_date
+                }
+                error={error.installation_date !== ""}
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+              />
+              <TextField
+                name="phone_number"
+                className={classes.inputs}
+                value={equipment.phone_number}
+                onChange={handleChangeInput}
+                label="Telefone para Contato"
+                type="text"
+                autoComplete="off"
+                helperText="*Obrigatório"
+                variant="filled"
+                disabled={!updating}
+                style={{ width: "100%" }}
+              />
+
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+
+              <TextField
+                name="observation"
+                className={classes.input}
+                value={equipment.observation}
+                label="Observações"
+                type="text"
+                variant="filled"
+                disabled={!updating}
+                onChange={handleChangeInput}
+                helperText="(Opcional)"
+              />
+
+              <TextField
+                name="address"
+                className={classes.input}
+                value={equipment.address}
+                onChange={handleChangeInput}
+                label="Endereço"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                disabled={!updating}
+                variant="filled"
+              />
+
+              <TextField
+                name="zipcode"
+                className={classes.input}
+                value={equipment.zipcode}
+                onChange={handleChangeInput}
+                label="CEP"
+                type="text"
+                helperText="(Opcional)"
+                autoComplete="off"
+                disabled={!updating}
+                variant="filled"
+                inputProps={{ maxLength: 8 }}
+              />
+              <TextField
+                name="cpfcnpj"
+                className={classes.input}
+                value={clientCpfCnpj ? clientCpfCnpj : ""}
+                onChange={handleChangeInput}
+                label="CPF / CNPJ do Proprietário"
+                type="text"
+                helperText="(Opcional)"
+                variant="filled"
+                disabled={disableCpfCnpj ? true : !updating}
+              />
+            </Grid>
+
+            {!IsClient() && (
+              <div className={classes.buttonContainer}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.btn}
+                  onClick={handleSubmit}
+                >
+                  {updating ? "Salvar" : "Editar"}
+                </Button>
+
+                <Button
+                  variant="contained"
+                  className={classes.btn}
+                  onClick={handleDelete}
+                >
+                  {updating ? "Cancelar" : "Excluir"}
+                </Button>
+
+                {clientId && 
+                  <Button
+                    className={classes.btn}
+                    variant="contained"
+                    onClick={() => history.push(`/au/${clientId}`)}
+                    style={{ backgroundColor: "orange", fontSize: "11px" }}
+                  >
+                    Proprietário do equipamento
+                  </Button>}
+              </div>
+            )}
+          </Grid>
         </Paper>
       </div>
     </React.Fragment>

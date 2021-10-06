@@ -27,7 +27,7 @@ import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useStyles } from './atualizacaoEquipamentoStyle'
 import { LoginContext } from '../../context/LoginContext';
 

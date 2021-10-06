@@ -12,7 +12,7 @@ import {
   Snackbar,
   CircularProgress,
 } from "@material-ui/core";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useStyles } from "./atualizacaoUsuarioStyle";
 import { AuthContext } from "../../context/AuthContext";

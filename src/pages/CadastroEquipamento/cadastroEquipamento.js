@@ -19,7 +19,7 @@ import { useStyles } from './cadastroEquipamentoStyle';
 import api from '../../services/api';
 import { format, parseISO, isAfter } from 'date-fns';
 import { AuthContext } from '../../context/AuthContext'
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import ModalRedirect from '../../components/ModalRedirect/ModalRedirect';
 import { LoginContext } from "../../context/LoginContext"
 

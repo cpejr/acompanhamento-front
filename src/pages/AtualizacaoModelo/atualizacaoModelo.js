@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core"
 import api from '../../services/api';
 import { useHistory } from 'react-router-dom';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { useStyles } from './atualizacaoModeloStyle'
 import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { CssBaseline, Paper, Button, TextField } from "@material-ui/core";
 import { useStyles } from "./manutencaoStyle";
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import { LoginContext } from '../../context/LoginContext';
 import api from '../../services/api';

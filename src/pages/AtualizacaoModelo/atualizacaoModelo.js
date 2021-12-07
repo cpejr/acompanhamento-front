@@ -17,7 +17,6 @@ import api from '../../services/api';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useStyles } from './atualizacaoModeloStyle'
-import { parseISO, isAfter } from 'date-fns';
 import findError from '../../services/findError';
 import { AuthContext } from '../../context/AuthContext'
 import { LoginContext } from '../../context/LoginContext';
@@ -33,7 +32,20 @@ function AtualizacaoModelo() {
   const isDesktop = useMediaQuery("(min-width:960px)");
 
   const [updating, setUpdating] = useState(false);
-  const [model, setModel] = useState({});
+  const [model, setModel] = useState({
+    modelName: "",
+    type: "",
+    manufacturer: "",
+    releaseYear: "",
+    min_temp: "",
+    max_temp: "",
+    min_current: "",
+    max_current: "",
+    min_voltage: "",
+    max_voltage: "",
+    min_vibra: "",
+    max_vibra: "",
+  });
   const [modelOriginal, setModelOriginal] = useState({});
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
@@ -86,50 +98,68 @@ function AtualizacaoModelo() {
       releaseYear: "",
     })
 
-    if (!updating) setUpdating(true)
-
-    else if (Object.values(model).includes("")) {
-      sendMessage('Alguns campos estão vazios', 'error');
+    if (!updating) {
+      setUpdating(true)
+      return
     }
 
-    else if (!findError("year", model.releaseYear))
-      setError(prev => ({ ...prev, releaseYear: "Data inválido" }))
-
-    else if (isAfter(parseISO(model.releaseYear), new Date()))
-      setError(prev => ({ ...prev, releaseYear: "Ano inválido!" }))
-
-    else {
-
-      const data = {
-        modelName: model.modelName,
-        type: model.type,
-        manufacturer: model.manufacturer,
-        releaseYear: model.releaseYear,
-        min_temp: model.min_temp,
-        max_temp: model.max_temp,
-        min_current: model.min_current,
-        max_current: model.max_current,
-        min_voltage: model.min_voltage,
-        max_voltage: model.max_voltage,
-        min_vibra: model.min_vibra,
-        max_vibra: model.max_vibra,
-      }
-
-      sendMessage("Atuaizando os dados...", "info", null);
-
-      api.put(`model/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
-        .then(response => {
-          sendMessage("Dados alterados com sucesso", "success");
-          setModelOriginal(data);
-          console.log(data, 'Dados depois de alterar');
-        })
-        .catch(err => {
-          console.log(err);
-          sendMessage("Erro ao atualizar modelo!", "error");
-        })
-
-      setUpdating(false)
+    if (Object.values(model).includes("")) {
+      sendMessage("Alguns campos estão vazios!", "error");
+      return
     }
+
+    const data = {
+      modelName: model.modelName,
+      type: model.type,
+      manufacturer: model.manufacturer,
+      releaseYear: model.releaseYear,
+      min_temp: Number(model.min_temp) ?? 0,
+      max_temp: Number(model.max_temp) ?? 0,
+      min_current: Number(model.min_current) ?? 0,
+      max_current: Number(model.max_current) ?? 0,
+      min_voltage: Number(model.min_voltage) ?? 0,
+      max_voltage: Number(model.max_voltage) ?? 0,
+      min_vibra: Number(model.min_vibra) ?? 0,
+      max_vibra: Number(model.max_vibra) ?? 0,
+    }
+
+    if (
+      data.min_temp < 0 ||
+      data.max_temp < 0 ||
+      data.max_temp < data.min_temp ||
+      data.min_voltage < 0 ||
+      data.max_voltage < 0 ||
+      data.max_voltage < data.min_voltage ||
+      data.min_current < 0 ||
+      data.max_current < 0 ||
+      data.max_current < data.min_current ||
+      data.min_vibra < 0 ||
+      data.max_vibra < 0 ||
+      data.max_vibra < data.min_vibra
+    ) {
+      sendMessage("Valor de entrada inválido", "error");
+      return;
+    }
+
+    if (!findError("year", data.releaseYear)) {
+      setError((prev) => ({ ...prev, releaseYear: "Ano inválido" }));
+      return
+    }
+
+    sendMessage("Atuaizando os dados...", "info", null);
+
+    api.put(`model/${id}`, data, { headers: { authorization: `Bearer ${accessToken}` } })
+      .then(response => {
+        sendMessage("Dados alterados com sucesso", "success");
+        setModelOriginal(data);
+        console.log(data, 'Dados depois de alterar');
+      })
+      .catch(err => {
+        console.log(err);
+        sendMessage("Erro ao atualizar modelo!", "error");
+      })
+
+    setUpdating(false)
   }
 
   // Esta funcao vai verificar se existe algum equipamento com o id do modelo em questao
@@ -291,7 +321,12 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   className={classes.inputRange}
                   name="min_temp"
-                  helperText="mínimo"
+                  helperText={
+                    Number(model.min_temp) < 0
+                      ? "Valor negativo é inválido"
+                      : "mínimo"
+                  }
+                  error={Number(model.min_temp) < 0}
                   label="°C"
                   variant="filled"
                   value={model.min_temp}
@@ -303,7 +338,18 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   name="max_temp"
                   className={classes.inputRange}
-                  helperText="máximo"
+                  helperText={
+                    Number(model.max_temp) < 0
+                      ? "Valor negativo é inválido"
+                      : Number(model.max_temp) < Number(model.min_temp)
+                        ? "Valor menor que o mínimo"
+                        : "máximo"
+                  }
+                  error={
+                    Number(model.max_temp) < Number(model.min_temp)
+                      ? Number(model.max_temp) < Number(model.min_temp)
+                      : Number(model.max_temp) < 0
+                  }
                   label="°C"
                   variant="filled"
                   value={model.max_temp}
@@ -322,7 +368,12 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   name="min_current"
                   className={classes.inputRange}
-                  helperText="mínimo"
+                  helperText={
+                    Number(model.min_current) < 0
+                      ? "Valor negativo é inválido"
+                      : "mínimo"
+                  }
+                  error={Number(model.min_current) < 0}
                   label="A"
                   variant="filled"
                   value={model.min_current}
@@ -334,7 +385,17 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   name="max_current"
                   className={classes.inputRange}
-                  helperText="máximo"
+                  helperText={
+                    Number(model.max_current) < 0
+                      ? "Valor negativo é inválido"
+                      : Number(model.max_current) < Number(model.min_current)
+                        ? "Valor menor que o mínimo"
+                        : "máximo"
+                  }
+                  error={
+                    Number(model.max_current) < Number(model.min_current) || 
+                    Number(model.max_current) < 0
+                  }
                   label="A"
                   variant="filled"
                   value={model.max_current}
@@ -353,7 +414,12 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   name="min_voltage"
                   className={classes.inputRange}
-                  helperText="mínimo"
+                  helperText={
+                    Number(model.min_voltage) < 0
+                      ? "Valor negativo é inválido"
+                      : "mínimo"
+                  }
+                  error={Number(model.min_voltage) < 0}
                   label="V"
                   variant="filled"
                   value={model.min_voltage}
@@ -365,7 +431,18 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   name="max_voltage"
                   className={classes.inputRange}
-                  helperText="máximo"
+                  helperText={
+                    Number(model.max_voltage) < 0
+                      ? "Valor negativo é inválido"
+                      : Number(model.max_voltage) < Number(model.min_voltage)
+                        ? "Valor menor que o mínimo"
+                        : "máximo"
+                  }
+                  error={
+                    Number(model.max_voltage) < Number(model.min_voltage)
+                      ? Number(model.max_voltage) < Number(model.min_voltage)
+                      : Number(model.max_voltage) < 0
+                  }
                   label="V"
                   variant="filled"
                   value={model.max_voltage}
@@ -382,9 +459,13 @@ function AtualizacaoModelo() {
               <div className={classes.rangesContainer}>
                 <TextField
                   disabled={!updating}
-                  name="min_vibra"
+                  helperText={
+                    Number(model.min_vibra) < 0
+                      ? "Valor negativo é inválido"
+                      : "mínimo"
+                  }
+                  error={Number(model.min_vibra) < 0}
                   className={classes.inputRange}
-                  helperText="mínimo"
                   label="krpm"
                   variant="filled"
                   value={model.min_vibra}
@@ -396,7 +477,18 @@ function AtualizacaoModelo() {
                   disabled={!updating}
                   name="max_vibra"
                   className={classes.inputRange}
-                  helperText="máximo"
+                  helperText={
+                    Number(model.max_vibra) < 0
+                      ? "Valor negativo é inválido"
+                      : Number(model.max_vibra) < Number(model.min_vibra)
+                        ? "Valor menor que o mínimo"
+                        : "máximo"
+                  }
+                  error={
+                    Number(model.max_vibra) < Number(model.min_vibra)
+                      ? Number(model.max_vibra) < Number(model.min_vibra)
+                      : Number(model.max_vibra) < 0
+                  }
                   label="krpm"
                   variant="filled"
                   value={model.max_vibra}

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useContext } from 'react';
-import api from '../../services/api';
+import React, { useState, useRef, useContext } from "react";
+import api from "../../services/api";
 import {
   CssBaseline,
   Typography,
@@ -8,14 +8,13 @@ import {
   Grid,
   Paper,
   useMediaQuery,
-} from "@material-ui/core"
-import findError from '../../services/findError';
-import { useStyles } from './cadastroModeloStyle';
-import { LoginContext } from '../../context/LoginContext';
+} from "@material-ui/core";
+import findError from "../../services/findError";
+import { useStyles } from "./cadastroModeloStyle";
+import { LoginContext } from "../../context/LoginContext";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function CadastroModelo(props) {
-
   const classes = useStyles();
   const { sendMessage } = useContext(AuthContext);
   const isDesktop = useMediaQuery("(min-width:960px)");
@@ -25,63 +24,99 @@ export default function CadastroModelo(props) {
 
   // Mecanismo do Form
   const [formData, setFormData] = useState({
-    modelName: '',
-    type: '',
-    manufacturer: '',
-    releaseYear: '',
-    min_temp: '',
-    max_temp: '',
-    min_current: '',
-    max_current: '',
-    min_voltage: '',
-    max_voltage: '',
-    min_vibra: '',
-    max_vibra: '',
+    modelName: "",
+    type: "",
+    manufacturer: "",
+    releaseYear: "",
+    min_temp: "",
+    max_temp: "",
+    min_current: "",
+    max_current: "",
+    min_voltage: "",
+    max_voltage: "",
+    min_vibra: "",
+    max_vibra: "",
   });
 
   const [error, setError] = useState({
-    releaseYear: '',
+    releaseYear: "",
   });
 
-  function handleChangeInput(event, valueA) {
+  function handleChangeInput(event) {
     const { name, value } = event.target;
-    if (valueA)
-      setFormData({ ...formData, type: valueA });
-    else
+
+    if (event.target) {
       setFormData({ ...formData, [name]: value });
+    } else {
+      return;
+    }
   }
 
   function handleSubmit(event) {
-
     event.preventDefault();
-
-    const data = formData;
 
     setError({
       releaseYear: "",
-    })
+    });
 
-    if (Object.values(data).includes("")) {
+    if (Object.values(formData).includes("")) {
       sendMessage("Alguns campos estão vazios!", "error");
-    } else if (!findError("year", data.releaseYear)) {
-      setError(prev => ({ ...prev, releaseYear: "Ano inválido" }))
-    } else {
-
-      // enviar para o backend
-      sendMessage("Realizando cadastro...", "info", null);
-
-      api
-        .post('/model/create', data, { headers: { authorization: `Bearer ${accessToken}` } })
-        .then((response) => {
-
-          console.log(response);
-          sendMessage("Modelo cadastrado com sucesso", "success")
-        })
-        .catch(error => {
-          sendMessage("Erro ao cadastrar modelo!", "error");
-          console.log(error);
-        })
+      return
     }
+
+    const data = {
+      modelName: formData.modelName,
+      type: formData.type,
+      manufacturer: formData.manufacturer,
+      releaseYear: formData.releaseYear,
+      min_temp: Number(formData.min_temp) ?? 0,
+      max_temp: Number(formData.max_temp) ?? 0,
+      min_current: Number(formData.min_current) ?? 0,
+      max_current: Number(formData.max_current) ?? 0,
+      min_voltage: Number(formData.min_voltage) ?? 0,
+      max_voltage: Number(formData.max_voltage) ?? 0,
+      min_vibra: Number(formData.min_vibra) ?? 0,
+      max_vibra: Number(formData.max_vibra) ?? 0,
+    }
+
+    if (
+      data.min_temp < 0 ||
+      data.max_temp < 0 ||
+      data.max_temp < data.min_temp ||
+      data.min_voltage < 0 ||
+      data.max_voltage < 0 ||
+      data.max_voltage < data.min_voltage ||
+      data.min_current < 0 ||
+      data.max_current < 0 ||
+      data.max_current < data.min_current ||
+      data.min_vibra < 0 ||
+      data.max_vibra < 0 ||
+      data.max_vibra < data.min_vibra
+    ) {
+      sendMessage("Valor de entrada inválido", "error");
+      return;
+    }
+
+    if (!findError("year", data.releaseYear)) {
+      setError((prev) => ({ ...prev, releaseYear: "Ano inválido" }));
+      return
+    }
+
+    // enviar para o backend
+    sendMessage("Realizando cadastro...", "info", null);
+
+    api
+      .post("/model/create", data, {
+        headers: { authorization: `Bearer ${accessToken}` },
+      })
+      .then((response) => {
+        console.log(response);
+        sendMessage("Modelo cadastrado com sucesso", "success");
+      })
+      .catch((error) => {
+        sendMessage("Erro ao cadastrar modelo!", "error");
+        console.log(error);
+      });
   }
 
   return (
@@ -95,9 +130,7 @@ export default function CadastroModelo(props) {
 
         <Paper className={classes.formContainer} elevation={0}>
           <form className={classes.form} onSubmit={handleSubmit}>
-
-            <Grid container spacing={isDesktop ? 2 : 0} >
-
+            <Grid container spacing={isDesktop ? 2 : 0}>
               <Grid item xs={12} md={6}>
                 <TextField
                   name="modelName"
@@ -142,7 +175,11 @@ export default function CadastroModelo(props) {
                   onChange={handleChangeInput}
                   label="Ano de lançamento"
                   type="text"
-                  helperText={error.releaseYear === "" ? "*Obrigatório" : error.releaseYear}
+                  helperText={
+                    error.releaseYear === ""
+                      ? "*Obrigatório"
+                      : error.releaseYear
+                  }
                   error={error.releaseYear !== ""}
                   variant="filled"
                   autoComplete="off"
@@ -159,24 +196,40 @@ export default function CadastroModelo(props) {
                   <TextField
                     className={classes.inputRange}
                     name="min_temp"
-                    helperText="mínimo"
+                    helperText={
+                      Number(formData.min_temp) < 0
+                        ? "Valor negativo é inválido"
+                        : "mínimo"
+                    }
                     label="°C"
                     variant="filled"
                     value={formData.min_temp}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={Number(formData.min_temp) < 0}
                   />
                   <TextField
                     name="max_temp"
                     className={classes.inputRange}
-                    helperText="máximo"
+                    helperText={
+                      Number(formData.max_temp) < 0
+                        ? "Valor negativo é inválido"
+                        : Number(formData.max_temp) < Number(formData.min_temp)
+                          ? "Valor menor que o mínimo"
+                          : "máximo"
+                    }
                     label="°C"
                     variant="filled"
                     value={formData.max_temp}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={
+                      Number(formData.max_temp) < Number(formData.min_temp)
+                        ? Number(formData.max_temp) < Number(formData.min_temp)
+                        : Number(formData.max_temp) < 0
+                    }
                   />
                 </div>
 
@@ -188,24 +241,39 @@ export default function CadastroModelo(props) {
                   <TextField
                     name="min_current"
                     className={classes.inputRange}
-                    helperText="mínimo"
+                    helperText={
+                      Number(formData.min_current) < 0
+                        ? "Valor negativo é inválido"
+                        : "mínimo"
+                    }
                     label="A"
                     variant="filled"
                     value={formData.min_current}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={Number(formData.min_current) < 0}
                   />
                   <TextField
                     name="max_current"
                     className={classes.inputRange}
-                    helperText="máximo"
+                    helperText={
+                      Number(formData.max_current) < 0
+                        ? "Valor negativo é inválido"
+                        : Number(formData.max_current) < Number(formData.min_current)
+                          ? "Valor menor que o mínimo"
+                          : "máximo"
+                    }
                     label="A"
                     variant="filled"
                     value={formData.max_current}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={
+                      Number(formData.max_current) < Number(formData.min_current) || 
+                      Number(formData.max_current) < 0
+                    }
                   />
                 </div>
 
@@ -217,24 +285,40 @@ export default function CadastroModelo(props) {
                   <TextField
                     name="min_voltage"
                     className={classes.inputRange}
-                    helperText="mínimo"
+                    helperText={
+                      Number(formData.min_voltage) < 0
+                        ? "Valor negativo é inválido"
+                        : "mínimo"
+                    }
                     label="V"
                     variant="filled"
                     value={formData.min_voltage}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={Number(formData.min_voltage) < 0}
                   />
                   <TextField
                     name="max_voltage"
                     className={classes.inputRange}
-                    helperText="máximo"
+                    helperText={
+                      Number(formData.max_voltage) < 0
+                        ? "Valor negativo é inválido"
+                        : Number(formData.max_voltage) < Number(formData.min_voltage)
+                          ? "Valor menor que o mínimo"
+                          : "máximo"
+                    }
                     label="V"
                     variant="filled"
                     value={formData.max_voltage}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={
+                      Number(formData.max_voltage) < Number(formData.min_voltage)
+                        ? Number(formData.max_voltage) < Number(formData.min_voltage)
+                        : Number(formData.max_voltage) < 0
+                    }
                   />
                 </div>
 
@@ -246,24 +330,40 @@ export default function CadastroModelo(props) {
                   <TextField
                     name="min_vibra"
                     className={classes.inputRange}
-                    helperText="mínimo"
+                    helperText={
+                      Number(formData.min_vibra) < 0
+                        ? "Valor negativo é inválido"
+                        : "mínimo"
+                    }
                     label="krpm"
                     variant="filled"
                     value={formData.min_vibra}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={Number(formData.min_vibra) < 0}
                   />
                   <TextField
                     name="max_vibra"
                     className={classes.inputRange}
-                    helperText="máximo"
+                    helperText={
+                      Number(formData.max_vibra) < 0
+                        ? "Valor negativo é inválido"
+                        : Number(formData.max_vibra) < Number(formData.min_vibra)
+                          ? "Valor menor que o mínimo"
+                          : "máximo"
+                    }
                     label="krpm"
                     variant="filled"
                     value={formData.max_vibra}
                     margin="dense"
                     onChange={handleChangeInput}
-                    type='number'
+                    type="number"
+                    error={
+                      Number(formData.max_vibra) < Number(formData.min_vibra)
+                        ? Number(formData.max_vibra) < Number(formData.min_vibra)
+                        : Number(formData.max_vibra) < 0
+                    }
                   />
                 </div>
               </Grid>
@@ -278,11 +378,9 @@ export default function CadastroModelo(props) {
                 Cadastrar
               </Button>
             </div>
-
           </form>
         </Paper>
-      </div >
-
-    </React.Fragment >
-  )
+      </div>
+    </React.Fragment>
+  );
 }

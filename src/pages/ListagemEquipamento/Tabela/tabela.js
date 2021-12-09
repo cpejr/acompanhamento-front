@@ -22,16 +22,18 @@ export default function StickyHeadTable(props) {
   const { IsClient } = useContext(LoginContext);
   let headerItems = [];
 
-  if (!IsClient()) {
+  if (!IsClient()) { // se for admin 
     headerItems = [
       { title: "Código do Equipamento", ordemBy: "equipment_code" },
       { title: "Nome cliente", ordemBy: "client_name" },
-      { title: "Última visita", ordemBy: "updatedAt" }
+      { title: "Última visita", ordemBy: "updatedAt" },
+      { title: "Tempo de uso", ordemBy: "usage_time" }
     ]
-  } else {
+  } else { // se for usuário não admin
     headerItems = [
       { title: "Código do Equipamento", ordemBy: "equipment_code" },
-      { title: "Última visita", ordemBy: "updatedAt" }
+      { title: "Última visita", ordemBy: "updatedAt" },
+      { title: "Tempo de uso", ordemBy: "usage_time" }
     ]
   }
 
@@ -82,7 +84,9 @@ export default function StickyHeadTable(props) {
                   {!IsClient() && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
 
                   <TableCell>{equipment.updatedAt}</TableCell>
-
+                  
+                  <TableCell>{equipment.usage_time}</TableCell>
+                  
                   <TableCell className={classes.lastTableCell} >
                     <Button
                       onClick={() => history.push(`/ae/${equipment.id}`)}

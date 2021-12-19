@@ -22,16 +22,18 @@ export default function StickyHeadTable(props) {
   const { IsClient } = useContext(LoginContext);
   let headerItems = [];
 
-  if (!IsClient()) {
+  if (!IsClient()) { // se for admin 
     headerItems = [
       { title: "Código do Equipamento", ordemBy: "equipment_code" },
       { title: "Nome cliente", ordemBy: "client_name" },
-      { title: "Última visita", ordemBy: "updatedAt" }
+      { title: "Última visita", ordemBy: "updatedAt" },
+      { title: "Tempo de uso", ordemBy: "usage_time" }
     ]
-  } else {
+  } else { // se for usuário não admin
     headerItems = [
       { title: "Código do Equipamento", ordemBy: "equipment_code" },
-      { title: "Última visita", ordemBy: "updatedAt" }
+      { title: "Última visita", ordemBy: "updatedAt" },
+      { title: "Tempo de uso", ordemBy: "usage_time" }
     ]
   }
 
@@ -40,6 +42,21 @@ export default function StickyHeadTable(props) {
     if (user[0]) return user[0].name;
     else return " ";
   };
+
+  function formatUsageTime(seconds) {
+
+    if (!seconds) {
+      return "00h 00min"
+    }
+
+    const hours = Math.floor(seconds / 60 / 60)
+    const mins = Math.floor((seconds / 60) % 60)
+
+    const displayHours = hours < 10 ? `0${hours}` : hours
+    const displayMins = mins < 10 ? `0${mins}` : mins
+
+    return `${displayHours}h ${displayMins}min`
+  }
 
   return (
     <Paper className={classes.root}>
@@ -82,7 +99,9 @@ export default function StickyHeadTable(props) {
                   {!IsClient() && <TableCell>{getNameClient(equipment.id_client)}</TableCell>}
 
                   <TableCell>{equipment.updatedAt}</TableCell>
-
+                  
+                  <TableCell>{formatUsageTime(equipment.usage_time)}</TableCell>
+                  
                   <TableCell className={classes.lastTableCell} >
                     <Button
                       onClick={() => history.push(`/ae/${equipment.id}`)}

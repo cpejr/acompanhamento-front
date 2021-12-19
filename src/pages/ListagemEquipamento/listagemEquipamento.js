@@ -268,6 +268,7 @@ export default function ListagemEquipamento() {
                 id_client: equipment.client_id,
                 updatedAt: formattedDate,
                 maintenance: equipment.maintenance,
+                usage_time: equipment.usage_time
               };
             })}
             setOrdem={setOrdem}

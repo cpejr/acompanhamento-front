@@ -43,6 +43,21 @@ export default function StickyHeadTable(props) {
     else return " ";
   };
 
+  function formatUsageTime(seconds) {
+
+    if (!seconds) {
+      return "00h 00min"
+    }
+
+    const hours = Math.floor(seconds / 60 / 60)
+    const mins = Math.floor((seconds / 60) % 60)
+
+    const displayHours = hours < 10 ? `0${hours}` : hours
+    const displayMins = mins < 10 ? `0${mins}` : mins
+
+    return `${displayHours}h ${displayMins}min`
+  }
+
   return (
     <Paper className={classes.root}>
       <TableContainer className={classes.container}>
@@ -85,7 +100,7 @@ export default function StickyHeadTable(props) {
 
                   <TableCell>{equipment.updatedAt}</TableCell>
                   
-                  <TableCell>{equipment.usage_time}</TableCell>
+                  <TableCell>{formatUsageTime(equipment.usage_time)}</TableCell>
                   
                   <TableCell className={classes.lastTableCell} >
                     <Button
